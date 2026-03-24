@@ -72,7 +72,6 @@ export function mapSignFromExcelToDatabase(row: SignFromExcel): DatabaseRecord {
     onlineUrl: row.Online_Url || undefined,
     signerId: undefined,
     sourceId: undefined,
-    isPrimary: 1,
     year: yearStart
   }
 

@@ -3,13 +3,19 @@ import './ActionButtons.css'
 
 interface ActionButtonsProps {
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  setIsComparsionActive: Dispatch<SetStateAction<boolean>>
 }
 
-function ActionButtons({ setIsFormOpen }: ActionButtonsProps): React.JSX.Element {
+function ActionButtons(props: ActionButtonsProps): React.JSX.Element {
+  const { setIsFormOpen, setIsComparsionActive } = props
+
   return (
-    <div className="actionButton">
-      <button className="editButton" onClick={() => setIsFormOpen(true)}>
-        edytuj słowo
+    <div className="actionButtons">
+      <button className="actionButton" onClick={() => setIsFormOpen(true)}>
+        edytuj
+      </button>
+      <button className="actionButton" onClick={() => setIsComparsionActive(true)}>
+        porównaj
       </button>
     </div>
   )

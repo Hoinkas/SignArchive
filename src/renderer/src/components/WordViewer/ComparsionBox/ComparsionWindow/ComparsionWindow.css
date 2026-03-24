@@ -1,0 +1,7 @@
+.comparsionWindow {
+  position: absolute;
+  margin: auto;
+  width: 50vh;
+  height: 50vh;
+  background-color: grey;
+}

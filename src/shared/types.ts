@@ -69,7 +69,6 @@ export interface MediaFile {
   signId: string
   signerId?: string
   sourceId?: string
-  isPrimary?: number
   year?: number
 }
 
@@ -110,8 +109,8 @@ export interface WordWithSignCount extends Word {
 //ALL DETAILS FOR WORD
 export interface SignWithSourceSignerMediaFile {
   sign: Sign
-  source?: Source
-  mediaFile?: MediaFile
+  source: Source
+  mediaFile: MediaFile
   signer?: Signer
 }
 

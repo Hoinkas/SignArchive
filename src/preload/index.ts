@@ -66,8 +66,6 @@ if (process.contextIsolated) {
         list: (): Promise<MediaFile[]> => ipcRenderer.invoke('media_files:list'),
         by_sign: (signId: string): Promise<MediaFile[]> =>
           ipcRenderer.invoke('media_files:by_sign', signId),
-        primary_by_sign: (signId: string): Promise<MediaFile> =>
-          ipcRenderer.invoke('media_files:primary_by_sign', signId),
         create: (data: Omit<MediaFile, 'id' | 'createdAt'>): Promise<MediaFile> =>
           ipcRenderer.invoke('media_files:create', data),
         delete: (id: string): Promise<void> => ipcRenderer.invoke('media_files:delete', id)

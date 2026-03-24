@@ -6,10 +6,23 @@
   width: 240px;
   box-sizing: border-box;
   overflow: hidden;
+
+  &.active {
+    background-color: rgb(95, 84, 221, 0.5);
+  }
 }
 
 .variantDetails {
   padding: 8px 16px;
   display: flex;
   flex-direction: column;
+}
+
+.bottomBox {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    background-color: grey;
+  }
 }

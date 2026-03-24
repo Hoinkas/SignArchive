@@ -1,13 +1,18 @@
 import './MeaningBox.css'
-import { MeaningWithSigns } from '@shared/types'
+import { MeaningWithSigns, SignWithSourceSignerMediaFile } from '@shared/types'
 import VariantBox from './VariantBox/VariantBox'
+import { Dispatch, SetStateAction } from 'react'
 
 interface MeaningBoxProps {
   meaningWithSigns: MeaningWithSigns
   number: number
+  isComparsionActive: boolean
+  activeSigns: SignWithSourceSignerMediaFile[]
+  setActiveSigns: Dispatch<SetStateAction<SignWithSourceSignerMediaFile[]>>
 }
 
-function MeaningBox({ meaningWithSigns, number }: MeaningBoxProps): React.JSX.Element {
+function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
+  const { meaningWithSigns, number, isComparsionActive, activeSigns, setActiveSigns } = props
   const signs = meaningWithSigns.signs
   const meaning = meaningWithSigns.meaning
 
@@ -27,7 +32,13 @@ function MeaningBox({ meaningWithSigns, number }: MeaningBoxProps): React.JSX.El
         </div>
       </div>
       {signs.map((sign, key) => (
-        <VariantBox key={key} sign={sign} />
+        <VariantBox
+          key={key}
+          sign={sign}
+          isComparsionActive={isComparsionActive}
+          activeSigns={activeSigns}
+          setActiveSigns={setActiveSigns}
+        />
       ))}
     </div>
   )

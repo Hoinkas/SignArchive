@@ -8,7 +8,7 @@ import type {
   SignWithSourceSignerMediaFile,
   WordWithSignCount
 } from '@shared/types'
-import { findPrimaryMediaFileBySignId } from './media_files'
+import { findMediaFilesBySignId } from './media_files'
 import { findSourceById } from './sources'
 import { findSignerById } from './signers'
 import { findMeaningsByWordId, returnCountOfSignsInWordByWordId } from './meanings'
@@ -46,7 +46,7 @@ export function listDetailsForWordById(id: string): WordWithDetails | undefined 
     const sign = findSignById(meaning.signId)
     if (!sign) return { meaning, signs: [] }
 
-    const mediaFile = findPrimaryMediaFileBySignId(sign.id)
+    const mediaFile = findMediaFilesBySignId(sign.id)[0]
     const source = mediaFile?.sourceId ? findSourceById(mediaFile.sourceId) : undefined
     const signer = mediaFile?.signerId ? findSignerById(mediaFile.signerId) : undefined
 
