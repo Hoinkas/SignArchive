@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 import { getDb } from '../db/client'
-import type { Sign, SignRelation } from '@shared/types'
+import type { RelationType, Sign, SignRelation, SignWithRelationType } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 import { findSignById } from './signs'
 
@@ -9,9 +9,9 @@ export function listAllSignRelations(): SignRelation[] {
   return rows.map(rowToSignRelation)
 }
 
-export function findAllRelatedSignsBySignId(signId: string): Sign[] {
+export function findAllRelatedSignsBySignId(signId: string): SignWithRelationType[] {
   const visited = new Set<string>()
-  const result: Sign[] = []
+  const result: { sign: Sign; relationType: RelationType }[] = []
   const queue: string[] = [signId]
 
   while (queue.length > 0) {
@@ -33,7 +33,7 @@ export function findAllRelatedSignsBySignId(signId: string): Sign[] {
       if (!visited.has(neighbourId)) {
         const sign = findSignById(neighbourId)
         if (sign) {
-          result.push(sign)
+          result.push({ sign, relationType: relation.relationType })
           queue.push(neighbourId)
         }
       }

@@ -94,6 +94,8 @@ export interface SignRelation {
   relationType: RelationType
 }
 
+export type SignWithRelationType = Pick<SignRelation, 'relationType'> & { sign: Sign }
+
 //WORD + SIGN + MEDIAFILE
 export interface WordWithSignAndMedia {
   word: Word

@@ -40,6 +40,17 @@ function createWindow(): void {
   }
 }
 
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'media',
+    privileges: {
+      secure: true,
+      supportFetchAPI: true,
+      stream: true
+    }
+  }
+])
+
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
 

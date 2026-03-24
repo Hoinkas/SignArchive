@@ -1,8 +1,10 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Meaning } from '@shared/types'
+import type { Meaning, RelationType } from '@shared/types'
 import { toSqlParams } from '../db/utils'
+import { findSignById } from './signs'
+import { findAllRelatedSignsBySignId } from './signs_relations'
 
 export function listAllMeanings(): Meaning[] {
   const rows = getDb().prepare('SELECT * FROM meanings ORDER BY created_at DESC').all()
@@ -26,8 +28,28 @@ export function findMeaningsByWordId(wordId: string): Meaning[] {
 }
 
 export function returnCountOfSignsInWordByWordId(wordId: string): number {
-  const counter = getDb().prepare('SELECT COUNT(*) FROM meanings WHERE word_id = ?').all(wordId)
-  return rowToSignCount(counter)
+  const meanings = findMeaningsByWordId(wordId)
+  const usedSignsIds = new Set<string>()
+  let count = 0
+
+  meanings.forEach((meaning) => {
+    const sign = findSignById(meaning.signId)
+    if (!sign) return
+    if (usedSignsIds.has(sign.id)) return
+
+    const allSigns = [
+      ...findAllRelatedSignsBySignId(sign.id),
+      { sign, relationType: 'variant' as RelationType }
+    ]
+
+    allSigns.forEach(({ sign: s, relationType }) => {
+      usedSignsIds.add(s.id)
+      if (relationType === 'duplicate') return
+      count++
+    })
+  })
+
+  return count
 }
 
 export function createMeaning(data: Omit<Meaning, 'id' | 'createdAt'>): Meaning {
