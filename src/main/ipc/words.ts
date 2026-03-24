@@ -6,14 +6,16 @@ import type {
   WordWithDetails,
   MeaningWithSigns,
   SignWithSourceSignerMediaFile,
-  WordWithSignCount
+  WordWithSignCount,
+  RelationType
 } from '@shared/types'
-import { findPrimaryMediaFileBySignId } from './media_files'
+import { findMediaFilesBySignId } from './media_files'
 import { findSourceById } from './sources'
 import { findSignerById } from './signers'
 import { findMeaningsByWordId, returnCountOfSignsInWordByWordId } from './meanings'
 import { findSignById } from './signs'
 import { toSqlParams } from '../db/utils'
+import { findAllRelatedSignsBySignId } from './signs_relations'
 
 export function listAllWords(): Word[] {
   const db = getDb()
@@ -41,23 +43,42 @@ export function listDetailsForWordById(id: string): WordWithDetails | undefined 
   const word = findWordById(id)
   if (!word) return undefined
 
+  const usedSignsIds: string[] = []
+
   const meaning = findMeaningsByWordId(id)
-  const meanings: MeaningWithSigns[] = meaning.map((meaning) => {
+  const meanings: MeaningWithSigns[] = []
+
+  meaning.forEach((meaning) => {
     const sign = findSignById(meaning.signId)
-    if (!sign) return { meaning, signs: [] }
-
-    const mediaFile = findPrimaryMediaFileBySignId(sign.id)
-    const source = mediaFile?.sourceId ? findSourceById(mediaFile.sourceId) : undefined
-    const signer = mediaFile?.signerId ? findSignerById(mediaFile.signerId) : undefined
-
-    const signWithDetails: SignWithSourceSignerMediaFile = {
-      sign,
-      mediaFile,
-      source,
-      signer
+    if (!sign) {
+      meanings.push({ meaning, signs: [] })
+      return
     }
+    if (usedSignsIds.includes(sign.id)) return
 
-    return { meaning, signs: [signWithDetails] }
+    const allSignsInMeaning = [
+      ...findAllRelatedSignsBySignId(sign.id),
+      { sign, relationType: 'variant' as RelationType }
+    ].filter(({ sign: s }) => s && !usedSignsIds.includes(s.id))
+
+    const signs: SignWithSourceSignerMediaFile[] = []
+
+    allSignsInMeaning.forEach(({ sign: s, relationType }) => {
+      if (relationType === 'duplicate') {
+        usedSignsIds.push(s.id)
+        return
+      }
+
+      usedSignsIds.push(s.id)
+
+      const mediaFile = findMediaFilesBySignId(s.id)[0]
+      const source = findSourceById(mediaFile.sourceId)
+      const signer = mediaFile?.signerId ? findSignerById(mediaFile.signerId) : undefined
+
+      signs.push({ sign: s, mediaFile, source, signer })
+    })
+
+    meanings.push({ meaning, signs })
   })
 
   return { word, meanings }

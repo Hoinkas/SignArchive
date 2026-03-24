@@ -3,7 +3,6 @@ import Database from 'better-sqlite3'
 import path from 'node:path'
 import { initSchema } from './schema'
 import fs from 'node:fs'
-import { seedDatabase } from './seed'
 
 let db: Database.Database | null = null
 
@@ -21,7 +20,7 @@ export function getDb(): Database.Database {
 
   db = new Database(dbPath)
   initSchema(db)
-  seedDatabase(db)
+  // seedDatabase(db)
   console.log('[DB] Baza danych gotowa')
 
   return db

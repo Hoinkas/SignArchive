@@ -8,9 +8,11 @@ import ActionButtons from './ActionButtons/ActionButtons'
 interface WordTitleProps {
   wordDetails: WordWithDetails | null
   setWordDetails: Dispatch<SetStateAction<WordWithDetails | null>>
+  setIsComparsionActive: Dispatch<SetStateAction<boolean>>
 }
 
-function WordTitle({ wordDetails, setWordDetails }: WordTitleProps): React.JSX.Element {
+function WordTitle(props: WordTitleProps): React.JSX.Element {
+  const { wordDetails, setWordDetails, setIsComparsionActive } = props
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   if (!wordDetails) return <div className="wordTitle">Brak słowa</div>
@@ -29,7 +31,10 @@ function WordTitle({ wordDetails, setWordDetails }: WordTitleProps): React.JSX.E
         <div>
           <div className="wordTitleWithButtons">
             <h1>{word.text}</h1>
-            <ActionButtons setIsFormOpen={setIsFormOpen} />
+            <ActionButtons
+              setIsFormOpen={setIsFormOpen}
+              setIsComparsionActive={setIsComparsionActive}
+            />
           </div>
           <div className="wordTitleDetails">
             {word.definition && <div>{word.definition}</div>}

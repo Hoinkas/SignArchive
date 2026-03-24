@@ -8,7 +8,7 @@
 }
 
 .meaningList {
-  padding: 32px;
+  padding: 16px;
   gap: 16px;
   display: flex;
   flex-direction: column;

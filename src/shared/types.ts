@@ -68,8 +68,7 @@ export interface MediaFile {
   onlineUrl?: string
   signId: string
   signerId?: string
-  sourceId?: string
-  isPrimary?: number
+  sourceId: string
   year?: number
 }
 
@@ -95,6 +94,8 @@ export interface SignRelation {
   relationType: RelationType
 }
 
+export type SignWithRelationType = Pick<SignRelation, 'relationType'> & { sign: Sign }
+
 //WORD + SIGN + MEDIAFILE
 export interface WordWithSignAndMedia {
   word: Word
@@ -111,7 +112,7 @@ export interface WordWithSignCount extends Word {
 export interface SignWithSourceSignerMediaFile {
   sign: Sign
   source?: Source
-  mediaFile?: MediaFile
+  mediaFile: MediaFile
   signer?: Signer
 }
 

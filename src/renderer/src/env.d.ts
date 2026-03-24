@@ -52,7 +52,6 @@ declare global {
       media_files: {
         list: () => Promise<MediaFile[]>
         by_sign: (signId: string) => Promise<MediaFile[]>
-        primary_by_sign: (signId: string) => Promise<MediaFile>
         create: (data: Omit<MediaFile, 'id' | 'createdAt'>) => Promise<MediaFile>
         delete: (id: string) => Promise<void>
       }

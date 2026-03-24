@@ -60,7 +60,6 @@ export function initSchema(db: Database.Database): void {
       online_url          TEXT,
       signer_id           TEXT REFERENCES signers(id) ON DELETE SET NULL,
       source_id           TEXT REFERENCES sources(id) ON DELETE SET NULL,
-      is_primary          INTEGER NOT NULL DEFAULT 0,
       year                INTEGER
     );
 

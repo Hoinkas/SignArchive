@@ -20,18 +20,6 @@ export function findMediaFilesBySignId(signId: string): MediaFile[] {
   return rows.map(rowToMediaFile)
 }
 
-export function findPrimaryMediaFileBySignId(signId: string): MediaFile | undefined {
-  const row = getDb()
-    .prepare(
-      `
-      SELECT * FROM media_files WHERE sign_id = ? AND is_primary = 1 LIMIT 1
-    `
-    )
-    .get(signId)
-  if (!row) return undefined
-  return rowToMediaFile(row as Record<string, unknown>)
-}
-
 export function createMediaFile(data: Omit<MediaFile, 'id' | 'createdAt'>): MediaFile {
   const db = getDb()
   const mediaFile: MediaFile = {
@@ -55,9 +43,6 @@ export function deleteMediaFileById(id: string): void {
 export function registerMediaFileHandlers(): void {
   ipcMain.handle('media_files:list', () => listAllMediaFiles())
   ipcMain.handle('media_files:by_sign', (_e, signId: string) => findMediaFilesBySignId(signId))
-  ipcMain.handle('media_files:primary_by_sign', (_e, signId: string) =>
-    findPrimaryMediaFileBySignId(signId)
-  )
   ipcMain.handle('media_files:create', (_e, data: Omit<MediaFile, 'id' | 'createdAt'>) =>
     createMediaFile(data)
   )
@@ -73,8 +58,7 @@ export function rowToMediaFile(row: Record<string, unknown>): MediaFile {
     filePath: row.file_path as string,
     onlineUrl: row.online_url as string | undefined,
     signerId: row.signer_id as string | undefined,
-    sourceId: row.source_id as string | undefined,
-    isPrimary: row.is_primary as number | undefined,
+    sourceId: row.source_id as string,
     year: row.year as number | undefined
   }
 }
