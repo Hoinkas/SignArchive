@@ -1,11 +1,11 @@
 .meaningBox {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   border: 1px solid #888888;
   border-radius: 8px;
   box-sizing: border-box;
-  min-height: 240px;
-  height: 400px;
+  min-height: 400px;
   overflow: hidden;
 }
 
@@ -13,9 +13,10 @@
   background-color: #202127;
   border-bottom: 1px solid #888888;
   padding: 8px 16px;
+  width: 100%;
 }
 
-.regionAndDate{
+.regionAndDate {
   font-size: small;
   line-height: 12px;
   color: grey;

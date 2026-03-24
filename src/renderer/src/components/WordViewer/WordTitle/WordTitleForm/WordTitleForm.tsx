@@ -28,7 +28,7 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
   }
 
   const handleTagAdd = (newTag: string): void => {
-    tags.push(newTag)
+    setTags((prevState) => [...prevState, newTag])
   }
 
   return (

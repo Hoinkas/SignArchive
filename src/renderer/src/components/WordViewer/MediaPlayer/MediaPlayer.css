@@ -4,18 +4,6 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  height: 60%;
-}
-
-.videoBox {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.imageBox {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+  flex: 1;
+  min-height: 0;
 }

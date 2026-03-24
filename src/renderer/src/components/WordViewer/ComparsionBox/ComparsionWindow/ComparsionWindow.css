@@ -1,7 +1,44 @@
 .comparsionWindow {
-  position: absolute;
-  margin: auto;
-  width: 50vh;
-  height: 50vh;
-  background-color: grey;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(41, 41, 41, 0.95);
+  padding: 48px;
+  box-sizing: border-box;
+}
+
+.mediaAndButtons {
+  display: flex;
+  align-items: stretch;
+  gap: 32px;
+  flex: 1;
+  min-height: 0;
+}
+
+.mediaAndButtons video,
+.mediaAndButtons img {
+  flex: 1;
+  min-width: 0;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  flex-shrink: 0;
+
+  button {
+    border-radius: 8px;
+  }
+}
+
+.closeButton {
+  align-self: flex-end;
+  width: fit-content;
+  margin-bottom: 16px;
 }

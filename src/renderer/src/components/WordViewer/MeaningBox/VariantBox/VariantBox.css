@@ -1,26 +1,32 @@
 .variantBox {
   display: flex;
   flex-direction: column;
-  /* grid-template-rows: 60% 1fr; */
   border-right: 1px solid #888888;
   width: 240px;
   box-sizing: border-box;
-  overflow: hidden;
+  flex-shrink: 0;
 
   &.active {
     background-color: rgb(95, 84, 221, 0.5);
   }
 }
 
+.mediaWrapper {
+  flex: 0 0 200px;
+}
+
 .variantDetails {
   padding: 8px 16px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .bottomBox {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
 
   button {
     background-color: grey;

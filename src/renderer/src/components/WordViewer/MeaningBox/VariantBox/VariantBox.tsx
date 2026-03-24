@@ -2,7 +2,7 @@ import './VariantBox.css'
 import MediaPlayer from '../../MediaPlayer/MediaPlayer'
 import PillBoxList from '../../PillBoxList/PillBoxList'
 import { SignWithSourceSignerMediaFile } from '@shared/types'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 interface VariantBoxProps {
   sign: SignWithSourceSignerMediaFile
@@ -14,7 +14,6 @@ interface VariantBoxProps {
 function VariantBox(props: VariantBoxProps): React.JSX.Element {
   const { sign, isComparsionActive, activeSigns, setActiveSigns } = props
 
-  const [isChecked, setIsChecked] = useState<boolean>(activeSigns.includes(sign))
   const pillText: string[] = []
 
   const source = sign.source
@@ -23,16 +22,15 @@ function VariantBox(props: VariantBoxProps): React.JSX.Element {
   const notes = sign.sign.notes ?? ''
   const signerNameSurname = signer ? signer.name + ' ' + signer.surname : 'Migacz nieznany'
 
+  const isChecked = activeSigns.some((s) => s.sign.id === sign.sign.id)
+
   const handleOnClick = (): void => {
     if (isChecked) {
       setActiveSigns((prevState) =>
-        prevState.filter((activeSign) => activeSign.sign.id !== sign.sign.id)
+        prevState.filter((activeSign) => activeSign.sign.id.toString() !== sign.sign.id.toString())
       )
-      setIsChecked(false)}
-
-    else {
-      activeSigns.push(sign)
-      setIsChecked(true)
+    } else {
+      setActiveSigns((prevState) => [...prevState, sign])
     }
   }
 
