@@ -21,7 +21,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
 
       <div className="meaningList">
         {wordDetails?.meanings.map((meaning, key) => (
-          <MeaningBox key={key} meaning={meaning} />
+          <MeaningBox key={key} meaningWithSigns={meaning} number={key}/>
         ))}
       </div>
     </div>

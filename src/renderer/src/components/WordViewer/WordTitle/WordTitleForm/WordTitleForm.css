@@ -25,7 +25,7 @@
     border-radius: 8px;
     color: inherit;
     overflow: auto;
-    max-height: 120px;
+    max-height: 240px;
     scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
   }
 }

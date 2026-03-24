@@ -1,40 +1,34 @@
 import './MeaningBox.css'
 import { MeaningWithSigns } from '@shared/types'
-import MediaBox from './MediaPlayer/MediaPlayer'
-import PillBoxList from '../PillBoxList/PillBoxList'
+import VariantBox from './VariantBox/VariantBox'
 
 interface MeaningBoxProps {
-  meaning: MeaningWithSigns
+  meaningWithSigns: MeaningWithSigns
+  number: number
 }
 
-function MeaningBox({ meaning }: MeaningBoxProps): React.JSX.Element {
-  const sign = meaning.signs[0]
-  const pillText: string[] = []
+function MeaningBox({ meaningWithSigns, number }: MeaningBoxProps): React.JSX.Element {
+  const signs = meaningWithSigns.signs
+  const meaning = meaningWithSigns.meaning
 
-  const context = meaning.meaning.context
-  if (context) { pillText.push(context) }
-
-  const region = meaning.meaning.region
-  if (region) { pillText.push(region) }
-
-  const source = sign.source?.name
-  if (source) {pillText.push(source)}
-
-  const yearStart = meaning.meaning.yearStart
-  const yearEnd = meaning.meaning.yearEnd
-  let years = (yearStart || yearEnd || 'Brak roku').toString()
+  const yearStart = meaning.yearStart
+  const yearEnd = meaning.yearEnd
+  let years = (yearStart || yearEnd || 'brak roku').toString()
   if (yearStart && yearEnd) years = yearStart + ' - ' + yearEnd
-  pillText.push(years)
-
-  const notes = sign.sign.notes ? 'Notatki: ' + sign.sign.notes : ''
 
   return (
     <div className="meaningBox">
-      {sign.mediaFile && <MediaBox mediaFile={sign.mediaFile} />}
-      <div className="contentBox">
-        <h4>{notes}</h4>
-        <PillBoxList textArray={pillText} />
+      <div className="meaningDetails">
+        <div>
+          Znaczenie {number + 1} - {meaning.context}
+        </div>
+        <div className="regionAndDate">
+          {meaning.region || 'Ogólnopolski'} · {years}
+        </div>
       </div>
+      {signs.map((sign, key) => (
+        <VariantBox key={key} sign={sign} />
+      ))}
     </div>
   )
 }
