@@ -5,4 +5,4 @@ out
 .eslintcache
 *.log*
 signs.json
-signs.db
+*.db*
