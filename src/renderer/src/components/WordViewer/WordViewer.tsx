@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './WordViewer.css'
 import { SignWithSourceSignerMediaFile, Word, WordWithDetails } from '@shared/types'
 import MeaningBox from './MeaningBox/MeaningBox'
@@ -14,9 +14,19 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   const [isComparsionActive, setIsComparsionActive] = useState<boolean>(false)
   const [activeSigns, setActiveSigns] = useState<SignWithSourceSignerMediaFile[]>([])
 
-  useEffect(() => {
+  const downloadWordDetails = useCallback((): void => {
     window.api.words.list_full(word.id).then(setWordDetails)
   }, [word.id])
+
+  useEffect(() => {
+    downloadWordDetails()
+  }, [downloadWordDetails])
+
+  const handleCloseComparsionWindow = (): void => {
+    setActiveSigns([])
+    setIsComparsionActive(false)
+    downloadWordDetails()
+  }
 
   return (
     <div className="wordViewer">
@@ -37,10 +47,16 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
             setActiveSigns={setActiveSigns}
           />
         ))}
+
         {isComparsionActive && (
-          <ComparsionBox activeSigns={activeSigns} setIsComparsionActive={setIsComparsionActive} />
-        )}
+        <ComparsionBox
+          activeSigns={activeSigns}
+          handleCloseComparsionWindow={handleCloseComparsionWindow}
+        />
+      )}
       </div>
+
+
     </div>
   )
 }

@@ -1,6 +1,12 @@
 .actionButton {
   background: transparent;
-  border: none;
   color: inherit;
   cursor: pointer;
+  border-radius: 8px;
+}
+
+.actionButtonsBox {
+  display: flex;
+  gap: 8px;
+  height: fit-content;
 }

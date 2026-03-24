@@ -10,7 +10,7 @@ function ActionButtons(props: ActionButtonsProps): React.JSX.Element {
   const { setIsFormOpen, setIsComparsionActive } = props
 
   return (
-    <div className="actionButtons">
+    <div className="actionButtonsBox">
       <button className="actionButton" onClick={() => setIsFormOpen(true)}>
         edytuj
       </button>

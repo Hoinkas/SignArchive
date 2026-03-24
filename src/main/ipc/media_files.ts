@@ -58,7 +58,7 @@ export function rowToMediaFile(row: Record<string, unknown>): MediaFile {
     filePath: row.file_path as string,
     onlineUrl: row.online_url as string | undefined,
     signerId: row.signer_id as string | undefined,
-    sourceId: row.source_id as string | undefined,
+    sourceId: row.source_id as string,
     year: row.year as number | undefined
   }
 }

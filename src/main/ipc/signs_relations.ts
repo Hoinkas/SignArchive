@@ -1,23 +1,46 @@
 import { ipcMain } from 'electron'
 import { getDb } from '../db/client'
-import type { SignRelation } from '@shared/types'
+import type { Sign, SignRelation } from '@shared/types'
 import { toSqlParams } from '../db/utils'
+import { findSignById } from './signs'
 
 export function listAllSignRelations(): SignRelation[] {
   const rows = getDb().prepare('SELECT * FROM signs_relations').all()
   return rows.map(rowToSignRelation)
 }
 
-export function findSignRelationsBySignId(signId: string): SignRelation[] {
-  const rows = getDb()
-    .prepare(
-      `
-    SELECT * FROM signs_relations
-    WHERE tail_sign_id = ? OR head_sign_id = ?
-  `
-    )
-    .all(signId, signId)
-  return rows.map(rowToSignRelation)
+export function findAllRelatedSignsBySignId(signId: string): Sign[] {
+  const visited = new Set<string>()
+  const result: Sign[] = []
+  const queue: string[] = [signId]
+
+  while (queue.length > 0) {
+    const currentId = queue.shift()!
+
+    if (visited.has(currentId)) continue
+    visited.add(currentId)
+
+    const rows = getDb()
+      .prepare(`SELECT * FROM signs_relations WHERE tail_sign_id = ? OR head_sign_id = ?`)
+      .all(currentId, currentId)
+
+    const relations: SignRelation[] = rows.map(rowToSignRelation)
+
+    for (const relation of relations) {
+      const neighbourId =
+        relation.headSignId === currentId ? relation.tailSignId : relation.headSignId
+
+      if (!visited.has(neighbourId)) {
+        const sign = findSignById(neighbourId)
+        if (sign) {
+          result.push(sign)
+          queue.push(neighbourId)
+        }
+      }
+    }
+  }
+
+  return result
 }
 
 export function createSignRelation(data: Omit<SignRelation, 'createdAt'>): SignRelation {
@@ -48,7 +71,7 @@ export function deleteSignRelation(tailSignId: string, headSignId: string): void
 export function registerSignsRelationHandlers(): void {
   ipcMain.handle('signs_relations:list', () => listAllSignRelations())
   ipcMain.handle('signs_relations:by_sign', (_e, signId: string) =>
-    findSignRelationsBySignId(signId)
+    findAllRelatedSignsBySignId(signId)
   )
   ipcMain.handle('signs_relations:create', (_e, data: Omit<SignRelation, 'createdAt'>) =>
     createSignRelation(data)

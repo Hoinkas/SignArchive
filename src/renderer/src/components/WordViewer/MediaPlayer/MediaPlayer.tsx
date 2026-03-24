@@ -22,7 +22,7 @@ function MediaPlayer({ mediaFile }: MediaPlayerProps): React.JSX.Element {
   const isImage = ['jpg', 'png'].includes(mediaFile.fileType)
 
   return (
-    <div className={'mediaWrapper'}>
+    <div className="mediaWrapper">
       {isImage ? (
         <img src={getSrc(mediaFile.filePath)} className="imageBox" />
       ) : (

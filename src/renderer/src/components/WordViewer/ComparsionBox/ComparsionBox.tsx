@@ -1,38 +1,39 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-// import './ComparsionBox.css'
+import { useState } from 'react'
 import { SignWithSourceSignerMediaFile } from '@shared/types'
 import ComparsionWindow from './ComparsionWindow/ComparsionWindow'
 
 interface ComparsionBoxProps {
   activeSigns: SignWithSourceSignerMediaFile[]
-  setIsComparsionActive: Dispatch<SetStateAction<boolean>>
+  handleCloseComparsionWindow: () => void
 }
 
 function ComparsionBox(props: ComparsionBoxProps): React.JSX.Element {
-  const { activeSigns, setIsComparsionActive } = props
+  const { activeSigns, handleCloseComparsionWindow } = props
   const [isComparsionWindowOpen, setIsComparsionWindowOpen] = useState<boolean>(false)
 
+  const handleCloseWindow = (): void => {
+    handleCloseComparsionWindow()
+    setIsComparsionWindowOpen(false)
+  }
+
   return (
-    <div className="ComparsionBox">
-      <div>Zaznaczono: {activeSigns.length} wariantów</div>
+    <div className="comparsionBox">
+      <div>Zaznaczono: {activeSigns.length} wariantów. Można maksymalnie 2</div>
       <div>
-        <button type="reset" onClick={() => setIsComparsionActive(false)}>
+        <button type="reset" onClick={() => handleCloseWindow()}>
           Anuluj
         </button>
         <button
           type="submit"
           onClick={() => setIsComparsionWindowOpen(true)}
-          disabled={activeSigns.length <= 1}
+          disabled={activeSigns.length !== 2}
         >
           Porównaj
         </button>
+        {isComparsionWindowOpen && (
+          <ComparsionWindow activeSigns={activeSigns} handleCloseWindow={handleCloseWindow} />
+        )}
       </div>
-      {isComparsionWindowOpen && (
-        <ComparsionWindow
-          activeSigns={activeSigns}
-          setIsComparsionWindowOpen={setIsComparsionWindowOpen}
-        />
-      )}
     </div>
   )
 }

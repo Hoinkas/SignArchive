@@ -5,8 +5,8 @@
   border: 1px solid #888888;
   border-radius: 8px;
   box-sizing: border-box;
-  min-height: 400px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .meaningDetails {
