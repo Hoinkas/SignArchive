@@ -1,0 +1,11 @@
+.listOfWords {
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
+  background-color: #202127;
+  padding-inline-start: 0px;
+  display: flex;
+  flex-direction: column;
+}

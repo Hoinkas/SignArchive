@@ -1,0 +1,20 @@
+.mediaWrapper {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.videoBox {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.imageBox {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}

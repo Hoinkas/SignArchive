@@ -1,0 +1,23 @@
+.searchbar {
+  display: flex;
+  height: 40px;
+  padding: 15px 0;
+  margin: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  align-items: center;
+  background-color: rgb(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px);
+
+  input[type=text] {
+    width: 100%;
+    float: right;
+    padding: 8px 12px;
+    border: none;
+    margin-right: 16px;
+    background-color: transparent;
+    outline: none;
+    caret-color: white;
+    color: rgb(255, 255, 255, 0.8);
+  }
+}

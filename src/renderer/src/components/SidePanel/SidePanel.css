@@ -1,0 +1,15 @@
+.sidepanel {
+  width: 30vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #202127;
+  scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
+
+  & ul {
+    padding-inline-start: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,19 @@
+.wordTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 40px;
+  border-bottom: 2px solid #9999;
+  flex-shrink: 0;
+}
+
+.wordTitleWithButtons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.wordTitleDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

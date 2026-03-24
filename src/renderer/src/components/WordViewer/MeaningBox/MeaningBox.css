@@ -1,0 +1,19 @@
+.meaningBox {
+  display: grid;
+  grid-template-rows: 60% 1fr;
+  border: 2px solid #888888;
+  border-radius: 8px;
+  width: 280px;
+  box-sizing: border-box;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.contentBox {
+  min-width: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: space-between;
+}
