@@ -13,11 +13,6 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
     setSearchWord(event.target.value)
   }
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log('Name:', searchWord);
-  // };
-
   return (
     <div className="searchbar">
       <input

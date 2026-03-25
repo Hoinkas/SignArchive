@@ -6,7 +6,6 @@ import icon from '../../resources/icon.png?asset'
 import { registerAllHandlers } from './registerAllHandlers'
 import { getDb } from './db/client'
 
-// ← Must be BEFORE app.whenReady()
 protocol.registerSchemesAsPrivileged([
   { scheme: 'media', privileges: { secure: true, supportFetchAPI: true, stream: true } }
 ])

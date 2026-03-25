@@ -91,11 +91,14 @@ export interface SignRelation {
   createdAt: string //ISO Date
   tailSignId: string
   headSignId: string
-  meaningId: string
+  wordId: string
   relationType: RelationType
 }
 
-export type SignWithRelationType = Pick<SignRelation, 'relationType'> & { sign: Sign }
+export type SignWithRelationType = {
+  sign: Sign
+  relationType: RelationType
+}
 
 //WORD + SIGN + MEDIAFILE
 export interface WordWithSignAndMedia {
@@ -115,7 +118,7 @@ export interface SignWithSourceSignerMediaFile {
   source?: Source
   mediaFile: MediaFile
   signer?: Signer
-  meaningId: string
+  wordId: string
 }
 
 export interface MeaningWithSigns {

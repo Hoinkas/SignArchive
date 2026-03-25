@@ -38,7 +38,7 @@ export function returnCountOfSignsInWordByWordId(wordId: string): number {
     if (usedSignsIds.has(sign.id)) return
 
     const allSigns = [
-      ...findAllRelatedSignsBySignId(sign.id),
+      ...findAllRelatedSignsBySignId(sign.id, wordId),
       { sign, relationType: 'variant' as RelationType }
     ]
 

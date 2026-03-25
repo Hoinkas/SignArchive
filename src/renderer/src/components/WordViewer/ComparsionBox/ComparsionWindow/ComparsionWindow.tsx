@@ -15,16 +15,8 @@ function ComparsionWindow(props: ComparsionWindowProps): React.JSX.Element {
       tailSignId: activeSigns[0].sign.id,
       headSignId: activeSigns[1].sign.id,
       relationType,
-      meaningId: activeSigns[0].meaningId
+      wordId: activeSigns[0].wordId
     })
-
-    window.api.signs_relations.create({
-      tailSignId: activeSigns[0].sign.id,
-      headSignId: activeSigns[1].sign.id,
-      relationType,
-      meaningId: activeSigns[1].meaningId
-    })
-
     handleCloseWindow()
   }
 

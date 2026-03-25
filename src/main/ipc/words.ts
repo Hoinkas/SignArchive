@@ -39,43 +39,39 @@ export function findWordById(id: string): Word | undefined {
   return rowToWord(row as Record<string, unknown>)
 }
 
-export function listDetailsForWordById(id: string): WordWithDetails | undefined {
-  const word = findWordById(id)
+export function listDetailsForWordById(wordId: string): WordWithDetails | undefined {
+  const word = findWordById(wordId)
   if (!word) return undefined
 
-  const usedSignsIds: string[] = []
-
-  const meaning = findMeaningsByWordId(id)
+  const allMeanings = findMeaningsByWordId(wordId)
+  const duplicates = new Set<string>()
+  const usedSignIds = new Set<string>()
   const meanings: MeaningWithSigns[] = []
 
-  meaning.forEach((meaning) => {
+  allMeanings.forEach((meaning) => {
     const sign = findSignById(meaning.signId)
     if (!sign) {
       meanings.push({ meaning, signs: [] })
       return
     }
-    if (usedSignsIds.includes(sign.id)) return
 
-    const allSignsInMeaning = [
-      ...findAllRelatedSignsBySignId(sign.id, meaning.id),
-      { sign, relationType: 'variant' as RelationType }
-    ]
+    if (duplicates.has(sign.id)) return
+    if (usedSignIds.has(sign.id)) return
+
+    const related = findAllRelatedSignsBySignId(sign.id, wordId)
+    const allInGroup = [...related, { sign, relationType: 'variant' as RelationType }]
+
+    allInGroup.forEach(({ sign: s }) => usedSignIds.add(s.id))
 
     const signs: SignWithSourceSignerMediaFile[] = []
 
-    allSignsInMeaning.forEach(({ sign: s, relationType }) => {
-      if (relationType === 'duplicate') {
-        usedSignsIds.push(s.id)
-        return
-      }
-
-      usedSignsIds.push(s.id)
-
+    allInGroup.forEach(({ sign: s, relationType }) => {
+      if (relationType === 'duplicate') return
       const mediaFile = findMediaFilesBySignId(s.id)[0]
+      if (!mediaFile) return
       const source = findSourceById(mediaFile.sourceId)
-      const signer = mediaFile?.signerId ? findSignerById(mediaFile.signerId) : undefined
-
-      signs.push({ sign: s, mediaFile, source, signer, meaningId: meaning.id })
+      const signer = mediaFile.signerId ? findSignerById(mediaFile.signerId) : undefined
+      signs.push({ sign: s, mediaFile, source, signer, wordId })
     })
 
     meanings.push({ meaning, signs })
