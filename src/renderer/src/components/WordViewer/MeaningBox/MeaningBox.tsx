@@ -31,15 +31,17 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           {meaning.region || 'Ogólnopolski'} · {years}
         </div>
       </div>
-      {signs.map((sign, key) => (
-        <VariantBox
-          key={key}
-          sign={sign}
-          isComparsionActive={isComparsionActive}
-          activeSigns={activeSigns}
-          setActiveSigns={setActiveSigns}
-        />
-      ))}
+      <div className="variantList">
+        {signs.map((sign, key) => (
+          <VariantBox
+            key={key}
+            sign={sign}
+            isComparsionActive={isComparsionActive}
+            activeSigns={activeSigns}
+            setActiveSigns={setActiveSigns}
+          />
+        ))}
+      </div>
     </div>
   )
 }

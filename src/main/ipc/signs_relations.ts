@@ -9,7 +9,7 @@ export function listAllSignRelations(): SignRelation[] {
   return rows.map(rowToSignRelation)
 }
 
-export function findAllRelatedSignsBySignId(signId: string): SignWithRelationType[] {
+export function findAllRelatedSignsBySignId(signId: string, meaningId: string): SignWithRelationType[] {
   const visited = new Set<string>()
   const result: { sign: Sign; relationType: RelationType }[] = []
   const queue: string[] = [signId]
@@ -21,8 +21,12 @@ export function findAllRelatedSignsBySignId(signId: string): SignWithRelationTyp
     visited.add(currentId)
 
     const rows = getDb()
-      .prepare(`SELECT * FROM signs_relations WHERE tail_sign_id = ? OR head_sign_id = ?`)
-      .all(currentId, currentId)
+      .prepare(`
+        SELECT * FROM signs_relations
+        WHERE (tail_sign_id = ? OR head_sign_id = ?)
+        AND meaning_id = ?
+      `)
+      .all(currentId, currentId, meaningId)
 
     const relations: SignRelation[] = rows.map(rowToSignRelation)
 
@@ -51,8 +55,8 @@ export function createSignRelation(data: Omit<SignRelation, 'createdAt'>): SignR
   }
   db.prepare(
     `
-    INSERT OR REPLACE INTO signs_relations (tail_sign_id, head_sign_id, relation_type, created_at)
-    VALUES (@tailSignId, @headSignId, @relationType, @createdAt)
+    INSERT OR REPLACE INTO signs_relations (tail_sign_id, head_sign_id, relation_type, meaning_id, created_at)
+    VALUES (@tailSignId, @headSignId, @relationType, @meaningId, @createdAt)
   `
   ).run(toSqlParams(relation))
   return relation
@@ -70,8 +74,8 @@ export function deleteSignRelation(tailSignId: string, headSignId: string): void
 
 export function registerSignsRelationHandlers(): void {
   ipcMain.handle('signs_relations:list', () => listAllSignRelations())
-  ipcMain.handle('signs_relations:by_sign', (_e, signId: string) =>
-    findAllRelatedSignsBySignId(signId)
+  ipcMain.handle('signs_relations:by_sign', (_e, signId: string, meaningId: string) =>
+    findAllRelatedSignsBySignId(signId, meaningId)
   )
   ipcMain.handle('signs_relations:create', (_e, data: Omit<SignRelation, 'createdAt'>) =>
     createSignRelation(data)
@@ -86,6 +90,7 @@ export function rowToSignRelation(row: Record<string, unknown>): SignRelation {
     createdAt: row.created_at as string,
     tailSignId: row.tail_sign_id as string,
     headSignId: row.head_sign_id as string,
-    relationType: row.relation_type as SignRelation['relationType']
+    relationType: row.relation_type as SignRelation['relationType'],
+    meaningId: row.meaning_id as string
   }
 }

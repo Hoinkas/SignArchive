@@ -6,3 +6,4 @@ out
 *.log*
 signs.json
 *.db*
+*.zip

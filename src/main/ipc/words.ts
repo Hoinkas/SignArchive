@@ -57,9 +57,9 @@ export function listDetailsForWordById(id: string): WordWithDetails | undefined 
     if (usedSignsIds.includes(sign.id)) return
 
     const allSignsInMeaning = [
-      ...findAllRelatedSignsBySignId(sign.id),
+      ...findAllRelatedSignsBySignId(sign.id, meaning.id),
       { sign, relationType: 'variant' as RelationType }
-    ].filter(({ sign: s }) => s && !usedSignsIds.includes(s.id))
+    ]
 
     const signs: SignWithSourceSignerMediaFile[] = []
 
@@ -75,7 +75,7 @@ export function listDetailsForWordById(id: string): WordWithDetails | undefined 
       const source = findSourceById(mediaFile.sourceId)
       const signer = mediaFile?.signerId ? findSignerById(mediaFile.signerId) : undefined
 
-      signs.push({ sign: s, mediaFile, source, signer })
+      signs.push({ sign: s, mediaFile, source, signer, meaningId: meaning.id })
     })
 
     meanings.push({ meaning, signs })

@@ -91,6 +91,7 @@ export interface SignRelation {
   createdAt: string //ISO Date
   tailSignId: string
   headSignId: string
+  meaningId: string
   relationType: RelationType
 }
 
@@ -114,6 +115,7 @@ export interface SignWithSourceSignerMediaFile {
   source?: Source
   mediaFile: MediaFile
   signer?: Signer
+  meaningId: string
 }
 
 export interface MeaningWithSigns {
