@@ -1,6 +1,6 @@
 import './ComparsionWindow.css'
 import MediaPlayer from '../../MediaPlayer/MediaPlayer'
-import { RelationType, SignRelation, SignWithSourceSignerMediaFile } from '@shared/types'
+import { RelationType, SignWithSourceSignerMediaFile } from '@shared/types'
 
 interface ComparsionWindowProps {
   activeSigns: SignWithSourceSignerMediaFile[]
@@ -11,15 +11,21 @@ function ComparsionWindow(props: ComparsionWindowProps): React.JSX.Element {
   const { activeSigns, handleCloseWindow } = props
 
   const handleSignComparsion = (relationType: RelationType): void => {
-    const signRelation: Omit<SignRelation, 'createdAt'> = {
+    window.api.signs_relations.create({
       tailSignId: activeSigns[0].sign.id,
       headSignId: activeSigns[1].sign.id,
-      relationType
-    }
-    window.api.signs_relations.create(signRelation)
+      relationType,
+      meaningId: activeSigns[0].meaningId
+    })
+
+    window.api.signs_relations.create({
+      tailSignId: activeSigns[0].sign.id,
+      headSignId: activeSigns[1].sign.id,
+      relationType,
+      meaningId: activeSigns[1].meaningId
+    })
 
     handleCloseWindow()
-    // window.api.signs_relations.create(signRelation).then(setWordDetails)
   }
 
   return (

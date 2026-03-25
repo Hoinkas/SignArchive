@@ -21,8 +21,9 @@ export function initSchema(db: Database.Database): void {
       created_at          TEXT NOT NULL,
       tail_sign_id        TEXT NOT NULL REFERENCES signs(id) ON DELETE CASCADE,
       head_sign_id        TEXT NOT NULL REFERENCES signs(id) ON DELETE CASCADE,
+      meaning_id          TEXT REFERENCES meanings(id) ON DELETE CASCADE,
       relation_type       TEXT NOT NULL,
-      PRIMARY KEY (tail_sign_id, head_sign_id)
+      PRIMARY KEY (tail_sign_id, head_sign_id, meaning_id)
     );
 
     CREATE TABLE IF NOT EXISTS words (

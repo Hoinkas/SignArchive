@@ -14,7 +14,9 @@ function ListOfWords(props: ListOfWordsProps): React.JSX.Element {
   const [wordsWithSignCount, setWordsWithSignCount] = useState<WordWithSignCount[]>([])
 
   useEffect(() => {
-    window.api.words.list_signs_count().then(setWordsWithSignCount)
+    window.api.words.list_signs_count().then((result) => {
+      setWordsWithSignCount(result.sort((a, b) => b.signCount - a.signCount))
+    })
   }, [])
 
   const wordFiltered = wordsWithSignCount.filter((w) =>

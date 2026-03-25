@@ -30,3 +30,11 @@
   gap: 8px;
   justify-content: space-between;
 }
+
+.variantList {
+  height: 300px;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
