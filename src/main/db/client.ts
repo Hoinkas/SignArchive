@@ -15,8 +15,6 @@ export function getDb(): Database.Database {
     fs.mkdirSync(dbDir, { recursive: true })
   }
 
-  console.log('[DB] Ścieżka bazy:', dbPath)
-
   db = new Database(dbPath)
   initSchema(db)
   console.log('[DB] Baza danych gotowa')

@@ -1,5 +1,6 @@
 .sidepanel {
-  width: 30vw;
+  width: 20vw;
+  min-width: 240px;
   height: 100vh;
   display: flex;
   flex-direction: column;

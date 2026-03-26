@@ -1,45 +1,39 @@
 import './MeaningBox.css'
-import { MeaningWithSigns, SignWithSourceSignerMediaFile } from '@shared/types'
+import { MeaningWithSignsDetails } from '@shared/types'
 import VariantBox from './VariantBox/VariantBox'
-import { Dispatch, SetStateAction } from 'react'
+import { useMemo } from 'react'
 
 interface MeaningBoxProps {
-  meaningWithSigns: MeaningWithSigns
+  meaningWithSigns: MeaningWithSignsDetails
   number: number
-  isComparsionActive: boolean
-  activeSigns: SignWithSourceSignerMediaFile[]
-  setActiveSigns: Dispatch<SetStateAction<SignWithSourceSignerMediaFile[]>>
 }
 
 function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
-  const { meaningWithSigns, number, isComparsionActive, activeSigns, setActiveSigns } = props
+  const { meaningWithSigns, number } = props
   const signs = meaningWithSigns.signs
-  const meaning = meaningWithSigns.meaning
 
-  const yearStart = meaning.yearStart
-  const yearEnd = meaning.yearEnd
-  let years = (yearStart || yearEnd || 'brak roku').toString()
-  if (yearStart && yearEnd) years = yearStart + ' - ' + yearEnd
+  const years = useMemo(() => {
+    const allSources = meaningWithSigns.signs.flatMap((sign) => sign.sources)
+    const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
+
+    const yearStart = years.length > 0 ? Math.min(...years) : null
+    const yearEnd = years.length > 0 ? Math.max(...years) : null
+
+    if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
+    return yearStart || yearEnd || 'brak roku'
+  }, [meaningWithSigns.signs])
 
   return (
     <div className="meaningBox">
       <div className="meaningDetails">
         <div>
-          Znaczenie {number + 1} - {meaning.context}
+          Znaczenie {number + 1} - {meaningWithSigns.context}
         </div>
-        <div className="regionAndDate">
-          {meaning.region || 'Ogólnopolski'} · {years}
-        </div>
+        <div className="regionAndDate"> {years} </div>
       </div>
       <div className="variantList">
         {signs.map((sign, key) => (
-          <VariantBox
-            key={key}
-            sign={sign}
-            isComparsionActive={isComparsionActive}
-            activeSigns={activeSigns}
-            setActiveSigns={setActiveSigns}
-          />
+          <VariantBox key={key} sign={sign} />
         ))}
       </div>
     </div>

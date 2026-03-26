@@ -1,29 +1,28 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import './WordTitleForm.css'
-import { WordWithDetails } from '@shared/types'
+import { WordWithMeaningsDetails } from '@shared/types'
 import PillBoxList from '../../PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
 
 interface WordTitleFormProps {
-  wordDetails: WordWithDetails
-  setWordDetails: Dispatch<SetStateAction<WordWithDetails | null>>
+  wordDetails: WordWithMeaningsDetails
+  setWordDetails: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
   const { wordDetails, setWordDetails, setIsFormOpen } = props
-  const word = wordDetails.word
 
-  const [text, setText] = useState<string>(word.text)
-  const [definition, setDefinition] = useState<string>(word.definition ?? '')
-  const [tags, setTags] = useState<string[]>(word.tags)
+  const [text, setText] = useState<string>(wordDetails.text)
+  const [definition, setDefinition] = useState<string>(wordDetails.definition ?? '')
+  const [tags, setTags] = useState<string[]>(wordDetails.tags || [])
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    window.api.words
-      .update(word.id, { text, definition, tags })
-      .then((word) => setWordDetails({ ...wordDetails, word }))
+    window.api.word
+      .update(wordDetails.id, { text, definition, tags })
+      .then((word) => setWordDetails({ ...wordDetails, ...word }))
     setIsFormOpen(false)
   }
 
@@ -33,7 +32,7 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      <h2>{word.text}</h2>
+      <h2>{wordDetails.text}</h2>
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
