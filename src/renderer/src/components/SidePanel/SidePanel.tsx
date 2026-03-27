@@ -3,7 +3,7 @@ import SearchBar from './SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
-import AddWordButton from './AddWordButton/AddWordButton'
+import AddButton from '../AddButton/AddButton'
 import WordForm from '../WordForm/WordForm'
 
 interface SidePanelProps {
@@ -33,7 +33,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
   return (
     <div className="sidepanel">
       <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
-      <AddWordButton setIsFormOpen={setIsFormOpen} />
+      <AddButton formVariant="word" setIsFormOpen={setIsFormOpen} />
       <ListOfWords
         searchWord={searchWord}
         activeWord={activeWord}
@@ -43,7 +43,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
       {isFormOpen && (
         <div className="wordFormContainer">
           <div className="wordForm">
-            <WordForm setIsFormOpen={setIsFormOpen} setWordValues={setWordValues} formType='add'/>
+            <WordForm setIsFormOpen={setIsFormOpen} setWordValues={setWordValues} formType="add" />
           </div>
         </div>
       )}

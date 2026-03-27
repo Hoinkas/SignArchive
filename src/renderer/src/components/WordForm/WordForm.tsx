@@ -2,9 +2,7 @@ import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import './WordForm.css'
 import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
-import { Word } from '@shared/types'
-
-type FormType = 'add' | 'edit'
+import { FormType, Word } from '@shared/types'
 
 interface WordFormProps {
   word?: Word

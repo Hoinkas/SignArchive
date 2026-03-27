@@ -1,85 +1,58 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
-import './WordForm.css'
-import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
-import AddTagForm from './AddTagForm/AddTagForm'
-import { WordWithCounts, WordWithMeaningsDetails } from '@shared/types'
+import './MeaningForm.css'
+import { FormType, Meaning } from '@shared/types'
 
-interface WordFormProps {
-  meaningDetails?: WordWithMeaningsDetails
-  setWordDetails?: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
+interface MeaningFormProps {
+  wordId: string
+  meaning?: Meaning
+  setMeaningValues: (meaning: Meaning) => void
+  formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
-  setWordsWithSignCount?: Dispatch<SetStateAction<WordWithCounts[]>>
 }
 
-function WordForm(props: WordFormProps): React.JSX.Element {
-  const { wordDetails, setWordDetails, setIsFormOpen, setWordsWithSignCount } = props
+function MeaningForm(props: MeaningFormProps): React.JSX.Element {
+  const { wordId, meaning, setMeaningValues, formType, setIsFormOpen } = props
 
-  const [text, setText] = useState<string>(wordDetails?.text ?? '')
-  const [definition, setDefinition] = useState<string>(wordDetails?.definition ?? '')
-  const [tags, setTags] = useState<string[]>(wordDetails?.tags || [])
-  const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
+  const [context, setContext] = useState<string>(meaning?.context || '')
+  const [notes, setNotes] = useState<string>(meaning?.notes || '')
 
-  const resetWordValues = (): void => {
-    setText('')
-    setDefinition('')
-    setTags([])
+  const closeForm = (): void => {
+    setContext('')
+    setNotes('')
+    setIsFormOpen(false)
   }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (wordDetails && setWordDetails) {
-      window.api.word
-        .update(wordDetails.id, { text, definition, tags })
-        .then((word) => setWordDetails({ ...wordDetails, ...word }))
-    }
-    if (setWordsWithSignCount) {
-      window.api.word
-        .create({ text, definition, tags })
-        .then((word) =>
-          setWordsWithSignCount((prevState) => [
-            ...prevState,
-            { ...word, meaningsCount: 0, signsCount: 0 }
-          ])
-        )
+    if (formType == 'add') {
+      window.api.meaning
+        .create({ wordId, context, notes })
+        .then((meaning) => setMeaningValues(meaning))
+    } else if (formType == 'edit' && meaning) {
+      window.api.meaning
+        .update(meaning.id, { context, notes })
+        .then((meaning) => setMeaningValues(meaning))
     }
 
-    resetWordValues()
-    setIsFormOpen(false)
-  }
-
-  const handleTagAdd = (newTag: string): void => {
-    setTags((prevState) => [...prevState, newTag])
+    closeForm()
   }
 
   return (
     <div className="formContainer">
-      {wordDetails && <h2>{text}</h2>}
+      {formType === 'edit' && <h2>{context}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
-          <input type="text" value={text} onChange={(event) => setText(event.target.value)} />
+          <input type="text" value={context} onChange={(event) => setContext(event.target.value)} />
         </div>
         <div className="formGroup">
           <label>Definicja</label>
-          <textarea onChange={(event) => setDefinition(event.target.value)} value={definition} />
-        </div>
-        <div className="formGroup">
-          <label>Tagi</label>
-          <div className="tagsGroup">
-            <PillBoxList textArray={tags} setTags={setTags} />
-            {isTagFormOpen ? (
-              <AddTagForm handleTagAdd={handleTagAdd} setIsTagFormOpen={setIsTagFormOpen} />
-            ) : (
-              <button type="button" onClick={() => setIsTagFormOpen(true)}>
-                +dodaj tag
-              </button>
-            )}
-          </div>
+          <textarea onChange={(event) => setNotes(event.target.value)} value={notes} />
         </div>
         <div className="buttonGroup">
-          <button type="submit">{wordDetails ? 'Zapisz znaczenie' : 'Dodaj znaczenie'}</button>
-          <button type="reset" onClick={() => setIsFormOpen(false)}>
+          <button type="submit">{formType === 'edit' ? 'Zapisz słowo' : 'Dodaj słowo'}</button>
+          <button type="reset" onClick={() => closeForm()}>
             Anuluj
           </button>
         </div>
@@ -88,4 +61,4 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   )
 }
 
-export default WordForm
+export default MeaningForm

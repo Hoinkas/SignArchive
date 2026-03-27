@@ -1,4 +1,5 @@
 export type MediaFileType = 'png' | 'img' | 'mp4' | 'txt'
+export type FormType = 'add' | 'edit'
 
 export interface Word {
   id: string
