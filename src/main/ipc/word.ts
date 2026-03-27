@@ -24,7 +24,7 @@ export function listAllWords(): Word[] {
 
 export function findWordById(wordId: string): Word | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
-  return row as Word | undefined
+  return row ? rowToWord(row as Record<string, unknown>) : undefined
 }
 
 export function listAllWordsWithCount(): WordWithCounts[] {
@@ -46,11 +46,13 @@ export function returnWordDetailsById(wordId: string): WordWithMeaningsDetails |
   const meanings = listMeaningsByWordId(wordId)
   const meaningsWithDetails: MeaningWithSignsDetails[] = []
 
-  meanings.forEach((meaning) => {
-    const meaningDetails = returnMeaningDetailsById(meaning.id)
-    if (!meaningDetails) return
-    meanings.push(meaningDetails)
-  })
+  if (meanings) {
+    meanings.forEach((meaning) => {
+      const meaningDetails = returnMeaningDetailsById(meaning.id)
+      if (!meaningDetails) return
+      meaningsWithDetails.push(meaningDetails)
+    })
+  }
 
   return {
     ...word,

@@ -2,21 +2,21 @@ import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import './WordForm.css'
 import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
-import { Word, WordWithCounts } from '@shared/types'
+import { WordWithCounts, WordWithMeaningsDetails } from '@shared/types'
 
 interface WordFormProps {
-  word?: Word
-  setWord?: Dispatch<SetStateAction<Word | null>>
+  wordDetails?: WordWithMeaningsDetails
+  setWordDetails?: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
   setWordsWithSignCount?: Dispatch<SetStateAction<WordWithCounts[]>>
 }
 
 function WordForm(props: WordFormProps): React.JSX.Element {
-  const { word, setWord, setIsFormOpen, setWordsWithSignCount } = props
+  const { wordDetails, setWordDetails, setIsFormOpen, setWordsWithSignCount } = props
 
-  const [text, setText] = useState<string>(word?.text ?? '')
-  const [definition, setDefinition] = useState<string>(word?.definition ?? '')
-  const [tags, setTags] = useState<string[]>(word?.tags || [])
+  const [text, setText] = useState<string>(wordDetails?.text ?? '')
+  const [definition, setDefinition] = useState<string>(wordDetails?.definition ?? '')
+  const [tags, setTags] = useState<string[]>(wordDetails?.tags || [])
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
 
   const resetWordValues = (): void => {
@@ -28,10 +28,10 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (word && setWord) {
+    if (wordDetails && setWordDetails) {
       window.api.word
-        .update(word.id, { text, definition, tags })
-        .then((word) => setWord({ ...word, ...word }))
+        .update(wordDetails.id, { text, definition, tags })
+        .then((word) => setWordDetails({ ...wordDetails, ...word }))
     }
     if (setWordsWithSignCount) {
       window.api.word
@@ -54,7 +54,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      {word && <h2>{text}</h2>}
+      {wordDetails && <h2>{text}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
