@@ -23,7 +23,7 @@ export function createSigner(data: SignerToDB): Signer {
   }
   db.prepare(
     `
-    INSERT INTO signer (id, created_at, name, surname)
+    INSERT INTO signer (id, createdAt, name, surname)
     VALUES (@id, @createdAt, @name, @surname)
   `
   ).run(toSqlParams(signer))

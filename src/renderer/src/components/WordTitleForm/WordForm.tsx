@@ -1,28 +1,50 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
-import './WordTitleForm.css'
-import { WordWithMeaningsDetails } from '@shared/types'
-import PillBoxList from '../../PillBoxList/PillBoxList'
+import './WordForm.css'
+import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
+import { Word, WordWithCounts } from '@shared/types'
 
-interface WordTitleFormProps {
-  wordDetails: WordWithMeaningsDetails
-  setWordDetails: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
+interface WordFormProps {
+  word?: Word
+  setWord?: Dispatch<SetStateAction<Word | null>>
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  setWordsWithSignCount?: Dispatch<SetStateAction<WordWithCounts[]>>
 }
 
-function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
-  const { wordDetails, setWordDetails, setIsFormOpen } = props
+function WordForm(props: WordFormProps): React.JSX.Element {
+  const { word, setWord, setIsFormOpen, setWordsWithSignCount } = props
 
-  const [text, setText] = useState<string>(wordDetails.text)
-  const [definition, setDefinition] = useState<string>(wordDetails.definition ?? '')
-  const [tags, setTags] = useState<string[]>(wordDetails.tags || [])
+  const [text, setText] = useState<string>(word?.text ?? '')
+  const [definition, setDefinition] = useState<string>(word?.definition ?? '')
+  const [tags, setTags] = useState<string[]>(word?.tags || [])
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
+
+  const resetWordValues = (): void => {
+    setText('')
+    setDefinition('')
+    setTags([])
+  }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    window.api.word
-      .update(wordDetails.id, { text, definition, tags })
-      .then((word) => setWordDetails({ ...wordDetails, ...word }))
+
+    if (word && setWord) {
+      window.api.word
+        .update(word.id, { text, definition, tags })
+        .then((word) => setWord({ ...word, ...word }))
+    }
+    if (setWordsWithSignCount) {
+      window.api.word
+        .create({ text, definition, tags })
+        .then((word) =>
+          setWordsWithSignCount((prevState) => [
+            ...prevState,
+            { ...word, meaningsCount: 0, signsCount: 0 }
+          ])
+        )
+    }
+
+    resetWordValues()
     setIsFormOpen(false)
   }
 
@@ -32,7 +54,7 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      <h2>{wordDetails.text}</h2>
+      {word && <h2>{text}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
@@ -66,4 +88,4 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
   )
 }
 
-export default WordTitleForm
+export default WordForm

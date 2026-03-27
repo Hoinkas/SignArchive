@@ -27,7 +27,6 @@ export function findWordById(wordId: string): Word | undefined {
   return row as Word | undefined
 }
 
-
 export function listAllWordsWithCount(): WordWithCounts[] {
   const words = listAllWords()
 
@@ -68,7 +67,7 @@ export function createWord(data: WordToDB): Word {
   }
   db.prepare(
     `
-    INSERT INTO word (id, created_at, text, definition, tags)
+    INSERT INTO word (id, createdAt, text, definition, tags)
     VALUES (@id, @createdAt, @text, @definition, @tags)
   `
   ).run(rowToSQL(word))

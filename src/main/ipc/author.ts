@@ -24,7 +24,7 @@ export function createAuthor(data: AuthorToDB): Author {
   }
   db.prepare(
     `
-    INSERT INTO Author (id, created_at, name)
+    INSERT INTO Author (id, createdAt, name)
     VALUES (@id, @createdAt, @name)
   `
   ).run(toSqlParams(author))

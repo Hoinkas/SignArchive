@@ -41,7 +41,7 @@ export function createSource(data: SourceToDB): Source {
   }
   db.prepare(
     `
-    INSERT INTO source (id, created_at, signerId, authorId, mediaFieldId, region, yearStart, yearEnd, notes)
+    INSERT INTO source (id, createdAt, signerId, authorId, mediaFieldId, region, yearStart, yearEnd, notes)
     VALUES (@id, @createdAt, @signerId, @authorId, @mediaFieldId, @region, @yearStart, @yearEnd, @notes)
   `
   ).run(toSqlParams(source))

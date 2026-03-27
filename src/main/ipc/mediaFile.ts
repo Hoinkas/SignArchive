@@ -5,7 +5,7 @@ import type { MediaFile, MediaFileToDB } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 
 export function listAllMediaFiles(): MediaFile[] {
-  const rows = getDb().prepare('SELECT * FROM mediaFile ORDER BY created_at DESC').all()
+  const rows = getDb().prepare('SELECT * FROM mediaFile ORDER BY createdAt DESC').all()
   return rows as MediaFile[]
 }
 
@@ -23,7 +23,7 @@ export function createMediaFile(data: MediaFileToDB): MediaFile {
   }
   db.prepare(
     `
-    INSERT INTO mediaFile (id, created_at, sign_id, file_type, file_path, online_url)
+    INSERT INTO mediaFile (id, createdAt, sign_id, file_type, file_path, online_url)
     VALUES (@id, @createdAt, @signId, @fileType, @filePath, @onlineUrl)
   `
   ).run(toSqlParams(mediaFile))

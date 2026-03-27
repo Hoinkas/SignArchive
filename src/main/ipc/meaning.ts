@@ -1,13 +1,18 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Meaning, MeaningToDB, MeaningWithSignsDetails, SignWithSourcesDetails } from '@shared/types'
+import type {
+  Meaning,
+  MeaningToDB,
+  MeaningWithSignsDetails,
+  SignWithSourcesDetails
+} from '@shared/types'
 import { toSqlParams } from '../db/utils'
 import { findSignsIdsByMeaningId } from './meaningSign'
 import { returnSignDetailsById } from './sign'
 
 export function listAllMeanings(): Meaning[] {
-  const rows = getDb().prepare('SELECT * FROM meaning ORDER BY created_at DESC').all()
+  const rows = getDb().prepare('SELECT * FROM meaning ORDER BY createdAt DESC').all()
   return rows as Meaning[]
 }
 
@@ -54,7 +59,7 @@ export function createMeaning(data: MeaningToDB): Meaning {
   }
   db.prepare(
     `
-    INSERT INTO meaning (id, created_at, sign_id, word_id, notes)
+    INSERT INTO meaning (id, createdAt, sign_id, word_id, notes)
     VALUES (@id, @createdAt, @signId, @wordId, @notes)
   `
   ).run(toSqlParams(meaning))

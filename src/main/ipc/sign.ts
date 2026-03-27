@@ -1,14 +1,19 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Sign, SignToDB, SignWithSourcesDetails, SourceWithSignerAuthorMediaFile } from '@shared/types'
+import type {
+  Sign,
+  SignToDB,
+  SignWithSourcesDetails,
+  SourceWithSignerAuthorMediaFile
+} from '@shared/types'
 import { toSqlParams } from '../db/utils'
 import { findSourcesIdsBySignId } from './sourceSign'
 import { returnSourceDetailsById } from './source'
 
 export function listAllSigns(): Sign[] {
   const db = getDb()
-  const rows = db.prepare('SELECT * FROM sign ORDER BY created_at DESC').all()
+  const rows = db.prepare('SELECT * FROM sign ORDER BY createdAt DESC').all()
   return rows as Sign[]
 }
 
@@ -18,13 +23,17 @@ export function findSignById(id: string): Sign | undefined {
 }
 
 export function returnSignsCountByWordId(wordId: string): number {
-  const row = getDb().prepare(`
+  const row = getDb()
+    .prepare(
+      `
     SELECT COUNT(DISTINCT sign.id) AS count
     FROM sign
     INNER JOIN meaningSign ON sign.id = meaningSign.signId
     INNER JOIN meaning ON meaningSign.meaningId = meaning.id
     WHERE meaning.wordId = ?
-    `).get(wordId)
+    `
+    )
+    .get(wordId)
   return row.count
 }
 
@@ -56,7 +65,7 @@ export function createSign(data: SignToDB): Sign {
   }
   db.prepare(
     `
-    INSERT INTO sign (id, created_at)
+    INSERT INTO sign (id, createdAt)
     VALUES (@id, @createdAt)
   `
   ).run(toSqlParams(sign))

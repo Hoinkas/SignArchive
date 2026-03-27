@@ -7,3 +7,4 @@ out
 signs.json
 *.db*
 *.zip
+*bkp

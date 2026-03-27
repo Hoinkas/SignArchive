@@ -1,38 +1,34 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import PillBoxList from '../PillBoxList/PillBoxList'
 import './WordTitle.css'
-import { WordWithMeaningsDetails } from '@shared/types'
-import WordTitleForm from './WordTitleForm/WordTitleForm'
+import { WordToDB } from '@shared/types'
+import WordTitleForm from '../../WordTitleForm/WordForm'
 import ActionButtons from './ActionButtons/ActionButtons'
 
 interface WordTitleProps {
-  wordDetails: WordWithMeaningsDetails | null
-  setWordDetails: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
+  word: WordToDB | null
+  setWord: Dispatch<SetStateAction<WordToDB | null>>
 }
 
 function WordTitle(props: WordTitleProps): React.JSX.Element {
-  const { wordDetails, setWordDetails } = props
+  const { word, setWord } = props
   const [isFormOpen, setIsFormOpen] = useState(false)
 
-  if (!wordDetails) return <div className="wordTitle">Brak słowa</div>
+  if (!word) return <div className="wordTitle">Brak słowa</div>
 
   return (
     <div className="wordTitle">
       {isFormOpen ? (
-        <WordTitleForm
-          wordDetails={wordDetails}
-          setWordDetails={setWordDetails}
-          setIsFormOpen={setIsFormOpen}
-        />
+        <WordTitleForm word={word} setWord={setWord} setIsFormOpen={setIsFormOpen} />
       ) : (
         <div>
           <div className="wordTitleWithButtons">
-            <h1>{wordDetails.text}</h1>
+            <h1>{word.text}</h1>
             <ActionButtons setIsFormOpen={setIsFormOpen} />
           </div>
-          <div className="wordTitleDetails">
-            {wordDetails.definition && <div>{wordDetails.definition}</div>}
-            {wordDetails.tags && <PillBoxList textArray={wordDetails.tags} />}
+          <div className="wordTitle">
+            {word.definition && <div>{word.definition}</div>}
+            {word.tags && <PillBoxList textArray={word.tags} />}
           </div>
         </div>
       )}
