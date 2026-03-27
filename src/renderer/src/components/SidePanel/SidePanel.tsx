@@ -23,6 +23,13 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
     })
   }, [])
 
+  const setWordValues = (word: Word): void => {
+    setWordsWithSignCount((prevState) => [
+      ...prevState,
+      { ...word, meaningsCount: 0, signsCount: 0 }
+    ])
+  }
+
   return (
     <div className="sidepanel">
       <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
@@ -36,7 +43,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
       {isFormOpen && (
         <div className="wordFormContainer">
           <div className="wordForm">
-            <WordForm setIsFormOpen={setIsFormOpen} setWordsWithSignCount={setWordsWithSignCount}/>
+            <WordForm setIsFormOpen={setIsFormOpen} setWordValues={setWordValues} formType='add'/>
           </div>
         </div>
       )}

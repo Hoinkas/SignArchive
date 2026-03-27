@@ -2,44 +2,50 @@ import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import './WordForm.css'
 import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
-import { Word } from '@shared/types'
-
-type FormType = 'add' | 'edit'
+import { WordWithCounts, WordWithMeaningsDetails } from '@shared/types'
 
 interface WordFormProps {
-  word?: Word
-  setWordValues: (word: Word) => void
-  formType: FormType
+  meaningDetails?: WordWithMeaningsDetails
+  setWordDetails?: Dispatch<SetStateAction<WordWithMeaningsDetails | null>>
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  setWordsWithSignCount?: Dispatch<SetStateAction<WordWithCounts[]>>
 }
 
 function WordForm(props: WordFormProps): React.JSX.Element {
-  const { word, setWordValues, formType, setIsFormOpen } = props
+  const { wordDetails, setWordDetails, setIsFormOpen, setWordsWithSignCount } = props
 
-  const [text, setText] = useState<string>(word?.text || '')
-  const [definition, setDefinition] = useState<string>(word?.definition || '')
-  const [tags, setTags] = useState<string[]>(word?.tags || [])
+  const [text, setText] = useState<string>(wordDetails?.text ?? '')
+  const [definition, setDefinition] = useState<string>(wordDetails?.definition ?? '')
+  const [tags, setTags] = useState<string[]>(wordDetails?.tags || [])
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
 
-  const closeForm = (): void => {
+  const resetWordValues = (): void => {
     setText('')
     setDefinition('')
     setTags([])
-    setIsFormOpen(false)
   }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (formType == 'add') {
-      window.api.word.create({ text, definition, tags }).then((word) => setWordValues(word))
-    } else if (formType == 'edit' && word) {
+    if (wordDetails && setWordDetails) {
       window.api.word
-        .update(word.id, { text, definition, tags })
-        .then((word) => setWordValues(word))
+        .update(wordDetails.id, { text, definition, tags })
+        .then((word) => setWordDetails({ ...wordDetails, ...word }))
+    }
+    if (setWordsWithSignCount) {
+      window.api.word
+        .create({ text, definition, tags })
+        .then((word) =>
+          setWordsWithSignCount((prevState) => [
+            ...prevState,
+            { ...word, meaningsCount: 0, signsCount: 0 }
+          ])
+        )
     }
 
-    closeForm()
+    resetWordValues()
+    setIsFormOpen(false)
   }
 
   const handleTagAdd = (newTag: string): void => {
@@ -48,7 +54,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      {formType === 'edit' && <h2>{text}</h2>}
+      {wordDetails && <h2>{text}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
@@ -72,8 +78,8 @@ function WordForm(props: WordFormProps): React.JSX.Element {
           </div>
         </div>
         <div className="buttonGroup">
-          <button type="submit">{formType === 'edit' ? 'Zapisz słowo' : 'Dodaj słowo'}</button>
-          <button type="reset" onClick={() => closeForm()}>
+          <button type="submit">{wordDetails ? 'Zapisz znaczenie' : 'Dodaj znaczenie'}</button>
+          <button type="reset" onClick={() => setIsFormOpen(false)}>
             Anuluj
           </button>
         </div>

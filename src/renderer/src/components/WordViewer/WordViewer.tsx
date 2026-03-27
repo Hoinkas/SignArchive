@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './WordViewer.css'
 import { Word, WordWithMeaningsDetails } from '@shared/types'
 import MeaningBox from './MeaningBox/MeaningBox'
@@ -11,20 +11,18 @@ interface WordViewerProps {
 function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   const [wordDetails, setWordDetails] = useState<WordWithMeaningsDetails | null>(null)
 
-  const downloadWordDetails = useCallback((): void => {
+  useEffect(() => {
     window.api.word.details(word.id).then(setWordDetails)
   }, [word.id])
 
-  useEffect(() => {
-    downloadWordDetails()
-  }, [downloadWordDetails])
+  if (!wordDetails || !setWordDetails) return <div>ERROR</div>
 
   return (
     <div className="wordViewer">
       <WordTitle wordDetails={wordDetails} setWordDetails={setWordDetails} />
 
       <div className="meaningList">
-        {wordDetails?.meanings.map((meaning, key) => (
+        {wordDetails.meanings.map((meaning, key) => (
           <MeaningBox key={key} meaningWithSigns={meaning} number={key} />
         ))}
       </div>
