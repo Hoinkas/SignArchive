@@ -45,7 +45,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   }
 
   return (
-    <div className="formContainer">
+    <div>
       {formType === 'edit' && <h2>{text}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './WordViewer.css'
-import { Meaning, MeaningWithSignsDetails, Word, WordWithMeaningsDetails } from '@shared/types'
+import { Meaning, Word, WordWithMeaningsDetails } from '@shared/types'
 import WordTitle from './WordTitle/WordTitle'
 import AddButton from '../AddButton/AddButton'
 import MeaningForm from './MeaningForm/MeaningForm'
@@ -26,13 +26,11 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   }
 
   const setMeaningValues = (meaning: Meaning): void => {
-    const meaningWithSigns: MeaningWithSignsDetails = { ...meaning, signs: [] }
-
     setWordDetails((prevState) => {
       if (!prevState) return null
       return {
         ...prevState,
-        meanings: [...prevState.meanings, meaningWithSigns],
+        meanings: prevState.meanings.map((m) => (m.id === meaning.id ? { ...m, ...meaning } : m))
       }
     })
   }
@@ -42,23 +40,19 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   return (
     <div className="wordViewer">
       <WordTitle word={wordDetails} setWordValues={setWordValues} />
-      <MeaningList wordDetails={wordDetails} />
+      <MeaningList wordDetails={wordDetails} setMeaningValues={setMeaningValues} />
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <AddButton formVariant="meaning" setIsFormOpen={setIsFormOpen} />
       </div>
 
       {isFormOpen && (
-        <div className="wordFormContainer">
-          <div className="wordForm">
-            <MeaningForm
-              wordId={word.id}
-              setIsFormOpen={setIsFormOpen}
-              setMeaningValues={setMeaningValues}
-              formType="add"
-            />
-          </div>
-        </div>
+        <MeaningForm
+          wordId={word.id}
+          setIsFormOpen={setIsFormOpen}
+          setMeaningValues={setMeaningValues}
+          formType="add"
+        />
       )}
     </div>
   )

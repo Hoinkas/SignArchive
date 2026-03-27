@@ -1,16 +1,20 @@
 import './MeaningBox.css'
-import { MeaningWithSignsDetails } from '@shared/types'
+import { Meaning, MeaningWithSignsDetails } from '@shared/types'
 import VariantBox from './VariantBox/VariantBox'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import ActionButtons from '../../WordTitle/ActionButtons/ActionButtons'
+import MeaningForm from '../../MeaningForm/MeaningForm'
 
 interface MeaningBoxProps {
   meaningWithSigns: MeaningWithSignsDetails
   number: number
+  setMeaningValues: (meaning: Meaning) => void
 }
 
 function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
-  const { meaningWithSigns, number } = props
+  const { meaningWithSigns, number, setMeaningValues } = props
   const signs = meaningWithSigns.signs
+  const [isFormOpen, setIsFormOpen] = useState(false)
 
   const years = useMemo(() => {
     const allSources = meaningWithSigns.signs.flatMap((sign) => sign.sources)
@@ -25,12 +29,23 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
 
   return (
     <div className="meaningBox">
+      {isFormOpen && (
+        <MeaningForm
+          meaning={meaningWithSigns}
+          setMeaningValues={setMeaningValues}
+          formType="edit"
+          setIsFormOpen={setIsFormOpen}
+        />
+      )}
       <div className="meaningDetails">
         <div>
-          Znaczenie {number + 1} - {meaningWithSigns.context}
+          <div>
+            Znaczenie {number + 1} - {meaningWithSigns.context}
+          </div>
+          <div className="regionAndDate"> {years} </div>
+          <div> {meaningWithSigns.notes} </div>
         </div>
-        <div className="regionAndDate"> {years} </div>
-        <div> {meaningWithSigns.notes} </div>
+        <ActionButtons setIsFormOpen={setIsFormOpen} />
       </div>
       <div className="variantList">
         {signs.map((sign, key) => (

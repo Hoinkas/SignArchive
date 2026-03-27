@@ -27,7 +27,7 @@ export function listMeaningsByWordId(wordId): Meaning[] {
 }
 
 export function returnMeaningsCountByWordId(wordId: string): number {
-  const row = getDb().prepare('SELECT COUNT(*) count FROM meaning WHERE wordId = ?').all(wordId)
+  const row = getDb().prepare('SELECT COUNT(*) count FROM meaning WHERE wordId = ?').get(wordId)
   return row.count
 }
 

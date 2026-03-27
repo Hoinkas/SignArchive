@@ -41,8 +41,8 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
         wordsWithSignCount={wordsWithSignCount}
       />
       {isFormOpen && (
-        <div className="wordFormContainer">
-          <div className="wordForm">
+        <div className="formContainer">
+          <div className="formBox">
             <WordForm setIsFormOpen={setIsFormOpen} setWordValues={setWordValues} formType="add" />
           </div>
         </div>
