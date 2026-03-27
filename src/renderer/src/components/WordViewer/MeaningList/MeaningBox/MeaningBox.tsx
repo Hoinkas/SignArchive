@@ -30,6 +30,7 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           Znaczenie {number + 1} - {meaningWithSigns.context}
         </div>
         <div className="regionAndDate"> {years} </div>
+        <div> {meaningWithSigns.notes} </div>
       </div>
       <div className="variantList">
         {signs.map((sign, key) => (

@@ -43,7 +43,7 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
       {formType === 'edit' && <h2>{context}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
-          <label>Słowo</label>
+          <label>Znaczenie</label>
           <input type="text" value={context} onChange={(event) => setContext(event.target.value)} />
         </div>
         <div className="formGroup">

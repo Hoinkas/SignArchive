@@ -3,14 +3,14 @@ import type { MeaningSign } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 
 export function findMeaningsIdsBySignId(id: string): string[] {
-  const row = getDb().prepare('SELECT * FROM meaningSign WHERE signId = ?').get(id) as MeaningSign[]
+  const row = getDb().prepare('SELECT * FROM meaningSign WHERE signId = ?').all(id) as MeaningSign[]
   return row.map((meaningSign) => meaningSign.meaningId)
 }
 
 export function findSignsIdsByMeaningId(id: string): string[] {
   const row = getDb()
     .prepare('SELECT * FROM meaningSign WHERE meaningId = ?')
-    .get(id) as MeaningSign[]
+    .all(id) as MeaningSign[]
   return row.map((meaningSign) => meaningSign.signId)
 }
 

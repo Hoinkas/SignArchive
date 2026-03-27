@@ -22,12 +22,12 @@ export function findMeaningById(meaningId: string): Meaning | undefined {
 }
 
 export function listMeaningsByWordId(wordId): Meaning[] {
-  const row = getDb().prepare('SELECT * FROM meaning WHERE wordId = ?').get(wordId)
+  const row = getDb().prepare('SELECT * FROM meaning WHERE wordId = ?').all(wordId)
   return row as Meaning[]
 }
 
 export function returnMeaningsCountByWordId(wordId: string): number {
-  const row = getDb().prepare('SELECT COUNT(*) count FROM meaning WHERE wordId = ?').get(wordId)
+  const row = getDb().prepare('SELECT COUNT(*) count FROM meaning WHERE wordId = ?').all(wordId)
   return row.count
 }
 
@@ -59,8 +59,8 @@ export function createMeaning(data: MeaningToDB): Meaning {
   }
   db.prepare(
     `
-    INSERT INTO meaning (id, createdAt, sign_id, word_id, notes)
-    VALUES (@id, @createdAt, @signId, @wordId, @notes)
+    INSERT INTO meaning (id, createdAt, wordId, context, notes)
+    VALUES (@id, @createdAt, @wordId, @context, @notes)
   `
   ).run(toSqlParams(meaning))
   return meaning
@@ -75,7 +75,7 @@ export function updateMeaning(meaningId: string, data: Partial<MeaningToDB>): Me
     .prepare(
       `
     UPDATE meaning
-    SET sign_id = @signId, word_id = @wordId, context = @context, region = @region, notes = @notes
+    SET wordId = @wordId, context = @context, notes = @notes
     WHERE id = @id
   `
     )

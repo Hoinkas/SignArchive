@@ -3,12 +3,12 @@ import type { SourceSign } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 
 export function findSourcesIdsBySignId(id: string): string[] {
-  const row = getDb().prepare('SELECT * FROM sourceSign WHERE signId = ?').get(id) as SourceSign[]
+  const row = getDb().prepare('SELECT * FROM sourceSign WHERE signId = ?').all(id) as SourceSign[]
   return row.map((sourceSign) => sourceSign.sourceId)
 }
 
 export function findSignsIdsBySourceId(id: string): string[] {
-  const row = getDb().prepare('SELECT * FROM sourceSign WHERE sourceId = ?').get(id) as SourceSign[]
+  const row = getDb().prepare('SELECT * FROM sourceSign WHERE sourceId = ?').all(id) as SourceSign[]
   return row.map((sourceSign) => sourceSign.signId)
 }
 

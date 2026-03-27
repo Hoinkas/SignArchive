@@ -23,7 +23,7 @@ export function createMediaFile(data: MediaFileToDB): MediaFile {
   }
   db.prepare(
     `
-    INSERT INTO mediaFile (id, createdAt, sign_id, file_type, file_path, online_url)
+    INSERT INTO mediaFile (id, createdAt, signId, file_type, file_path, online_url)
     VALUES (@id, @createdAt, @signId, @fileType, @filePath, @onlineUrl)
   `
   ).run(toSqlParams(mediaFile))

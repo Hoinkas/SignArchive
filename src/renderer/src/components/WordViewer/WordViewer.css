@@ -6,15 +6,3 @@
   height: 100vh;
   overflow: hidden;
 }
-
-.meaningList {
-  padding: 16px;
-  gap: 16px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  box-sizing: border-box;
-  scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
-}
