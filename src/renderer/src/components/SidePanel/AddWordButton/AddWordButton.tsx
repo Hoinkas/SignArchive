@@ -8,7 +8,7 @@ interface AddWordButtonProps {
 function AddWordButton({ setIsFormOpen }: AddWordButtonProps): React.JSX.Element {
   return (
     <button className="addWordButton" onClick={() => setIsFormOpen(true)}>
-      Add new word
+      Dodaj nowe słowo
     </button>
   )
 }

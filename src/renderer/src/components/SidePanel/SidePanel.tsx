@@ -4,7 +4,7 @@ import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
 import AddWordButton from './AddWordButton/AddWordButton'
-import WordForm from '../WordTitleForm/WordForm'
+import WordForm from '../WordForm/WordForm'
 
 interface SidePanelProps {
   activeWord: Word | null

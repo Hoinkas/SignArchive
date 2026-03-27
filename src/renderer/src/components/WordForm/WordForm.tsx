@@ -78,7 +78,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
           </div>
         </div>
         <div className="buttonGroup">
-          <button type="submit">Zapisz</button>
+          <button type="submit">{wordDetails ? 'Zapisz słowo' : 'Dodaj słowo'}</button>
           <button type="reset" onClick={() => setIsFormOpen(false)}>
             Anuluj
           </button>

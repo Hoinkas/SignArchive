@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import PillBoxList from '../PillBoxList/PillBoxList'
 import './WordTitle.css'
 import { WordWithMeaningsDetails } from '@shared/types'
-import WordTitleForm from '../../WordTitleForm/WordForm'
+import WordTitleForm from '../../WordForm/WordForm'
 import ActionButtons from './ActionButtons/ActionButtons'
 
 interface WordTitleProps {
