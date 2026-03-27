@@ -5,79 +5,76 @@ import type {
   Meaning,
   Sign,
   Signer,
-  SignRelation,
   Source,
   Word,
-  WordWithDetails,
-  WordWithSignCount
+  SignToDB,
+  WordToDB,
+  SourceToDB,
+  SignerToDB,
+  MediaFileToDB,
+  MeaningToDB,
+  WordWithCounts,
+  Author,
+  AuthorToDB,
+  WordWithMeaningsDetails
 } from '@shared/types'
 
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', {
-      signs: {
-        list: (): Promise<Sign[]> => ipcRenderer.invoke('signs:list'),
-        find: (id: string): Promise<Sign> => ipcRenderer.invoke('signs:find', id),
-        create: (data: Omit<Sign, 'id' | 'createdAt'>): Promise<Sign> =>
-          ipcRenderer.invoke('signs:create', data),
-        update: (id: string, data: Partial<Sign>): Promise<Sign> =>
-          ipcRenderer.invoke('signs:update', id, data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('signs:delete', id)
+      sign: {
+        list: (): Promise<Sign[]> => ipcRenderer.invoke('sign:list'),
+        find: (signId: string): Promise<Sign> => ipcRenderer.invoke('sign:find', signId),
+        create: (data: SignToDB): Promise<Sign> => ipcRenderer.invoke('sign:create', data),
+        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
       },
-      meanings: {
-        list: (): Promise<Meaning[]> => ipcRenderer.invoke('meanings:list'),
-        find: (id: string): Promise<Meaning> => ipcRenderer.invoke('meanings:find', id),
-        by_sign: (signId: string): Promise<Meaning[]> =>
-          ipcRenderer.invoke('meanings:by_sign', signId),
-        by_word: (wordId: string): Promise<Meaning[]> =>
-          ipcRenderer.invoke('meanings:by_word', wordId),
-        create: (data: Omit<Meaning, 'id' | 'createdAt'>): Promise<Meaning> =>
-          ipcRenderer.invoke('meanings:create', data),
-        update: (id: string, data: Partial<Meaning>): Promise<Meaning> =>
-          ipcRenderer.invoke('meanings:update', id, data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('meanings:delete', id)
+      meaning: {
+        list: (): Promise<Meaning[]> => ipcRenderer.invoke('meaning:list'),
+        find: (meaningId: string): Promise<Meaning> =>
+          ipcRenderer.invoke('meaning:find', meaningId),
+        create: (data: MeaningToDB): Promise<Meaning> => ipcRenderer.invoke('meaning:create', data),
+        update: (meaningId: string, data: Partial<Meaning>): Promise<Meaning> =>
+          ipcRenderer.invoke('meaning:update', meaningId, data),
+        delete: (meaningId: string): Promise<void> =>
+          ipcRenderer.invoke('meaning:delete', meaningId)
       },
-      words: {
-        list: (): Promise<Word[]> => ipcRenderer.invoke('words:list'),
-        list_full: (id: string): Promise<WordWithDetails> =>
-          ipcRenderer.invoke('words:list_full', id),
-        list_signs_count: (): Promise<WordWithSignCount[]> =>
-          ipcRenderer.invoke('words:list_signs_count'),
-        create: (data: Omit<Word, 'id' | 'createdAt'>): Promise<Word> =>
-          ipcRenderer.invoke('words:create', data),
-        update: (id: string, data: Partial<Word>): Promise<Word> =>
-          ipcRenderer.invoke('words:update', id, data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('words:delete', id)
+      word: {
+        listWithCount: (): Promise<WordWithCounts[]> => ipcRenderer.invoke('word:listWithCount'),
+        find: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:find', wordId),
+        details: (wordId: string): Promise<WordWithMeaningsDetails> =>
+          ipcRenderer.invoke('word:details', wordId),
+        create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
+        update: (wordId: string, data: Partial<Word>): Promise<Word> =>
+          ipcRenderer.invoke('word:update', wordId, data),
+        delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
-      signers: {
-        list: (): Promise<Signer[]> => ipcRenderer.invoke('signers:list'),
-        create: (data: Omit<Signer, 'id' | 'createdAt'>): Promise<Signer> =>
-          ipcRenderer.invoke('signers:create', data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('signers:delete', id)
+      signer: {
+        list: (): Promise<Signer[]> => ipcRenderer.invoke('signer:list'),
+        find: (signerId: string): Promise<Signer> => ipcRenderer.invoke('signer:find', signerId),
+        create: (data: SignerToDB): Promise<Signer> => ipcRenderer.invoke('signer:create', data),
+        delete: (signerId: string): Promise<void> => ipcRenderer.invoke('signer:delete', signerId)
       },
-      sources: {
-        list: (): Promise<Source[]> => ipcRenderer.invoke('sources:list'),
-        create: (data: Omit<Source, 'id' | 'createdAt'>): Promise<Source> =>
-          ipcRenderer.invoke('sources:create', data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('sources:delete', id)
+      source: {
+        list: (): Promise<Source[]> => ipcRenderer.invoke('source:list'),
+        find: (sourceId: string): Promise<Source> => ipcRenderer.invoke('source:find', sourceId),
+        create: (data: SourceToDB): Promise<Source> => ipcRenderer.invoke('source:create', data),
+        delete: (sourceId: string): Promise<void> => ipcRenderer.invoke('source:delete', sourceId)
       },
-      media_files: {
-        list: (): Promise<MediaFile[]> => ipcRenderer.invoke('media_files:list'),
-        by_sign: (signId: string): Promise<MediaFile[]> =>
-          ipcRenderer.invoke('media_files:by_sign', signId),
-        create: (data: Omit<MediaFile, 'id' | 'createdAt'>): Promise<MediaFile> =>
-          ipcRenderer.invoke('media_files:create', data),
-        delete: (id: string): Promise<void> => ipcRenderer.invoke('media_files:delete', id)
+      mediaFile: {
+        list: (): Promise<MediaFile[]> => ipcRenderer.invoke('mediaFile:list'),
+        find: (mediaFileId: string): Promise<MediaFile[]> =>
+          ipcRenderer.invoke('mediaFile:find', mediaFileId),
+        create: (data: MediaFileToDB): Promise<MediaFile> =>
+          ipcRenderer.invoke('mediaFile:create', data),
+        delete: (mediaFileId: string): Promise<void> =>
+          ipcRenderer.invoke('mediaFile:delete', mediaFileId)
       },
-      signs_relations: {
-        list: (): Promise<SignRelation[]> => ipcRenderer.invoke('signs_relations:list'),
-        by_sign: (signId: string): Promise<SignRelation[]> =>
-          ipcRenderer.invoke('signs_relations:by_sign', signId),
-        create: (data: Omit<SignRelation, 'createdAt'>): Promise<SignRelation> =>
-          ipcRenderer.invoke('signs_relations:create', data),
-        delete: (tailSignId: string, headSignId: string): Promise<void> =>
-          ipcRenderer.invoke('signs_relations:delete', tailSignId, headSignId)
+      author: {
+        list: (): Promise<Author[]> => ipcRenderer.invoke('author:list'),
+        find: (authorId: string): Promise<Author> => ipcRenderer.invoke('author:find', authorId),
+        create: (data: AuthorToDB): Promise<Author> => ipcRenderer.invoke('author:create', data),
+        delete: (authorId: string): Promise<void> => ipcRenderer.invoke('author:delete', authorId)
       }
     })
   } catch (error) {

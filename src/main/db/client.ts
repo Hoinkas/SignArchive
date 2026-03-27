@@ -1,5 +1,4 @@
 import Database from 'better-sqlite3'
-// import { app } from 'electron'
 import path from 'node:path'
 import { initSchema } from './schema'
 import fs from 'node:fs'
@@ -16,11 +15,8 @@ export function getDb(): Database.Database {
     fs.mkdirSync(dbDir, { recursive: true })
   }
 
-  console.log('[DB] Ścieżka bazy:', dbPath)
-
   db = new Database(dbPath)
   initSchema(db)
-  // seedDatabase(db)
   console.log('[DB] Baza danych gotowa')
 
   return db

@@ -1,30 +1,43 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
-import './WordTitleForm.css'
-import { WordWithDetails } from '@shared/types'
-import PillBoxList from '../../PillBoxList/PillBoxList'
+import './WordForm.css'
+import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
+import { FormType, Word } from '@shared/types'
 
-interface WordTitleFormProps {
-  wordDetails: WordWithDetails
-  setWordDetails: Dispatch<SetStateAction<WordWithDetails | null>>
+interface WordFormProps {
+  word?: Word
+  setWordValues: (word: Word) => void
+  formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
-function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
-  const { wordDetails, setWordDetails, setIsFormOpen } = props
-  const word = wordDetails.word
+function WordForm(props: WordFormProps): React.JSX.Element {
+  const { word, setWordValues, formType, setIsFormOpen } = props
 
-  const [text, setText] = useState<string>(word.text)
-  const [definition, setDefinition] = useState<string>(word.definition ?? '')
-  const [tags, setTags] = useState<string[]>(word.tags)
+  const [text, setText] = useState<string>(word?.text || '')
+  const [definition, setDefinition] = useState<string>(word?.definition || '')
+  const [tags, setTags] = useState<string[]>(word?.tags || [])
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
+
+  const closeForm = (): void => {
+    setText('')
+    setDefinition('')
+    setTags([])
+    setIsFormOpen(false)
+  }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    window.api.words
-      .update(word.id, { text, definition, tags })
-      .then((word) => setWordDetails({ ...wordDetails, word }))
-    setIsFormOpen(false)
+
+    if (formType == 'add') {
+      window.api.word.create({ text, definition, tags }).then((word) => setWordValues(word))
+    } else if (formType == 'edit' && word) {
+      window.api.word
+        .update(word.id, { text, definition, tags })
+        .then((word) => setWordValues(word))
+    }
+
+    closeForm()
   }
 
   const handleTagAdd = (newTag: string): void => {
@@ -32,8 +45,8 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
   }
 
   return (
-    <div className="formContainer">
-      <h2>{word.text}</h2>
+    <div>
+      {formType === 'edit' && <h2>{text}</h2>}
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
@@ -57,8 +70,8 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
           </div>
         </div>
         <div className="buttonGroup">
-          <button type="submit">Zapisz</button>
-          <button type="reset" onClick={() => setIsFormOpen(false)}>
+          <button type="submit">{formType === 'edit' ? 'Zapisz słowo' : 'Dodaj słowo'}</button>
+          <button type="reset" onClick={() => closeForm()}>
             Anuluj
           </button>
         </div>
@@ -67,4 +80,4 @@ function WordTitleForm(props: WordTitleFormProps): React.JSX.Element {
   )
 }
 
-export default WordTitleForm
+export default WordForm

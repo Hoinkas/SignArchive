@@ -6,7 +6,6 @@ import icon from '../../resources/icon.png?asset'
 import { registerAllHandlers } from './registerAllHandlers'
 import { getDb } from './db/client'
 
-// ← Must be BEFORE app.whenReady()
 protocol.registerSchemesAsPrivileged([
   { scheme: 'media', privileges: { secure: true, supportFetchAPI: true, stream: true } }
 ])
@@ -56,15 +55,12 @@ app.whenReady().then(() => {
 
   protocol.handle('media', (req) => {
     const url = req.url
-    console.log('[media] raw url:', url)
-
     let filePath = decodeURIComponent(url.replace('media://', ''))
 
     if (!filePath.startsWith('/')) {
       filePath = '/' + filePath
     }
 
-    console.log('[media] filePath:', filePath)
     return net.fetch(pathToFileURL(filePath).toString())
   })
 

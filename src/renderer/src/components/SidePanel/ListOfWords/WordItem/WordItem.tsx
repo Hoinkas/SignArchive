@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react'
 import './WordItem.css'
-import { Word, WordWithSignCount } from '@shared/types'
+import { Word, WordWithCounts } from '@shared/types'
 
 interface WordProps {
-  word: WordWithSignCount
+  word: WordWithCounts
   isActive: boolean
   setActiveWord: Dispatch<SetStateAction<Word | null>>
 }
@@ -25,12 +25,15 @@ function returnMeaningWord(count: number): string {
 function WordItem(props: WordProps): React.JSX.Element {
   const { word, isActive, setActiveWord } = props
   const className = isActive ? 'word active' : 'word'
-  const signCountText = word.signCount + ' ' + returnSignWord(word.signCount)
+  const meaningsCountText = word.meaningsCount + ' ' + returnMeaningWord(word.meaningsCount)
+  const signsCountText = word.signsCount + ' ' + returnSignWord(word.signsCount)
 
   return (
     <li className={className} onClick={() => setActiveWord(word)}>
       <div>{word.text}</div>
-      <div style={{ fontSize: '12px', color: 'grey' }}>{signCountText}</div>
+      <div style={{ fontSize: '12px', color: 'grey' }}>
+        {meaningsCountText} - {signsCountText}
+      </div>
     </li>
   )
 }

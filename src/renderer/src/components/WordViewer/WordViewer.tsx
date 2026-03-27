@@ -1,62 +1,59 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './WordViewer.css'
-import { SignWithSourceSignerMediaFile, Word, WordWithDetails } from '@shared/types'
-import MeaningBox from './MeaningBox/MeaningBox'
+import { Meaning, Word, WordWithMeaningsDetails } from '@shared/types'
 import WordTitle from './WordTitle/WordTitle'
-import ComparsionBox from './ComparsionBox/ComparsionBox'
+import AddButton from '../AddButton/AddButton'
+import MeaningForm from './MeaningForm/MeaningForm'
+import MeaningList from './MeaningList/MeaningList'
 
 interface WordViewerProps {
   word: Word
 }
 
 function WordViewer({ word }: WordViewerProps): React.JSX.Element {
-  const [wordDetails, setWordDetails] = useState<WordWithDetails | null>(null)
-  const [isComparsionActive, setIsComparsionActive] = useState<boolean>(false)
-  const [activeSigns, setActiveSigns] = useState<SignWithSourceSignerMediaFile[]>([])
-
-  const downloadWordDetails = useCallback((): void => {
-    window.api.words.list_full(word.id).then(setWordDetails)
-  }, [word.id])
+  const [wordDetails, setWordDetails] = useState<WordWithMeaningsDetails | null>(null)
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    downloadWordDetails()
-  }, [downloadWordDetails])
+    window.api.word.details(word.id).then(setWordDetails)
+  }, [word.id])
 
-  const handleCloseComparsionWindow = (): void => {
-    setActiveSigns([])
-    setIsComparsionActive(false)
-    downloadWordDetails()
+  const setWordValues = (word: Word): void => {
+    setWordDetails((prevState) => {
+      if (!prevState) return null
+      return { ...prevState, ...word }
+    })
   }
+
+  const setMeaningValues = (meaning: Meaning): void => {
+    setWordDetails((prevState) => {
+      if (!prevState) return null
+      return {
+        ...prevState,
+        meanings: prevState.meanings.map((m) => (m.id === meaning.id ? { ...m, ...meaning } : m))
+      }
+    })
+  }
+
+  if (!wordDetails) return <div>Loading Error</div>
 
   return (
     <div className="wordViewer">
-      <WordTitle
-        wordDetails={wordDetails}
-        setWordDetails={setWordDetails}
-        setIsComparsionActive={setIsComparsionActive}
-      />
+      <WordTitle word={wordDetails} setWordValues={setWordValues} />
+      <MeaningList wordDetails={wordDetails} setMeaningValues={setMeaningValues} />
 
-      <div className="meaningList">
-        {wordDetails?.meanings.map((meaning, key) => (
-          <MeaningBox
-            key={key}
-            meaningWithSigns={meaning}
-            number={key}
-            isComparsionActive={isComparsionActive}
-            activeSigns={activeSigns}
-            setActiveSigns={setActiveSigns}
-          />
-        ))}
-
-        {isComparsionActive && (
-        <ComparsionBox
-          activeSigns={activeSigns}
-          handleCloseComparsionWindow={handleCloseComparsionWindow}
-        />
-      )}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <AddButton formVariant="meaning" setIsFormOpen={setIsFormOpen} />
       </div>
 
-
+      {isFormOpen && (
+        <MeaningForm
+          wordId={word.id}
+          setIsFormOpen={setIsFormOpen}
+          setMeaningValues={setMeaningValues}
+          formType="add"
+        />
+      )}
     </div>
   )
 }

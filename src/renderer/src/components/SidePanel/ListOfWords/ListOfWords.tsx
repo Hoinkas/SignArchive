@@ -1,30 +1,22 @@
 import './ListOfWords.css'
 import WordItem from './WordItem/WordItem'
-import { Word, WordWithSignCount } from '@shared/types'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Word, WordWithCounts } from '@shared/types'
+import { Dispatch, SetStateAction } from 'react'
 
 interface ListOfWordsProps {
   searchWord: string
   activeWord: Word | null
   setActiveWord: Dispatch<SetStateAction<Word | null>>
+  wordsWithSignCount: WordWithCounts[]
 }
 
 function ListOfWords(props: ListOfWordsProps): React.JSX.Element {
-  const { searchWord, activeWord, setActiveWord } = props
-  const [wordsWithSignCount, setWordsWithSignCount] = useState<WordWithSignCount[]>([])
-
-  useEffect(() => {
-    window.api.words.list_signs_count().then((result) => {
-      setWordsWithSignCount(result.sort((a, b) => b.signCount - a.signCount))
-    })
-  }, [])
+  const { searchWord, activeWord, setActiveWord, wordsWithSignCount } = props
 
   const wordFiltered = wordsWithSignCount.filter((w) =>
     w.text.toUpperCase().includes(searchWord.toUpperCase())
   )
   const wordsToList = searchWord == '' ? wordsWithSignCount : wordFiltered
-
-  console.log(wordsToList.length)
 
   return (
     <ul className="listOfWords">

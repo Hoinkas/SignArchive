@@ -1,64 +1,49 @@
-export type MediaFileType = 'png' | 'img' | 'gif' | 'mp4' | 'mov' | 'flv'
-export type RelationType = 'duplicate' | 'variant' | 'homonym'
-export type DeafnessType = 'deaf' | 'hearing' | 'hardofhearing' | 'coda'
-export type SignType = 'PJM' | 'SJM' | 'both'
-export type SignStatus = 'draft' | 'published' | 'archived' | 'disputed'
-
-export const SourceReliability = {
-  1: 'anonimowy wpis, brak źródła',
-  2: 'słyszący tłumacz lub materiał wtórny',
-  3: 'głuchy użytkownik języka, jedno źródło',
-  4: 'wielu głuchych native signerów, potwierdzone wielokrotnie'
-} as const
-
-export type SourceReliabilityLevel = keyof typeof SourceReliability
-
-export const UsageFrequency = {
-  1: 'jednostkowe, zaobserwowane raz',
-  2: 'regionalne, znane w konkretnej społeczności',
-  3: 'szersze użycie, kilka regionów lub pokoleń',
-  4: 'ogólnopolskie, powszechnie rozumiane'
-} as const
-
-export type UsageFrequencyLevel = keyof typeof UsageFrequency
-
-export interface Sign {
-  id: string
-  createdAt: string //ISO Date
-  notes?: string
-  status: SignStatus
-  handShape?: string
-  location?: string
-  movement?: string
-  phonologyExtended?: string
-  type?: SignType
-}
+export type MediaFileType = 'png' | 'img' | 'mp4' | 'txt'
+export type FormType = 'add' | 'edit'
 
 export interface Word {
   id: string
   createdAt: string //ISO Date
   text: string
   definition?: string
-  parentWordId?: string
-  aliases: string[]
-  tags: string[]
+  tags?: string[]
 }
+
+export type WordToDB = Omit<Word, 'id' | 'createdAt'>
+
+export interface Meaning {
+  id: string
+  createdAt: string //ISO Date
+  wordId: string
+  context?: string
+  notes?: string
+}
+
+export type MeaningToDB = Omit<Meaning, 'id' | 'createdAt'>
+
+export interface Sign {
+  id: string
+  createdAt: string //ISO Date
+}
+
+export type SignToDB = Omit<Sign, 'id' | 'createdAt'>
 
 export interface Signer {
   id: string
   createdAt: string //ISO Date
   name: string
   surname: string
-  deafnessType?: DeafnessType
 }
 
-export interface Source {
+export type SignerToDB = Omit<Signer, 'id' | 'createdAt'>
+
+export interface Author {
   id: string
   createdAt: string //ISO Date
   name: string
-  onlineUrl?: string
-  region?: string
 }
+
+export type AuthorToDB = Omit<Author, 'id' | 'createdAt'>
 
 export interface MediaFile {
   id: string
@@ -66,64 +51,60 @@ export interface MediaFile {
   fileType: string
   filePath: string
   onlineUrl?: string
-  signId: string
-  signerId?: string
-  sourceId: string
-  year?: number
 }
 
-export interface Meaning {
+export type MediaFileToDB = Omit<MediaFile, 'id' | 'createdAt'>
+
+export interface Source {
   id: string
   createdAt: string //ISO Date
-  signId: string
-  wordId: string
-  context?: string
+  signerId: string
+  authorId: string
+  mediaFieldId: string
   region?: string
   yearStart?: number
   yearEnd?: number
-  sourceReliability: SourceReliabilityLevel
-  usageFrequency: UsageFrequencyLevel
-  notes?: string
+  notes: string
 }
 
-//SIGN - SIGN connection table
-export interface SignRelation {
-  createdAt: string //ISO Date
-  tailSignId: string
-  headSignId: string
+export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
+
+//MEANING - SIGN connection table
+export interface MeaningSign {
   meaningId: string
-  relationType: RelationType
+  signId: string
 }
 
-export type SignWithRelationType = Pick<SignRelation, 'relationType'> & { sign: Sign }
-
-//WORD + SIGN + MEDIAFILE
-export interface WordWithSignAndMedia {
-  word: Word
-  sign: Sign
-  mediaFile: MediaFile
+//SOURCE - SIGN connection table
+export interface SourceSign {
+  sourceId: string
+  signId: string
 }
 
-// WORD WITH SIGN COUNT
-export interface WordWithSignCount extends Word {
-  signCount: number
+// WORD with MEANINGS and SINGS count
+export interface WordWithCounts extends Word {
+  meaningsCount: number
+  signsCount: number
 }
 
-//ALL DETAILS FOR WORD
-export interface SignWithSourceSignerMediaFile {
-  sign: Sign
-  source?: Source
-  mediaFile: MediaFile
+// WORD with MEANINGS and SIGNS and SOURCES and SIGNERS and AUTHORS and MEDIAFILES
+export interface SourceWithSignerAuthorMediaFile extends Omit<
+  Source,
+  'signerId' | 'authorId' | 'mediaFileId'
+> {
   signer?: Signer
-  meaningId: string
+  author?: Author
+  mediaFile?: MediaFile
 }
 
-export interface MeaningWithSigns {
-  meaning: Meaning
-  signs: SignWithSourceSignerMediaFile[]
+export interface SignWithSourcesDetails extends Sign {
+  sources: SourceWithSignerAuthorMediaFile[]
 }
 
-export interface WordWithDetails {
-  word: Word
-  meanings: MeaningWithSigns[]
+export interface MeaningWithSignsDetails extends Meaning {
+  signs: SignWithSourcesDetails[]
+}
+
+export interface WordWithMeaningsDetails extends Word {
+  meanings: MeaningWithSignsDetails[]
 }
