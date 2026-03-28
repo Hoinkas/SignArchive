@@ -14,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-bg-purple-transparent);
+  background-color: var(--color-bg-active);
 }
 
 .contentBox {
