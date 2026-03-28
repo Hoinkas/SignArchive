@@ -27,6 +27,11 @@ input {
   color: var(--color-text);
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
 .formInput {
   border: var(--text-area-border) !important;
   border-radius: var(--radius-sm);

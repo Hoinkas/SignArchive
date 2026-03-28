@@ -4,14 +4,14 @@ import TagList from '../TagList/TagList'
 import AddTagForm from './Forms/AddTagForm'
 import { FormType } from '@shared/types'
 
-interface FormModalWrapperProps {
+interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
   handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
   formType: FormType
   closeForm: () => void
 }
 
-export function FormModalWrapper(props: FormModalWrapperProps): React.JSX.Element {
+export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
   const { children, handleSubmit, formType, closeForm } = props
 
   return (
@@ -22,13 +22,6 @@ export function FormModalWrapper(props: FormModalWrapperProps): React.JSX.Elemen
       </form>
     </div>
   )
-}
-
-interface FormWrapperProps {
-  children: React.JSX.Element[] | React.JSX.Element
-  handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
-  formType: FormType
-  closeForm: () => void
 }
 
 export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
@@ -42,21 +35,32 @@ export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
   )
 }
 
+interface FormTwoInLineWrapperProps {
+  children: React.JSX.Element[]
+}
+
+export function FormTwoInLineWrapper({ children }: FormTwoInLineWrapperProps): React.JSX.Element {
+  return <div className="twoInLine">{children}</div>
+}
+
 interface FormSingleLineInputProps {
   label: string
   value: string
   setValue: (value: string) => void
+  isNumber?: boolean
 }
 
 export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.Element {
-  const { label, value, setValue } = props
+  const { label, value, setValue, isNumber = false } = props
 
   return (
     <div className="formGroup">
       <label>{label}</label>
       <input
         className="formInput"
-        type="text"
+        type={isNumber ? 'number' : 'text'}
+        min={1000}
+        max={new Date().getFullYear()}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
