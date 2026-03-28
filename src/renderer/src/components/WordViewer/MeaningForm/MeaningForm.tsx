@@ -1,5 +1,11 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import { FormType, Meaning } from '@shared/types'
+import {
+  FormButtons,
+  FormMultiLineInput,
+  FormSingleLineInput,
+  FormWrapper
+} from '@renderer/components/WordForm/Form'
 
 interface MeaningFormProps {
   wordId?: string
@@ -38,31 +44,11 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
   }
 
   return (
-    <div className="formContainer">
-      <form className="formBox" onSubmit={handleSubmit}>
-        <div className="formGroup">
-          <label>Znaczenie</label>
-          <input
-            className="formInput"
-            type="text"
-            value={context}
-            onChange={(event) => setContext(event.target.value)}
-          />
-        </div>
-        <div className="formGroup">
-          <label>Definicja</label>
-          <textarea onChange={(event) => setNotes(event.target.value)} value={notes} />
-        </div>
-        <div className="buttonGroup">
-          <button type="submit">
-            {formType === 'edit' ? 'Zapisz znaczenie' : 'Dodaj znaczenie'}
-          </button>
-          <button type="reset" onClick={() => closeForm()}>
-            Anuluj
-          </button>
-        </div>
-      </form>
-    </div>
+    <FormWrapper handleSubmit={handleSubmit}>
+      <FormSingleLineInput label={'Znaczenie'} value={context} setValue={setContext} />
+      <FormMultiLineInput label={'Definicja'} value={notes} setValue={setNotes} />
+      <FormButtons formType={formType} closeForm={closeForm} />
+    </FormWrapper>
   )
 }
 
