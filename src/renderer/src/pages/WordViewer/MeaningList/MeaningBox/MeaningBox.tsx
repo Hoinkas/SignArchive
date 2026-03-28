@@ -1,7 +1,7 @@
 import './MeaningBox.css'
 import { Meaning, MeaningWithSignsDetails } from '@shared/types'
 import { useMemo, useState } from 'react'
-import MeaningForm from '../../../Form/Forms/MeaningForm'
+import MeaningForm from '../../../../components/Form/Forms/MeaningForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SignList from './SignList/SignList'
 

@@ -1,6 +1,6 @@
 import { SetStateAction, SubmitEvent, useState } from 'react'
 import './Form.css'
-import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
+import PillBoxList from '../../pages/WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
 import { FormType } from '@shared/types'
 

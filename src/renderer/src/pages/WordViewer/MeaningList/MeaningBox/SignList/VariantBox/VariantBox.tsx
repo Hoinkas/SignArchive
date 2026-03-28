@@ -1,8 +1,8 @@
-import MediaPlayer from './MediaPlayer/MediaPlayer'
+import MediaPlayer from '../../../../../../components/MediaPlayer/MediaPlayer'
 import './VariantBox.css'
 import { SignWithSourcesDetails } from '@shared/types'
 import { useMemo } from 'react'
-import PillBoxList from '@renderer/components/WordViewer/PillBoxList/PillBoxList'
+import PillBoxList from '@renderer/pages/WordViewer/PillBoxList/PillBoxList'
 
 interface VariantBoxProps {
   sign: SignWithSourcesDetails

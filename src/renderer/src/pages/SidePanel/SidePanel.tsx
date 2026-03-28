@@ -3,9 +3,9 @@ import SearchBar from './SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
-import WordForm from '../Form/Forms/WordForm'
-import ActionButton from '../ActionButton/ActionButton'
-import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
+import ThemeSwitch from '@renderer/components/ThemeSwitch/ThemeSwitch'
+import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import WordForm from '@renderer/components/Form/Forms/WordForm'
 
 interface SidePanelProps {
   activeWord: Word | null
