@@ -1,7 +1,7 @@
 .wordTitle {
   display: flex;
   flex-direction: column;
-  padding: 20px 40px;
+  padding: var(--space-5) var(--space-10);
   flex-shrink: 0;
 
   border-bottom: var(--line-border);
@@ -15,5 +15,5 @@
 .wordTitleDetails {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }

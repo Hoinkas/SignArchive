@@ -36,7 +36,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
 
       <div
         style={{
-          margin: '0px 32px 16px 32px',
+          margin: '0px var(--space-8) var(--space-4) var(--space-8)',
           maxWidth: '240px',
           display: 'flex',
           justifyContent: 'center'

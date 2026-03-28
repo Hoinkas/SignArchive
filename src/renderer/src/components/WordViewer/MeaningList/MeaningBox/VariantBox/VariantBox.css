@@ -9,7 +9,7 @@
 }
 
 .variantDetails {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   display: flex;
   flex-direction: column;
   flex: 1;

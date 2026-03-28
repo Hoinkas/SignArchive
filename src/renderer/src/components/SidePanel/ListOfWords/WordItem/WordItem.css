@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   border-top: var(--line-border);
-  padding: 8px 20px;
+  padding: var(--space-2) var(--space-5);
   border-left: 5px solid transparent;
   cursor: pointer;
   transition: background-color 0.3s;
