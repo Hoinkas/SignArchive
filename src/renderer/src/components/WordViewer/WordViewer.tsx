@@ -42,7 +42,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
       <WordTitle word={wordDetails} setWordValues={setWordValues} />
       <MeaningList wordDetails={wordDetails} setMeaningValues={setMeaningValues} />
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="actionButton">
         <ActionButton text="Dodaj znaczenie" setIsFormOpen={setIsFormOpen} />
       </div>
 
