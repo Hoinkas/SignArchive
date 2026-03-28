@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PillBoxList from '../PillBoxList/PillBoxList'
 import './WordTitle.css'
 import { Word } from '@shared/types'
-import WordTitleForm from '../../WordForm/WordForm'
+import WordTitleForm from '../../Form/Forms/WordForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 
 interface WordTitleProps {

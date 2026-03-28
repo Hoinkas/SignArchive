@@ -66,16 +66,6 @@ button:active {
   background: var(--color-bg-active);
 }
 
-button[type="submit"] {
-  color: var(--color-text-active);
-  background-color: var(--color-bg-active);
-}
-
-button[type="button"] {
-  padding: var(--space-2);
-  border: none;
-}
-
 label {
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-2);

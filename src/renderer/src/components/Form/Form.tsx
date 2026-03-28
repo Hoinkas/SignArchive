@@ -4,20 +4,41 @@ import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
 import { FormType } from '@shared/types'
 
-interface FormWrapperProps {
+interface FormModalWrapperProps {
   children: React.JSX.Element[]
   handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
+  formType: FormType
+  closeForm: () => void
 }
 
-export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
-  const { children, handleSubmit } = props
+export function FormModalWrapper(props: FormModalWrapperProps): React.JSX.Element {
+  const { children, handleSubmit, formType, closeForm } = props
 
   return (
     <div className="formContainer">
       <form className="formBox" onSubmit={handleSubmit}>
         {children}
+        <FormButtons formType={formType} closeForm={closeForm} />
       </form>
     </div>
+  )
+}
+
+interface FormWrapperProps {
+  children: React.JSX.Element[]
+  handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
+  formType: FormType
+  closeForm: () => void
+}
+
+export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
+  const { children, handleSubmit, formType, closeForm } = props
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {children}
+      <FormButtons formType={formType} closeForm={closeForm} />
+    </form>
   )
 }
 
@@ -66,7 +87,7 @@ interface FormTagsProps {
   setTags: (value: SetStateAction<string[]>) => void
 }
 
-export function FormTagsInput(props: FormTagsProps): React.JSX.Element {
+export function FormTags(props: FormTagsProps): React.JSX.Element {
   const { label, tags, setTags } = props
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './WordViewer.css'
 import { Meaning, Word, WordWithMeaningsDetails } from '@shared/types'
 import WordTitle from './WordTitle/WordTitle'
-import MeaningForm from './MeaningForm/MeaningForm'
+import MeaningForm from '../Form/Forms/MeaningForm'
 import MeaningList from './MeaningList/MeaningList'
 import ActionButton from '../ActionButton/ActionButton'
 

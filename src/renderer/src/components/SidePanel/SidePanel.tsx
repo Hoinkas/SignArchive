@@ -3,7 +3,7 @@ import SearchBar from './SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
-import WordForm from '../WordForm/WordForm'
+import WordForm from '../Form/Forms/WordForm'
 import ActionButton from '../ActionButton/ActionButton'
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
 

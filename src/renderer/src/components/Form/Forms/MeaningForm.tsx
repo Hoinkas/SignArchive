@@ -4,8 +4,8 @@ import {
   FormButtons,
   FormMultiLineInput,
   FormSingleLineInput,
-  FormWrapper
-} from '@renderer/components/WordForm/Form'
+  FormModalWrapper
+} from '@renderer/components/Form/Form'
 
 interface MeaningFormProps {
   wordId?: string
@@ -44,11 +44,10 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
   }
 
   return (
-    <FormWrapper handleSubmit={handleSubmit}>
+    <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormSingleLineInput label={'Znaczenie'} value={context} setValue={setContext} />
       <FormMultiLineInput label={'Definicja'} value={notes} setValue={setNotes} />
-      <FormButtons formType={formType} closeForm={closeForm} />
-    </FormWrapper>
+    </FormModalWrapper>
   )
 }
 
