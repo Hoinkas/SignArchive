@@ -1,7 +1,7 @@
 import { SetStateAction, SubmitEvent, useState } from 'react'
 import './Form.css'
-import PillBoxList from '../../pages/WordViewer/PillBoxList/PillBoxList'
-import AddTagForm from './AddTagForm/AddTagForm'
+import TagList from '../TagList/TagList'
+import AddTagForm from './Forms/AddTagForm'
 import { FormType } from '@shared/types'
 
 interface FormModalWrapperProps {
@@ -99,7 +99,7 @@ export function FormTags(props: FormTagsProps): React.JSX.Element {
     <div className="formGroup">
       <label>{label}</label>
       <div className="tagsGroup">
-        <PillBoxList textArray={tags} setTags={setTags} />
+        <TagList textArray={tags} setTags={setTags} />
         {isTagFormOpen ? (
           <AddTagForm handleTagAdd={handleTagAdd} setIsTagFormOpen={setIsTagFormOpen} />
         ) : (

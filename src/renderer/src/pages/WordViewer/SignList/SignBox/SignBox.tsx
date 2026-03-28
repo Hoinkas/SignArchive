@@ -1,14 +1,14 @@
 import MediaPlayer from '../../../../../../components/MediaPlayer/MediaPlayer'
-import './VariantBox.css'
+import './SignBox.css'
 import { SignWithSourcesDetails } from '@shared/types'
 import { useMemo } from 'react'
-import PillBoxList from '@renderer/pages/WordViewer/PillBoxList/PillBoxList'
+import TagList from '@renderer/components/TagList/TagList'
 
-interface VariantBoxProps {
+interface SignBoxProps {
   sign: SignWithSourcesDetails
 }
 
-function VariantBox(props: VariantBoxProps): React.JSX.Element {
+function SignBox(props: SignBoxProps): React.JSX.Element {
   const { sign } = props
 
   const pillText: string[] = []
@@ -30,7 +30,7 @@ function VariantBox(props: VariantBoxProps): React.JSX.Element {
   }, [sign.sources])
 
   return (
-    <div className={'variantBox'}>
+    <div className={'SignBox'}>
       {mediaFile && <MediaPlayer mediaFile={mediaFile} />}
       <div className="variantDetails">
         <div>
@@ -39,11 +39,11 @@ function VariantBox(props: VariantBoxProps): React.JSX.Element {
         <div>{signerNameSurname}</div>
         <h4>{notes}</h4>
         <div className="bottomBox">
-          <PillBoxList textArray={pillText} />
+          <TagList textArray={pillText} />
         </div>
       </div>
     </div>
   )
 }
 
-export default VariantBox
+export default SignBox

@@ -1,6 +1,6 @@
 import './SignList.css'
 import { SignWithSourcesDetails } from '@shared/types'
-import VariantBox from './VariantBox/VariantBox'
+import SignBox from './SignBox/SignBox'
 
 interface SignListProps {
   signs: SignWithSourcesDetails[]
@@ -12,7 +12,7 @@ function SignList(props: SignListProps): React.JSX.Element {
   return (
     <div className="signList">
       {signs.map((sign, key) => (
-        <VariantBox key={key} sign={sign} />
+        <SignBox key={key} sign={sign} />
       ))}
     </div>
   )

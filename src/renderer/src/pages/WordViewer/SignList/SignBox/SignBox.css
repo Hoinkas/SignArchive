@@ -1,4 +1,4 @@
-.variantBox {
+.SignBox {
   display: flex;
   flex-direction: column;
   border-right: var(--line-border);

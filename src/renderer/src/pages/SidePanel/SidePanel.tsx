@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import SearchBar from './SearchBar/SearchBar'
+import SearchBar from '../../components/SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'

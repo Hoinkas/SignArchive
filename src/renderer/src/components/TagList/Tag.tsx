@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from 'react'
 
-interface PillBoxProps {
+interface TagProps {
   text: string
   setTags?: Dispatch<SetStateAction<string[]>>
 }
 
-function PillBox(props: PillBoxProps): React.JSX.Element {
+function Tag(props: TagProps): React.JSX.Element {
   const { text, setTags } = props
 
   const handleTagDelete = (): void => {
@@ -20,4 +20,4 @@ function PillBox(props: PillBoxProps): React.JSX.Element {
   )
 }
 
-export default PillBox
+export default Tag

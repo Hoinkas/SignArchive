@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PillBoxList from '../PillBoxList/PillBoxList'
+import TagList from '../../../components/TagList/TagList'
 import './WordTitle.css'
 import { Word } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
@@ -31,7 +31,7 @@ function WordTitle(props: WordTitleProps): React.JSX.Element {
           </div>
           <div className="wordTitleDetails">
             {word.definition && <div>{word.definition}</div>}
-            {word.tags && <PillBoxList textArray={word.tags} />}
+            {word.tags && <TagList textArray={word.tags} />}
           </div>
         </div>
       )}

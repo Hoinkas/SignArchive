@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import './AddTagForm.css'
 
 interface AddTagFormProps {
   handleTagAdd: (newTag: string) => void
@@ -15,7 +14,7 @@ function AddTagForm({ handleTagAdd, setIsTagFormOpen }: AddTagFormProps): React.
   }
 
   return (
-    <div className="addTagForm">
+    <div style={{ display: 'inline-flex', gap: 'var(--space-4)' }}>
       <input
         className="formInput"
         type="text"
