@@ -6,37 +6,11 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  border: var(--line-border);
+  border-right: var(--line-border);
 
   & ul {
     padding-inline-start: 0px;
     display: flex;
     flex-direction: column;
   }
-}
-
-.formContainer{
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background-color: rgb(1, 1, 1, 0.5);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.formBox {
-  width: 50%;
-  max-width: 480px;
-  min-width: 280px;
-  height: 50%;
-
-  background-color: #1e1e2e;
-  border: 1px solid rgb(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 24px;
-
-  box-shadow: 0 8px 32px rgb(0, 0, 0, 0.4);
 }

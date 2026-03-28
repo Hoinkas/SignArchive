@@ -1,15 +1,11 @@
 .variantBox {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #888888;
+  border-right: var(--line-border);
   width: 240px;
   height: 300px;
   flex-shrink: 0;
   overflow: hidden;
-
-  &.active {
-    background-color: rgb(95, 84, 221, 0.5);
-  }
 }
 
 .variantDetails {
@@ -26,8 +22,4 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-
-  button {
-    background-color: grey;
-  }
 }

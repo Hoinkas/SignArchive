@@ -11,9 +11,11 @@
   &:last-child {
     border-bottom: var(--line-border);
   }
+
   &:hover {
-    background-color: var(--color-background-hover-transparent);
+    background-color: var(--color-bg-hover-transparent);
   }
+
   &.active {
     border-left: 6px solid var(--color-line-purple);
   }

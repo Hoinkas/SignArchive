@@ -1,15 +1,5 @@
 .addTagForm {
-  display: flex;
+  display: inline-flex;
   gap: 16px;
   align-items: center;
-
-  input[type="text"] {
-    width: fit-content;
-    max-width: 120px;
-  }
-
-  button {
-    padding: 8px;
-    height: fit-content;
-  }
 }

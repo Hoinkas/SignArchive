@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
-import './WordForm.css'
+import './Form.css'
 import PillBoxList from '../WordViewer/PillBoxList/PillBoxList'
 import AddTagForm from './AddTagForm/AddTagForm'
 import { FormType, Word } from '@shared/types'
@@ -50,7 +50,12 @@ function WordForm(props: WordFormProps): React.JSX.Element {
       <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label>Słowo</label>
-          <input type="text" value={text} onChange={(event) => setText(event.target.value)} />
+          <input
+            className="formInput"
+            type="text"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+          />
         </div>
         <div className="formGroup">
           <label>Definicja</label>

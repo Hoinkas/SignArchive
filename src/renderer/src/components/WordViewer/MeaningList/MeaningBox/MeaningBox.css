@@ -17,12 +17,6 @@
   background-color: var(--color-bg-purple-transparent);
 }
 
-.regionAndDate {
-  font-size: small;
-  line-height: 12px;
-  color: grey;
-}
-
 .contentBox {
   min-width: 0;
   padding: 16px;

@@ -8,19 +8,36 @@
 body {
   display: flex;
   user-select: none;
+}
 
-  input[type=text] {
-    background-color: transparent;
-    font-family: var(--font-famiy);
-    font-size: var(--font-size);
+input[type=text] {
+  background-color: transparent;
+  font-family: var(--font-family);
+  font-size: var(--font-size-normal);
 
-    width: 100%;
-    padding: 8px 12px;
-    border: none;
-    outline: none;
-    caret-color: var(--color-line-purple-light);
-    color: var(--color-text-white);
-  }
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  outline: none;
+  caret-color: var(--color-line-purple-light);
+  color: var(--color-text-white);
+}
+
+.formInput {
+  border: var(--text-area-border) !important;
+  border-radius: 8px;
+}
+
+textarea {
+  all: unset;
+  padding: 8px 16px;
+  background: transparent;
+  border: var(--text-area-border);
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 240px;
+  caret-color: var(--color-line-purple-light);
+  color: var(--color-text-white);
 }
 
 button {
@@ -32,14 +49,24 @@ button {
   cursor: pointer;
   padding: 8px 16px;
   height: fit-content;
+
+  &:hover {
+    background: var(--color-bg-hover);
+  }
+
+  &[type="submit"] {
+    background-color:var(--color-bg-active);
+  }
+
+  &[type="button"] {
+    padding: 8px;
+    border: none;
+  }
 }
 
-button:hover {
-  background: var(--color-bg-hover);
-}
-
-button:active {
-  background: var(--color-bg-active-transparent);
+label {
+  font-size: var(--font-size-small);
+  margin-bottom: 8px;
 }
 
 .searchBar {
@@ -47,6 +74,23 @@ button:active {
   align-items: center;
   background-color: var(--color-bg-grey);
   backdrop-filter: blur(24px);
+}
+
+.tag {
+  padding: 0px 12px;
+  border: var(--button-border);
+  border-radius: 20px;
+  height: fit-content;
+  font-size: var(--font-size-medium);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+
+  button {
+    border: none !important;
+    padding: 0px !important;
+  }
 }
 
 .additionalInfoText {

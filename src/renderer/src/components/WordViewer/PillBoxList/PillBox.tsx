@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react'
-import './PillBox.css'
 
 interface PillBoxProps {
   text: string
@@ -15,8 +14,7 @@ function PillBox(props: PillBoxProps): React.JSX.Element {
   }
 
   return (
-    <div className="pillBox">
-      {' '}
+    <div className="tag">
       {text} {setTags && <button onClick={() => handleTagDelete()}>x</button>}
     </div>
   )
