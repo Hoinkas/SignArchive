@@ -4,7 +4,6 @@
   border-right: 1px solid #888888;
   width: 240px;
   height: 300px;
-  box-sizing: border-box;
   flex-shrink: 0;
   overflow: hidden;
 
@@ -20,7 +19,6 @@
   flex: 1;
   overflow-y: auto;
   min-height: 0;
-  scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
 }
 
 .bottomBox {

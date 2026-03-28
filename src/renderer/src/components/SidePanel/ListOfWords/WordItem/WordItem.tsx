@@ -31,7 +31,7 @@ function WordItem(props: WordProps): React.JSX.Element {
   return (
     <li className={className} onClick={() => setActiveWord(word)}>
       <div>{word.text}</div>
-      <div style={{ fontSize: '12px', color: 'grey' }}>
+      <div className="additionalInfoText">
         {meaningsCountText} - {signsCountText}
       </div>
     </li>

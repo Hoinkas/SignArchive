@@ -2,8 +2,8 @@ import './MeaningBox.css'
 import { Meaning, MeaningWithSignsDetails } from '@shared/types'
 import VariantBox from './VariantBox/VariantBox'
 import { useMemo, useState } from 'react'
-import ActionButtons from '../../WordTitle/ActionButtons/ActionButtons'
 import MeaningForm from '../../MeaningForm/MeaningForm'
+import ActionButton from '@renderer/components/ActionButton/ActionButton'
 
 interface MeaningBoxProps {
   meaningWithSigns: MeaningWithSignsDetails
@@ -45,7 +45,7 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           <div className="regionAndDate"> {years} </div>
           <div> {meaningWithSigns.notes} </div>
         </div>
-        <ActionButtons setIsFormOpen={setIsFormOpen} />
+        <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
       </div>
       <div className="variantList">
         {signs.map((sign, key) => (
