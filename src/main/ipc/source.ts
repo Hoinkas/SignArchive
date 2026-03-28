@@ -28,7 +28,7 @@ export function returnSourceDetailsById(
     ...source,
     signer: findSignerById(source.signerId),
     author: findAuthorById(source.authorId),
-    mediaFile: findMediaFileById(source.mediaFieldId)
+    mediaFile: findMediaFileById(source.mediaFileId)
   }
 }
 
@@ -41,8 +41,8 @@ export function createSource(data: SourceToDB): Source {
   }
   db.prepare(
     `
-    INSERT INTO source (id, createdAt, signerId, authorId, mediaFieldId, region, yearStart, yearEnd, notes)
-    VALUES (@id, @createdAt, @signerId, @authorId, @mediaFieldId, @region, @yearStart, @yearEnd, @notes)
+    INSERT INTO source (id, createdAt, signerId, authorId, mediaFileId, region, yearStart, yearEnd, notes)
+    VALUES (@id, @createdAt, @signerId, @authorId, @mediaFileId, @region, @yearStart, @yearEnd, @notes)
   `
   ).run(toSqlParams(source))
   return source

@@ -5,7 +5,7 @@ import type {
   Meaning,
   MeaningToDB,
   MeaningWithSignsDetails,
-  SignWithSourcesDetails
+  SignWithSourceDetails
 } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 import { findSignsIdsByMeaningId } from './meaningSign'
@@ -36,7 +36,7 @@ export function returnMeaningDetailsById(meaningId: string): MeaningWithSignsDet
   if (!meaning) return
 
   const signsIds = findSignsIdsByMeaningId(meaningId)
-  const signs: SignWithSourcesDetails[] = []
+  const signs: SignWithSourceDetails[] = []
 
   signsIds.forEach((signId) => {
     const signDetail = returnSignDetailsById(signId)

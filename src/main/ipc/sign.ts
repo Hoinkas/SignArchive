@@ -1,14 +1,9 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type {
-  Sign,
-  SignToDB,
-  SignWithSourcesDetails,
-  SourceWithSignerAuthorMediaFile
-} from '@shared/types'
+import type { Sign, SignToDB, SignWithSourceDetails } from '@shared/types'
 import { toSqlParams } from '../db/utils'
-import { findSourcesIdsBySignId } from './sourceSign'
+import { findMainSourceIdBySignId } from './sourceSign'
 import { returnSourceDetailsById } from './source'
 
 export function listAllSigns(): Sign[] {
@@ -37,22 +32,27 @@ export function returnSignsCountByWordId(wordId: string): number {
   return row.count
 }
 
-export function returnSignDetailsById(signId: string): SignWithSourcesDetails | undefined {
+export function returnSignDetailsById(signId: string): SignWithSourceDetails | undefined {
   const sign = findSignById(signId)
   if (!sign) return
 
-  const sourcesIds = findSourcesIdsBySignId(sign.id)
-  const sources: SourceWithSignerAuthorMediaFile[] = []
+  // const sourcesIds = findSourcesIdsBySignId(sign.id)
+  // const sources: SourceWithSignerAuthorMediaFile[] = []
 
-  sourcesIds.forEach((sourceId) => {
-    const sourceDetail = returnSourceDetailsById(sourceId)
-    if (!sourceDetail) return
-    sources.push(sourceDetail)
-  })
+  // sourcesIds.forEach((sourceId) => {
+  //   const mainSource = returnSourceDetailsById(sourceId)
+  //   if (!mainSource) return
+  //   sources.push(mainSource)
+  // })
+
+  const sourceId = findMainSourceIdBySignId(sign.id)
+  const mainSource = returnSourceDetailsById(sourceId)
+
+  if (!mainSource) return
 
   return {
     ...sign,
-    sources
+    mainSource
   }
 }
 
@@ -65,8 +65,8 @@ export function createSign(data: SignToDB): Sign {
   }
   db.prepare(
     `
-    INSERT INTO sign (id, createdAt)
-    VALUES (@id, @createdAt)
+    INSERT INTO sign (id, createdAt, notes)
+    VALUES (@id, @createdAt, @notes)
   `
   ).run(toSqlParams(sign))
   return sign

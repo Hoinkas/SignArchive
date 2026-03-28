@@ -1,19 +1,20 @@
 import './MeaningBox.css'
-import { Meaning, MeaningWithSignsDetails } from '@shared/types'
+import { Meaning, MeaningWithSignsDetails, SignWithSourceDetails } from '@shared/types'
 import { useMemo, useState } from 'react'
 import MeaningForm from '../../../../components/Form/Forms/MeaningForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
-import SignList from './SignList/SignList'
+import SignList from '../../SignList/SignList'
 
 interface MeaningBoxProps {
   meaningWithSigns: MeaningWithSignsDetails
   number: number
   setMeaningValues: (meaning: Meaning) => void
+  setSignValues: (meaningId: string, sign: SignWithSourceDetails) => void
 }
 
 function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
-  const { meaningWithSigns, number, setMeaningValues } = props
-  const signs = meaningWithSigns.signs
+  const { meaningWithSigns, number, setMeaningValues, setSignValues } = props
+
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   const years = useMemo(() => {
@@ -47,7 +48,10 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
         </div>
         <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
       </div>
-      <SignList signs={signs} />
+      <SignList
+        signs={meaningWithSigns.signs}
+        setSignValues={(sign) => setSignValues(meaningWithSigns.id, sign)}
+      />
     </div>
   )
 }

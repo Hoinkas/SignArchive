@@ -24,6 +24,7 @@ export type MeaningToDB = Omit<Meaning, 'id' | 'createdAt'>
 export interface Sign {
   id: string
   createdAt: string //ISO Date
+  notes: string
 }
 
 export type SignToDB = Omit<Sign, 'id' | 'createdAt'>
@@ -60,7 +61,7 @@ export interface Source {
   createdAt: string //ISO Date
   signerId: string
   authorId: string
-  mediaFieldId: string
+  mediaFileId: string
   region?: string
   yearStart?: number
   yearEnd?: number
@@ -79,6 +80,7 @@ export interface MeaningSign {
 export interface SourceSign {
   sourceId: string
   signId: string
+  isMainSource: boolean
 }
 
 // WORD with MEANINGS and SINGS count
@@ -97,12 +99,17 @@ export interface SourceWithSignerAuthorMediaFile extends Omit<
   mediaFile?: MediaFile
 }
 
-export interface SignWithSourcesDetails extends Sign {
+// export interface SignWithSourceDetails extends Sign {
+//   sources: SourceWithSignerAuthorMediaFile[]
+// }
+
+export interface SignWithSourceDetails extends Sign {
+  mainSource: SourceWithSignerAuthorMediaFile
   sources: SourceWithSignerAuthorMediaFile[]
 }
 
 export interface MeaningWithSignsDetails extends Meaning {
-  signs: SignWithSourcesDetails[]
+  signs: SignWithSourceDetails[]
 }
 
 export interface WordWithMeaningsDetails extends Word {

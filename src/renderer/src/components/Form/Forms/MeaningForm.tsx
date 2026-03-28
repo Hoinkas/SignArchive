@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import { FormType, Meaning } from '@shared/types'
 import {
-  FormButtons,
   FormMultiLineInput,
   FormSingleLineInput,
   FormModalWrapper

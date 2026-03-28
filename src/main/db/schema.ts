@@ -23,7 +23,8 @@ export function initSchema(db: Database.Database): void {
 
     CREATE TABLE IF NOT EXISTS sign (
       id                  TEXT PRIMARY KEY,
-      createdAt           TEXT NOT NULL
+      createdAt           TEXT NOT NULL,
+      notes               TEXT
     );
 
     CREATE TABLE IF NOT EXISTS meaningSign (
@@ -50,7 +51,7 @@ export function initSchema(db: Database.Database): void {
       createDate          TEXT NOT NULL,
       fileType            TEXT NOT NULL,
       filePath            TEXT NOT NULL,
-      online_url          TEXT
+      onlineUrl           TEXT
     );
 
     CREATE TABLE IF NOT EXISTS source (
@@ -58,7 +59,7 @@ export function initSchema(db: Database.Database): void {
       createdAt           TEXT NOT NULL,
       signerId            TEXT REFERENCES signer(id) ON DELETE SET NULL,
       authorId            TEXT REFERENCES author(id) ON DELETE SET NULL,
-      mediaFieldId        TEXT REFERENCES mediaFile(id) ON DELETE SET NULL,
+      mediaFileId         TEXT REFERENCES mediaFile(id) ON DELETE SET NULL,
       region              TEXT,
       yearStart           INTEGER,
       yearEnd             INTEGER,
@@ -68,6 +69,7 @@ export function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS sourceSign (
       sourceId            TEXT NOT NULL REFERENCES source(id) ON DELETE CASCADE,
       signId              TEXT NOT NULL REFERENCES sign(id) ON DELETE CASCADE,
+      isMainSource        INTEGER CHECK (isMainSource IN (0, 1)),
       PRIMARY KEY (sourceId, signId)
     );
   `)

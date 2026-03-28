@@ -1,11 +1,11 @@
-import { SetStateAction, SubmitEvent, useState } from 'react'
+import { SetStateAction, SubmitEvent, useRef, useState } from 'react'
 import './Form.css'
 import TagList from '../TagList/TagList'
 import AddTagForm from './Forms/AddTagForm'
 import { FormType } from '@shared/types'
 
 interface FormModalWrapperProps {
-  children: React.JSX.Element[]
+  children: React.JSX.Element[] | React.JSX.Element
   handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
   formType: FormType
   closeForm: () => void
@@ -25,7 +25,7 @@ export function FormModalWrapper(props: FormModalWrapperProps): React.JSX.Elemen
 }
 
 interface FormWrapperProps {
-  children: React.JSX.Element[]
+  children: React.JSX.Element[] | React.JSX.Element
   handleSubmit: (event: SubmitEvent<HTMLFormElement>) => void
   formType: FormType
   closeForm: () => void
@@ -126,6 +126,31 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
       <button type="button" onClick={() => closeForm()}>
         Anuluj
       </button>
+    </div>
+  )
+}
+
+interface FormMediaFileProps {
+  file: File | null
+  setFile: (file: File | null) => void
+}
+
+export function FormMediaFile({ file, setFile }: FormMediaFileProps): React.JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  return (
+    <div className="formGroup">
+      <label>Plik ze znakiem</label>
+      <button type="button" className="fileInput" onClick={() => inputRef.current?.click()}>
+        <span>{file ? file.name : 'Wybierz plik'}</span>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="video/*,image/*,text/*"
+        style={{ display: 'none' }}
+        onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+      />
     </div>
   )
 }

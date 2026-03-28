@@ -1,11 +1,11 @@
-import MediaPlayer from '../../../../../../components/MediaPlayer/MediaPlayer'
 import './SignBox.css'
-import { SignWithSourcesDetails } from '@shared/types'
+import { SignWithSourceDetails } from '@shared/types'
 import { useMemo } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
+import MediaPlayer from '@renderer/components/MediaPlayer/MediaPlayer'
 
 interface SignBoxProps {
-  sign: SignWithSourcesDetails
+  sign: SignWithSourceDetails
 }
 
 function SignBox(props: SignBoxProps): React.JSX.Element {
