@@ -5,6 +5,7 @@ import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
 import WordForm from '../WordForm/WordForm'
 import ActionButton from '../ActionButton/ActionButton'
+import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
 
 interface SidePanelProps {
   activeWord: Word | null
@@ -32,6 +33,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
 
   return (
     <div className="sidepanel">
+      <ThemeSwitch />
       <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
 
       <div

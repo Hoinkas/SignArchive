@@ -189,6 +189,13 @@
   --form-border: 1px solid var(--color-border-grey-transparent);
 
   --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.4);
+
+  --switch-bg-off:  var(--grey-900);
+  --switch-bg-on:   var(--grey-100);
+  --switch-fg-off:  var(--grey-100);
+  --switch-fg-on:   var(--grey-900);
+  --trans-dur: 0.3s;
+	--trans-timing: ease;
 }
 
 *,
@@ -243,3 +250,20 @@ h5 {
   font-size: var(--font-size-xs);
   line-height: var(--line-height-sm);
 } */
+
+[data-theme="light"] {
+  --color-bg-black: var(--grey-50);
+  --color-bg-grey-dark: var(--grey-100);
+  --color-bg-grey: var(--grey-200);
+
+  --color-text-white: var(--grey-900);
+  --color-text-grey: var(--grey-600);
+
+  --color-border-grey: var(--grey-300);
+  --color-border-grey-light: var(--grey-400);
+
+  --color-scroll: color-mix(in srgb, var(--grey-400) 60%, transparent);
+
+  --color-bg-black-transparent: color-mix(in srgb, var(--grey-200) 90%, transparent);
+  --color-bg-hover-transparent: color-mix(in srgb, var(--purple-grey-3) 15%, transparent);
+}
