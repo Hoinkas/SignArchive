@@ -14,7 +14,7 @@ body {
 		color var(--trans-dur);
 }
 
-input[type=text] {
+input {
   background-color: transparent;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
@@ -24,7 +24,7 @@ input[type=text] {
   border: none;
   outline: none;
   caret-color: var(--color-line-purple-light);
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
 .formInput {
@@ -41,14 +41,14 @@ textarea {
   overflow: auto;
   max-height: 240px;
   caret-color: var(--color-line-purple-light);
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
 button {
-  color: var(--color-text-white);
+  color: var(--color-text);
   border: var(--button-border);
   border-radius: var(--radius-md);
-  background: var(--color-bg-black);
+  background: var(--color-bg);
 
   cursor: pointer;
   padding: var(--space-2) var(--space-4);
@@ -56,16 +56,19 @@ button {
 }
 
 button:hover {
+  color: var(--color-text-active);
   background: var(--color-bg-hover);
 }
 
 button:active {
   transform: scale(0.97);
+  color: var(--color-text-active);
   background: var(--color-bg-active);
 }
 
 button[type="submit"] {
-  background-color:var(--color-bg-active);
+  color: var(--color-text-active);
+  background-color: var(--color-bg-active);
 }
 
 button[type="button"] {
@@ -81,8 +84,20 @@ label {
 .searchBar {
   overflow: hidden;
   align-items: center;
-  background-color: var(--color-bg-grey);
+  background-color: var(--color-bg-active);
   backdrop-filter: blur(var(--space-6));
+  border-radius: var(--radius-lg);
+  cursor: text;
+  height: var(--space-10);
+  padding: var(--space-4) 0;
+
+  & input {
+    color: var(--color-text-active);
+  }
+
+  & input::placeholder {
+    color: var(--color-text-active);
+  }
 }
 
 .tag {
@@ -103,19 +118,19 @@ label {
 }
 
 .additionalInfoText {
-  color: var(--color-text-grey);
+  color: var(--color-text-info);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sm)
 }
 
-:focus-visible {
+/* :focus-visible {
   outline: 2px solid var(--color-line-purple);
   outline-offset: 2px;
 }
 
 :focus:not(:focus-visible) {
   outline: none;
-}
+} */
 
 /* .logo {
   margin-bottom: var(--space-5);

@@ -24,7 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-bg-black-transparent);
+  background-color: var(--color-bg-transparent);
 }
 
 .formBox {
@@ -33,7 +33,7 @@
   min-width: 280px;
   height: 50%;
 
-  background-color: var(--color-bg-grey-dark);
+  background-color: var(--color-bg);
   border: var(--form-border);
   border-radius: var(--radius-lg);
   padding: var(--space-6);

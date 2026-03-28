@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --white: #FFFDE4;
-
   --grey-50:  #F8F8F9;
   --grey-100: #EDEDEF;
   --grey-200: #D4D4D8;
@@ -29,79 +27,12 @@
   --purple-800: #2208BA;
   --purple-900: #160594;
 
+  --purple-grey-6: #1e1e2e;
   --purple-grey-5: #202127;
   --purple-grey-4: #291F5B;
   --purple-grey-3: #331D8E;
   --purple-grey-2: #3C1BC2;
   --purple-grey-1: #4519F5;
-
-  --purple-dark: #1e1e2e;
-
-  --red-50:  #FFEBF0;
-  --red-100: #FED2DD;
-  --red-200: #FBACBD;
-  --red-300: #F78298;
-  --red-400: #F3586F;
-  --red-500: #EF2E45;
-  --red-600: #E21227;
-  --red-700: #B90E19;
-  --red-800: #940A11;
-  --red-900: #6F060A;
-
-  --orange-50:  #FEF5EC;
-  --orange-100: #FCEBDA;
-  --orange-200: #F6D6B6;
-  --orange-300: #EEBF95;
-  --orange-400: #E7A674;
-  --orange-500: #DF9058;
-  --orange-600: #D77437;
-  --orange-700: #C05C26;
-  --orange-800: #9F491E;
-  --orange-900: #7E3515;
-
-  --brown-50:  #FDF5D3;
-  --brown-100: #FAECAD;
-  --brown-200: #F1D05B;
-  --brown-300: #EDC540;
-  --brown-400: #EAB41F;
-  --brown-500: #D79F14;
-  --brown-600: #B68411;
-  --brown-700: #9B6E0D;
-  --brown-800: #7B5309;
-  --brown-900: #603F06;
-
-  --green-50:  #F7FEE7;
-  --green-100: #ECFBCB;
-  --green-200: #D6F49A;
-  --green-300: #BCEB6B;
-  --green-400: #9FE23C;
-  --green-500: #81C81E;
-  --green-600: #5D9915;
-  --green-700: #4B7F10;
-  --green-800: #3C6A0C;
-  --green-900: #2A4F07;
-
-  --light-green-50:  #E7FDF3;
-  --light-green-100: #D5FCE9;
-  --light-green-200: #A9F4CF;
-  --light-green-300: #83ECB4;
-  --light-green-400: #59E395;
-  --light-green-500: #33DB76;
-  --light-green-600: #21BA5C;
-  --light-green-700: #189544;
-  --light-green-800: #127834;
-  --light-green-900: #0B5B24;
-
-  --blue-50:  #E8FBFC;
-  --blue-100: #D3F6F8;
-  --blue-200: #AFE9EF;
-  --blue-300: #88D8E2;
-  --blue-400: #62C4D5;
-  --blue-500: #40B2C9;
-  --blue-600: #2E90A8;
-  --blue-700: #25778E;
-  --blue-800: #1C5F73;
-  --blue-900: #134658;
 }
 
 :root {
@@ -111,12 +42,12 @@
   --line-height-base: 1.6;
   --line-height-sm: 1.2;
 
-  --font-size-xs: 0.75rem; /* var(--space-3) — daty, meta */
+  --font-size-xs: 0.75rem; /* 12px — daty, meta */
   --font-size-sm: 0.875rem; /* 14px — labels, tagi */
-  --font-size-base: 1rem; /* var(--space-4) */
+  --font-size-base: 1rem; /* 16px */
   --font-size-lg: 1.125rem; /* 18px */
-  --font-size-xl: 1.5rem; /* var(--space-6) */
-  --font-size-xxl: 2rem; /* var(--space-8) */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-xxl: 2rem; /* 32px */
 }
 
 :root {
@@ -145,47 +76,60 @@
 
   /* COLORS */
 
-  /* info */
-  --color-error: var(--red-500);
-  --color-warning: var(--orange-500);
-  --color-success: var(--light-green-500);
-  --color-info: var(--blue-500);
-
   /* base bg */
-  --color-bg-black: var(--grey-900);
-  --color-bg-black-transparent: color-mix(in srgb, var(--grey-900) 90%, transparent);
-  --color-bg-grey-dark: var(--grey-800);
-  --color-bg-grey: var(--grey-700);
+  --color-bg-light: var(--grey-50);
+  --color-bg-light-transparent: color-mix(in srgb, var(--grey-50) 90%, transparent);
+
+  --color-bg-dark: var(--grey-900);
+  --color-bg-dark-transparent: color-mix(in srgb, var(--grey-900) 90%, transparent);
+
   --color-bg-purple-transparent: color-mix(in srgb, var(--purple-grey-3) 30%, transparent);
 
   /* state bg */
-  --color-bg-active: var(--purple-grey-2);
-  --color-bg-active-transparent: color-mix(in srgb, var(--purple-grey-4) 20%, transparent);
+  --color-bg-active-dark: var(--purple-grey-2);
+  --color-bg-active-transparent-dark: color-mix(in srgb, var(--purple-grey-4) 20%, transparent);
+  --color-bg-active-light: var(--purple-grey-3);
+  --color-bg-active-transparent-light: color-mix(in srgb, var(--purple-grey-3) 20%, transparent);
 
-  --color-bg-hover: var(--purple-grey-3);
-  --color-bg-hover-transparent: color-mix(in srgb, var(--purple-grey-3) 70%, transparent);
+  --color-bg-hover-dark: var(--purple-grey-3);
+  --color-bg-hover-transparent-dark: color-mix(in srgb, var(--purple-grey-3) 70%, transparent);
+  --color-bg-hover-light: var(--purple-grey-2);
+  --color-bg-hover-transparent-light: color-mix(in srgb, var(--purple-grey-2) 70%, transparent);
+
+  --color-bg-active-dark: var(--purple-grey-3);
+  --color-bg-active-light: var(--purple-300);
 
   /* other */
   --color-line-purple: var(--purple-500);
   --color-line-purple-light: var(--purple-400);
-  --color-line-white: var(--white);
+  --color-line-light: var(--grey-200);
 
-  --color-border-grey: var(--grey-700);
-  --color-border-grey-light: var(--grey-400);
+  --color-border-dark: var(--grey-600);
+  --color-border-light: var(--grey-200);
+
+  --color-border-text-area-dark: var(--grey-400);
+  --color-border-text-area-light: var(--grey-400);
+
   --color-border-grey-transparent: color-mix(in srgb, var(--grey-700) 90%, transparent);
   --color-border-purple: var(--purple-grey-3);
 
-  --color-text-white: var(--white);
+  --color-text-light: var(--grey-500);
   --color-text-purple: var(--purple-500);
-  --color-text-grey: var(--grey-400);
+  --color-text-dark: var(--grey-100);
 
-  --color-scroll: color-mix(in srgb, var(--grey-700) 60%, transparent);
+  --color-text-info: var(--grey-400);
+
+  --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
+  --color-scroll-light: color-mix(in srgb, var(--grey-400) 60%, transparent);
 }
 
 :root {
+  --color-border: var(--color-border-dark);
+  --color-border-text-area: var(--color-border-text-area-dark);
+
   --button-border: 3px solid var(--color-border-purple);
-  --line-border: 2px solid var(--color-border-grey);
-  --text-area-border: 2px solid var(--color-border-grey-light);
+  --line-border: 2px solid var(--color-border);
+  --text-area-border: 2px solid var(--color-border-text-area);
   --form-border: 1px solid var(--color-border-grey-transparent);
 
   --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.4);
@@ -196,6 +140,22 @@
   --switch-fg-on:   var(--grey-900);
   --trans-dur: 0.3s;
 	--trans-timing: ease;
+
+  --color-text: var(--color-text-dark);
+  --color-text-active: var(--color-text-dark);
+
+  --color-bg: var(--color-bg-dark);
+  --color-bg-transparent: var(--color-bg-dark-transparent);
+
+  --color-bg-active: var(--color-bg-active-dark);
+
+  --color-scroll: var(--color-scroll-dark);
+
+  --color-bg-active: var(--color-bg-active-dark);
+  --color-bg-active-transparent: var(--color-bg-active-transparent-dark);
+
+  --color-bg-hover: var(--color-bg-hover-dark);
+  --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
 }
 
 *,
@@ -214,8 +174,8 @@ ul {
 
 body {
   min-height: 100vh;
-  color: var(--color-text-white);
-  background-color: var(--color-bg-black);
+  color: var(--color-text);
+  background-color: var(--color-bg);
 
   scrollbar-color: var(--color-scroll) transparent;
 
@@ -243,7 +203,7 @@ h4 {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sm);
 
-  color: var(--color-text-grey);
+  color: var(--color-text-dark);
 }
 
 h5 {
@@ -252,18 +212,23 @@ h5 {
 } */
 
 [data-theme="light"] {
-  --color-bg-black: var(--grey-50);
-  --color-bg-grey-dark: var(--grey-100);
-  --color-bg-grey: var(--grey-200);
+  --color-text: var(--color-text-light);
 
-  --color-text-white: var(--grey-900);
-  --color-text-grey: var(--grey-600);
+  --color-bg: var(--color-bg-light);
+  --color-bg-transparent: var(--color-bg-light-transparent);
 
-  --color-border-grey: var(--grey-300);
-  --color-border-grey-light: var(--grey-400);
+  --color-bg-active: var(--color-bg-active-light);
 
-  --color-scroll: color-mix(in srgb, var(--grey-400) 60%, transparent);
+  --color-bg-active: var(--color-bg-active-light);
+  --color-bg-active-transparent: var(--color-bg-active-transparent-light);
 
-  --color-bg-black-transparent: color-mix(in srgb, var(--grey-200) 90%, transparent);
-  --color-bg-hover-transparent: color-mix(in srgb, var(--purple-grey-3) 15%, transparent);
+  --color-bg-hover: var(--color-bg-hover-light);
+  --color-bg-hover-transparent: var(--color-bg-hover-transparent-light);
+
+  --color-border: var(--color-border-light);
+  --color-border-text-area: var(--color-border-text-area-light);
+
+  --color-scroll: var(--color-scroll-light);
+
+  --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.2);
 }
