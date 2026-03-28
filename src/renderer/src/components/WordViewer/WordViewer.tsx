@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import './WordViewer.css'
 import { Meaning, Word, WordWithMeaningsDetails } from '@shared/types'
 import WordTitle from './WordTitle/WordTitle'
-import AddButton from '../AddButton/AddButton'
 import MeaningForm from './MeaningForm/MeaningForm'
 import MeaningList from './MeaningList/MeaningList'
+import ActionButton from '../ActionButton/ActionButton'
 
 interface WordViewerProps {
   word: Word
@@ -42,8 +42,8 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
       <WordTitle word={wordDetails} setWordValues={setWordValues} />
       <MeaningList wordDetails={wordDetails} setMeaningValues={setMeaningValues} />
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <AddButton formVariant="meaning" setIsFormOpen={setIsFormOpen} />
+      <div className="actionButton">
+        <ActionButton text="Dodaj znaczenie" setIsFormOpen={setIsFormOpen} />
       </div>
 
       {isFormOpen && (

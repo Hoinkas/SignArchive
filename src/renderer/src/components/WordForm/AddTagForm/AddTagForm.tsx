@@ -16,7 +16,12 @@ function AddTagForm({ handleTagAdd, setIsTagFormOpen }: AddTagFormProps): React.
 
   return (
     <div className="addTagForm">
-      <input type="text" value={tag} onChange={(event) => setTag(event.target.value)} />
+      <input
+        className="formInput"
+        type="text"
+        value={tag}
+        onChange={(event) => setTag(event.target.value)}
+      />
       <button type="submit" onClick={() => handleAddTagForm()}>
         Dodaj
       </button>

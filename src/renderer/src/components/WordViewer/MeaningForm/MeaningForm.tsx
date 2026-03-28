@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
-import './MeaningForm.css'
 import { FormType, Meaning } from '@shared/types'
 
 interface MeaningFormProps {
@@ -40,30 +39,29 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      <div className="formBox">
-        <form onSubmit={handleSubmit}>
-          <div className="formGroup">
-            <label>Znaczenie</label>
-            <input
-              type="text"
-              value={context}
-              onChange={(event) => setContext(event.target.value)}
-            />
-          </div>
-          <div className="formGroup">
-            <label>Definicja</label>
-            <textarea onChange={(event) => setNotes(event.target.value)} value={notes} />
-          </div>
-          <div className="buttonGroup">
-            <button type="submit">
-              {formType === 'edit' ? 'Zapisz znaczenie' : 'Dodaj znaczenie'}
-            </button>
-            <button type="reset" onClick={() => closeForm()}>
-              Anuluj
-            </button>
-          </div>
-        </form>
-      </div>
+      <form className="formBox" onSubmit={handleSubmit}>
+        <div className="formGroup">
+          <label>Znaczenie</label>
+          <input
+            className="formInput"
+            type="text"
+            value={context}
+            onChange={(event) => setContext(event.target.value)}
+          />
+        </div>
+        <div className="formGroup">
+          <label>Definicja</label>
+          <textarea onChange={(event) => setNotes(event.target.value)} value={notes} />
+        </div>
+        <div className="buttonGroup">
+          <button type="submit">
+            {formType === 'edit' ? 'Zapisz znaczenie' : 'Dodaj znaczenie'}
+          </button>
+          <button type="reset" onClick={() => closeForm()}>
+            Anuluj
+          </button>
+        </div>
+      </form>
     </div>
   )
 }

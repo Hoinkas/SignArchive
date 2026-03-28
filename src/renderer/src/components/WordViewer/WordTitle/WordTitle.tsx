@@ -3,7 +3,7 @@ import PillBoxList from '../PillBoxList/PillBoxList'
 import './WordTitle.css'
 import { Word } from '@shared/types'
 import WordTitleForm from '../../WordForm/WordForm'
-import ActionButtons from './ActionButtons/ActionButtons'
+import ActionButton from '@renderer/components/ActionButton/ActionButton'
 
 interface WordTitleProps {
   word: Word
@@ -27,7 +27,7 @@ function WordTitle(props: WordTitleProps): React.JSX.Element {
         <div>
           <div className="wordTitleWithButtons">
             <h1>{word.text}</h1>
-            <ActionButtons setIsFormOpen={setIsFormOpen} />
+            <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
           </div>
           <div className="wordTitleDetails">
             {word.definition && <div>{word.definition}</div>}

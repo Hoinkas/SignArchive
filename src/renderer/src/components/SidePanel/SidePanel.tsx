@@ -3,8 +3,9 @@ import SearchBar from './SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
 import ListOfWords from './ListOfWords/ListOfWords'
-import AddButton from '../AddButton/AddButton'
 import WordForm from '../WordForm/WordForm'
+import ActionButton from '../ActionButton/ActionButton'
+import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
 
 interface SidePanelProps {
   activeWord: Word | null
@@ -32,8 +33,20 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
 
   return (
     <div className="sidepanel">
+      <ThemeSwitch />
       <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
-      <AddButton formVariant="word" setIsFormOpen={setIsFormOpen} />
+
+      <div
+        style={{
+          margin: '0px var(--space-8) var(--space-4) var(--space-8)',
+          maxWidth: '240px',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
+        <ActionButton text="Dodaj słowo" setIsFormOpen={setIsFormOpen} />
+      </div>
+
       <ListOfWords
         searchWord={searchWord}
         activeWord={activeWord}

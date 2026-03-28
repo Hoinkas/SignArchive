@@ -9,17 +9,17 @@ interface SearchBarProps {
 function SearchBar(props: SearchBarProps): React.JSX.Element {
   const { searchWord, setSearchWord } = props
 
-  const handleNameChange = (event): void => {
-    setSearchWord(event.target.value)
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchWord(e.target.value.replaceAll('\u00A0', '').trimEnd())
   }
 
   return (
-    <div className="searchbar">
+    <div className="searchBar">
       <input
         type="text"
         placeholder="Wyszukaj znaki.."
         value={searchWord}
-        onChange={(e) => handleNameChange(e)}
+        onChange={handleNameChange}
       />
     </div>
   )

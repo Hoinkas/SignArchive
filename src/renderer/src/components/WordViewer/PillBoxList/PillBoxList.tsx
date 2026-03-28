@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import PillBox from './PillBox/PillBox'
+import PillBox from './PillBox'
 import './PillBoxList.css'
 
 interface PillBoxListProps {

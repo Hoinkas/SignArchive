@@ -1,26 +1,20 @@
 .variantBox {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #888888;
+  border-right: var(--line-border);
   width: 240px;
   height: 300px;
-  box-sizing: border-box;
   flex-shrink: 0;
   overflow: hidden;
-
-  &.active {
-    background-color: rgb(95, 84, 221, 0.5);
-  }
 }
 
 .variantDetails {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   display: flex;
   flex-direction: column;
   flex: 1;
   overflow-y: auto;
   min-height: 0;
-  scrollbar-color: rgb(255, 255, 255, 0.1) transparent;
 }
 
 .bottomBox {
@@ -28,8 +22,4 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-
-  button {
-    background-color: grey;
-  }
 }
