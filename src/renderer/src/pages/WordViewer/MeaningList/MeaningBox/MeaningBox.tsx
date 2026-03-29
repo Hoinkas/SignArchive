@@ -1,6 +1,6 @@
 import './MeaningBox.css'
 import { Meaning, MeaningWithSignsDetails, SignWithSourceDetails } from '@shared/types'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import MeaningForm from '../../../../components/Form/Forms/MeaningForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SignList from '../../SignList/SignList'
@@ -17,16 +17,19 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
 
   const [isFormOpen, setIsFormOpen] = useState(false)
 
-  // const years = useMemo(() => {
-  //   const allSources = meaningWithSigns.signs.flatMap((sign) => sign.sources)
-  //   const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
+  const years = useMemo(() => {
+    const allSources = meaningWithSigns.signs.flatMap((sign) => sign.source)
+    const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
 
-  //   const yearStart = years.length > 0 ? Math.min(...years) : null
-  //   const yearEnd = years.length > 0 ? Math.max(...years) : null
+    if (years.length === 0) return 'brak roku'
+    if (years.length === 1) return years[0]
 
-  //   if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
-  //   return yearStart || yearEnd || 'brak roku'
-  // }, [meaningWithSigns.signs])
+    const yearStart = years.length > 0 ? Math.min(...years) : null
+    const yearEnd = years.length > 0 ? Math.max(...years) : null
+
+    if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
+    return yearStart || yearEnd || 'brak roku'
+  }, [meaningWithSigns.signs])
 
   return (
     <div className="meaningBox">
@@ -43,7 +46,7 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           <div>
             Znaczenie {number + 1} - {meaningWithSigns.context}
           </div>
-          <div className="additionalInfoText"> {0} </div>
+          <div className="additionalInfoText"> {years} </div>
           <div> {meaningWithSigns.notes} </div>
         </div>
         <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />

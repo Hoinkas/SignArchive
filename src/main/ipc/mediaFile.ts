@@ -1,8 +1,7 @@
-import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { MediaFile, MediaFileToDB } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import toSqlParams from '../utils/toSqlParams'
 
 export function listAllMediaFiles(): MediaFile[] {
   const rows = getDb().prepare('SELECT * FROM mediaFile ORDER BY createdAt DESC').all()
@@ -34,8 +33,8 @@ export function deleteMediaFileById(id: string): void {
 }
 
 export function registerMediaFileHandlers(): void {
-  ipcMain.handle('mediaFile:list', () => listAllMediaFiles())
-  ipcMain.handle('mediaFile:find', (_, signId: string) => findMediaFileById(signId))
-  ipcMain.handle('mediaFile:create', (_, data: MediaFileToDB) => createMediaFile(data))
-  ipcMain.handle('mediaFile:delete', (_, id: string) => deleteMediaFileById(id))
+  // ipcMain.handle('mediaFile:list', () => listAllMediaFiles())
+  // ipcMain.handle('mediaFile:find', (_, signId: string) => findMediaFileById(signId))
+  // ipcMain.handle('mediaFile:create', (_, data: MediaFileToDB) => createMediaFile(data))
+  // ipcMain.handle('mediaFile:delete', (_, id: string) => deleteMediaFileById(id))
 }

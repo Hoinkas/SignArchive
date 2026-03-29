@@ -94,9 +94,9 @@ export interface SourceWithSignerAuthorMediaFile extends Omit<
   Source,
   'signerId' | 'authorId' | 'mediaFileId'
 > {
-  signer?: Signer
-  author?: Author
-  mediaFile?: MediaFile
+  signer: Signer
+  author: Author
+  mediaFile: MediaFile
 }
 
 // export interface SignWithSourceDetails extends Sign {

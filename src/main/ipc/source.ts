@@ -7,7 +7,7 @@ import type {
   SourceWithSignerAuthorMediaFile,
   YearStartEnd
 } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import toSqlParams from '../utils/toSqlParams'
 import { findSignerById } from './signer'
 import { findAuthorById } from './author'
 import { findMediaFileById } from './mediaFile'
@@ -59,11 +59,17 @@ export function returnSourceDetailsById(
   const source = findSourceById(sourceId)
   if (!source) return
 
+  const author = findAuthorById(source.authorId)
+  const signer = findSignerById(source.signerId)
+  const mediaFile = findMediaFileById(source.mediaFileId)
+
+  if (!author || !signer || !mediaFile) return
+
   return {
     ...source,
-    signer: findSignerById(source.signerId),
-    author: findAuthorById(source.authorId),
-    mediaFile: findMediaFileById(source.mediaFileId)
+    signer,
+    author,
+    mediaFile
   }
 }
 
@@ -89,7 +95,7 @@ export function deleteSourceById(id: string): void {
 
 export function registerSourceHandlers(): void {
   ipcMain.handle('source:list', () => listAllSources())
-  ipcMain.handle('source:find', (_, id: string) => findSourceById(id))
-  ipcMain.handle('source:create', (_, data: SourceToDB) => createSource(data))
-  ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))
+  // ipcMain.handle('source:find', (_, id: string) => findSourceById(id))
+  // ipcMain.handle('source:create', (_, data: SourceToDB) => createSource(data))
+  // ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))
 }

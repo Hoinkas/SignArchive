@@ -2,13 +2,20 @@ import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { Sign, SignToDB, SignWithDetailsToDB, SignWithSourceDetails } from '@shared/types'
-import { toSqlParams } from '../db/utils'
-import { getSourcesStartEndYearBySignId, findMainSourceBySignId, createSource } from './source'
+import toSqlParams from '../utils/toSqlParams'
+import {
+  getSourcesStartEndYearBySignId,
+  findMainSourceBySignId,
+  createSource,
+  returnSourceDetailsById
+} from './source'
 import { createMeaningSign } from './meaningSign'
 import { createMediaFile } from './mediaFile'
 import { createAuthor } from './author'
 import { createSigner } from './signer'
 import { createSourceSign } from './sourceSign'
+import { handlerWithErrorLogging } from '../utils/errorHandler'
+import validateId from '../utils/validateId'
 
 export function listAllSigns(): Sign[] {
   const db = getDb()
@@ -40,6 +47,8 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
   const sign = findSignById(signId)
   if (!sign) return
 
+  validateId(signId)
+
   // const sourcesIds = findSourcesIdsBySignId(sign.id)
   // const sources: SourceWithSignerAuthorMediaFile[] = []
 
@@ -52,11 +61,14 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
   const source = findMainSourceBySignId(sign.id)
   if (!source) return
 
+  const sourceWithDetails = returnSourceDetailsById(source.id)
+  if (!sourceWithDetails) return
+
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignId(sign.id)
 
   return {
     ...sign,
-    source,
+    source: sourceWithDetails,
     yearStart,
     yearEnd
   }
@@ -120,15 +132,17 @@ export function createSignWithSourceDetails(
   return transaction()
 }
 
-export function updateSign(meaningId: string, data: Partial<SignToDB>): Sign | undefined {
-  const existing = findSignById(meaningId)
-  if (!existing) return undefined
+export function updateSign(signId: string, data: Partial<SignToDB>): Sign | undefined {
+  const existing = findSignById(signId)
+  if (!existing) return
+
+  validateId(signId)
 
   const updated: Sign = { ...existing, ...data }
   getDb()
     .prepare(
       `
-        UPDATE meaning
+        UPDATE sign
         SET notes = @notes
         WHERE id = @id
       `
@@ -142,11 +156,15 @@ export function deleteSignById(id: string): void {
 }
 
 export function registerSignHandlers(): void {
-  ipcMain.handle('sign:list', () => listAllSigns())
-  ipcMain.handle('sign:find', (_, id: string) => findSignById(id))
-  ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
-    updateSign(singId, data)
+  // ipcMain.handle('sign:list', () => listAllSigns())
+  // ipcMain.handle('sign:find', (_, id: string) => findSignById(id))
+  ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
+    handlerWithErrorLogging(() => createSignWithSourceDetails(data))
   )
-  ipcMain.handle('sign:create', (_, data: SignWithDetailsToDB) => createSignWithSourceDetails(data))
-  ipcMain.handle('sign:delete', (_, id: string) => deleteSignById(id))
+  ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
+    handlerWithErrorLogging(() => updateSign(singId, data))
+  )
+  ipcMain.handle('sign:delete', (_, id: string) =>
+    handlerWithErrorLogging(() => deleteSignById(id))
+  )
 }

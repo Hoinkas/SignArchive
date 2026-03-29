@@ -1,6 +1,6 @@
 import { getDb } from '../db/client'
 import type { SourceSign } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import toSqlParams from '../utils/toSqlParams'
 
 export function findSourcesIdsBySignId(id: string): string[] {
   const row = getDb().prepare('SELECT * FROM sourceSign WHERE signId = ?').all(id) as SourceSign[]

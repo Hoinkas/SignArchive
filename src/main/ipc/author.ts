@@ -1,8 +1,9 @@
-import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { Author, AuthorToDB } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import toSqlParams from '../utils/toSqlParams'
+import { ipcMain } from 'electron'
+import { handlerWithErrorLogging } from '../utils/errorHandler'
 
 export function listAllAuthors(): Author[] {
   const db = getDb()
@@ -36,8 +37,8 @@ export function deleteAuthorById(id: string): void {
 }
 
 export function registerAuthorHandlers(): void {
-  ipcMain.handle('author:list', () => listAllAuthors())
-  ipcMain.handle('author:find', (_, id: string) => findAuthorById(id))
-  ipcMain.handle('author:create', (_, data: AuthorToDB) => createAuthor(data))
-  ipcMain.handle('author:delete', (_, id: string) => deleteAuthorById(id))
+  ipcMain.handle('author:list', () => handlerWithErrorLogging(listAllAuthors))
+  // ipcMain.handle('author:find', (_, id: string) => findAuthorById(id))
+  // ipcMain.handle('author:create', (_, data: AuthorToDB) => createAuthor(data))
+  // ipcMain.handle('author:delete', (_, id: string) => deleteAuthorById(id))
 }

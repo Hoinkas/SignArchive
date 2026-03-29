@@ -71,5 +71,13 @@ export function initSchema(db: Database.Database): void {
       isMainSource        INTEGER CHECK (isMainSource IN (0, 1)),
       PRIMARY KEY (sourceId, signId)
     );
+
+    CREATE INDEX IF NOT EXISTS idx_meaning_wordId ON meaning(wordId);
+    CREATE INDEX IF NOT EXISTS idx_meaningSign_signId ON meaningSign(signId);
+    CREATE INDEX IF NOT EXISTS idx_meaningSign_meaningId ON meaningSign(meaningId);
+    CREATE INDEX IF NOT EXISTS idx_sourceSign_signId ON sourceSign(signId);
+    CREATE INDEX IF NOT EXISTS idx_sourceSign_sourceId ON sourceSign(sourceId);
+    CREATE INDEX IF NOT EXISTS idx_source_signerId ON source(signerId);
+    CREATE INDEX IF NOT EXISTS idx_source_authorId ON source(authorId);
   `)
 }

@@ -1,4 +1,4 @@
-export function toSqlParams(obj: object): Record<string, unknown> {
+function toSqlParams(obj: object): Record<string, unknown> {
   const result: Record<string, unknown> = {}
   for (const key of Object.keys(obj)) {
     const value = (obj as Record<string, unknown>)[key]
@@ -6,3 +6,5 @@ export function toSqlParams(obj: object): Record<string, unknown> {
   }
   return result
 }
+
+export default toSqlParams

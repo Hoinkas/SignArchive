@@ -1,6 +1,6 @@
 import { getDb } from '../db/client'
 import type { MeaningSign } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import toSqlParams from '../utils/toSqlParams'
 
 export function findMeaningsIdsBySignId(id: string): string[] {
   const row = getDb().prepare('SELECT * FROM meaningSign WHERE signId = ?').all(id) as MeaningSign[]
