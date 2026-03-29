@@ -19,7 +19,7 @@ pnpm dev
 ```
 
 ## To do
-- [ ] Sign editing
+- [x] Sign editing
 - [ ] Adding existing sign to different meaning and/or word
 - [ ] Source adding to one sign
 - [ ] Sidepanel for each source declared in sign
