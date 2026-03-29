@@ -17,7 +17,7 @@ function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX
   return (
     <div className="signList">
       {signs.map((sign, key) => (
-        <SignBox key={key} sign={sign} />
+        <SignBox key={key} sign={sign} setSignValues={setSignValues} />
       ))}
       {isFormOpen ? (
         <AddSignForm

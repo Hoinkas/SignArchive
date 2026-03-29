@@ -1,12 +1,6 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import { FormType, Word } from '@shared/types'
-import {
-  FormButtons,
-  FormMultiLineInput,
-  FormSingleLineInput,
-  FormTags,
-  FormWrapper
-} from '../Form'
+import { FormMultiLineInput, FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 
 interface WordFormProps {
   word?: Word

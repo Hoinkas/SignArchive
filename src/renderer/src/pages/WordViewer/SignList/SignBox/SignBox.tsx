@@ -2,22 +2,22 @@ import './SignBox.css'
 import { SignWithSourceDetails } from '@shared/types'
 import TagList from '@renderer/components/TagList/TagList'
 import MediaPlayer from '@renderer/components/MediaPlayer/MediaPlayer'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import EditSignForm from '@renderer/components/Form/Forms/EditSignForm'
 
 interface SignBoxProps {
   sign: SignWithSourceDetails
+  setSignValues: (sign: SignWithSourceDetails) => void
 }
 
-function SignBox(props: SignBoxProps): React.JSX.Element {
-  const { sign } = props
-
-  const pillText: string[] = []
+function SignBox({ sign, setSignValues }: SignBoxProps): React.JSX.Element {
+  const [isFormOpen, setIsFormOpen] = useState(false)
 
   const source = sign.source
-  const mediaFile = source.mediaFile
-  const notes = sign.notes ?? ''
 
-  // const signerNameSurname = signer ? signer.name + ' ' + signer.surname : 'Migacz nieznany'
+  const pillText: string[] = []
+  if (source.region) pillText.push(source.region)
 
   const years = useMemo(() => {
     // const years = sign.sources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
@@ -33,14 +33,26 @@ function SignBox(props: SignBoxProps): React.JSX.Element {
 
   return (
     <div className="signBox">
-      {mediaFile && <MediaPlayer mediaFile={mediaFile} />}
+      <MediaPlayer mediaFile={source.mediaFile} />
       <div className="variantDetails">
         <div className="additionalInfoText">
           {source.author?.name} · {years}
         </div>
-        <h4>{notes}</h4>
+        {isFormOpen ? (
+          <EditSignForm
+            sign={sign}
+            setSignValues={setSignValues}
+            formType="edit"
+            setIsFormOpen={setIsFormOpen}
+          />
+        ) : (
+          <h4>{sign.notes}</h4>
+        )}
         <div className="bottomBox">
           <TagList textArray={pillText} />
+        </div>
+        <div style={{ margin: '0 auto' }}>
+          {!isFormOpen && <ActionButton text={'Edytuj'} setIsFormOpen={setIsFormOpen} />}
         </div>
       </div>
     </div>
