@@ -48,13 +48,12 @@ export type AuthorToDB = Omit<Author, 'id' | 'createdAt'>
 
 export interface MediaFile {
   id: string
-  createdAt: string //ISO Date
+  createDate: string //ISO Date
   fileType: string
   filePath: string
-  onlineUrl?: string
 }
 
-export type MediaFileToDB = Omit<MediaFile, 'id' | 'createdAt'>
+export type MediaFileToDB = Omit<MediaFile, 'id'>
 
 export interface Source {
   id: string
@@ -69,6 +68,7 @@ export interface Source {
 }
 
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
+export type SourceToCreate = Omit<SourceToDB, 'signerId' | 'authorId' | 'mediaFileId'>
 
 //MEANING - SIGN connection table
 export interface MeaningSign {
@@ -80,7 +80,7 @@ export interface MeaningSign {
 export interface SourceSign {
   sourceId: string
   signId: string
-  isMainSource: boolean
+  isMainSource: 0 | 1
 }
 
 // WORD with MEANINGS and SINGS count
@@ -103,9 +103,13 @@ export interface SourceWithSignerAuthorMediaFile extends Omit<
 //   sources: SourceWithSignerAuthorMediaFile[]
 // }
 
-export interface SignWithSourceDetails extends Sign {
-  mainSource: SourceWithSignerAuthorMediaFile
-  sources: SourceWithSignerAuthorMediaFile[]
+export interface YearStartEnd {
+  yearStart: number | null
+  yearEnd: number | null
+}
+
+export interface SignWithSourceDetails extends Sign, YearStartEnd {
+  source: SourceWithSignerAuthorMediaFile
 }
 
 export interface MeaningWithSignsDetails extends Meaning {
@@ -114,4 +118,13 @@ export interface MeaningWithSignsDetails extends Meaning {
 
 export interface WordWithMeaningsDetails extends Word {
   meanings: MeaningWithSignsDetails[]
+}
+
+export interface SignWithDetailsToDB {
+  meaningId: string
+  sign: SignToDB
+  mediaFile: MediaFileToDB
+  author: AuthorToDB
+  signer: SignerToDB
+  source: SourceToCreate
 }

@@ -30,16 +30,16 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
     event.preventDefault()
 
     if (formType == 'add' && wordId) {
-      window.api.meaning
-        .create({ wordId, context, notes })
-        .then((meaning) => setMeaningValues(meaning))
+      window.api.meaning.create({ wordId, context, notes }).then((meaning) => {
+        setMeaningValues(meaning)
+        closeForm()
+      })
     } else if (formType == 'edit' && meaning) {
-      window.api.meaning
-        .update(meaning.id, { context, notes })
-        .then((meaning) => setMeaningValues(meaning))
+      window.api.meaning.update(meaning.id, { context, notes }).then((meaning) => {
+        setMeaningValues(meaning)
+        closeForm()
+      })
     }
-
-    closeForm()
   }
 
   return (

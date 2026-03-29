@@ -28,9 +28,14 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   const setMeaningValues = (meaning: Meaning): void => {
     setWordDetails((prevState) => {
       if (!prevState) return null
+
+      const exists = prevState.meanings.some((m) => m.id === meaning.id)
+
       return {
         ...prevState,
-        meanings: prevState.meanings.map((m) => (m.id === meaning.id ? { ...m, ...meaning } : m))
+        meanings: exists
+          ? prevState.meanings.map((m) => (m.id === meaning.id ? { ...m, ...meaning } : m))
+          : [...prevState.meanings, { ...meaning, signs: [] }]
       }
     })
   }
@@ -44,6 +49,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
           if (m.id !== meaningId) return m
 
           const exists = m.signs.some((s) => s.id === sign.id)
+
           return {
             ...m,
             signs: exists

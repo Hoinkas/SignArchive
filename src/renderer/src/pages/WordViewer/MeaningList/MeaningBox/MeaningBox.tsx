@@ -1,6 +1,6 @@
 import './MeaningBox.css'
 import { Meaning, MeaningWithSignsDetails, SignWithSourceDetails } from '@shared/types'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import MeaningForm from '../../../../components/Form/Forms/MeaningForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SignList from '../../SignList/SignList'
@@ -17,16 +17,16 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
 
   const [isFormOpen, setIsFormOpen] = useState(false)
 
-  const years = useMemo(() => {
-    const allSources = meaningWithSigns.signs.flatMap((sign) => sign.sources)
-    const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
+  // const years = useMemo(() => {
+  //   const allSources = meaningWithSigns.signs.flatMap((sign) => sign.sources)
+  //   const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
 
-    const yearStart = years.length > 0 ? Math.min(...years) : null
-    const yearEnd = years.length > 0 ? Math.max(...years) : null
+  //   const yearStart = years.length > 0 ? Math.min(...years) : null
+  //   const yearEnd = years.length > 0 ? Math.max(...years) : null
 
-    if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
-    return yearStart || yearEnd || 'brak roku'
-  }, [meaningWithSigns.signs])
+  //   if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
+  //   return yearStart || yearEnd || 'brak roku'
+  // }, [meaningWithSigns.signs])
 
   return (
     <div className="meaningBox">
@@ -43,12 +43,13 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           <div>
             Znaczenie {number + 1} - {meaningWithSigns.context}
           </div>
-          <div className="additionalInfoText"> {years} </div>
+          <div className="additionalInfoText"> {0} </div>
           <div> {meaningWithSigns.notes} </div>
         </div>
         <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
       </div>
       <SignList
+        meaningId={meaningWithSigns.id}
         signs={meaningWithSigns.signs}
         setSignValues={(sign) => setSignValues(meaningWithSigns.id, sign)}
       />

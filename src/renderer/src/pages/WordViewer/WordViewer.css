@@ -9,4 +9,5 @@
 .actionButton {
   margin: auto;
   margin-bottom: var(--space-6);
+  background-color: transparent;
 }

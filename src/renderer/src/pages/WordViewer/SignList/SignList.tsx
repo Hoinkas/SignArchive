@@ -2,15 +2,16 @@ import { useState } from 'react'
 import SignBox from './SignBox/SignBox'
 import './SignList.css'
 import AddSign from './AddSign/AddSign'
-import SignForm from '@renderer/components/Form/Forms/SignForm'
+import AddSignForm from '@renderer/components/Form/Forms/AddSignForm'
 import { SignWithSourceDetails } from '@shared/types'
 
 interface SignListProps {
+  meaningId: string
   signs: SignWithSourceDetails[]
   setSignValues: (sign: SignWithSourceDetails) => void
 }
 
-function SignList({ signs, setSignValues }: SignListProps): React.JSX.Element {
+function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   return (
@@ -19,7 +20,12 @@ function SignList({ signs, setSignValues }: SignListProps): React.JSX.Element {
         <SignBox key={key} sign={sign} />
       ))}
       {isFormOpen ? (
-        <SignForm formType="add" setSignValues={setSignValues} setIsFormOpen={setIsFormOpen} />
+        <AddSignForm
+          meaningId={meaningId}
+          formType="add"
+          setSignValues={setSignValues}
+          setIsFormOpen={setIsFormOpen}
+        />
       ) : (
         <AddSign setIsFormOpen={setIsFormOpen} />
       )}

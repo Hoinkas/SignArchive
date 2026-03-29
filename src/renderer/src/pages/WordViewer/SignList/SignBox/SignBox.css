@@ -1,9 +1,9 @@
-.SignBox {
+.signBox {
   display: flex;
   flex-direction: column;
   border-right: var(--line-border);
   width: 240px;
-  height: 300px;
+  height: 100%;
   flex-shrink: 0;
   overflow: hidden;
 }

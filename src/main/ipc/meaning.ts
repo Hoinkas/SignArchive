@@ -89,10 +89,10 @@ export function deleteMeaningById(id: string): void {
 
 export function registerMeaningsHandlers(): void {
   ipcMain.handle('meaning:list', () => listAllMeanings())
-  ipcMain.handle('meaning:find', (_e, meaningId: string) => findMeaningById(meaningId))
-  ipcMain.handle('meaning:create', (_e, data: MeaningToDB) => createMeaning(data))
-  ipcMain.handle('meaning:update', (_e, meaningId: string, data: Partial<MeaningToDB>) =>
+  ipcMain.handle('meaning:find', (_, meaningId: string) => findMeaningById(meaningId))
+  ipcMain.handle('meaning:create', (_, data: MeaningToDB) => createMeaning(data))
+  ipcMain.handle('meaning:update', (_, meaningId: string, data: Partial<MeaningToDB>) =>
     updateMeaning(meaningId, data)
   )
-  ipcMain.handle('meaning:delete', (_e, meaningId: string) => deleteMeaningById(meaningId))
+  ipcMain.handle('meaning:delete', (_, meaningId: string) => deleteMeaningById(meaningId))
 }

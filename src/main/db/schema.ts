@@ -50,8 +50,7 @@ export function initSchema(db: Database.Database): void {
       id                  TEXT PRIMARY KEY,
       createDate          TEXT NOT NULL,
       fileType            TEXT NOT NULL,
-      filePath            TEXT NOT NULL,
-      onlineUrl           TEXT
+      filePath            TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS source (

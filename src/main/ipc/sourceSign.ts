@@ -2,13 +2,6 @@ import { getDb } from '../db/client'
 import type { SourceSign } from '@shared/types'
 import { toSqlParams } from '../db/utils'
 
-export function findMainSourceIdBySignId(id: string): string {
-  const row = getDb()
-    .prepare('SELECT * FROM sourceSign WHERE signId = ? AND isMainSource = 1')
-    .get(id) as SourceSign
-  return row.sourceId
-}
-
 export function findSourcesIdsBySignId(id: string): string[] {
   const row = getDb().prepare('SELECT * FROM sourceSign WHERE signId = ?').all(id) as SourceSign[]
   return row.map((sourceSign) => sourceSign.sourceId)

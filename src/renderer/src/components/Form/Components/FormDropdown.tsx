@@ -34,6 +34,7 @@ export function FormDropdown(props: FormDropdownProps): React.JSX.Element {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key !== 'Enter') return
     e.preventDefault()
+    e.stopPropagation()
 
     if (filtered.length > 0) {
       handleSelect(filtered[0])
