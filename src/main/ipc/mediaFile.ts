@@ -2,7 +2,7 @@ import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { MediaFile, MediaFileToDB } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import { toSqlParams } from '../utils/toSqlParams'
 
 export function listAllMediaFiles(): MediaFile[] {
   const rows = getDb().prepare('SELECT * FROM mediaFile ORDER BY createdAt DESC').all()

@@ -7,7 +7,7 @@ import type {
   MeaningWithSignsDetails,
   SignWithSourceDetails
 } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import { toSqlParams } from '../utils/toSqlParams'
 import { findSignsIdsByMeaningId } from './meaningSign'
 import { returnSignDetailsById } from './sign'
 

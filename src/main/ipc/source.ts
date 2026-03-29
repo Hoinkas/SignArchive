@@ -7,7 +7,7 @@ import type {
   SourceWithSignerAuthorMediaFile,
   YearStartEnd
 } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import { toSqlParams } from '../utils/toSqlParams'
 import { findSignerById } from './signer'
 import { findAuthorById } from './author'
 import { findMediaFileById } from './mediaFile'

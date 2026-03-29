@@ -8,7 +8,7 @@ import type {
   WordWithCounts,
   WordWithMeaningsDetails
 } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import { toSqlParams } from '../utils/toSqlParams'
 import {
   listMeaningsByWordId,
   returnMeaningDetailsById,

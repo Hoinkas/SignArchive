@@ -2,7 +2,7 @@ import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { Author, AuthorToDB } from '@shared/types'
-import { toSqlParams } from '../db/utils'
+import { toSqlParams } from '../utils/toSqlParams'
 
 export function listAllAuthors(): Author[] {
   const db = getDb()
