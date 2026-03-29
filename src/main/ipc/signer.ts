@@ -2,7 +2,8 @@ import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { Signer, SignerToDB } from '@shared/types'
-import { toSqlParams } from '../utils/toSqlParams'
+import toSqlParams from '../utils/toSqlParams'
+import { handlerWithErrorLogging } from '../utils/errorHandler'
 
 export function listAllSigners(): Signer[] {
   const rows = getDb().prepare('SELECT * FROM signer ORDER BY surname, name').all()
@@ -35,8 +36,8 @@ export function deleteSignerById(id: string): void {
 }
 
 export function registerSignerHandlers(): void {
-  ipcMain.handle('signer:list', () => listAllSigners())
-  ipcMain.handle('signer:find', (_, id: string) => findSignerById(id))
-  ipcMain.handle('signer:create', (_, data: SignerToDB) => createSigner(data))
-  ipcMain.handle('signer:delete', (_, id: string) => deleteSignerById(id))
+  ipcMain.handle('signer:list', () => handlerWithErrorLogging(listAllSigners))
+  // ipcMain.handle('signer:find', (_, id: string) => handlerWithErrorLogging(() => findSignerById(id)))
+  // ipcMain.handle('signer:create', (_, data: SignerToDB) => handlerWithErrorLogging(() => createSigner(data)))
+  // ipcMain.handle('signer:delete', (_, id: string) => handlerWithErrorLogging(() => deleteSignerById(id)))
 }

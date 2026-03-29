@@ -7,9 +7,11 @@ import type {
   MeaningWithSignsDetails,
   SignWithSourceDetails
 } from '@shared/types'
-import { toSqlParams } from '../utils/toSqlParams'
 import { findSignsIdsByMeaningId } from './meaningSign'
 import { returnSignDetailsById } from './sign'
+import toSqlParams from '../utils/toSqlParams'
+import { handlerWithErrorLogging } from '../utils/errorHandler'
+import validateId from '../utils/validateId'
 
 export function listAllMeanings(): Meaning[] {
   const rows = getDb().prepare('SELECT * FROM meaning ORDER BY createdAt DESC').all()
@@ -68,7 +70,9 @@ export function createMeaning(data: MeaningToDB): Meaning {
 
 export function updateMeaning(meaningId: string, data: Partial<MeaningToDB>): Meaning | undefined {
   const existing = findMeaningById(meaningId)
-  if (!existing) return undefined
+  if (!existing) return
+
+  validateId(meaningId)
 
   const updated: Meaning = { ...existing, ...data }
   getDb()
@@ -88,11 +92,15 @@ export function deleteMeaningById(id: string): void {
 }
 
 export function registerMeaningsHandlers(): void {
-  ipcMain.handle('meaning:list', () => listAllMeanings())
-  ipcMain.handle('meaning:find', (_, meaningId: string) => findMeaningById(meaningId))
-  ipcMain.handle('meaning:create', (_, data: MeaningToDB) => createMeaning(data))
-  ipcMain.handle('meaning:update', (_, meaningId: string, data: Partial<MeaningToDB>) =>
-    updateMeaning(meaningId, data)
+  // ipcMain.handle('meaning:list', () => listAllMeanings())
+  // ipcMain.handle('meaning:find', (_, meaningId: string) => findMeaningById(meaningId))
+  ipcMain.handle('meaning:create', (_, data: MeaningToDB) =>
+    handlerWithErrorLogging(() => createMeaning(data))
   )
-  ipcMain.handle('meaning:delete', (_, meaningId: string) => deleteMeaningById(meaningId))
+  ipcMain.handle('meaning:update', (_, meaningId: string, data: Partial<MeaningToDB>) =>
+    handlerWithErrorLogging(() => updateMeaning(meaningId, data))
+  )
+  ipcMain.handle('meaning:delete', (_, meaningId: string) =>
+    handlerWithErrorLogging(() => deleteMeaningById(meaningId))
+  )
 }

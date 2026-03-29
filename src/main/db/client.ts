@@ -16,6 +16,11 @@ export function getDb(): Database.Database {
   }
 
   db = new Database(dbPath)
+
+  // if (process.env.NODE_ENV === 'development') {
+  //   db.on('trace', (sql: string) => console.log('[SQL]', sql))
+  // }
+
   initSchema(db)
   console.log('[DB] Baza danych gotowa')
 
