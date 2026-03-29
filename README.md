@@ -7,7 +7,7 @@ The sign language sometimes uses the same sign for different words/meanings and/
 
 Made for offline use, but will be implemented into webpage.
 
-![alt text]([https://github.com/[username]/[reponame]/blob/[branch]/image.jpg](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveWordView.png)?raw=true)
+![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveWordView.png?raw=true)
 
 ## To run
 ```
