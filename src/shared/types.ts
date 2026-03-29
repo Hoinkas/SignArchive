@@ -24,6 +24,7 @@ export type MeaningToDB = Omit<Meaning, 'id' | 'createdAt'>
 export interface Sign {
   id: string
   createdAt: string //ISO Date
+  notes: string
 }
 
 export type SignToDB = Omit<Sign, 'id' | 'createdAt'>
@@ -47,20 +48,19 @@ export type AuthorToDB = Omit<Author, 'id' | 'createdAt'>
 
 export interface MediaFile {
   id: string
-  createdAt: string //ISO Date
+  createDate: string //ISO Date
   fileType: string
   filePath: string
-  onlineUrl?: string
 }
 
-export type MediaFileToDB = Omit<MediaFile, 'id' | 'createdAt'>
+export type MediaFileToDB = Omit<MediaFile, 'id'>
 
 export interface Source {
   id: string
   createdAt: string //ISO Date
   signerId: string
   authorId: string
-  mediaFieldId: string
+  mediaFileId: string
   region?: string
   yearStart?: number
   yearEnd?: number
@@ -68,6 +68,7 @@ export interface Source {
 }
 
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
+export type SourceToCreate = Omit<SourceToDB, 'signerId' | 'authorId' | 'mediaFileId'>
 
 //MEANING - SIGN connection table
 export interface MeaningSign {
@@ -79,6 +80,7 @@ export interface MeaningSign {
 export interface SourceSign {
   sourceId: string
   signId: string
+  isMainSource: 0 | 1
 }
 
 // WORD with MEANINGS and SINGS count
@@ -97,14 +99,32 @@ export interface SourceWithSignerAuthorMediaFile extends Omit<
   mediaFile?: MediaFile
 }
 
-export interface SignWithSourcesDetails extends Sign {
-  sources: SourceWithSignerAuthorMediaFile[]
+// export interface SignWithSourceDetails extends Sign {
+//   sources: SourceWithSignerAuthorMediaFile[]
+// }
+
+export interface YearStartEnd {
+  yearStart: number | null
+  yearEnd: number | null
+}
+
+export interface SignWithSourceDetails extends Sign, YearStartEnd {
+  source: SourceWithSignerAuthorMediaFile
 }
 
 export interface MeaningWithSignsDetails extends Meaning {
-  signs: SignWithSourcesDetails[]
+  signs: SignWithSourceDetails[]
 }
 
 export interface WordWithMeaningsDetails extends Word {
   meanings: MeaningWithSignsDetails[]
+}
+
+export interface SignWithDetailsToDB {
+  meaningId: string
+  sign: SignToDB
+  mediaFile: MediaFileToDB
+  author: AuthorToDB
+  signer: SignerToDB
+  source: SourceToCreate
 }

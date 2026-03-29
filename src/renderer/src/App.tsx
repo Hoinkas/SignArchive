@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import SidePanel from './components/SidePanel/SidePanel'
 import { Word } from '@shared/types'
-import WordViewer from './components/WordViewer/WordViewer'
+import WordViewer from './pages/WordViewer/WordViewer'
+import SidePanel from './pages/SidePanel/SidePanel'
 
 function App(): React.JSX.Element {
   // const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')

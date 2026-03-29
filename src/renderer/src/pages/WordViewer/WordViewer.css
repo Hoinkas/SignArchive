@@ -1,0 +1,13 @@
+.wordViewer {
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.actionButton {
+  margin: auto;
+  margin-bottom: var(--space-6);
+  background-color: transparent;
+}

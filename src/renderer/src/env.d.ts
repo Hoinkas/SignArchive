@@ -21,7 +21,8 @@ declare global {
       sign: {
         list: () => Promise<Sign[]>
         find: (signId: string) => Promise<Sign>
-        create: (data: SignToDB) => Promise<Sign>
+        create: (data: SignWithDetailsToDB) => Promise<SignWithSourceDetails>
+        update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
         delete: (signId: string) => Promise<void>
       }
       meaning: {
@@ -63,6 +64,7 @@ declare global {
         create: (data: AuthorToDB) => Promise<Author>
         delete: (authorId: string) => Promise<void>
       }
+      getPathForFile: (file: File) => string
     }
   }
 }

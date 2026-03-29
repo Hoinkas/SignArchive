@@ -100,11 +100,11 @@ export function updateWord(id: string, data: Partial<WordToDB>): Word | undefine
 
 export function registerWordHandlers(): void {
   ipcMain.handle('word:listWithCount', () => listAllWordsWithCount())
-  ipcMain.handle('word:find', (_e, id: string) => findWordById(id))
-  ipcMain.handle('word:details', (_e, id: string) => returnWordDetailsById(id))
-  ipcMain.handle('word:create', (_e, data: WordToDB) => createWord(data))
-  ipcMain.handle('word:update', (_e, id: string, data: Partial<Word>) => updateWord(id, data))
-  ipcMain.handle('word:delete', (_e, id: string) => deleteWordById(id))
+  ipcMain.handle('word:find', (_, id: string) => findWordById(id))
+  ipcMain.handle('word:details', (_, id: string) => returnWordDetailsById(id))
+  ipcMain.handle('word:create', (_, data: WordToDB) => createWord(data))
+  ipcMain.handle('word:update', (_, id: string, data: Partial<Word>) => updateWord(id, data))
+  ipcMain.handle('word:delete', (_, id: string) => deleteWordById(id))
 }
 
 // ROW MAPPERS

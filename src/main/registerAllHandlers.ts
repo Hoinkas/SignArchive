@@ -1,3 +1,4 @@
+import { registerAuthorHandlers } from './ipc/author'
 import { registerMeaningsHandlers } from './ipc/meaning'
 import { registerMediaFileHandlers } from './ipc/mediaFile'
 import { registerSignHandlers } from './ipc/sign'
@@ -12,4 +13,5 @@ export function registerAllHandlers(): void {
   registerMeaningsHandlers()
   registerSourceHandlers()
   registerWordHandlers()
+  registerAuthorHandlers()
 }

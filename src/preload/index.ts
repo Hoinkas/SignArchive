@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import type {
   MediaFile,
@@ -7,7 +7,6 @@ import type {
   Signer,
   Source,
   Word,
-  SignToDB,
   WordToDB,
   SourceToDB,
   SignerToDB,
@@ -16,7 +15,10 @@ import type {
   WordWithCounts,
   Author,
   AuthorToDB,
-  WordWithMeaningsDetails
+  WordWithMeaningsDetails,
+  SignWithDetailsToDB,
+  SignWithSourceDetails,
+  SignToDB
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -26,7 +28,10 @@ if (process.contextIsolated) {
       sign: {
         list: (): Promise<Sign[]> => ipcRenderer.invoke('sign:list'),
         find: (signId: string): Promise<Sign> => ipcRenderer.invoke('sign:find', signId),
-        create: (data: SignToDB): Promise<Sign> => ipcRenderer.invoke('sign:create', data),
+        create: (data: SignWithDetailsToDB): Promise<SignWithSourceDetails> =>
+          ipcRenderer.invoke('sign:create', data),
+        update: (signId: string, data: Partial<SignToDB>): Promise<Meaning> =>
+          ipcRenderer.invoke('sign:update', signId, data),
         delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
       },
       meaning: {
@@ -34,7 +39,7 @@ if (process.contextIsolated) {
         find: (meaningId: string): Promise<Meaning> =>
           ipcRenderer.invoke('meaning:find', meaningId),
         create: (data: MeaningToDB): Promise<Meaning> => ipcRenderer.invoke('meaning:create', data),
-        update: (meaningId: string, data: Partial<Meaning>): Promise<Meaning> =>
+        update: (meaningId: string, data: Partial<MeaningToDB>): Promise<Meaning> =>
           ipcRenderer.invoke('meaning:update', meaningId, data),
         delete: (meaningId: string): Promise<void> =>
           ipcRenderer.invoke('meaning:delete', meaningId)
@@ -75,7 +80,8 @@ if (process.contextIsolated) {
         find: (authorId: string): Promise<Author> => ipcRenderer.invoke('author:find', authorId),
         create: (data: AuthorToDB): Promise<Author> => ipcRenderer.invoke('author:create', data),
         delete: (authorId: string): Promise<void> => ipcRenderer.invoke('author:delete', authorId)
-      }
+      },
+      getPathForFile: (file: File): string => webUtils.getPathForFile(file)
     })
   } catch (error) {
     console.error(error)

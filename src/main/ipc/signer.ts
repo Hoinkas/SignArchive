@@ -36,7 +36,7 @@ export function deleteSignerById(id: string): void {
 
 export function registerSignerHandlers(): void {
   ipcMain.handle('signer:list', () => listAllSigners())
-  ipcMain.handle('signer:find', (_e, id: string) => findSignerById(id))
-  ipcMain.handle('signer:create', (_e, data: SignerToDB) => createSigner(data))
-  ipcMain.handle('signer:delete', (_e, id: string) => deleteSignerById(id))
+  ipcMain.handle('signer:find', (_, id: string) => findSignerById(id))
+  ipcMain.handle('signer:create', (_, data: SignerToDB) => createSigner(data))
+  ipcMain.handle('signer:delete', (_, id: string) => deleteSignerById(id))
 }

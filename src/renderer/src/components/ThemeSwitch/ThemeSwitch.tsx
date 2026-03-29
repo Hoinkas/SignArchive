@@ -2,7 +2,9 @@ import { useState } from 'react'
 import './ThemeSwitch.css'
 
 function ThemeSwitch(): React.JSX.Element {
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(
+    document.documentElement.getAttribute('data-theme') === 'dark'
+  )
 
   const toggle = (): void => {
     setIsDark(!isDark)

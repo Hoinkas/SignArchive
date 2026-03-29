@@ -37,7 +37,7 @@ export function deleteAuthorById(id: string): void {
 
 export function registerAuthorHandlers(): void {
   ipcMain.handle('author:list', () => listAllAuthors())
-  ipcMain.handle('author:find', (_e, id: string) => findAuthorById(id))
-  ipcMain.handle('author:create', (_e, data: AuthorToDB) => createAuthor(data))
-  ipcMain.handle('author:delete', (_e, id: string) => deleteAuthorById(id))
+  ipcMain.handle('author:find', (_, id: string) => findAuthorById(id))
+  ipcMain.handle('author:create', (_, data: AuthorToDB) => createAuthor(data))
+  ipcMain.handle('author:delete', (_, id: string) => deleteAuthorById(id))
 }

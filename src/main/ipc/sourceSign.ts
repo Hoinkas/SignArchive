@@ -16,8 +16,8 @@ export function createSourceSign(data: SourceSign): SourceSign {
   const db = getDb()
   db.prepare(
     `
-    INSERT INTO sourceSign (sourceId, signId)
-    VALUES (@sourceId, @signId)
+    INSERT INTO sourceSign (sourceId, signId, isMainSource)
+    VALUES (@sourceId, @signId, @isMainSource)
   `
   ).run(toSqlParams(data))
   return data

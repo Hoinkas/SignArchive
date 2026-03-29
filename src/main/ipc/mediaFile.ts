@@ -18,13 +18,12 @@ export function createMediaFile(data: MediaFileToDB): MediaFile {
   const db = getDb()
   const mediaFile: MediaFile = {
     id: nanoid(),
-    createdAt: new Date().toISOString(),
     ...data
   }
   db.prepare(
     `
-    INSERT INTO mediaFile (id, createdAt, signId, file_type, file_path, online_url)
-    VALUES (@id, @createdAt, @signId, @fileType, @filePath, @onlineUrl)
+    INSERT INTO mediaFile (id, createDate, fileType, filePath)
+    VALUES (@id, @createDate, @fileType, @filePath)
   `
   ).run(toSqlParams(mediaFile))
   return mediaFile
@@ -36,7 +35,7 @@ export function deleteMediaFileById(id: string): void {
 
 export function registerMediaFileHandlers(): void {
   ipcMain.handle('mediaFile:list', () => listAllMediaFiles())
-  ipcMain.handle('mediaFile:find', (_e, signId: string) => findMediaFileById(signId))
-  ipcMain.handle('mediaFile:create', (_e, data: MediaFileToDB) => createMediaFile(data))
-  ipcMain.handle('mediaFile:delete', (_e, id: string) => deleteMediaFileById(id))
+  ipcMain.handle('mediaFile:find', (_, signId: string) => findMediaFileById(signId))
+  ipcMain.handle('mediaFile:create', (_, data: MediaFileToDB) => createMediaFile(data))
+  ipcMain.handle('mediaFile:delete', (_, id: string) => deleteMediaFileById(id))
 }
