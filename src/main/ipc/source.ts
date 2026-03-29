@@ -59,11 +59,17 @@ export function returnSourceDetailsById(
   const source = findSourceById(sourceId)
   if (!source) return
 
+  const author = findAuthorById(source.authorId)
+  const signer = findSignerById(source.signerId)
+  const mediaFile = findMediaFileById(source.mediaFileId)
+
+  if (!author || !signer || !mediaFile) return
+
   return {
     ...source,
-    signer: findSignerById(source.signerId),
-    author: findAuthorById(source.authorId),
-    mediaFile: findMediaFileById(source.mediaFileId)
+    signer,
+    author,
+    mediaFile
   }
 }
 

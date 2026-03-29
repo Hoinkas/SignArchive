@@ -3,7 +3,12 @@ import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type { Sign, SignToDB, SignWithDetailsToDB, SignWithSourceDetails } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
-import { getSourcesStartEndYearBySignId, findMainSourceBySignId, createSource } from './source'
+import {
+  getSourcesStartEndYearBySignId,
+  findMainSourceBySignId,
+  createSource,
+  returnSourceDetailsById
+} from './source'
 import { createMeaningSign } from './meaningSign'
 import { createMediaFile } from './mediaFile'
 import { createAuthor } from './author'
@@ -42,6 +47,8 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
   const sign = findSignById(signId)
   if (!sign) return
 
+  validateId(signId)
+
   // const sourcesIds = findSourcesIdsBySignId(sign.id)
   // const sources: SourceWithSignerAuthorMediaFile[] = []
 
@@ -54,11 +61,14 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
   const source = findMainSourceBySignId(sign.id)
   if (!source) return
 
+  const sourceWithDetails = returnSourceDetailsById(source.id)
+  if (!sourceWithDetails) return
+
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignId(sign.id)
 
   return {
     ...sign,
-    source,
+    source: sourceWithDetails,
     yearStart,
     yearEnd
   }
