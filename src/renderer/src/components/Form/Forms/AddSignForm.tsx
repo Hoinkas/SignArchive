@@ -93,19 +93,23 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormMediaFile file={file} setFile={setFile} />
       <FormSingleLineInput label={'Online Url'} value={filePath} setValue={setFilePath} />
-      <FormMultiLineInput label={'Notatka do znaku'} value={notes} setValue={setNotes} />
+      <FormMultiLineInput
+        label={'Notatka do źródła'}
+        value={sourceNotes}
+        setValue={setSourceNotes}
+      />
       <FormTwoInLineWrapper>
         <FormDropdown
           label="Migacz"
-          options={authors.map((a) => ({ id: a.id, label: a.name }))}
-          value={authorOption}
-          setValue={setAuthorOption}
+          options={signers.map((a) => ({ id: a.id, label: a.name + ' ' + a.surname }))}
+          value={signerOption}
+          setValue={setSignerOption}
         />
         <FormDropdown
           label="Autor / publikacja"
-          options={signers.map((a) => ({ id: a.id, label: a.name }))}
-          value={signerOption}
-          setValue={setSignerOption}
+          options={authors.map((a) => ({ id: a.id, label: a.name }))}
+          value={authorOption}
+          setValue={setAuthorOption}
         />
       </FormTwoInLineWrapper>
       <FormTwoInLineWrapper>
@@ -123,11 +127,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
         />
       </FormTwoInLineWrapper>
       <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
-      <FormSingleLineInput
-        label={'Notatka do źródła'}
-        value={sourceNotes}
-        setValue={setSourceNotes}
-      />
+      <FormMultiLineInput label={'Notatka do znaku'} value={notes} setValue={setNotes} />
     </FormModalWrapper>
   )
 }
