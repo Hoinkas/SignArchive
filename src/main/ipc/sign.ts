@@ -50,15 +50,6 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
 
   validateId(signId)
 
-  // const sourcesIds = findSourcesIdsBySignId(sign.id)
-  // const sources: SourceWithSignerAuthorMediaFile[] = []
-
-  // sourcesIds.forEach((sourceId) => {
-  //   const sourceDetail = returnSourceDetailsById(sourceId)
-  //   if (!sourceDetail) return
-  //   sources.push(sourceDetail)
-  // })
-
   const source = findMainSourceBySignId(sign.id)
   if (!source) return
 

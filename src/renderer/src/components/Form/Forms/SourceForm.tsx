@@ -6,37 +6,35 @@ import {
   MediaFileToDB,
   Signer,
   SignerToDB,
-  SignToDB,
-  SignWithDetailsToDB,
-  SignWithSourceDetails,
-  SourceToCreate
+  Source,
+  SourceToCreate,
+  SourceWithDetailsToDB
 } from '@shared/types'
 import {
-  FormMultiLineInput,
   FormModalWrapper,
-  FormMediaFile,
+  FormMultiLineInput,
   FormSingleLineInput,
   FormTwoInLineWrapper
-} from '@renderer/components/Form/Form'
+} from '../Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 
-interface AddSignFormProps {
-  meaningId: string
-  setSignValues: (sign: SignWithSourceDetails) => void
+interface SourceFormProps {
+  signId: string
+  source?: Source
+  setSourceValues: (source: Source) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
-function AddSignForm(props: AddSignFormProps): React.JSX.Element {
-  const { meaningId, setSignValues, formType, setIsFormOpen } = props
+function SourceForm(props: SourceFormProps): React.JSX.Element {
+  const { signId, source, setSourceValues, formType, setIsFormOpen } = props
 
-  const [notes, setNotes] = useState<string>('')
-  const [sourceNotes, setSourceNotes] = useState<string>('')
-  const [file, setFile] = useState<File | null>(null)
+  const [notes, setNotes] = useState<string>(source?.notes || '')
+  const [region, setRegion] = useState<string>(source?.region || '')
+  const [yearStart, setYearStart] = useState<string>(source?.yearStart?.toString || '')
+  const [yearEnd, setYearEnd] = useState<string>(source?.yearEnd?.toString || '')
+
   const [filePath, setFilePath] = useState<string>('')
-  const [region, setRegion] = useState<string>('')
-  const [yearStart, setYearStart] = useState<string>('')
-  const [yearEnd, setYearEnd] = useState<string>('')
 
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(null)
   const [authors, setAuthors] = useState<Author[]>([])
@@ -44,60 +42,79 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
   const [signerOption, setSignerOption] = useState<DropdownOption | null>(null)
   const [signers, setSigners] = useState<Signer[]>([])
 
+  useEffect(() => {
+    window.api.author.list().then((authors) => setAuthors(authors))
+    window.api.signer.list().then((signers) => setSigners(signers))
+
+    if (source) {
+      window.api.source.details(source.id).then((sourceRecieved) => {
+        setFilePath(sourceRecieved.mediaFile.filePath)
+        setAuthorOption({ id: sourceRecieved.author.id, label: sourceRecieved.author.name })
+
+        const signerNames = sourceRecieved.signer.name + ' ' + sourceRecieved.signer.surname
+        setSignerOption({ id: sourceRecieved.signer.id, label: signerNames })
+      })
+    }
+  }, [source])
+
   const closeForm = (): void => {
     setNotes('')
+    setFilePath('')
+    setRegion('')
+    setYearStart('')
+    setYearEnd('')
+    setAuthorOption(null)
+    setSignerOption(null)
     setIsFormOpen(false)
   }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (file && authorOption) {
-      const sign: SignToDB = { notes }
+    if (authorOption) {
       const mediaFile: MediaFileToDB = {
-        fileType: file?.type,
-        filePath: window.api.getPathForFile(file),
-        createDate: new Date(file.lastModified).toISOString()
-      }
-      const yearStartStr = yearStart ? parseInt(yearStart) : undefined
-      const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
-      const source: SourceToCreate = {
-        notes: sourceNotes,
-        yearStart: yearStartStr,
-        yearEnd: yearEndStr,
-        region
+        fileType: 'onlineUrl',
+        filePath,
+        createDate: new Date().toISOString()
       }
       const author: AuthorToDB = { name: authorOption.label }
 
       const names = signerOption ? signerOption.label.split(' ') : ['nieznane', 'nieznane']
       const signer: SignerToDB = { name: names[0], surname: names[1] }
 
-      const data: SignWithDetailsToDB = { meaningId, sign, mediaFile, author, signer, source }
+      const yearStartStr = yearStart ? parseInt(yearStart) : undefined
+      const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
+      const source: SourceToCreate = {
+        notes: notes,
+        yearStart: yearStartStr,
+        yearEnd: yearEndStr,
+        region
+      }
 
-      window.api.sign
+      const data: SourceWithDetailsToDB = {
+        signId,
+        source,
+        mediaFile,
+        author,
+        signer
+      }
+
+      console.log(signer)
+
+      window.api.source
         .create(data)
-        .then((sign) => {
-          setSignValues(sign)
+        .then((source) => {
+          setSourceValues(source)
           closeForm()
         })
-        .catch((err) => console.error('Błąd tworzenia znaku:', err))
+        .catch((err) => console.error('Błąd tworzenia źródła:', err))
     }
   }
 
-  useEffect(() => {
-    window.api.author.list().then((authors) => setAuthors(authors))
-    window.api.signer.list().then((signers) => setSigners(signers))
-  }, [])
-
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMediaFile file={file} setFile={setFile} />
       <FormSingleLineInput label={'Online Url'} value={filePath} setValue={setFilePath} />
-      <FormMultiLineInput
-        label={'Notatka do źródła'}
-        value={sourceNotes}
-        setValue={setSourceNotes}
-      />
+      <FormMultiLineInput label={'Notatka do źródła'} value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
         <FormDropdown
           label="Migacz"
@@ -127,9 +144,8 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
         />
       </FormTwoInLineWrapper>
       <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
-      <FormMultiLineInput label={'Notatka do znaku'} value={notes} setValue={setNotes} />
     </FormModalWrapper>
-  )
+)
 }
 
-export default AddSignForm
+export default SourceForm

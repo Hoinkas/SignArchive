@@ -13,7 +13,7 @@ function SourcesTitle({ sign, closeForm }: SourcesTitleProps): React.JSX.Element
       <div className="sourcesTitle">
         <div className="additionalInfoItalic"> Znak {sign.id}</div>
         <div className="additionalInfo">
-          {sourcesCountText(sign.sourcesCount)} - {mergeYearText(sign.yearStart, sign.yearEnd)}
+          {sourcesCountText(sign.sourcesCount)} · {mergeYearText(sign.yearStart, sign.yearEnd)}
         </div>
         <div>{sign.notes}</div>
       </div>

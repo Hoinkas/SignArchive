@@ -12,7 +12,9 @@ import type {
   SignWithDetailsToDB,
   SignWithSourceDetails,
   SignToDB,
-  SourceWithSignerAuthorMediaFile
+  SourceWithSignerAuthorMediaFile,
+  Source,
+  SourceWithDetailsToDB
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -47,7 +49,11 @@ if (process.contextIsolated) {
       },
       source: {
         list: (signId: string): Promise<SourceWithSignerAuthorMediaFile[]> =>
-          ipcRenderer.invoke('source:list', signId)
+          ipcRenderer.invoke('source:list', signId),
+        details: (sourceId: string): Promise<SourceWithSignerAuthorMediaFile> =>
+          ipcRenderer.invoke('source:details', sourceId),
+        create: (data: SourceWithDetailsToDB): Promise<Source> =>
+          ipcRenderer.invoke('source:create', data)
       },
       author: {
         list: (): Promise<Author[]> => ipcRenderer.invoke('author:list')

@@ -58,6 +58,12 @@ button {
   cursor: pointer;
   padding: var(--space-2) var(--space-4);
   height: fit-content;
+
+  &.isAtEnd {
+    margin: auto;
+    margin-bottom: var(--space-6);
+    background-color: transparent;
+  }
 }
 
 button:hover {

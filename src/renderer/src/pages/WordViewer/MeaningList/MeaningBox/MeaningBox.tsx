@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import MeaningForm from '../../../../components/Form/Forms/MeaningForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SignList from '../../SignList/SignList'
+import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 
 interface MeaningBoxProps {
   meaningWithSigns: MeaningWithSignsDetails
@@ -18,17 +19,22 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   const years = useMemo(() => {
-    const allSources = meaningWithSigns.signs.flatMap((sign) => sign.source)
-    const years = allSources.flatMap((s) => (s.yearStart != null ? [s.yearStart] : []))
+    const years = meaningWithSigns.signs.flatMap((s) => ({
+      yearStart: s.yearStart,
+      yearEnd: s.yearEnd
+    }))
+    const yearsStart: number[] = []
+    const yearsEnd: number[] = []
 
-    if (years.length === 0) return 'brak roku'
-    if (years.length === 1) return years[0]
+    years.forEach((y) => {
+      if (y.yearStart) yearsStart.push(y.yearStart)
+      if (y.yearEnd) yearsEnd.push(y.yearEnd)
+    })
 
-    const yearStart = years.length > 0 ? Math.min(...years) : null
-    const yearEnd = years.length > 0 ? Math.max(...years) : null
+    const yearStart = yearsStart.length > 0 ? Math.min(...yearsStart) : null
+    const yearEnd = yearsEnd.length > 0 ? Math.max(...yearsEnd) : null
 
-    if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
-    return yearStart || yearEnd || 'brak roku'
+    return mergeYearText(yearStart, yearEnd)
   }, [meaningWithSigns.signs])
 
   return (

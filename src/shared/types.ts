@@ -70,6 +70,14 @@ export interface Source {
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
 export type SourceToCreate = Omit<SourceToDB, 'signerId' | 'authorId' | 'mediaFileId'>
 
+export interface SourceWithDetailsToDB {
+  signId: string
+  source: SourceToCreate
+  mediaFile: MediaFileToDB
+  author: AuthorToDB
+  signer: SignerToDB
+}
+
 //MEANING - SIGN connection table
 export interface MeaningSign {
   meaningId: string

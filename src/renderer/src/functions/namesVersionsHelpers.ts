@@ -1,7 +1,7 @@
 type yearType = number | null | undefined
 
 export function mergeYearText(yearStart: yearType, yearEnd: yearType): string {
-  if (yearStart && yearEnd) return yearStart + ' - ' + yearEnd
+  if (yearStart && yearEnd) return yearStart + '-' + yearEnd
   return yearStart?.toString() || yearEnd?.toString() || 'brak roku'
 }
 

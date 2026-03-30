@@ -28,6 +28,9 @@ function SignBox({ sign, setSignValues, setSourcesPanelSign }: SignBoxProps): Re
         <div className="tagBox">
           <TagList textArray={pillText} />
         </div>
+        <a onClick={() => setSourcesPanelSign(sign)} className="additionalInfo">
+          {sourcesCountText(sign.sourcesCount)}
+        </a>
         {isFormOpen ? (
           <EditSignForm
             sign={sign}
@@ -38,9 +41,6 @@ function SignBox({ sign, setSignValues, setSourcesPanelSign }: SignBoxProps): Re
         ) : (
           <h4>{sign.notes}</h4>
         )}
-        <a onClick={() => setSourcesPanelSign(sign)} className="additionalInfo">
-          {sourcesCountText(sign.sourcesCount)}
-        </a>
         <div style={{ margin: '0 auto' }}>
           {!isFormOpen && <ActionButton text={'Edytuj'} setIsFormOpen={setIsFormOpen} />}
         </div>

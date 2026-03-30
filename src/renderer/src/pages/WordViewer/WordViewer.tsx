@@ -53,7 +53,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
           return {
             ...m,
             signs: exists
-              ? m.signs.map((s) => (s.id === sign.id ? { ...s, ...sign } : s))
+              ? m.signs.map((s) => (s.id === sign.id ? { ...s, ...sign, sourcesCount: 1 } : s))
               : [...m.signs, sign]
           }
         })
@@ -72,9 +72,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
         setSignValues={setSignValues}
       />
 
-      <div className="actionButton">
-        <ActionButton text="Dodaj znaczenie" setIsFormOpen={setIsFormOpen} />
-      </div>
+      <ActionButton text="Dodaj znaczenie" isAtEnd={true} setIsFormOpen={setIsFormOpen} />
 
       {isFormOpen && (
         <MeaningForm
