@@ -1,0 +1,17 @@
+.sourceListContainer{
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 30vw;
+  min-width: 340px;
+  height: 100%;
+  border-left: var(--line-border);
+  background-color: var(--color-bg);
+}
+
+.sourceList {
+  & > div {
+    border-bottom: var(--line-border);
+  }
+}

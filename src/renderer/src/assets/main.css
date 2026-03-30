@@ -112,10 +112,41 @@ label {
   }
 }
 
-.additionalInfoText {
+.additionalInfo {
   color: var(--color-text-info);
   font-size: var(--font-size-sm);
-  line-height: var(--line-height-sm)
+  line-height: var(--line-height-sm);
+}
+
+.additionalInfoItalic {
+  font-style: italic;
+  font-size: var(--font-size-sm);
+  list-style: var(--line-height-sm);
+}
+
+.clickableSymbolCircle {
+  height: fit-content;
+  width: fit-content;
+
+  border: var(--symbol-button-border);
+  border-radius: var(--radius-tag);
+  padding: var(--space-2);
+  line-height: var(--space-4);
+  font-size: var(--clickable-symbol-font);
+  display: inline-flex;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-bg-active);
+    border: var(--symbol-button-border-active);
+  }
+}
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--color-text-purple);
 }
 
 /* :focus-visible {

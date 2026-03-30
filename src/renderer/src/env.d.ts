@@ -35,7 +35,7 @@ declare global {
         list: () => Promise<Signer[]>
       }
       source: {
-        list: () => Promise<Source[]>
+        list: (signId: string) => Promise<SourceWithSignerAuthorMediaFile[]>
       }
       author: {
         list: () => Promise<Author[]>

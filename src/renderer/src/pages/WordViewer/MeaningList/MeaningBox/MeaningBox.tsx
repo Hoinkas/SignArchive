@@ -46,7 +46,7 @@ function MeaningBox(props: MeaningBoxProps): React.JSX.Element {
           <div>
             Znaczenie {number + 1} - {meaningWithSigns.context}
           </div>
-          <div className="additionalInfoText"> {years} </div>
+          <div className="additionalInfo"> {years} </div>
           <div> {meaningWithSigns.notes} </div>
         </div>
         <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />

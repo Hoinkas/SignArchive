@@ -1,24 +1,15 @@
 .addSignContainer {
   border: 2px dotted grey;
-  border-radius: 16px;
+  border-radius: var(--space-4);
   width: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 16px;
+  margin: var(--space-4);
   cursor: pointer;
 
   &:hover{
-    background-color: rgb(34, 34, 34);
+    background-color: var(--color-bg-hover-transparent)
   }
-}
-
-.addSignCircle {
-  border: 1px solid grey;
-  border-radius: 9999px;
-  padding: 8px;
-  line-height: 10px;
-  display: inline-flex;
-  justify-content: center;
 }

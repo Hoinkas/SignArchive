@@ -8,8 +8,8 @@ interface AddSignProps {
 function AddSign({ setIsFormOpen }: AddSignProps): React.JSX.Element {
   return (
     <div className="addSignContainer" onClick={() => setIsFormOpen(true)}>
-      <div className="addSignCircle">+</div>
-      <div>wariant</div>
+      <div className="clickableSymbolCircle">+</div>
+      <div>znak</div>
     </div>
   )
 }

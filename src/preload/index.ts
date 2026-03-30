@@ -3,7 +3,6 @@ import { electronAPI } from '@electron-toolkit/preload'
 import type {
   Meaning,
   Signer,
-  Source,
   Word,
   WordToDB,
   MeaningToDB,
@@ -12,7 +11,8 @@ import type {
   WordWithMeaningsDetails,
   SignWithDetailsToDB,
   SignWithSourceDetails,
-  SignToDB
+  SignToDB,
+  SourceWithSignerAuthorMediaFile
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -46,7 +46,8 @@ if (process.contextIsolated) {
         list: (): Promise<Signer[]> => ipcRenderer.invoke('signer:list')
       },
       source: {
-        list: (): Promise<Source[]> => ipcRenderer.invoke('source:list')
+        list: (signId: string): Promise<SourceWithSignerAuthorMediaFile[]> =>
+          ipcRenderer.invoke('source:list', signId)
       },
       author: {
         list: (): Promise<Author[]> => ipcRenderer.invoke('author:list')

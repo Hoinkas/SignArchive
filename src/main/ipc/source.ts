@@ -39,6 +39,20 @@ export function findMainSourceBySignId(signId: string): Source | undefined {
   return row as Source
 }
 
+export function findAllNonMainSourcesBySignId(signId: string): Source[] {
+  const row = getDb()
+    .prepare(
+      `
+      SELECT * FROM source
+      INNER JOIN sourceSign ON source.id = sourceSign.sourceId
+      WHERE sourceSign.signId = ? AND sourceSign.isMainSource = 0
+    `
+    )
+    .all(signId)
+
+  return row as Source[]
+}
+
 export function getSourcesStartEndYearBySignId(signId: string): YearStartEnd {
   const row = getDb()
     .prepare(
@@ -51,6 +65,20 @@ export function getSourcesStartEndYearBySignId(signId: string): YearStartEnd {
     )
     .get(signId)
   return row as YearStartEnd
+}
+
+export function returnSourcesCountBySignId(signId: string): number {
+  const row = getDb()
+    .prepare(
+      `
+        SELECT COUNT(DISTINCT sign.id) AS count
+        FROM sign
+        INNER JOIN sourceSign ON sign.id = sourceSign.signId
+        WHERE sourceSign.signId = ?
+      `
+    )
+    .get(signId)
+  return row.count
 }
 
 export function returnSourceDetailsById(
@@ -71,6 +99,21 @@ export function returnSourceDetailsById(
     author,
     mediaFile
   }
+}
+
+export function returnNonMainSourcesDetailsBySignId(
+  signId: string
+): SourceWithSignerAuthorMediaFile[] {
+  const sources = findAllNonMainSourcesBySignId(signId)
+
+  const sourcesDetails: SourceWithSignerAuthorMediaFile[] = []
+  sources.forEach((s) => {
+    const details = returnSourceDetailsById(s.id)
+    if (!details) return
+    sourcesDetails.push(details)
+  })
+
+  return sourcesDetails
 }
 
 export function createSource(data: SourceToDB): Source {
@@ -94,7 +137,7 @@ export function deleteSourceById(id: string): void {
 }
 
 export function registerSourceHandlers(): void {
-  ipcMain.handle('source:list', () => listAllSources())
+  ipcMain.handle('source:list', (_, signId: string) => returnNonMainSourcesDetailsBySignId(signId))
   // ipcMain.handle('source:find', (_, id: string) => findSourceById(id))
   // ipcMain.handle('source:create', (_, data: SourceToDB) => createSource(data))
   // ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))

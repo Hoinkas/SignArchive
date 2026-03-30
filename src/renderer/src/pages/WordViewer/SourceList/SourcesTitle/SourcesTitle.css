@@ -1,0 +1,13 @@
+.sourcesTitleContainer{
+  width: 100%;
+  display: inline-flex;
+  border-bottom: var(--line-border);
+  padding: var(--space-4);
+  justify-content: space-between;
+}
+
+.sourcesTitle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}

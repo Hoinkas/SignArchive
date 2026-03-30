@@ -7,7 +7,8 @@ import {
   getSourcesStartEndYearBySignId,
   findMainSourceBySignId,
   createSource,
-  returnSourceDetailsById
+  returnSourceDetailsById,
+  returnSourcesCountBySignId
 } from './source'
 import { createMeaningSign } from './meaningSign'
 import { createMediaFile } from './mediaFile'
@@ -65,12 +66,14 @@ export function returnSignDetailsById(signId: string): SignWithSourceDetails | u
   if (!sourceWithDetails) return
 
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignId(sign.id)
+  const sourcesCount = returnSourcesCountBySignId(sign.id)
 
   return {
     ...sign,
     source: sourceWithDetails,
     yearStart,
-    yearEnd
+    yearEnd,
+    sourcesCount
   }
 }
 

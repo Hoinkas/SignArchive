@@ -4,6 +4,7 @@ import './SignList.css'
 import AddSign from './AddSign/AddSign'
 import AddSignForm from '@renderer/components/Form/Forms/AddSignForm'
 import { SignWithSourceDetails } from '@shared/types'
+import SourceList from '../SourceList/SourceList'
 
 interface SignListProps {
   meaningId: string
@@ -13,11 +14,17 @@ interface SignListProps {
 
 function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithSourceDetails | null>(null)
 
   return (
     <div className="signList">
       {signs.map((sign, key) => (
-        <SignBox key={key} sign={sign} setSignValues={setSignValues} />
+        <SignBox
+          key={key}
+          sign={sign}
+          setSignValues={setSignValues}
+          setSourcesPanelSign={setSourcesPanelSign}
+        />
       ))}
       {isFormOpen ? (
         <AddSignForm
@@ -28,6 +35,9 @@ function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX
         />
       ) : (
         <AddSign setIsFormOpen={setIsFormOpen} />
+      )}
+      {sourcesPanelSign && (
+        <SourceList sign={sourcesPanelSign} closeForm={() => setSourcesPanelSign(null)} />
       )}
     </div>
   )

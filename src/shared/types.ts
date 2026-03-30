@@ -110,6 +110,7 @@ export interface YearStartEnd {
 
 export interface SignWithSourceDetails extends Sign, YearStartEnd {
   source: SourceWithSignerAuthorMediaFile
+  sourcesCount: number
 }
 
 export interface MeaningWithSignsDetails extends Meaning {
