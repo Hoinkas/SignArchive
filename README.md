@@ -19,10 +19,10 @@ pnpm dev
 ```
 
 ## To do
-- x Sign editing
+- Sign editing
 - [ ] Adding existing sign to different meaning and/or word
 - [ ] Source adding to one sign
-- x Sidepanel for each source declared in sign
+- Sidepanel for each source declared in sign
 - [ ] Source editing
 - [ ] Frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 - [ ] Form restrictions and error throwing
