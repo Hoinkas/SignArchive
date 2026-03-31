@@ -55,7 +55,7 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
           setIsFormOpen={setIsFormOpen}
         />
       ) : (
-        <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true}/>
+        <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
       )}
     </div>
   )

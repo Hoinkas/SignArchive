@@ -19,13 +19,9 @@ pnpm dev
 ```
 
 ## To do
-- (29.03.2026) Sign editing
+- [ ] Definitions adding, showing and editing
 - [ ] Adding existing sign to different meaning and/or word
-- (30.03.2026) Source adding to one sign
-- (30.03.2026) Sidepanel for each source declared in sign
-- [ ] Remove meanings and add definitions
 - [ ] Word, sign, definition and source deleting
-- [ ] Source editing
 - [ ] Frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 - [ ] Form restrictions and error throwing
 - [ ] Separate tab with word forms and declensions (especially for polish declensions)

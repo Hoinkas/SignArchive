@@ -35,7 +35,9 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
 
   const [fileUrl, setFilePath] = useState<string>('')
 
-  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(null)
+  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
+    source ? { id: source?.author.id, label: source?.author.name } : null
+  )
   const [authors, setAuthors] = useState<Author[]>([])
 
   useEffect(() => {

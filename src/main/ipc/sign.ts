@@ -106,7 +106,8 @@ export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): 
       ...createdSign,
       yearStart: years.yearStart ?? null,
       yearEnd: years.yearEnd ?? null,
-      sourcesCount: 0
+      sourcesCount: 0,
+      definitions: [createdDefinition]
     }
   })
 
