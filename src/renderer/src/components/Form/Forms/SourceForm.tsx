@@ -4,7 +4,6 @@ import {
   AuthorToDB,
   FormType,
   MediaFileToDB,
-  Source,
   SourceToCreate,
   SourceWithAuthorMediaFile,
   SourceWithDetailsToDB
@@ -20,7 +19,7 @@ import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 interface SourceFormProps {
   wordId: string
   signId: string
-  source?: Source
+  source?: SourceWithAuthorMediaFile
   setSourceValues: (source: SourceWithAuthorMediaFile) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
@@ -31,12 +30,14 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
-  const [yearStart, setYearStart] = useState<string>(source?.yearStart?.toString || '')
-  const [yearEnd, setYearEnd] = useState<string>(source?.yearEnd?.toString || '')
+  const [yearStart, setYearStart] = useState<string>(source?.yearStart?.toString() || '')
+  const [yearEnd, setYearEnd] = useState<string>(source?.yearEnd?.toString() || '')
 
   const [fileUrl, setFilePath] = useState<string>('')
 
-  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(null)
+  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
+    source ? { id: source?.author.id, label: source?.author.name } : null
+  )
   const [authors, setAuthors] = useState<Author[]>([])
 
   useEffect(() => {

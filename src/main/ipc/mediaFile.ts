@@ -13,7 +13,17 @@ export function findMediaFileById(id: string): MediaFile | undefined {
   return row as MediaFile | undefined
 }
 
+export function findMediaFileByValues(data: MediaFileToDB): MediaFile | undefined {
+  const db = getDb()
+  const row = db.prepare('SELECT * FROM mediaFile WHERE fileUrl = @fileUrl').get(toSqlParams(data))
+
+  return row as MediaFile | undefined
+}
+
 export function createMediaFile(data: MediaFileToDB): MediaFile {
+  const exists = findMediaFileByValues(data)
+  if (exists) return exists
+
   const db = getDb()
   const mediaFile: MediaFile = {
     id: nanoid(),

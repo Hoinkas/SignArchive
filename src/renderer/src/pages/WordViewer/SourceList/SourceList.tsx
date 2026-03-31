@@ -36,7 +36,13 @@ function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Ele
         <SourcesTitle sign={sign} closeForm={closeForm} />
         <div className="sourceList">
           {sources.map((source, key) => (
-            <SourceBox key={key} source={source} />
+            <SourceBox
+              key={key}
+              source={source}
+              wordId={wordId}
+              signId={sign.id}
+              setSourceValues={setSourceValues}
+            />
           ))}
         </div>
       </div>

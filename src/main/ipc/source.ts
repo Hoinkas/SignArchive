@@ -66,12 +66,14 @@ export function getSourcesStartEndYearBySignAndWordId(
     row.yearEndMax
   ].filter((y) => y !== null)
 
-  const years: YearStartEnd = {
-    yearStart: Math.min(...yearsRaw),
-    yearEnd: Math.max(...yearsRaw)
+  if (yearsRaw.length <= 0) {
+    return { yearStart: null, yearEnd: null } as YearStartEnd
   }
 
-  return years
+  return {
+    yearStart: Math.min(...yearsRaw),
+    yearEnd: Math.max(...yearsRaw)
+  } as YearStartEnd
 }
 
 export function returnSourcesCountBySignId(signId: string): number {
