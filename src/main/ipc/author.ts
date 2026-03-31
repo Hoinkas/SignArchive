@@ -16,7 +16,17 @@ export function findAuthorById(id: string): Author | undefined {
   return row as Author | undefined
 }
 
+export function findAuthorByValues(data: AuthorToDB): Author | undefined {
+  const db = getDb()
+  const row = db.prepare('SELECT * FROM author WHERE name = @name').get(toSqlParams(data))
+
+  return row as Author | undefined
+}
+
 export function createAuthor(data: AuthorToDB): Author {
+  const exists = findAuthorByValues(data)
+  if (exists) return exists
+
   const db = getDb()
   const author: Author = {
     id: nanoid(),
@@ -25,7 +35,7 @@ export function createAuthor(data: AuthorToDB): Author {
   }
   db.prepare(
     `
-    INSERT INTO Author (id, createdAt, name)
+    INSERT INTO author (id, createdAt, name)
     VALUES (@id, @createdAt, @name)
   `
   ).run(toSqlParams(author))
