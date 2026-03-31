@@ -1,12 +1,12 @@
 import './MediaPlayer.css'
-import { MediaFile } from '@shared/types'
+import { SignFile } from '@shared/types'
 import { useEffect, useRef, useState } from 'react'
 
 interface MediaPlayerProps {
-  mediaFile: MediaFile
+  file: SignFile
 }
 
-function MediaPlayer({ mediaFile }: MediaPlayerProps): React.JSX.Element {
+function MediaPlayer({ file }: MediaPlayerProps): React.JSX.Element {
   const [isVisible, setIsVisible] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -30,18 +30,8 @@ function MediaPlayer({ mediaFile }: MediaPlayerProps): React.JSX.Element {
     }
   }, [])
 
-  const getSrc = (filePath: string): string => {
-    if (!filePath) return ''
-    if (filePath.startsWith('file:///')) {
-      const path = decodeURIComponent(filePath.replace('file://', ''))
-      return 'media://' + path.split('/').map(encodeURIComponent).join('/')
-    }
-    const withoutLeadingSlash = filePath.replace(/^\//, '')
-    return 'media://' + withoutLeadingSlash.split('/').map(encodeURIComponent).join('/')
-  }
-
-  const isImage = ['jpg', 'png'].includes(mediaFile.fileType)
-  const src = getSrc(mediaFile.filePath)
+  const src = `media://${file.path}`
+  const isImage = file.mimeType.startsWith('image/')
 
   return (
     <div className="mediaWrapper" ref={wrapperRef}>

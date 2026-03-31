@@ -1,13 +1,4 @@
-import type {
-  Meaning,
-  Sign,
-  Signer,
-  Source,
-  Word,
-  SignToDB,
-  MeaningToDB,
-  WordToDB
-} from '@shared/types'
+import type { Word, WordToDB } from '@shared/types'
 
 /// <reference types="vite/client" />
 
@@ -15,29 +6,21 @@ declare global {
   interface Window {
     api: {
       sign: {
-        create: (data: SignWithDetailsToDB) => Promise<SignWithSourceDetails>
+        create: (data: SignWithDetailsToDB) => Promise<SignWithDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
-        delete: (signId: string) => Promise<void>
-      }
-      meaning: {
-        create: (data: MeaningToDB) => Promise<Meaning>
-        update: (meaningId: string, data: Partial<MeaningToDB>) => Promise<Meaning>
-        delete: (meaningId: string) => Promise<void>
+        // delete: (signId: string) => Promise<void>
       }
       word: {
         listWithCount: () => Promise<WordWithCounts[]>
-        details: (wordId: string) => Promise<WordWithMeaningsDetails>
+        details: (wordId: string) => Promise<WordWithSignsDetails>
         create: (data: WordToDB) => Promise<Word>
         update: (wordId: string, data: Partial<WordToDB>) => Promise<Word>
-        delete: (wordId: string) => Promise<void>
-      }
-      signer: {
-        list: () => Promise<Signer[]>
+        // delete: (wordId: string) => Promise<void>
       }
       source: {
-        list: (signId: string) => Promise<SourceWithSignerAuthorMediaFile[]>
+        list: (signId: string, wordId: string) => Promise<SourceWithAuthorMediaFile[]>
         details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
-        create: (data: SourceWithDetailsToDB) => Promise<Source>
+        create: (data: SourceWithDetailsToDB) => Promise<SourceWithAuthorMediaFile>
       }
       author: {
         list: () => Promise<Author[]>

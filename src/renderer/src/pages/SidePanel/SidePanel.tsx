@@ -19,16 +19,11 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
   const [wordsWithSignCount, setWordsWithSignCount] = useState<WordWithCounts[]>([])
 
   useEffect(() => {
-    window.api.word.listWithCount().then((result) => {
-      setWordsWithSignCount(result.sort((a, b) => b.signCount - a.signCount))
-    })
+    window.api.word.listWithCount().then(setWordsWithSignCount)
   }, [])
 
   const setWordValues = (word: Word): void => {
-    setWordsWithSignCount((prevState) => [
-      ...prevState,
-      { ...word, meaningsCount: 0, signsCount: 0 }
-    ])
+    setWordsWithSignCount((prevState) => [...prevState, { ...word, signsCount: 0 }])
   }
 
   return (

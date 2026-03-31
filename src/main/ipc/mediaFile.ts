@@ -17,12 +17,13 @@ export function createMediaFile(data: MediaFileToDB): MediaFile {
   const db = getDb()
   const mediaFile: MediaFile = {
     id: nanoid(),
+    createdAt: new Date().toISOString(),
     ...data
   }
   db.prepare(
     `
-    INSERT INTO mediaFile (id, createDate, fileType, filePath)
-    VALUES (@id, @createDate, @fileType, @filePath)
+    INSERT INTO mediaFile (id, createdAt, fileUrl)
+    VALUES (@id, @createdAt, @fileUrl)
   `
   ).run(toSqlParams(mediaFile))
   return mediaFile

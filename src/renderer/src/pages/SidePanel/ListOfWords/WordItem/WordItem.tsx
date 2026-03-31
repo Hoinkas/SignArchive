@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import './WordItem.css'
 import { Word, WordWithCounts } from '@shared/types'
-import { meaningCountText, signCountText } from '@renderer/functions/namesVersionsHelpers'
+import { signCountText } from '@renderer/functions/namesVersionsHelpers'
 
 interface WordProps {
   word: WordWithCounts
@@ -16,9 +16,7 @@ function WordItem(props: WordProps): React.JSX.Element {
   return (
     <li className={className} onClick={() => setActiveWord(word)}>
       <div>{word.text}</div>
-      <div className="additionalInfo">
-        {meaningCountText(word.meaningsCount)} - {signCountText(word.signsCount)}
-      </div>
+      <div className="additionalInfo">{signCountText(word.signsCount)}</div>
     </li>
   )
 }

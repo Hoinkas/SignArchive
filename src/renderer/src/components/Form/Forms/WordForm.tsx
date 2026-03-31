@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, SubmitEvent, useState } from 'react'
 import { FormType, Word } from '@shared/types'
-import { FormMultiLineInput, FormSingleLineInput, FormTags, FormWrapper } from '../Form'
+import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 
 interface WordFormProps {
   word?: Word
@@ -13,12 +13,10 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   const { word, setWordValues, formType, setIsFormOpen } = props
 
   const [text, setText] = useState<string>(word?.text || '')
-  const [definition, setDefinition] = useState<string>(word?.definition || '')
   const [tags, setTags] = useState<string[]>(word?.tags || [])
 
   const closeForm = (): void => {
     setText('')
-    setDefinition('')
     setTags([])
     setIsFormOpen(false)
   }
@@ -27,11 +25,9 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     event.preventDefault()
 
     if (formType == 'add') {
-      window.api.word.create({ text, definition, tags }).then((word) => setWordValues(word))
+      window.api.word.create({ text, tags }).then((word) => setWordValues(word))
     } else if (formType == 'edit' && word) {
-      window.api.word
-        .update(word.id, { text, definition, tags })
-        .then((word) => setWordValues(word))
+      window.api.word.update(word.id, { text, tags }).then((word) => setWordValues(word))
     }
 
     closeForm()
@@ -42,7 +38,6 @@ function WordForm(props: WordFormProps): React.JSX.Element {
       {formType === 'edit' && <h2>{text}</h2>}
       <FormWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
         <FormSingleLineInput label="Słowo" value={text} setValue={setText} />
-        <FormMultiLineInput label="Definicja" value={definition} setValue={setDefinition} />
         <FormTags label="Tagi" tags={tags} setTags={setTags} />
       </FormWrapper>
     </div>

@@ -1,33 +1,24 @@
 import TagList from '@renderer/components/TagList/TagList'
-import { SourceWithSignerAuthorMediaFile } from '@shared/types'
+import { SourceWithAuthorMediaFile } from '@shared/types'
 import './SourceBox.css'
 import { useState } from 'react'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 
 interface SourceBoxProps {
-  source: SourceWithSignerAuthorMediaFile
-  isMainSource?: boolean
+  source: SourceWithAuthorMediaFile
 }
 
-function SourceBox({ source, isMainSource = false }: SourceBoxProps): React.JSX.Element {
+function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
-  const signer = source.signer
-  const signerNames = signer.name + ' ' + signer.surname
   const years = mergeYearText(source.yearStart, source.yearEnd)
 
-  const pillText: string[] = [years, signerNames]
+  const pillText: string[] = [years]
   if (source.region) pillText.push(source.region)
-
-  const returnAuthor = isMainSource ? (
-    <div>{source.author.name}</div>
-  ) : (
-    <a href={source.mediaFile.filePath}>{source.author.name}</a>
-  )
 
   return (
     <div className="sourceBox">
-      {returnAuthor}
+      <a href={source.mediaFile.fileUrl}>{source.author.name}</a>
       <TagList textArray={pillText} />
       <div className="additionalInfoItalic">{source.notes}</div>
     </div>

@@ -134,26 +134,47 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
   )
 }
 
+import { SignFile } from '@shared/types'
+
 interface FormMediaFileProps {
-  file: File | null
-  setFile: (file: File | null) => void
+  existingFile?: SignFile
+  newFile: File | null
+  setNewFile: (file: File | null) => void
 }
 
-export function FormMediaFile({ file, setFile }: FormMediaFileProps): React.JSX.Element {
+export function FormMediaFile({
+  existingFile,
+  newFile,
+  setNewFile
+}: FormMediaFileProps): React.JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const label = newFile?.name ?? existingFile?.originalName ?? 'Wybierz plik'
+  const hasFile = !!(newFile || existingFile)
 
   return (
     <div className="formGroup">
       <label>Plik ze znakiem</label>
       <button type="button" className="fileInput" onClick={() => inputRef.current?.click()}>
-        <span>{file ? file.name : 'Wybierz plik'}</span>
+        <span style={{ color: hasFile ? 'inherit' : 'var(--text-muted)' }}>{label}</span>
+        {newFile && (
+          <span
+            onClick={(e) => {
+              e.stopPropagation()
+              setNewFile(null)
+            }}
+            style={{ marginLeft: 8 }}
+          >
+            ✕
+          </span>
+        )}
       </button>
       <input
         ref={inputRef}
         type="file"
         accept="video/*,image/*,text/*"
         style={{ display: 'none' }}
-        onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+        onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
       />
     </div>
   )

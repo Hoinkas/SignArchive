@@ -11,7 +11,7 @@ function TagList(props: TagListProps): React.JSX.Element {
   const { textArray, setTags } = props
 
   return (
-    <div className="TagList">
+    <div className="tagList">
       {textArray.map((text, key) => (
         <Tag key={key} text={text} setTags={setTags} />
       ))}

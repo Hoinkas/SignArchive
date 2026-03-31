@@ -1,15 +1,11 @@
-import { Dispatch, SetStateAction, SubmitEvent, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import {
-  Author,
-  AuthorToDB,
+  DefinitionToDB,
   FormType,
-  MediaFileToDB,
-  Signer,
-  SignerToDB,
+  SignFile,
   SignToDB,
   SignWithDetailsToDB,
-  SignWithSourceDetails,
-  SourceToCreate
+  SignWithDetails
 } from '@shared/types'
 import {
   FormMultiLineInput,
@@ -20,114 +16,80 @@ import {
 } from '@renderer/components/Form/Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 
+const categoriesOptions: DropdownOption[] = [
+  { id: '1', label: 'rzeczownik' },
+  { id: '2', label: 'czasownik' },
+  { id: '3', label: 'przymiotnik' }
+]
+
 interface AddSignFormProps {
-  meaningId: string
-  setSignValues: (sign: SignWithSourceDetails) => void
+  wordId: string
+  setSignValues: (sign: SignWithDetails) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function AddSignForm(props: AddSignFormProps): React.JSX.Element {
-  const { meaningId, setSignValues, formType, setIsFormOpen } = props
+  const { wordId, setSignValues, formType, setIsFormOpen } = props
 
+  const [newFile, setNewFile] = useState<File | null>(null)
   const [notes, setNotes] = useState<string>('')
-  const [sourceNotes, setSourceNotes] = useState<string>('')
-  const [file, setFile] = useState<File | null>(null)
-  const [filePath, setFilePath] = useState<string>('')
-  const [region, setRegion] = useState<string>('')
-  const [yearStart, setYearStart] = useState<string>('')
-  const [yearEnd, setYearEnd] = useState<string>('')
-
-  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(null)
-  const [authors, setAuthors] = useState<Author[]>([])
-
-  const [signerOption, setSignerOption] = useState<DropdownOption | null>(null)
-  const [signers, setSigners] = useState<Signer[]>([])
+  const [text, setText] = useState<string>('')
+  const [translation, setTranslation] = useState<string>('')
+  const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(null)
 
   const closeForm = (): void => {
+    setNewFile(null)
     setNotes('')
+    setText('')
+    setTranslation('')
+    setCategoryOption(null)
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (file && authorOption) {
-      const sign: SignToDB = { notes }
-      const mediaFile: MediaFileToDB = {
-        fileType: file?.type,
-        filePath: window.api.getPathForFile(file),
-        createDate: new Date(file.lastModified).toISOString()
-      }
-      const yearStartStr = yearStart ? parseInt(yearStart) : undefined
-      const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
-      const source: SourceToCreate = {
-        notes: sourceNotes,
-        yearStart: yearStartStr,
-        yearEnd: yearEndStr,
-        region
-      }
-      const author: AuthorToDB = { name: authorOption.label }
+    if (!newFile || !categoryOption || text === '') return
 
-      const names = signerOption ? signerOption.label.split(' ') : ['nieznane', 'nieznane']
-      const signer: SignerToDB = { name: names[0], surname: names[1] }
-
-      const data: SignWithDetailsToDB = { meaningId, sign, mediaFile, author, signer, source }
-
-      window.api.sign
-        .create(data)
-        .then((sign) => {
-          setSignValues(sign)
-          closeForm()
-        })
-        .catch((err) => console.error('Błąd tworzenia znaku:', err))
+    const signFile: SignFile = {
+      path: window.api.getPathForFile(newFile),
+      originalName: newFile.name,
+      mimeType: newFile.type,
+      size: newFile.size
     }
-  }
 
-  useEffect(() => {
-    window.api.author.list().then((authors) => setAuthors(authors))
-    window.api.signer.list().then((signers) => setSigners(signers))
-  }, [])
+    const sign: SignToDB = { notes, file: JSON.stringify(signFile) }
+    const definition: DefinitionToDB = { category: categoryOption.label, text, translation }
+    const data: SignWithDetailsToDB = { wordId, sign, definition }
+
+    window.api.sign
+      .create(data)
+      .then((sign) => {
+        setSignValues(sign)
+        closeForm()
+      })
+      .catch((err) => console.error('Błąd tworzenia znaku:', err))
+  }
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMediaFile file={file} setFile={setFile} />
-      <FormSingleLineInput label={'Online Url'} value={filePath} setValue={setFilePath} />
-      <FormMultiLineInput
-        label={'Notatka do źródła'}
-        value={sourceNotes}
-        setValue={setSourceNotes}
-      />
+      <FormMediaFile newFile={newFile} setNewFile={setNewFile} />
+      <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
+      <FormMultiLineInput label="Definicja" value={text} setValue={setText} />
       <FormTwoInLineWrapper>
         <FormDropdown
-          label="Migacz"
-          options={signers.map((a) => ({ id: a.id, label: a.name + ' ' + a.surname }))}
-          value={signerOption}
-          setValue={setSignerOption}
-        />
-        <FormDropdown
-          label="Autor / publikacja"
-          options={authors.map((a) => ({ id: a.id, label: a.name }))}
-          value={authorOption}
-          setValue={setAuthorOption}
-        />
-      </FormTwoInLineWrapper>
-      <FormTwoInLineWrapper>
-        <FormSingleLineInput
-          label={'Rok początkowy'}
-          value={yearStart}
-          setValue={setYearStart}
-          isNumber={true}
+          label="Kategoria słowa"
+          options={categoriesOptions}
+          value={categoryOption}
+          setValue={setCategoryOption}
         />
         <FormSingleLineInput
-          label={'Rok końcowy'}
-          value={yearEnd}
-          setValue={setYearEnd}
-          isNumber={true}
+          label="Odpowiednik w pisanym"
+          value={translation}
+          setValue={setTranslation}
         />
       </FormTwoInLineWrapper>
-      <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
-      <FormMultiLineInput label={'Notatka do znaku'} value={notes} setValue={setNotes} />
     </FormModalWrapper>
   )
 }

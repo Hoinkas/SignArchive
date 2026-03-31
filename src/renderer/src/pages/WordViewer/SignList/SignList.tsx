@@ -1,20 +1,17 @@
 import { useState } from 'react'
 import SignBox from './SignBox/SignBox'
 import './SignList.css'
-import AddSign from './AddSign/AddSign'
-import AddSignForm from '@renderer/components/Form/Forms/AddSignForm'
-import { SignWithSourceDetails } from '@shared/types'
+import { SignWithDetails } from '@shared/types'
 import SourceList from '../SourceList/SourceList'
 
 interface SignListProps {
-  meaningId: string
-  signs: SignWithSourceDetails[]
-  setSignValues: (sign: SignWithSourceDetails) => void
+  wordId: string
+  signs: SignWithDetails[]
+  setSignValues: (sign: SignWithDetails) => void
 }
 
-function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX.Element {
-  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithSourceDetails | null>(null)
+function SignList({ wordId, signs, setSignValues }: SignListProps): React.JSX.Element {
+  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
 
   return (
     <div className="signList">
@@ -26,18 +23,12 @@ function SignList({ meaningId, signs, setSignValues }: SignListProps): React.JSX
           setSourcesPanelSign={setSourcesPanelSign}
         />
       ))}
-      {isFormOpen ? (
-        <AddSignForm
-          meaningId={meaningId}
-          formType="add"
-          setSignValues={setSignValues}
-          setIsFormOpen={setIsFormOpen}
-        />
-      ) : (
-        <AddSign setIsFormOpen={setIsFormOpen} />
-      )}
       {sourcesPanelSign && (
-        <SourceList sign={sourcesPanelSign} closeForm={() => setSourcesPanelSign(null)} />
+        <SourceList
+          wordId={wordId}
+          sign={sourcesPanelSign}
+          closeForm={() => setSourcesPanelSign(null)}
+        />
       )}
     </div>
   )

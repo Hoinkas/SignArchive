@@ -107,6 +107,7 @@ label {
   border-radius: var(--radius-tag);
   height: fit-content;
   font-size: var(--font-size-sm);
+  background: var(--color-bg);
 
   display: inline-flex;
   align-items: center;

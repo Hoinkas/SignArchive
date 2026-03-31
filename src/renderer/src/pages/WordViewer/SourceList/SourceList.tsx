@@ -1,4 +1,4 @@
-import { SignWithSourceDetails, Source, SourceWithSignerAuthorMediaFile } from '@shared/types'
+import { SignWithDetails, SourceWithAuthorMediaFile } from '@shared/types'
 import { useEffect, useState } from 'react'
 import SourceBox from './SourceBox/SourceBox'
 import './SourceList.css'
@@ -7,28 +7,26 @@ import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
 
 interface SourceListProps {
-  sign: SignWithSourceDetails
+  wordId: string
+  sign: SignWithDetails
   closeForm: () => void
 }
 
-function SourceList({ sign, closeForm }: SourceListProps): React.JSX.Element {
-  const [sources, setSources] = useState<SourceWithSignerAuthorMediaFile[]>([])
+function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Element {
+  const [sources, setSources] = useState<SourceWithAuthorMediaFile[]>([])
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    window.api.source.list(sign.id).then(setSources)
-  }, [sign.id])
+    window.api.source.list(sign.id, wordId).then(setSources)
+  }, [sign.id, wordId])
 
-  const setSourceValues = (source: Source): void => {
+  const setSourceValues = (source: SourceWithAuthorMediaFile): void => {
     setSources((prevState) => {
       const exists = prevState.some((s) => s.id === source.id)
 
-      return {
-        ...prevState,
-        sources: exists
-          ? prevState.map((s) => (s.id === source.id ? source : s))
-          : [...prevState, source]
-      }
+      return exists
+        ? prevState.map((s) => (s.id === source.id ? source : s))
+        : [...prevState, source]
     })
   }
 
@@ -37,7 +35,6 @@ function SourceList({ sign, closeForm }: SourceListProps): React.JSX.Element {
       <div>
         <SourcesTitle sign={sign} closeForm={closeForm} />
         <div className="sourceList">
-          <SourceBox source={sign.source} isMainSource={true} />
           {sources.map((source, key) => (
             <SourceBox key={key} source={source} />
           ))}
@@ -45,6 +42,7 @@ function SourceList({ sign, closeForm }: SourceListProps): React.JSX.Element {
       </div>
       {isFormOpen ? (
         <SourceForm
+          wordId={wordId}
           signId={sign.id}
           setSourceValues={setSourceValues}
           formType={'add'}

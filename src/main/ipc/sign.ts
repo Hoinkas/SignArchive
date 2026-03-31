@@ -1,125 +1,112 @@
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Sign, SignToDB, SignWithDetailsToDB, SignWithSourceDetails } from '@shared/types'
+import path from 'path'
+import fs from 'fs'
+import type {
+  DefinitionSignWord,
+  Sign,
+  SignFile,
+  SignToDB,
+  SignWithDetails,
+  SignWithDetailsToDB
+} from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
-import {
-  getSourcesStartEndYearBySignId,
-  findMainSourceBySignId,
-  createSource,
-  returnSourceDetailsById,
-  returnSourcesCountBySignId
-} from './source'
-import { createMeaningSign } from './meaningSign'
-import { createMediaFile } from './mediaFile'
-import { createAuthor } from './author'
-import { createSigner } from './signer'
-import { createSourceSign } from './sourceSign'
+import { getSourcesStartEndYearBySignAndWordId, returnSourcesCountBySignId } from './source'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
-import validateId from '../utils/validateId'
+import { createDefinition, returnAllDefinitionsBySignWordId } from './definition'
+import { createDefinitionSignWord } from './definitionSignWord'
+
+const SIGNS_DIR = path.join(app.getPath('userData'), 'signs')
+fs.mkdirSync(SIGNS_DIR, { recursive: true })
+
+function copySignFile(signFile: SignFile): SignFile {
+  const ext = path.extname(signFile.originalName)
+  const destName = `${nanoid()}${ext}`
+  const destPath = path.join(SIGNS_DIR, destName)
+
+  fs.copyFileSync(signFile.path, destPath)
+
+  return {
+    ...signFile,
+    path: destPath
+  }
+}
 
 export function listAllSigns(): Sign[] {
   const db = getDb()
   const rows = db.prepare('SELECT * FROM sign ORDER BY createdAt DESC').all()
-  return rows as Sign[]
+  return rows.map((row: Record<string, unknown>) => rowToSign(row))
 }
 
 export function findSignById(id: string): Sign | undefined {
   const row = getDb().prepare('SELECT * FROM sign WHERE id = ?').get(id)
-  return row as Sign | undefined
+  return row ? rowToSign(row as Record<string, unknown>) : undefined
 }
 
-export function returnSignsCountByWordId(wordId: string): number {
-  const row = getDb()
-    .prepare(
-      `
-        SELECT COUNT(DISTINCT sign.id) AS count
-        FROM sign
-        INNER JOIN meaningSign ON sign.id = meaningSign.signId
-        INNER JOIN meaning ON meaningSign.meaningId = meaning.id
-        WHERE meaning.wordId = ?
-      `
-    )
-    .get(wordId)
-  return row.count
-}
-
-export function returnSignDetailsById(signId: string): SignWithSourceDetails | undefined {
+export function returnSignDetailsBySignWordId(
+  signId: string,
+  wordId: string
+): SignWithDetails | undefined {
   const sign = findSignById(signId)
   if (!sign) return
 
-  validateId(signId)
-
-  const source = findMainSourceBySignId(sign.id)
-  if (!source) return
-
-  const sourceWithDetails = returnSourceDetailsById(source.id)
-  if (!sourceWithDetails) return
-
-  const { yearStart, yearEnd } = getSourcesStartEndYearBySignId(sign.id)
+  const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(sign.id, wordId)
   const sourcesCount = returnSourcesCountBySignId(sign.id)
+  const definitions = returnAllDefinitionsBySignWordId(signId, wordId)
 
   return {
     ...sign,
-    source: sourceWithDetails,
     yearStart,
     yearEnd,
-    sourcesCount
+    sourcesCount,
+    definitions
   }
 }
 
 export function createSign(data: SignToDB): Sign {
   const db = getDb()
+
+  const parsedFile = JSON.parse(data.file) as SignFile
+  const signFile: SignFile = copySignFile(parsedFile)
+
   const sign: Sign = {
     id: nanoid(),
     createdAt: new Date().toISOString(),
-    ...data
+    ...data,
+    file: signFile
   }
   db.prepare(
     `
-      INSERT INTO sign (id, createdAt, notes)
-      VALUES (@id, @createdAt, @notes)
+      INSERT INTO sign (id, createdAt, notes, file)
+      VALUES (@id, @createdAt, @notes, @file)
     `
-  ).run(toSqlParams(sign))
+  ).run(toSqlParams({ ...sign, file: JSON.stringify(sign.file) }))
   return sign
 }
 
-export function createSignWithSourceDetails(
-  signWithDetails: SignWithDetailsToDB
-): SignWithSourceDetails {
-  const { meaningId, sign, mediaFile, author, signer, source } = signWithDetails
+export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): SignWithDetails {
+  const { wordId, sign, definition } = signWithDetails
 
   const transaction = getDb().transaction(() => {
     const createdSign = createSign(sign)
-    createMeaningSign({ signId: createdSign.id, meaningId })
+    const createdDefinition = createDefinition(definition)
 
-    const createdMediaFile = createMediaFile(mediaFile)
-    const createdAuthor = createAuthor(author)
-    const createdSigner = createSigner(signer)
-
-    const createdSource = createSource({
-      ...source,
-      mediaFileId: createdMediaFile.id,
-      authorId: createdAuthor.id,
-      signerId: createdSigner.id
-    })
-
-    createSourceSign({
+    const definitionSignWord: DefinitionSignWord = {
+      wordId,
       signId: createdSign.id,
-      sourceId: createdSource.id,
-      isMainSource: 1
-    })
+      definitionId: createdDefinition.id
+    }
+
+    createDefinitionSignWord(definitionSignWord)
+
+    const years = getSourcesStartEndYearBySignAndWordId(createdSign.id, wordId)
 
     return {
       ...createdSign,
-      yearStart: createdSource.yearStart ?? null,
-      yearEnd: createdSource.yearEnd ?? null,
-      source: {
-        ...createdSource,
-        signer: createdSigner,
-        author: createdAuthor,
-        mediaFile: createdMediaFile
-      }
+      yearStart: years.yearStart ?? null,
+      yearEnd: years.yearEnd ?? null,
+      sourcesCount: 0
     }
   })
 
@@ -130,18 +117,31 @@ export function updateSign(signId: string, data: Partial<SignToDB>): Sign | unde
   const existing = findSignById(signId)
   if (!existing) return
 
-  validateId(signId)
+  let newFile = existing.file
 
-  const updated: Sign = { ...existing, ...data }
+  if (data.file) {
+    const file: SignFile = JSON.parse(data.file)
+    if (existing.file?.path && fs.existsSync(existing.file.path)) {
+      fs.unlinkSync(existing.file.path)
+    }
+    newFile = copySignFile(file)
+  }
+
+  const updated: Sign = {
+    ...existing,
+    notes: data.notes ?? existing.notes,
+    file: newFile
+  }
+
   getDb()
     .prepare(
       `
         UPDATE sign
-        SET notes = @notes
+        SET notes = @notes, file = @file
         WHERE id = @id
       `
     )
-    .run(toSqlParams(updated))
+    .run(toSqlParams({ ...updated, file: JSON.stringify(updated.file) }))
   return updated
 }
 
@@ -150,15 +150,25 @@ export function deleteSignById(id: string): void {
 }
 
 export function registerSignHandlers(): void {
-  // ipcMain.handle('sign:list', () => listAllSigns())
+  ipcMain.handle('sign:list', () => listAllSigns())
   // ipcMain.handle('sign:find', (_, id: string) => findSignById(id))
   ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
-    handlerWithErrorLogging(() => createSignWithSourceDetails(data))
+    handlerWithErrorLogging(() => createSignWithDefinition(data))
   )
   ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
     handlerWithErrorLogging(() => updateSign(singId, data))
   )
-  ipcMain.handle('sign:delete', (_, id: string) =>
-    handlerWithErrorLogging(() => deleteSignById(id))
-  )
+  // ipcMain.handle('sign:delete', (_, id: string) =>
+  //   handlerWithErrorLogging(() => deleteSignById(id))
+  // )
+}
+
+// ROW MAPPER
+export function rowToSign(row: Record<string, unknown>): Sign {
+  return {
+    id: row.id as string,
+    createdAt: row.createdAt as string,
+    notes: row.notes as string | undefined,
+    file: JSON.parse(row.file as string) as SignFile
+  }
 }

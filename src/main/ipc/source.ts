@@ -1,19 +1,18 @@
-import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import type {
   Source,
-  SourceSign,
+  SourceSignWord,
   SourceToDB,
+  SourceWithAuthorMediaFile,
   SourceWithDetailsToDB,
-  SourceWithSignerAuthorMediaFile,
   YearStartEnd
 } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
-import { createSigner, findSignerById } from './signer'
 import { createAuthor, findAuthorById } from './author'
 import { createMediaFile, findMediaFileById } from './mediaFile'
-import { createSourceSign } from './sourceSign'
+import { ipcMain } from 'electron'
+import { createSourceSignWord } from './sourceSignWord'
 
 export function listAllSources(): Source[] {
   const db = getDb()
@@ -26,48 +25,39 @@ export function findSourceById(id: string): Source | undefined {
   return row as Source | undefined
 }
 
-export function findMainSourceBySignId(signId: string): Source | undefined {
+export function findAllSourcesBySignWordId(signId: string, wordId: string): Source[] {
   const row = getDb()
     .prepare(
       `
       SELECT * FROM source
-      INNER JOIN sourceSign ON source.id = sourceSign.sourceId
-      WHERE sourceSign.signId = ? AND sourceSign.isMainSource = 1
+      INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+      WHERE sourceSignWord.signId = ?
+        AND sourceSignWord.wordId = ?
     `
     )
-    .get(signId)
-
-  if (!row) return
-
-  return row as Source
-}
-
-export function findAllNonMainSourcesBySignId(signId: string): Source[] {
-  const row = getDb()
-    .prepare(
-      `
-      SELECT * FROM source
-      INNER JOIN sourceSign ON source.id = sourceSign.sourceId
-      WHERE sourceSign.signId = ? AND sourceSign.isMainSource = 0
-    `
-    )
-    .all(signId)
+    .all(signId, wordId)
 
   return row as Source[]
 }
 
-export function getSourcesStartEndYearBySignId(signId: string): YearStartEnd {
+export function getSourcesStartEndYearBySignAndWordId(
+  signId: string,
+  wordId: string
+): YearStartEnd {
   const row = getDb()
     .prepare(
       `
-      SELECT MIN(source.yearStart) AS yearStartMin, MAX(source.yearStart) AS yearStartMax,
-      MAX(source.yearEnd) AS yearEndMax, MIN(source.yearEnd) AS yearEndMin
+      SELECT
+        MIN(source.yearStart) AS yearStartMin,
+        MAX(source.yearStart) AS yearStartMax,
+        MAX(source.yearEnd) AS yearEndMax,
+        MIN(source.yearEnd) AS yearEndMin
       FROM source
-      INNER JOIN sourceSign ON source.id = sourceSign.sourceId
-      WHERE sourceSign.signId = ?
+        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+      WHERE sourceSignWord.signId = ? AND sourceSignWord.wordId = ?
     `
     )
-    .get(signId)
+    .get(signId, wordId)
 
   const yearsRaw: number[] = [
     row.yearStartMin,
@@ -90,40 +80,37 @@ export function returnSourcesCountBySignId(signId: string): number {
       `
         SELECT COUNT(*) AS count
         FROM sign
-        INNER JOIN sourceSign ON sign.id = sourceSign.signId
-        WHERE sourceSign.signId = ?
+        INNER JOIN sourceSignWord ON sign.id = sourceSignWord.signId
+        WHERE sourceSignWord.signId = ?
       `
     )
     .get(signId)
   return row.count
 }
 
-export function returnSourceDetailsById(
-  sourceId: string
-): SourceWithSignerAuthorMediaFile | undefined {
+export function returnSourceDetailsById(sourceId: string): SourceWithAuthorMediaFile | undefined {
   const source = findSourceById(sourceId)
   if (!source) return
 
   const author = findAuthorById(source.authorId)
-  const signer = findSignerById(source.signerId)
   const mediaFile = findMediaFileById(source.mediaFileId)
 
-  if (!author || !signer || !mediaFile) return
+  if (!author || !mediaFile) return
 
   return {
     ...source,
-    signer,
     author,
     mediaFile
   }
 }
 
-export function returnNonMainSourcesDetailsBySignId(
-  signId: string
-): SourceWithSignerAuthorMediaFile[] {
-  const sources = findAllNonMainSourcesBySignId(signId)
+export function returnSourcesDetailsBySignWordId(
+  signId: string,
+  wordId: string
+): SourceWithAuthorMediaFile[] {
+  const sources = findAllSourcesBySignWordId(signId, wordId)
 
-  const sourcesDetails: SourceWithSignerAuthorMediaFile[] = []
+  const sourcesDetails: SourceWithAuthorMediaFile[] = []
   sources.forEach((s) => {
     const details = returnSourceDetailsById(s.id)
     if (!details) return
@@ -142,40 +129,43 @@ export function createSource(data: SourceToDB): Source {
   }
   db.prepare(
     `
-    INSERT INTO source (id, createdAt, signerId, authorId, mediaFileId, region, yearStart, yearEnd, notes)
-    VALUES (@id, @createdAt, @signerId, @authorId, @mediaFileId, @region, @yearStart, @yearEnd, @notes)
+    INSERT INTO source (id, createdAt, authorId, mediaFileId, region, yearStart, yearEnd, notes)
+    VALUES (@id, @createdAt, @authorId, @mediaFileId, @region, @yearStart, @yearEnd, @notes)
   `
   ).run(toSqlParams(source))
+
   return source
 }
 
-export function createSourceWithDetails(data: SourceWithDetailsToDB): Source {
-  const db = getDb()
+export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWithAuthorMediaFile {
+  const transaction = getDb().transaction(() => {
+    const createdMediaFile = createMediaFile(data.mediaFile)
+    const createdAuthor = createAuthor(data.author)
 
-  const createdMediaFile = createMediaFile(data.mediaFile)
-  const createdSigner = createSigner(data.signer)
-  const createdAuthor = createAuthor(data.author)
+    const source: SourceToDB = {
+      ...data.source,
+      authorId: createdAuthor.id,
+      mediaFileId: createdMediaFile.id
+    }
 
-  const source: Source = {
-    id: nanoid(),
-    createdAt: new Date().toISOString(),
-    ...data.source,
-    signerId: createdSigner.id,
-    authorId: createdAuthor.id,
-    mediaFileId: createdMediaFile.id
-  }
+    const createdSource: Source = createSource(source)
 
-  db.prepare(
-    `
-    INSERT INTO source (id, createdAt, signerId, authorId, mediaFileId, region, yearStart, yearEnd, notes)
-    VALUES (@id, @createdAt, @signerId, @authorId, @mediaFileId, @region, @yearStart, @yearEnd, @notes)
-  `
-  ).run(toSqlParams(source))
+    const sourceSignWord: SourceSignWord = {
+      sourceId: createdSource.id,
+      signId: data.signId,
+      wordId: data.wordId
+    }
+    createSourceSignWord(sourceSignWord)
 
-  const sourceSign: SourceSign = { sourceId: source.id, signId: data.signId, isMainSource: 0 }
-  createSourceSign(sourceSign)
+    const sourceWihtDetails: SourceWithAuthorMediaFile = {
+      ...createdSource,
+      author: createdAuthor,
+      mediaFile: createdMediaFile
+    }
+    return sourceWihtDetails
+  })
 
-  return source
+  return transaction()
 }
 
 export function deleteSourceById(id: string): void {
@@ -183,7 +173,9 @@ export function deleteSourceById(id: string): void {
 }
 
 export function registerSourceHandlers(): void {
-  ipcMain.handle('source:list', (_, signId: string) => returnNonMainSourcesDetailsBySignId(signId))
+  ipcMain.handle('source:list', (_, signId: string, wordId: string) =>
+    returnSourcesDetailsBySignWordId(signId, wordId)
+  )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
   ipcMain.handle('source:create', (_, data: SourceWithDetailsToDB) => createSourceWithDetails(data))
   // ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))

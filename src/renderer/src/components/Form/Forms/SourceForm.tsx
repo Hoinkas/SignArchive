@@ -4,10 +4,9 @@ import {
   AuthorToDB,
   FormType,
   MediaFileToDB,
-  Signer,
-  SignerToDB,
   Source,
   SourceToCreate,
+  SourceWithAuthorMediaFile,
   SourceWithDetailsToDB
 } from '@shared/types'
 import {
@@ -19,40 +18,34 @@ import {
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 
 interface SourceFormProps {
+  wordId: string
   signId: string
   source?: Source
-  setSourceValues: (source: Source) => void
+  setSourceValues: (source: SourceWithAuthorMediaFile) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function SourceForm(props: SourceFormProps): React.JSX.Element {
-  const { signId, source, setSourceValues, formType, setIsFormOpen } = props
+  const { wordId, signId, source, setSourceValues, formType, setIsFormOpen } = props
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
   const [yearStart, setYearStart] = useState<string>(source?.yearStart?.toString || '')
   const [yearEnd, setYearEnd] = useState<string>(source?.yearEnd?.toString || '')
 
-  const [filePath, setFilePath] = useState<string>('')
+  const [fileUrl, setFilePath] = useState<string>('')
 
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(null)
   const [authors, setAuthors] = useState<Author[]>([])
 
-  const [signerOption, setSignerOption] = useState<DropdownOption | null>(null)
-  const [signers, setSigners] = useState<Signer[]>([])
-
   useEffect(() => {
     window.api.author.list().then((authors) => setAuthors(authors))
-    window.api.signer.list().then((signers) => setSigners(signers))
 
     if (source) {
       window.api.source.details(source.id).then((sourceRecieved) => {
-        setFilePath(sourceRecieved.mediaFile.filePath)
+        setFilePath(sourceRecieved.mediaFile.fileUrl)
         setAuthorOption({ id: sourceRecieved.author.id, label: sourceRecieved.author.name })
-
-        const signerNames = sourceRecieved.signer.name + ' ' + sourceRecieved.signer.surname
-        setSignerOption({ id: sourceRecieved.signer.id, label: signerNames })
       })
     }
   }, [source])
@@ -64,7 +57,6 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     setYearStart('')
     setYearEnd('')
     setAuthorOption(null)
-    setSignerOption(null)
     setIsFormOpen(false)
   }
 
@@ -72,15 +64,8 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     event.preventDefault()
 
     if (authorOption) {
-      const mediaFile: MediaFileToDB = {
-        fileType: 'onlineUrl',
-        filePath,
-        createDate: new Date().toISOString()
-      }
+      const mediaFile: MediaFileToDB = { fileUrl }
       const author: AuthorToDB = { name: authorOption.label }
-
-      const names = signerOption ? signerOption.label.split(' ') : ['nieznane', 'nieznane']
-      const signer: SignerToDB = { name: names[0], surname: names[1] }
 
       const yearStartStr = yearStart ? parseInt(yearStart) : undefined
       const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
@@ -92,14 +77,12 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
       }
 
       const data: SourceWithDetailsToDB = {
+        wordId,
         signId,
         source,
         mediaFile,
-        author,
-        signer
+        author
       }
-
-      console.log(signer)
 
       window.api.source
         .create(data)
@@ -113,21 +96,16 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormSingleLineInput label={'Online Url'} value={filePath} setValue={setFilePath} />
+      <FormSingleLineInput label={'Online Url'} value={fileUrl} setValue={setFilePath} />
       <FormMultiLineInput label={'Notatka do źródła'} value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
-        <FormDropdown
-          label="Migacz"
-          options={signers.map((a) => ({ id: a.id, label: a.name + ' ' + a.surname }))}
-          value={signerOption}
-          setValue={setSignerOption}
-        />
         <FormDropdown
           label="Autor / publikacja"
           options={authors.map((a) => ({ id: a.id, label: a.name }))}
           value={authorOption}
           setValue={setAuthorOption}
         />
+        <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
       </FormTwoInLineWrapper>
       <FormTwoInLineWrapper>
         <FormSingleLineInput
@@ -143,7 +121,6 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
           isNumber={true}
         />
       </FormTwoInLineWrapper>
-      <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
     </FormModalWrapper>
 )
 }

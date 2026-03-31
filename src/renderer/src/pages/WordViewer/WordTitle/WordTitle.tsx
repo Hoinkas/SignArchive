@@ -29,10 +29,7 @@ function WordTitle(props: WordTitleProps): React.JSX.Element {
             <h1>{word.text}</h1>
             <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
           </div>
-          <div className="wordTitleDetails">
-            {word.definition && <div>{word.definition}</div>}
-            {word.tags && <TagList textArray={word.tags} />}
-          </div>
+          <div className="wordTitleDetails">{word.tags && <TagList textArray={word.tags} />}</div>
         </div>
       )}
     </div>

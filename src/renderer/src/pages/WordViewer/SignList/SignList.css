@@ -1,7 +1,7 @@
 .signList {
-  height: 320px;
+  height: 100%;
   display: flex;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

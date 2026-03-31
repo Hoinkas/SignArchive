@@ -1,0 +1,7 @@
+.signTitle {
+  padding: var(--space-2) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg-active);
+}

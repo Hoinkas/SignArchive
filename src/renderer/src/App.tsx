@@ -4,7 +4,6 @@ import WordViewer from './pages/WordViewer/WordViewer'
 import SidePanel from './pages/SidePanel/SidePanel'
 
 function App(): React.JSX.Element {
-  // const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
   const [activeWord, setActiveWord] = useState<Word | null>(null)
 
   return (

@@ -1,9 +1,9 @@
-import { SignWithSourceDetails } from '@shared/types'
+import { SignWithDetails } from '@shared/types'
 import './SourcesTitle.css'
 import { mergeYearText, sourcesCountText } from '@renderer/functions/namesVersionsHelpers'
 
 interface SourcesTitleProps {
-  sign: SignWithSourceDetails
+  sign: SignWithDetails
   closeForm: () => void
 }
 
