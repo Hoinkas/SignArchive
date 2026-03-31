@@ -17,7 +17,7 @@ interface FormDropdownProps {
 export function FormDropdown(props: FormDropdownProps): React.JSX.Element {
   const { label, options, value, setValue, placeholder = 'Szukaj lub wpisz...' } = props
 
-  const [query, setQuery] = useState<string>(value?.label ?? '')
+  const [query, setQuery] = useState<string>(value?.label || '')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
