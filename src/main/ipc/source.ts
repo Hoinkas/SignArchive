@@ -170,8 +170,13 @@ export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWith
   return transaction()
 }
 
-export function deleteSourceById(id: string): void {
-  getDb().prepare('DELETE FROM source WHERE id = ?').run(id)
+export function deleteSourceById(sourceId: string): void {
+  try {
+    getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
+  } catch (err) {
+    console.error('Błąd usuwania source:', err)
+    throw err
+  }
 }
 
 export function registerSourceHandlers(): void {
@@ -180,5 +185,5 @@ export function registerSourceHandlers(): void {
   )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
   ipcMain.handle('source:create', (_, data: SourceWithDetailsToDB) => createSourceWithDetails(data))
-  // ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))
+  ipcMain.handle('source:delete', (_, sourceId: string) => deleteSourceById(sourceId))
 }

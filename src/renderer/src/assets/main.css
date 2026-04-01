@@ -68,7 +68,7 @@ button {
 
 button:hover {
   color: var(--color-text-active);
-  background: var(--color-bg-hover);
+  background: var(--color-bg-hover-transparent);
 }
 
 button:active {

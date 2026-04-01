@@ -40,7 +40,8 @@ if (process.contextIsolated) {
         details: (sourceId: string): Promise<SourceWithAuthorMediaFile> =>
           ipcRenderer.invoke('source:details', sourceId),
         create: (data: SourceWithDetailsToDB): Promise<SourceWithAuthorMediaFile> =>
-          ipcRenderer.invoke('source:create', data)
+          ipcRenderer.invoke('source:create', data),
+        delete: (sourceId: string): Promise<void> => ipcRenderer.invoke('source:delete', sourceId)
       },
       author: {
         list: (): Promise<Author[]> => ipcRenderer.invoke('author:list')

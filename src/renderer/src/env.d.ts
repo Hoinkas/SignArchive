@@ -21,6 +21,7 @@ declare global {
         list: (signId: string, wordId: string) => Promise<SourceWithAuthorMediaFile[]>
         details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
         create: (data: SourceWithDetailsToDB) => Promise<SourceWithAuthorMediaFile>
+        delete: (sourceId: string) => Promise<void>
       }
       author: {
         list: () => Promise<Author[]>

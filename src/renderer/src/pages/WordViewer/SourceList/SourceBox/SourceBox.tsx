@@ -4,17 +4,18 @@ import './SourceBox.css'
 import { useState } from 'react'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
-import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 
 interface SourceBoxProps {
   wordId: string
   signId: string
+  deleteSource: (deletedId: string) => void
   setSourceValues: (source: SourceWithAuthorMediaFile) => void
   source: SourceWithAuthorMediaFile
 }
 
 function SourceBox(props: SourceBoxProps): React.JSX.Element {
-  const { source, wordId, signId, setSourceValues } = props
+  const { source, wordId, signId, setSourceValues, deleteSource } = props
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   const years = mergeYearText(source.yearStart, source.yearEnd)
@@ -39,7 +40,7 @@ function SourceBox(props: SourceBoxProps): React.JSX.Element {
           setIsFormOpen={setIsFormOpen}
         />
       ) : (
-        <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(signId)} />
       )}
     </div>
   )
