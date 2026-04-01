@@ -2,9 +2,6 @@ import type Database from 'better-sqlite3'
 
 export function initSchema(db: Database.Database): void {
   db.exec(`
-    PRAGMA journal_mode = WAL;
-    PRAGMA foreign_keys = ON;
-
     CREATE TABLE IF NOT EXISTS word (
       id                  TEXT PRIMARY KEY,
       createdAt           TEXT NOT NULL,

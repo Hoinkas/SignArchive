@@ -40,7 +40,7 @@ function SourceBox(props: SourceBoxProps): React.JSX.Element {
           setIsFormOpen={setIsFormOpen}
         />
       ) : (
-        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(signId)} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(source.id)} />
       )}
     </div>
   )
