@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import './SidePanel.css'
 import { Word, WordWithCounts } from '@shared/types'
@@ -10,21 +10,14 @@ import WordForm from '@renderer/components/Form/Forms/WordForm'
 interface SidePanelProps {
   activeWord: Word | null
   setActiveWord: Dispatch<SetStateAction<Word | null>>
+  wordsWithSignCount: WordWithCounts[]
+  addWord: (word: Word) => void
 }
 
 function SidePanel(props: SidePanelProps): React.JSX.Element {
-  const { activeWord, setActiveWord } = props
+  const { activeWord, setActiveWord, wordsWithSignCount, addWord } = props
   const [searchWord, setSearchWord] = useState('')
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const [wordsWithSignCount, setWordsWithSignCount] = useState<WordWithCounts[]>([])
-
-  useEffect(() => {
-    window.api.word.listWithCount().then(setWordsWithSignCount)
-  }, [])
-
-  const setWordValues = (word: Word): void => {
-    setWordsWithSignCount((prevState) => [...prevState, { ...word, signsCount: 0 }])
-  }
 
   return (
     <div className="sidepanel">
@@ -51,7 +44,7 @@ function SidePanel(props: SidePanelProps): React.JSX.Element {
       {isFormOpen && (
         <div className="formContainer">
           <div className="formBox">
-            <WordForm setIsFormOpen={setIsFormOpen} setWordValues={setWordValues} formType="add" />
+            <WordForm setIsFormOpen={setIsFormOpen} setWordValues={addWord} formType="add" />
           </div>
         </div>
       )}

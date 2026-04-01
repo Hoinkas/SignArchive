@@ -21,6 +21,9 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
         value={searchWord}
         onChange={handleNameChange}
       />
+      <div className="searchWrapper">
+        <div className="searchIcon" />
+      </div>
     </div>
   )
 }

@@ -8,9 +8,10 @@ import ActionButton from '@renderer/components/ActionButton/ActionButton'
 
 interface WordViewerProps {
   word: Word
+  editWord: (word: WordWithSignsDetails) => void
 }
 
-function WordViewer({ word }: WordViewerProps): React.JSX.Element {
+function WordViewer({ word, editWord }: WordViewerProps): React.JSX.Element {
   const [wordDetails, setWordDetails] = useState<WordWithSignsDetails | null>(null)
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
@@ -21,8 +22,13 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
   const setWordValues = (word: Word): void => {
     setWordDetails((prevState) => {
       if (!prevState) return null
+      editWord({ ...prevState, ...word })
       return { ...prevState, ...word }
     })
+  }
+
+  const handleWordDelete = (deletedId: string): void => {
+    window.api.word.delete(deletedId)
   }
 
   const setSignValues = (sign: SignWithDetails): void => {
@@ -40,12 +46,30 @@ function WordViewer({ word }: WordViewerProps): React.JSX.Element {
     })
   }
 
+  const handleSignDelete = (deleteId: string): void => {
+    window.api.sign.delete(deleteId).then(() => {
+      setWordDetails((prevState) => {
+        if (!prevState) return null
+        return { ...prevState, signs: prevState.signs.filter((s) => s.id !== deleteId) }
+      })
+    })
+  }
+
   if (!wordDetails) return <div>Loading Error</div>
 
   return (
     <div className="wordViewer">
-      <WordTitle word={wordDetails} setWordValues={setWordValues} />
-      <SignList wordId={wordDetails.id} signs={wordDetails.signs} setSignValues={setSignValues} />
+      <WordTitle
+        word={wordDetails}
+        setWordValues={setWordValues}
+        handleWordDelete={handleWordDelete}
+      />
+      <SignList
+        wordId={wordDetails.id}
+        signs={wordDetails.signs}
+        setSignValues={setSignValues}
+        handleSignDelete={handleSignDelete}
+      />
 
       {isFormOpen ? (
         <AddSignForm

@@ -159,9 +159,9 @@ export function registerSignHandlers(): void {
   ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
     handlerWithErrorLogging(() => updateSign(singId, data))
   )
-  // ipcMain.handle('sign:delete', (_, id: string) =>
-  //   handlerWithErrorLogging(() => deleteSignById(id))
-  // )
+  ipcMain.handle('sign:delete', (_, id: string) =>
+    handlerWithErrorLogging(() => deleteSignById(id))
+  )
 }
 
 // ROW MAPPER

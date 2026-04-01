@@ -111,9 +111,9 @@ export function registerWordHandlers(): void {
   ipcMain.handle('word:update', (_, id: string, data: Partial<Word>) =>
     handlerWithErrorLogging(() => updateWord(id, data))
   )
-  // ipcMain.handle('word:delete', (_, id: string) =>
-  //   handlerWithErrorLogging(() => deleteWordById(id))
-  // )
+  ipcMain.handle('word:delete', (_, id: string) =>
+    handlerWithErrorLogging(() => deleteWordById(id))
+  )
 }
 
 // ROW MAPPERS

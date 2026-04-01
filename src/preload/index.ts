@@ -22,8 +22,8 @@ if (process.contextIsolated) {
         create: (data: SignWithDetailsToDB): Promise<SignWithDetails> =>
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
-          ipcRenderer.invoke('sign:update', signId, data)
-        // delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
+          ipcRenderer.invoke('sign:update', signId, data),
+        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
       },
       word: {
         listWithCount: (): Promise<WordWithCounts[]> => ipcRenderer.invoke('word:listWithCount'),
@@ -31,8 +31,8 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
         update: (wordId: string, data: Partial<Word>): Promise<Word> =>
-          ipcRenderer.invoke('word:update', wordId, data)
-        // delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
+          ipcRenderer.invoke('word:update', wordId, data),
+        delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
       source: {
         list: (signId: string, wordId: string): Promise<SourceWithAuthorMediaFile[]> =>

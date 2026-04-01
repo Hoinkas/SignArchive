@@ -8,9 +8,12 @@ interface SignListProps {
   wordId: string
   signs: SignWithDetails[]
   setSignValues: (sign: SignWithDetails) => void
+  handleSignDelete: (deleteId: string) => void
 }
 
-function SignList({ wordId, signs, setSignValues }: SignListProps): React.JSX.Element {
+function SignList(props: SignListProps): React.JSX.Element {
+  const { wordId, signs, setSignValues, handleSignDelete } = props
+
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
 
   return (
@@ -21,6 +24,7 @@ function SignList({ wordId, signs, setSignValues }: SignListProps): React.JSX.El
           sign={sign}
           setSignValues={setSignValues}
           setSourcesPanelSign={setSourcesPanelSign}
+          handleSignDelete={() => handleSignDelete(sign.id)}
         />
       ))}
       {sourcesPanelSign && (

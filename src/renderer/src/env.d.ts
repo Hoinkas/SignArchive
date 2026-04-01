@@ -8,14 +8,14 @@ declare global {
       sign: {
         create: (data: SignWithDetailsToDB) => Promise<SignWithDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
-        // delete: (signId: string) => Promise<void>
+        delete: (signId: string) => Promise<void>
       }
       word: {
         listWithCount: () => Promise<WordWithCounts[]>
         details: (wordId: string) => Promise<WordWithSignsDetails>
         create: (data: WordToDB) => Promise<Word>
         update: (wordId: string, data: Partial<WordToDB>) => Promise<Word>
-        // delete: (wordId: string) => Promise<void>
+        delete: (wordId: string) => Promise<void>
       }
       source: {
         list: (signId: string, wordId: string) => Promise<SourceWithAuthorMediaFile[]>

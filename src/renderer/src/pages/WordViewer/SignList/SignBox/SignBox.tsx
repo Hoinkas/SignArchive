@@ -10,12 +10,15 @@ interface SignBoxProps {
   sign: SignWithDetails
   setSignValues: (sign: SignWithDetails) => void
   setSourcesPanelSign: Dispatch<SetStateAction<SignWithDetails | null>>
+  handleSignDelete: () => void
 }
 
-function SignBox({ sign, setSignValues, setSourcesPanelSign }: SignBoxProps): React.JSX.Element {
+function SignBox(props: SignBoxProps): React.JSX.Element {
+  const { sign, setSignValues, setSourcesPanelSign, handleSignDelete } = props
+
   return (
     <div className="signBoxContainer">
-      <SignTitle sign={sign} setSignValues={setSignValues} />
+      <SignTitle sign={sign} setSignValues={setSignValues} handleSignDelete={handleSignDelete}/>
       <div className="signBox">
         <MediaPlayer file={sign.file} />
         <div className="variantDetails">

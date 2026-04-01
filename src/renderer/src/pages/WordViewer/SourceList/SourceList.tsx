@@ -31,13 +31,9 @@ function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Ele
   }
 
   const deleteSource = (deletedId: string): void => {
-    console.log(deletedId)
-    window.api.source
-      .delete(deletedId)
-      .then(() => {
-        setSources((prevState) => prevState.filter((s) => s.id !== deletedId))
-      })
-      .catch((err) => console.error('Błąd usuwania źródła:', err))
+    window.api.source.delete(deletedId).then(() => {
+      setSources((prevState) => prevState.filter((s) => s.id !== deletedId))
+    })
   }
 
   return (
