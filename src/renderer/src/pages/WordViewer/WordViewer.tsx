@@ -1,81 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './WordViewer.css'
-import { SignWithDetails, Word, WordWithSignsDetails } from '@shared/types'
 import WordTitle from './WordTitle/WordTitle'
 import SignList from './SignList/SignList'
 import AddSignForm from '@renderer/components/Form/Forms/AddSignForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import { useWord } from '@contexts/WordContext/useWord'
 
-interface WordViewerProps {
-  word: Word
-  editWord: (word: WordWithSignsDetails) => void
-}
-
-function WordViewer({ word, editWord }: WordViewerProps): React.JSX.Element {
-  const [wordDetails, setWordDetails] = useState<WordWithSignsDetails | null>(null)
+function WordViewer(): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const { activeWord, wordDetails, editSign, deleteSign } = useWord()
 
-  useEffect(() => {
-    window.api.word.details(word.id).then(setWordDetails)
-  }, [word.id])
-
-  const setWordValues = (word: Word): void => {
-    setWordDetails((prevState) => {
-      if (!prevState) return null
-      editWord({ ...prevState, ...word })
-      return { ...prevState, ...word }
-    })
-  }
-
-  const handleWordDelete = (deletedId: string): void => {
-    window.api.word.delete(deletedId)
-  }
-
-  const setSignValues = (sign: SignWithDetails): void => {
-    setWordDetails((prevState) => {
-      if (!prevState) return null
-
-      const exists = prevState.signs.some((s) => s.id === sign.id)
-
-      return {
-        ...prevState,
-        signs: exists
-          ? prevState.signs.map((s) => (s.id === sign.id ? { ...s, ...sign } : s))
-          : [...prevState.signs, sign]
-      }
-    })
-  }
-
-  const handleSignDelete = (deleteId: string): void => {
-    window.api.sign.delete(deleteId).then(() => {
-      setWordDetails((prevState) => {
-        if (!prevState) return null
-        return { ...prevState, signs: prevState.signs.filter((s) => s.id !== deleteId) }
-      })
-    })
-  }
-
-  if (!wordDetails) return <div>Loading Error</div>
+  if (!activeWord || !wordDetails) return <div>Error</div>
 
   return (
     <div className="wordViewer">
-      <WordTitle
-        word={wordDetails}
-        setWordValues={setWordValues}
-        handleWordDelete={handleWordDelete}
-      />
+      <WordTitle word={wordDetails} />
       <SignList
         wordId={wordDetails.id}
         signs={wordDetails.signs}
-        setSignValues={setSignValues}
-        handleSignDelete={handleSignDelete}
+        setSignValues={editSign}
+        handleSignDelete={deleteSign}
       />
 
       {isFormOpen ? (
         <AddSignForm
-          wordId={word.id}
+          wordId={activeWord.id}
           formType="add"
-          setSignValues={setSignValues}
+          setSignValues={editSign}
           setIsFormOpen={setIsFormOpen}
         />
       ) : (

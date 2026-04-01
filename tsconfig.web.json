@@ -3,17 +3,18 @@
   "include": [
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
-    "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts",
-    "src/shared/**/*"
-, "types.ts"  ],
+    "src/shared/**/*",
+    "src/renderer/contexts/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@renderer/*": ["src/renderer/src/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@contexts/*": ["src/renderer/contexts/*"]
     }
   }
 }

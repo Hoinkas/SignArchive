@@ -9,7 +9,8 @@ export default defineConfig({
     resolve: {
       alias: {
         '@renderer': resolve(__dirname, 'src/renderer/src'),
-        '@shared': resolve(__dirname, 'src/shared/')
+        '@shared': resolve(__dirname, 'src/shared/'),
+        '@contexts': resolve(__dirname, 'src/renderer/contexts/')
       }
     },
     plugins: [react()]

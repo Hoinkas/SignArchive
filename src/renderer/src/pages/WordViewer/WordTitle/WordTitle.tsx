@@ -4,34 +4,26 @@ import './WordTitle.css'
 import { Word } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
+import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordTitleProps {
   word: Word
-  setWordValues: (word: Word) => void
-  handleWordDelete: (deletedId: string) => void
 }
 
 function WordTitle(props: WordTitleProps): React.JSX.Element {
-  const { word, setWordValues, handleWordDelete } = props
+  const { word } = props
+  const { deleteWord } = useWord()
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   return (
     <div className="wordTitle">
       {isFormOpen ? (
-        <WordTitleForm
-          word={word}
-          setWordValues={setWordValues}
-          setIsFormOpen={setIsFormOpen}
-          formType="edit"
-        />
+        <WordTitleForm word={word} setIsFormOpen={setIsFormOpen} formType="edit" />
       ) : (
         <div>
           <div className="wordTitleWithButtons">
             <h1>{word.text}</h1>
-            <KebabMenu
-              setIsFormOpen={setIsFormOpen}
-              handleDelete={() => handleWordDelete(word.id)}
-            />
+            <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} />
           </div>
           <div className="wordTitleDetails">{word.tags && <TagList textArray={word.tags} />}</div>
         </div>
