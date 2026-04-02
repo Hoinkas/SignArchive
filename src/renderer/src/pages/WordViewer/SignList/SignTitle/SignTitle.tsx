@@ -5,16 +5,15 @@ import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
+import { useSign } from '@contexts/SignContext/useSign'
 
 interface SignTitleProps {
   sign: SignWithDetails
-  setSignValues: (sign: SignWithDetails) => void
-  handleSignDelete: () => void
 }
 
-function SignTitle(props: SignTitleProps): React.JSX.Element {
-  const { sign, setSignValues, handleSignDelete } = props
+function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const { deleteSign } = useSign()
 
   const years = mergeYearText(sign.yearStart, sign.yearEnd)
   const pillText: string[] = [years]
@@ -25,14 +24,9 @@ function SignTitle(props: SignTitleProps): React.JSX.Element {
         <TagList textArray={pillText} />
       </div>
       {isFormOpen ? (
-        <EditSignForm
-          sign={sign}
-          setSignValues={setSignValues}
-          formType="edit"
-          setIsFormOpen={setIsFormOpen}
-        />
+        <EditSignForm sign={sign} formType="edit" setIsFormOpen={setIsFormOpen} />
       ) : (
-        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={handleSignDelete} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} />
       )}
     </div>
   )

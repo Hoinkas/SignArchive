@@ -9,13 +9,13 @@ interface WordProps {
 
 function WordItem(props: WordProps): React.JSX.Element {
   const { word } = props
-  const { activeWord, changeActiveWord } = useWord()
+  const { activeWordId, changeActiveWord } = useWord()
 
-  const isActive = word.id === activeWord?.id
+  const isActive = word.id === activeWordId
   const className = isActive ? 'word active' : 'word'
 
   return (
-    <li className={className} onClick={() => changeActiveWord(word)}>
+    <li className={className} onClick={() => changeActiveWord(word.id)}>
       <div>{word.text}</div>
       <div className="additionalInfo">{signCountText(word.signsCount)}</div>
     </li>

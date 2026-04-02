@@ -15,9 +15,9 @@ import {
   FormTwoInLineWrapper
 } from '../Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
+import { useWord } from '@contexts/WordContext/useWord'
 
 interface SourceFormProps {
-  wordId: string
   signId: string
   source?: SourceWithAuthorMediaFile
   setSourceValues: (source: SourceWithAuthorMediaFile) => void
@@ -26,7 +26,8 @@ interface SourceFormProps {
 }
 
 function SourceForm(props: SourceFormProps): React.JSX.Element {
-  const { wordId, signId, source, setSourceValues, formType, setIsFormOpen } = props
+  const { signId, source, setSourceValues, formType, setIsFormOpen } = props
+    const { wordDetails } = useWord()
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
@@ -64,35 +65,32 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (authorOption) {
-      const mediaFile: MediaFileToDB = { fileUrl }
-      const author: AuthorToDB = { name: authorOption.label }
+    if (!authorOption || !wordDetails) return
 
-      const yearStartStr = yearStart ? parseInt(yearStart) : undefined
-      const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
-      const source: SourceToCreate = {
-        notes: notes,
-        yearStart: yearStartStr,
-        yearEnd: yearEndStr,
-        region
-      }
+    const mediaFile: MediaFileToDB = { fileUrl }
+    const author: AuthorToDB = { name: authorOption.label }
 
-      const data: SourceWithDetailsToDB = {
-        wordId,
-        signId,
-        source,
-        mediaFile,
-        author
-      }
-
-      window.api.source
-        .create(data)
-        .then((source) => {
-          setSourceValues(source)
-          closeForm()
-        })
-        .catch((err) => console.error('Błąd tworzenia źródła:', err))
+    const yearStartStr = yearStart ? parseInt(yearStart) : undefined
+    const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
+    const source: SourceToCreate = {
+      notes: notes,
+      yearStart: yearStartStr,
+      yearEnd: yearEndStr,
+      region
     }
+
+    const data: SourceWithDetailsToDB = {
+      wordId: wordDetails.id,
+      signId,
+      source,
+      mediaFile,
+      author
+    }
+
+    window.api.source.create(data).then((source) => {
+      setSourceValues(source)
+      closeForm()
+    })
   }
 
   return (

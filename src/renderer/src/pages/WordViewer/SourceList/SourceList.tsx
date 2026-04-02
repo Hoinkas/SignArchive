@@ -5,20 +5,22 @@ import './SourceList.css'
 import SourcesTitle from './SourcesTitle/SourcesTitle'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
+import { useWord } from '@contexts/WordContext/useWord'
 
 interface SourceListProps {
-  wordId: string
   sign: SignWithDetails
   closeForm: () => void
 }
 
-function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Element {
+function SourceList({ sign, closeForm }: SourceListProps): React.JSX.Element {
   const [sources, setSources] = useState<SourceWithAuthorMediaFile[]>([])
+  const { wordDetails } = useWord()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    window.api.source.list(sign.id, wordId).then(setSources)
-  }, [sign.id, wordId])
+    if (!wordDetails) return
+    window.api.source.list(sign.id, wordDetails.id).then(setSources)
+  }, [sign.id, wordDetails])
 
   const setSourceValues = (source: SourceWithAuthorMediaFile): void => {
     setSources((prevState) => {
@@ -45,7 +47,6 @@ function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Ele
             <SourceBox
               key={key}
               source={source}
-              wordId={wordId}
               signId={sign.id}
               deleteSource={deleteSource}
               setSourceValues={setSourceValues}
@@ -55,7 +56,6 @@ function SourceList({ wordId, sign, closeForm }: SourceListProps): React.JSX.Ele
       </div>
       {isFormOpen ? (
         <SourceForm
-          wordId={wordId}
           signId={sign.id}
           setSourceValues={setSourceValues}
           formType={'add'}

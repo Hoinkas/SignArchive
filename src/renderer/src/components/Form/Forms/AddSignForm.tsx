@@ -1,12 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import {
-  DefinitionToDB,
-  FormType,
-  SignFile,
-  SignToDB,
-  SignWithDetailsToDB,
-  SignWithDetails
-} from '@shared/types'
+import { DefinitionToDB, FormType, SignFile, SignToDB, SignWithDetailsToDB } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -15,6 +8,8 @@ import {
   FormTwoInLineWrapper
 } from '@renderer/components/Form/Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
+import { useWord } from '@contexts/WordContext/useWord'
+import { useSign } from '@contexts/SignContext/useSign'
 
 const categoriesOptions: DropdownOption[] = [
   { id: '1', label: 'rzeczownik' },
@@ -23,14 +18,14 @@ const categoriesOptions: DropdownOption[] = [
 ]
 
 interface AddSignFormProps {
-  wordId: string
-  setSignValues: (sign: SignWithDetails) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function AddSignForm(props: AddSignFormProps): React.JSX.Element {
-  const { wordId, setSignValues, formType, setIsFormOpen } = props
+  const { formType, setIsFormOpen } = props
+  const { word } = useWord()
+  const { addSign } = useSign()
 
   const [newFile, setNewFile] = useState<File | null>(null)
   const [notes, setNotes] = useState<string>('')
@@ -50,7 +45,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (!newFile || !categoryOption || text === '') return
+    if (!newFile || !categoryOption || !word || text === '') return
 
     const signFile: SignFile = {
       path: window.api.getPathForFile(newFile),
@@ -61,15 +56,9 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
 
     const sign: SignToDB = { notes, file: JSON.stringify(signFile) }
     const definition: DefinitionToDB = { category: categoryOption.label, text, translation }
-    const data: SignWithDetailsToDB = { wordId, sign, definition }
+    const data: SignWithDetailsToDB = { wordId: word.id, sign, definition }
 
-    window.api.sign
-      .create(data)
-      .then((sign) => {
-        setSignValues(sign)
-        closeForm()
-      })
-      .catch((err) => console.error('Błąd tworzenia znaku:', err))
+    addSign(data, closeForm)
   }
 
   return (

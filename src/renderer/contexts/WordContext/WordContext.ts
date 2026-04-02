@@ -1,28 +1,22 @@
 import { createContext } from 'react'
-import { SignWithDetails, Word, WordWithCounts, WordWithSignsDetails } from '@shared/types'
+import { Word, WordToDB, WordWithCounts, WordWithSignsDetails } from '@shared/types'
 
 export interface WordContextValue {
-  activeWord: Word | null
+  word: WordWithSignsDetails | null
   wordsList: WordWithCounts[]
-  addWord: (word: Word) => void
-  editWord: (word: Word) => void
+  addWord: (word: WordToDB, closeForm: () => void) => void
+  editWord: (word: Word, closeForm: () => void) => void
   deleteWord: () => void
-  changeActiveWord: (activeWord: Word) => void
-  wordDetails: WordWithSignsDetails | null
-  setWordValues: (word: Word) => void
-  editSign: (sign: SignWithDetails) => void
-  deleteSign: (deleteId: string) => void
+  activeWordId: string | null
+  changeActiveWord: (wordId: string) => void
 }
 
 export const WordContext = createContext<WordContextValue>({
-  activeWord: null,
+  word: null,
   wordsList: [],
   addWord: () => {},
   editWord: () => {},
   deleteWord: () => {},
-  changeActiveWord: () => {},
-  wordDetails: null,
-  setWordValues: () => {},
-  editSign: () => {},
-  deleteSign: () => {}
+  activeWordId: null,
+  changeActiveWord: () => {}
 })

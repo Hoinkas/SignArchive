@@ -3,12 +3,12 @@ import SidePanel from './pages/SidePanel/SidePanel'
 import { useWord } from '@contexts/WordContext/useWord'
 
 function App(): React.JSX.Element {
-  const { activeWord } = useWord()
+  const { activeWordId } = useWord()
 
   return (
     <div style={{ display: 'flex' }}>
       <SidePanel />
-      {activeWord && <WordViewer />}
+      {activeWordId && <WordViewer />}
     </div>
   )
 }

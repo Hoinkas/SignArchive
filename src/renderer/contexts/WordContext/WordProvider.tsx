@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { SignWithDetails, Word, WordWithCounts, WordWithSignsDetails } from '@shared/types'
+import { Word, WordToDB, WordWithCounts, WordWithSignsDetails } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -8,88 +8,58 @@ interface Props {
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
-  const [activeWord, setActiveWord] = useState<Word | null>(null)
-  const [wordDetails, setWordDetails] = useState<WordWithSignsDetails | null>(null)
   const [wordsList, setWordsList] = useState<WordWithCounts[]>([])
+  const [activeWordId, setActiveWordId] = useState<string | null>(null)
+  const [word, setWord] = useState<WordWithSignsDetails | null>(null)
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
   }, [])
 
   useEffect(() => {
-    if (!activeWord) return
-    window.api.word.details(activeWord.id).then(setWordDetails)
-  }, [activeWord, activeWord?.id])
+    if (!activeWordId) return
+    window.api.word.details(activeWordId).then(setWord)
+  }, [activeWordId])
 
-  const addWord = (word: Word): void => {
-    setWordsList((prevState) => [...prevState, { ...word, signsCount: 0 }])
+  const addWord = (word: WordToDB, closeForm: () => void): void => {
+    window.api.word.create(word).then((result) => {
+      setWordsList((prevState) => [...prevState, { ...result, signsCount: 0 }])
+      closeForm()
+    })
   }
 
-  const editWord = (word: Word): void => {
-    if (!wordDetails) return
-    setWordsList((prevState) =>
-      prevState.map((w) =>
-        w.id === word.id ? { ...word, signsCount: wordDetails.signs.length } : w
+  const editWord = (word: Word, closeForm: () => void): void => {
+    const newWord: WordToDB = { text: word.text, tags: word.tags }
+    window.api.word.update(word.id, newWord).then((result) => {
+      setWordsList((prevState) =>
+        prevState.map((w) => (w.id === result.id ? { ...w, ...result } : w))
       )
-    )
+      closeForm()
+    })
   }
 
   const deleteWord = (): void => {
-    if (!activeWord) return
-    window.api.word.delete(activeWord.id)
-    setWordsList((prevState) => prevState.filter((w) => w.id !== activeWord.id))
-    setActiveWord(null)
-  }
-
-  const changeActiveWord = (activeWord: Word): void => {
-    setActiveWord(activeWord)
-  }
-
-  const setWordValues = (word: Word): void => {
-    setWordDetails((prevState) => {
-      if (!prevState) return null
-      editWord({ ...prevState, ...word })
-      return { ...prevState, ...word }
+    if (!word) return
+    window.api.word.delete(word.id).then(() => {
+      setWordsList((prevState) => prevState.filter((w) => w.id !== word.id))
+      setWord(null)
     })
   }
 
-  const editSign = (sign: SignWithDetails): void => {
-    setWordDetails((prevState) => {
-      if (!prevState) return null
-
-      const exists = prevState.signs.some((s) => s.id === sign.id)
-
-      return {
-        ...prevState,
-        signs: exists
-          ? prevState.signs.map((s) => (s.id === sign.id ? { ...s, ...sign } : s))
-          : [...prevState.signs, sign]
-      }
-    })
-  }
-
-  const deleteSign = (deleteId: string): void => {
-    window.api.sign.delete(deleteId).then(() => {
-      setWordDetails((prevState) => {
-        if (!prevState) return null
-        return { ...prevState, signs: prevState.signs.filter((s) => s.id !== deleteId) }
-      })
-    })
+  const changeActiveWord = (wordId: string): void => {
+    setActiveWordId(wordId)
   }
 
   return (
     <WordContext.Provider
       value={{
-        activeWord,
+        word,
         wordsList,
         addWord,
         editWord,
         deleteWord,
-        changeActiveWord,
-        wordDetails,
-        setWordValues,
-        editSign,
-        deleteSign
+        activeWordId,
+        changeActiveWord
       }}
     >
       {children}

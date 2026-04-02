@@ -8,17 +8,13 @@ import DefinitionList from '../../DefinitionList/DefinitionList'
 
 interface SignBoxProps {
   sign: SignWithDetails
-  setSignValues: (sign: SignWithDetails) => void
   setSourcesPanelSign: Dispatch<SetStateAction<SignWithDetails | null>>
-  handleSignDelete: () => void
 }
 
-function SignBox(props: SignBoxProps): React.JSX.Element {
-  const { sign, setSignValues, setSourcesPanelSign, handleSignDelete } = props
-
+function SignBox({ sign, setSourcesPanelSign }: SignBoxProps): React.JSX.Element {
   return (
     <div className="signBoxContainer">
-      <SignTitle sign={sign} setSignValues={setSignValues} handleSignDelete={handleSignDelete}/>
+      <SignTitle sign={sign} />
       <div className="signBox">
         <MediaPlayer file={sign.file} />
         <div className="variantDetails">

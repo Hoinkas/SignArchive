@@ -3,36 +3,19 @@ import SignBox from './SignBox/SignBox'
 import './SignList.css'
 import { SignWithDetails } from '@shared/types'
 import SourceList from '../SourceList/SourceList'
+import { useSign } from '@contexts/SignContext/useSign'
 
-interface SignListProps {
-  wordId: string
-  signs: SignWithDetails[]
-  setSignValues: (sign: SignWithDetails) => void
-  handleSignDelete: (deleteId: string) => void
-}
-
-function SignList(props: SignListProps): React.JSX.Element {
-  const { wordId, signs, setSignValues, handleSignDelete } = props
-
+function SignList(): React.JSX.Element {
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
+  const { signs } = useSign()
 
   return (
     <div className="signList">
       {signs.map((sign, key) => (
-        <SignBox
-          key={key}
-          sign={sign}
-          setSignValues={setSignValues}
-          setSourcesPanelSign={setSourcesPanelSign}
-          handleSignDelete={() => handleSignDelete(sign.id)}
-        />
+        <SignBox key={key} sign={sign} setSourcesPanelSign={setSourcesPanelSign} />
       ))}
       {sourcesPanelSign && (
-        <SourceList
-          wordId={wordId}
-          sign={sourcesPanelSign}
-          closeForm={() => setSourcesPanelSign(null)}
-        />
+        <SourceList sign={sourcesPanelSign} closeForm={() => setSourcesPanelSign(null)} />
       )}
     </div>
   )
