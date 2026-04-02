@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import './KebabMenu.css'
 
 interface KebabMenuProps {
@@ -8,6 +8,17 @@ interface KebabMenuProps {
 
 function KebabMenu({ setIsFormOpen, handleDelete }: KebabMenuProps): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent): void => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   function handleEditClick(): void {
     setIsFormOpen(true)
@@ -20,7 +31,7 @@ function KebabMenu({ setIsFormOpen, handleDelete }: KebabMenuProps): React.JSX.E
   }
 
   return (
-    <div className="navWrapper">
+    <div className="navWrapper" ref={wrapperRef}>
       <button
         className={`menuBtn ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
