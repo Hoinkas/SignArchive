@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FormType, SignFile, SignToDB, SignWithDetails } from '@shared/types'
 import { FormMediaFile, FormModalWrapper, FormMultiLineInput } from '@renderer/components/Form/Form'
-import { useSign } from '@contexts/SignContext/useSign'
+import { useSign } from '@contexts/SignsContext/useSigns'
 
 interface EditSignFormProps {
   sign: SignWithDetails

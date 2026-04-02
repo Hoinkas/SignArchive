@@ -5,7 +5,7 @@ import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
-import { useSign } from '@contexts/SignContext/useSign'
+import { useSign } from '@contexts/SignsContext/useSigns'
 
 interface SignTitleProps {
   sign: SignWithDetails

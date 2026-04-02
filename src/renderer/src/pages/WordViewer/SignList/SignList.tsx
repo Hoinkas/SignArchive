@@ -3,7 +3,7 @@ import SignBox from './SignBox/SignBox'
 import './SignList.css'
 import { SignWithDetails } from '@shared/types'
 import SourceList from '../SourceList/SourceList'
-import { useSign } from '@contexts/SignContext/useSign'
+import { useSign } from '@contexts/SignsContext/useSigns'
 
 function SignList(): React.JSX.Element {
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)

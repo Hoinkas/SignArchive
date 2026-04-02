@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import React from 'react'
 import { SignToDB, SignWithDetails, SignWithDetailsToDB } from '@shared/types'
-import { SignContext } from './SignContext'
+import { SignContext } from './SignsContext'
 
 interface Props {
   children?: React.ReactNode
 }
 
-export default function SignProvider({ children }: Props): React.JSX.Element {
+export default function SignsProvider({ children }: Props): React.JSX.Element {
   const [signs, setSigns] = useState<SignWithDetails[]>([])
 
   const initiateSigns = (signs: SignWithDetails[]): void => {
