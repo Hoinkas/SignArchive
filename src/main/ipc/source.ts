@@ -5,7 +5,7 @@ import type {
   SourceSignWord,
   SourceToDB,
   SourceWithAuthorMediaFile,
-  SourceWithDetailsSignIdWordIdToDB,
+  SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
   YearStartEnd
 } from '@shared/types'
@@ -141,7 +141,7 @@ export function createSource(data: SourceToDB): Source {
 }
 
 export function createSourceWithDetails(
-  data: SourceWithDetailsSignIdWordIdToDB
+  data: SourceWithDetailsToCreate
 ): SourceWithAuthorMediaFile {
   const transaction = getDb().transaction(() => {
     const createdMediaFile = createMediaFile(data.mediaFile)
@@ -213,7 +213,7 @@ export function registerSourceHandlers(): void {
   ipcMain.handle('source:update', (_, sourceId: string, data: Partial<SourceWithDetailsToDB>) =>
     updateSource(sourceId, data)
   )
-  ipcMain.handle('source:create', (_, data: SourceWithDetailsSignIdWordIdToDB) =>
+  ipcMain.handle('source:create', (_, data: SourceWithDetailsToCreate) =>
     createSourceWithDetails(data)
   )
   ipcMain.handle('source:delete', (_, sourceId: string) => deleteSourceById(sourceId))

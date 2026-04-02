@@ -3,7 +3,6 @@ import React from 'react'
 import {
   SignWithDetails,
   SourceWithAuthorMediaFile,
-  SourceWithDetailsSignIdWordIdToDB,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB
 } from '@shared/types'
@@ -28,7 +27,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   const addSource = (data: SourceWithDetailsToDB, closeForm: () => void): void => {
     if (!sourcesPanelSign || !word) return
 
-    const sourceWithDetails: SourceWithDetailsSignIdWordIdToDB = {
+    const sourceWithDetails: SourceWithDetailsToCreate = {
       ...data,
       signId: sourcesPanelSign?.id,
       wordId: word.id
@@ -42,7 +41,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
   const editSource = (
     sourceId: string,
-    updatedSource: Partial<SourceWithDetailsToCreate>,
+    updatedSource: Partial<SourceWithDetailsToDB>,
     closeForm: () => void
   ): void => {
     window.api.source.update(sourceId, updatedSource).then(() => {

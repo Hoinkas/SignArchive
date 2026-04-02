@@ -67,9 +67,8 @@ export interface SourceWithDetailsToDB extends SourceToCreate {
   mediaFile: MediaFileToDB
   author: AuthorToDB
 }
-export type SourceWithDetailsToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
 
-export interface SourceWithDetailsSignIdWordIdToDB extends SourceWithDetailsToDB {
+export interface SourceWithDetailsToCreate extends SourceWithDetailsToDB {
   signId: string
   wordId: string
 }
