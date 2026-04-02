@@ -23,7 +23,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
 
   const editSign = (signId: string, updatedSign: SignToDB, closeForm: () => void): void => {
     window.api.sign.update(signId, updatedSign).then((result) => {
-      setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, result } : s)))
+      setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, ...result } : s)))
       closeForm()
     })
   }

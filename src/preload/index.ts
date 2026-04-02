@@ -30,7 +30,7 @@ if (process.contextIsolated) {
         details: (wordId: string): Promise<WordWithSignsDetails> =>
           ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
-        update: (wordId: string, data: Partial<Word>): Promise<Word> =>
+        update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
           ipcRenderer.invoke('word:update', wordId, data),
         delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },

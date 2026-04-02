@@ -29,7 +29,8 @@ function WordForm(props: WordFormProps): React.JSX.Element {
       const newWord: WordToDB = { text, tags }
       addWord(newWord, closeForm)
     } else if (formType === 'edit' && word) {
-      editWord(word, closeForm)
+      const updateWord: WordToDB = { ...word, text, tags }
+      editWord(updateWord, closeForm)
     }
   }
 

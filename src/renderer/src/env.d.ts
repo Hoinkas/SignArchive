@@ -14,7 +14,7 @@ declare global {
         listWithCount: () => Promise<WordWithCounts[]>
         details: (wordId: string) => Promise<WordWithSignsDetails>
         create: (data: WordToDB) => Promise<Word>
-        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word>
+        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>
         delete: (wordId: string) => Promise<void>
       }
       source: {

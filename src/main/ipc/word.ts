@@ -81,7 +81,6 @@ export function deleteWordById(id: string): void {
 }
 
 export function updateWord(wordId: string, data: Partial<WordToDB>): Word | undefined {
-  //TODO don't return Word, only undefined
   const existing = findWordById(wordId)
   if (!existing) return
 
@@ -96,7 +95,8 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
       `
     )
     .run(toSqlParams(updated))
-  return rowToWord(updated)
+
+  return { ...existing, ...data }
 }
 
 export function registerWordHandlers(): void {
@@ -109,8 +109,8 @@ export function registerWordHandlers(): void {
   ipcMain.handle('word:create', (_, data: WordToDB) =>
     handlerWithErrorLogging(() => createWord(data))
   )
-  ipcMain.handle('word:update', (_, id: string, data: Partial<Word>) =>
-    handlerWithErrorLogging(() => updateWord(id, data))
+  ipcMain.handle('word:update', (_, wordId: string, data: Partial<WordToDB>) =>
+    handlerWithErrorLogging(() => updateWord(wordId, data))
   )
   ipcMain.handle('word:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteWordById(id))

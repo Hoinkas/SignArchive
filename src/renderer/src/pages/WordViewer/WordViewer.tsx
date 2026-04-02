@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './WordViewer.css'
 import WordTitle from './WordTitle/WordTitle'
 import SignList from './SignList/SignList'
@@ -13,9 +13,12 @@ function WordViewer(): React.JSX.Element {
   const { initiateSigns } = useSign()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
-  if (!word) return <div>Error</div>
+  useEffect(() => {
+    if (!word) return
+    initiateSigns(word.signs)
+  }, [initiateSigns, word])
 
-  initiateSigns(word.signs)
+  if (!word) return <div>Error</div>
 
   return (
     <div className="wordViewer">

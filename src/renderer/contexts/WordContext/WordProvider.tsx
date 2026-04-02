@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { Word, WordToDB, WordWithCounts, WordWithSignsDetails } from '@shared/types'
+import { WordToDB, WordWithCounts, WordWithSignsDetails } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -28,9 +28,12 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const editWord = (word: Word, closeForm: () => void): void => {
-    const newWord: WordToDB = { text: word.text, tags: word.tags } //TODO add Partial and wordId
-    window.api.word.update(word.id, newWord).then((result) => {
+  const editWord = (updateWord: Partial<WordToDB>, closeForm: () => void): void => {
+    if (!word) return
+
+    window.api.word.update(word.id, updateWord).then((result) => {
+      if (!result) return
+      setWord({ ...word, ...result })
       setWordsList((prevState) =>
         prevState.map((w) => (w.id === result.id ? { ...w, ...result } : w))
       )
