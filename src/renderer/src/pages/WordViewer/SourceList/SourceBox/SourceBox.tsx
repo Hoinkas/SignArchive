@@ -5,17 +5,15 @@ import { useState } from 'react'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceBoxProps {
-  signId: string
-  deleteSource: (deletedId: string) => void
-  setSourceValues: (source: SourceWithAuthorMediaFile) => void
   source: SourceWithAuthorMediaFile
 }
 
-function SourceBox(props: SourceBoxProps): React.JSX.Element {
-  const { source, signId, setSourceValues, deleteSource } = props
+function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const { deleteSource } = useSources()
 
   const years = mergeYearText(source.yearStart, source.yearEnd)
 
@@ -30,13 +28,7 @@ function SourceBox(props: SourceBoxProps): React.JSX.Element {
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>
       {isFormOpen ? (
-        <SourceForm
-          signId={signId}
-          source={source}
-          setSourceValues={setSourceValues}
-          formType={'edit'}
-          setIsFormOpen={setIsFormOpen}
-        />
+        <SourceForm source={source} formType={'edit'} setIsFormOpen={setIsFormOpen} />
       ) : (
         <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(source.id)} />
       )}

@@ -7,6 +7,7 @@ import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import { useWord } from '@contexts/WordContext/useWord'
 import SignsProvider from '@contexts/SignsContext/SignsProvider'
 import { useSign } from '@contexts/SignsContext/useSigns'
+import SourcesProvider from '@contexts/SourcesContext/SourcesProvider'
 
 function WordViewer(): React.JSX.Element {
   const { word } = useWord()
@@ -21,7 +22,9 @@ function WordViewer(): React.JSX.Element {
     <div className="wordViewer">
       <WordTitle word={word} />
       <SignsProvider>
-        <SignList />
+        <SourcesProvider>
+          <SignList />
+        </SourcesProvider>
 
         {isFormOpen ? (
           <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />

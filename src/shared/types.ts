@@ -61,6 +61,18 @@ export interface Source {
 }
 
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
+export type SourceToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
+
+export interface SourceWithDetailsToDB extends SourceToCreate {
+  mediaFile: MediaFileToDB
+  author: AuthorToDB
+}
+export type SourceWithDetailsToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
+
+export interface SourceWithDetailsSignIdWordIdToDB extends SourceWithDetailsToDB {
+  signId: string
+  wordId: string
+}
 
 //DEFINITION
 export interface Definition {
@@ -85,16 +97,6 @@ export interface SourceSignWord {
   sourceId: string
   signId: string
   wordId: string
-}
-
-export type SourceToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
-
-export interface SourceWithDetailsToDB {
-  signId: string
-  wordId: string
-  source: SourceToCreate
-  mediaFile: MediaFileToDB
-  author: AuthorToDB
 }
 
 // WORD with SINGS count

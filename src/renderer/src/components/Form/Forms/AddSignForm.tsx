@@ -15,7 +15,7 @@ const categoriesOptions: DropdownOption[] = [
   { id: '1', label: 'rzeczownik' },
   { id: '2', label: 'czasownik' },
   { id: '3', label: 'przymiotnik' }
-]
+] //TODO add separate categories table
 
 interface AddSignFormProps {
   formType: FormType

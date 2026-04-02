@@ -15,19 +15,17 @@ import {
   FormTwoInLineWrapper
 } from '../Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
-import { useWord } from '@contexts/WordContext/useWord'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceFormProps {
-  signId: string
   source?: SourceWithAuthorMediaFile
-  setSourceValues: (source: SourceWithAuthorMediaFile) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function SourceForm(props: SourceFormProps): React.JSX.Element {
-  const { signId, source, setSourceValues, formType, setIsFormOpen } = props
-    const { wordDetails } = useWord()
+  const { source, formType, setIsFormOpen } = props
+  const { addSource, editSource } = useSources()
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
@@ -65,32 +63,39 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (!authorOption || !wordDetails) return
+    if (!authorOption) return
 
     const mediaFile: MediaFileToDB = { fileUrl }
     const author: AuthorToDB = { name: authorOption.label }
 
     const yearStartStr = yearStart ? parseInt(yearStart) : undefined
     const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
-    const source: SourceToCreate = {
+    const sourceToCreate: SourceToCreate = {
       notes: notes,
       yearStart: yearStartStr,
       yearEnd: yearEndStr,
       region
     }
 
-    const data: SourceWithDetailsToDB = {
-      wordId: wordDetails.id,
-      signId,
-      source,
-      mediaFile,
-      author
-    }
+    if (formType === 'add') {
+      const data: SourceWithDetailsToDB = {
+        ...sourceToCreate,
+        mediaFile,
+        author
+      }
 
-    window.api.source.create(data).then((source) => {
-      setSourceValues(source)
-      closeForm()
-    })
+      addSource(data, closeForm)
+    } else if (formType === 'edit' && source) {
+      const data: Partial<SourceWithDetailsToDB> = {
+        notes,
+        region,
+        yearStart: yearStartStr,
+        yearEnd: yearEndStr,
+        mediaFile: { fileUrl },
+        author
+      }
+      editSource(source.id, data, closeForm)
+    }
   }
 
   return (

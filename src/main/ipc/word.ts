@@ -81,6 +81,7 @@ export function deleteWordById(id: string): void {
 }
 
 export function updateWord(wordId: string, data: Partial<WordToDB>): Word | undefined {
+  //TODO don't return Word, only undefined
   const existing = findWordById(wordId)
   if (!existing) return
 

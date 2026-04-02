@@ -29,7 +29,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   }
 
   const editWord = (word: Word, closeForm: () => void): void => {
-    const newWord: WordToDB = { text: word.text, tags: word.tags }
+    const newWord: WordToDB = { text: word.text, tags: word.tags } //TODO add Partial and wordId
     window.api.word.update(word.id, newWord).then((result) => {
       setWordsList((prevState) =>
         prevState.map((w) => (w.id === result.id ? { ...w, ...result } : w))

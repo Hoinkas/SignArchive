@@ -1,17 +1,18 @@
 import './SignBox.css'
 import { SignWithDetails } from '@shared/types'
 import MediaPlayer from '@renderer/components/MediaPlayer/MediaPlayer'
-import { Dispatch, SetStateAction } from 'react'
 import { sourcesCountText } from '@renderer/functions/namesVersionsHelpers'
 import SignTitle from '../SignTitle/SignTitle'
 import DefinitionList from '../../DefinitionList/DefinitionList'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SignBoxProps {
   sign: SignWithDetails
-  setSourcesPanelSign: Dispatch<SetStateAction<SignWithDetails | null>>
 }
 
-function SignBox({ sign, setSourcesPanelSign }: SignBoxProps): React.JSX.Element {
+function SignBox({ sign }: SignBoxProps): React.JSX.Element {
+  const { changeSourcesPanelSign } = useSources()
+
   return (
     <div className="signBoxContainer">
       <SignTitle sign={sign} />
@@ -20,7 +21,7 @@ function SignBox({ sign, setSourcesPanelSign }: SignBoxProps): React.JSX.Element
         <div className="variantDetails">
           {sign.notes && <div>{sign.notes}</div>}
           <DefinitionList sign={sign} />
-          <a onClick={() => setSourcesPanelSign(sign)} className="additionalInfo">
+          <a onClick={() => changeSourcesPanelSign(sign)} className="additionalInfo">
             {sourcesCountText(sign.sourcesCount)}
           </a>
         </div>

@@ -21,13 +21,13 @@ function SidePanel(): React.JSX.Element {
           maxWidth: '240px',
           display: 'flex',
           justifyContent: 'center'
-        }}
+        }} //TODO move to to css
       >
         <ActionButton text="Dodaj słowo" setIsFormOpen={setIsFormOpen} />
       </div>
 
       <ListOfWords searchWord={searchWord} />
-      {isFormOpen && (
+      {isFormOpen && ( //TODO wrap with form Wrapper
         <div className="formContainer">
           <div className="formBox">
             <WordForm setIsFormOpen={setIsFormOpen} formType="add" />

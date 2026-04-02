@@ -5,6 +5,7 @@ import type {
   SourceSignWord,
   SourceToDB,
   SourceWithAuthorMediaFile,
+  SourceWithDetailsSignIdWordIdToDB,
   SourceWithDetailsToDB,
   YearStartEnd
 } from '@shared/types'
@@ -139,13 +140,15 @@ export function createSource(data: SourceToDB): Source {
   return source
 }
 
-export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWithAuthorMediaFile {
+export function createSourceWithDetails(
+  data: SourceWithDetailsSignIdWordIdToDB
+): SourceWithAuthorMediaFile {
   const transaction = getDb().transaction(() => {
     const createdMediaFile = createMediaFile(data.mediaFile)
     const createdAuthor = createAuthor(data.author)
 
     const source: SourceToDB = {
-      ...data.source,
+      ...data,
       authorId: createdAuthor.id,
       mediaFileId: createdMediaFile.id
     }
@@ -170,13 +173,36 @@ export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWith
   return transaction()
 }
 
+export function updateSource(sourceId: string, data: Partial<SourceWithDetailsToDB>): void {
+  const existing = findSourceById(sourceId)
+  if (!existing) return
+
+  const updatedAuthorId = data.author ? createAuthor(data.author).id : existing.authorId
+  const updatedMediaFileId = data.mediaFile
+    ? createMediaFile(data.mediaFile).id
+    : existing.mediaFileId
+
+  getDb()
+    .prepare(
+      `
+      UPDATE source
+      SET authorId = @authorId, mediaFileId = @mediaFileId, region = @region,
+          yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes
+      WHERE id = @id
+    `
+    )
+    .run(
+      toSqlParams({
+        ...data,
+        id: sourceId,
+        authorId: updatedAuthorId,
+        mediaFileId: updatedMediaFileId
+      })
+    )
+}
+
 export function deleteSourceById(sourceId: string): void {
-  try {
-    getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
-  } catch (err) {
-    console.error('Błąd usuwania source:', err)
-    throw err
-  }
+  getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
 }
 
 export function registerSourceHandlers(): void {
@@ -184,6 +210,11 @@ export function registerSourceHandlers(): void {
     returnSourcesDetailsBySignWordId(signId, wordId)
   )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
-  ipcMain.handle('source:create', (_, data: SourceWithDetailsToDB) => createSourceWithDetails(data))
+  ipcMain.handle('source:update', (_, sourceId: string, data: Partial<SourceWithDetailsToDB>) =>
+    updateSource(sourceId, data)
+  )
+  ipcMain.handle('source:create', (_, data: SourceWithDetailsSignIdWordIdToDB) =>
+    createSourceWithDetails(data)
+  )
   ipcMain.handle('source:delete', (_, sourceId: string) => deleteSourceById(sourceId))
 }

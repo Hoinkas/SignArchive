@@ -114,7 +114,8 @@ export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): 
   return transaction()
 }
 
-export function updateSign(signId: string, data: Partial<SignToDB>): Sign | undefined {
+export function updateSign(signId: string, data: SignToDB): Sign | undefined {
+  //TODO Add Partial and don't return Sign
   const existing = findSignById(signId)
   if (!existing) return
 
@@ -156,7 +157,7 @@ export function registerSignHandlers(): void {
   ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
     handlerWithErrorLogging(() => createSignWithDefinition(data))
   )
-  ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
+  ipcMain.handle('sign:update', (_, singId: string, data: SignToDB) =>
     handlerWithErrorLogging(() => updateSign(singId, data))
   )
   ipcMain.handle('sign:delete', (_, id: string) =>
