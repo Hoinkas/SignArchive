@@ -1,5 +1,5 @@
 import TagList from '@renderer/components/TagList/TagList'
-import { SourceWithAuthorMediaFile } from '@shared/types'
+import { SourceWithDetails } from '@shared/types'
 import './SourceBox.css'
 import { useState } from 'react'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
@@ -8,7 +8,7 @@ import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceBoxProps {
-  source: SourceWithAuthorMediaFile
+  source: SourceWithDetails
 }
 
 function SourceBox({ source }: SourceBoxProps): React.JSX.Element {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import React from 'react'
 import {
   SignWithDetails,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB
 } from '@shared/types'
@@ -16,12 +16,16 @@ interface Props {
 export default function SourcesProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
-  const [sources, setSources] = useState<SourceWithAuthorMediaFile[]>([])
+  const [sources, setSources] = useState<SourceWithDetails[]>([])
 
   const changeSourcesPanelSign = (data: SignWithDetails): void => {
     if (!word) return
     setSourcesPanelSign(data)
     window.api.source.list(data.id, word.id).then(setSources)
+  }
+
+  const closeSourcesPanelSign = (): void => {
+    setSourcesPanelSign(null)
   }
 
   const addSource = (data: SourceWithDetailsToDB, closeForm: () => void): void => {
@@ -44,9 +48,10 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
     updatedSource: Partial<SourceWithDetailsToDB>,
     closeForm: () => void
   ): void => {
-    window.api.source.update(sourceId, updatedSource).then(() => {
+    window.api.source.update(sourceId, updatedSource).then((result) => {
+      if (!result) return
       setSources((prevState) =>
-        prevState.map((s) => (s.id === sourceId ? { ...s, updatedSource } : s))
+        prevState.map((s) => (s.id === result.id ? { ...s, ...result } : s))
       )
       closeForm()
     })
@@ -66,7 +71,8 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
         editSource,
         deleteSource,
         sourcesPanelSign,
-        changeSourcesPanelSign
+        changeSourcesPanelSign,
+        closeSourcesPanelSign
       }}
     >
       {children}

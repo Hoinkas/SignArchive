@@ -10,7 +10,7 @@ import type {
   SignWithDetailsToDB,
   SignToDB,
   Sign,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToDB
 } from '@shared/types'
 
@@ -35,13 +35,16 @@ if (process.contextIsolated) {
         delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
       source: {
-        list: (signId: string, wordId: string): Promise<SourceWithAuthorMediaFile[]> =>
+        list: (signId: string, wordId: string): Promise<SourceWithDetails[]> =>
           ipcRenderer.invoke('source:list', signId, wordId),
-        details: (sourceId: string): Promise<SourceWithAuthorMediaFile> =>
+        details: (sourceId: string): Promise<SourceWithDetails> =>
           ipcRenderer.invoke('source:details', sourceId),
-        create: (data: SourceWithDetailsToDB): Promise<SourceWithAuthorMediaFile> =>
+        create: (data: SourceWithDetailsToDB): Promise<SourceWithDetails> =>
           ipcRenderer.invoke('source:create', data),
-        update: (sourceId: string, data: Partial<SourceWithDetailsToDB>): Promise<void> =>
+        update: (
+          sourceId: string,
+          data: Partial<SourceWithDetailsToDB>
+        ): Promise<SourceWithDetails | undefined> =>
           ipcRenderer.invoke('source:update', sourceId, data),
         delete: (sourceId: string): Promise<void> => ipcRenderer.invoke('source:delete', sourceId)
       },

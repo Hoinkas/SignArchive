@@ -4,7 +4,7 @@ import type {
   Source,
   SourceSignWord,
   SourceToDB,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
   YearStartEnd
@@ -91,7 +91,7 @@ export function returnSourcesCountBySignId(signId: string): number {
   return row.count
 }
 
-export function returnSourceDetailsById(sourceId: string): SourceWithAuthorMediaFile | undefined {
+export function returnSourceDetailsById(sourceId: string): SourceWithDetails | undefined {
   const source = findSourceById(sourceId)
   if (!source) return
 
@@ -110,10 +110,10 @@ export function returnSourceDetailsById(sourceId: string): SourceWithAuthorMedia
 export function returnSourcesDetailsBySignWordId(
   signId: string,
   wordId: string
-): SourceWithAuthorMediaFile[] {
+): SourceWithDetails[] {
   const sources = findAllSourcesBySignWordId(signId, wordId)
 
-  const sourcesDetails: SourceWithAuthorMediaFile[] = []
+  const sourcesDetails: SourceWithDetails[] = []
   sources.forEach((s) => {
     const details = returnSourceDetailsById(s.id)
     if (!details) return
@@ -140,15 +140,13 @@ export function createSource(data: SourceToDB): Source {
   return source
 }
 
-export function createSourceWithDetails(
-  data: SourceWithDetailsToCreate
-): SourceWithAuthorMediaFile {
+export function createSourceWithDetails(data: SourceWithDetailsToCreate): SourceWithDetails {
   const transaction = getDb().transaction(() => {
     const createdMediaFile = createMediaFile(data.mediaFile)
     const createdAuthor = createAuthor(data.author)
 
     const source: SourceToDB = {
-      ...data,
+      ...data.source,
       authorId: createdAuthor.id,
       mediaFileId: createdMediaFile.id
     }
@@ -162,7 +160,7 @@ export function createSourceWithDetails(
     }
     createSourceSignWord(sourceSignWord)
 
-    const sourceWihtDetails: SourceWithAuthorMediaFile = {
+    const sourceWihtDetails: SourceWithDetails = {
       ...createdSource,
       author: createdAuthor,
       mediaFile: createdMediaFile
@@ -173,7 +171,10 @@ export function createSourceWithDetails(
   return transaction()
 }
 
-export function updateSource(sourceId: string, data: Partial<SourceWithDetailsToDB>): void {
+export function updateSource(
+  sourceId: string,
+  data: Partial<SourceWithDetailsToDB>
+): SourceWithDetails | undefined {
   const existing = findSourceById(sourceId)
   if (!existing) return
 
@@ -181,6 +182,13 @@ export function updateSource(sourceId: string, data: Partial<SourceWithDetailsTo
   const updatedMediaFileId = data.mediaFile
     ? createMediaFile(data.mediaFile).id
     : existing.mediaFileId
+
+  const dataToDB: Partial<Source> = {
+    ...data.source,
+    id: sourceId,
+    authorId: updatedAuthorId,
+    mediaFileId: updatedMediaFileId
+  }
 
   getDb()
     .prepare(
@@ -191,14 +199,11 @@ export function updateSource(sourceId: string, data: Partial<SourceWithDetailsTo
       WHERE id = @id
     `
     )
-    .run(
-      toSqlParams({
-        ...data,
-        id: sourceId,
-        authorId: updatedAuthorId,
-        mediaFileId: updatedMediaFileId
-      })
-    )
+    .run(toSqlParams(dataToDB))
+
+  const returnData = returnSourceDetailsById(sourceId)
+
+  return returnData
 }
 
 export function deleteSourceById(sourceId: string): void {

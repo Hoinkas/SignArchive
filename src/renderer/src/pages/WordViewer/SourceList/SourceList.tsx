@@ -18,7 +18,7 @@ function SourceList({ sign }: SourceListProps): React.JSX.Element {
   return (
     <div className="sourceListContainer">
       <div>
-        <SourcesTitle sign={sign} setIsFormOpen={setIsFormOpen} />
+        <SourcesTitle sign={sign} />
         <div className="sourceList">
           {sources.map((source, key) => (
             <SourceBox key={key} source={source} />

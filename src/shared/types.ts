@@ -63,7 +63,8 @@ export interface Source {
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
 export type SourceToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
 
-export interface SourceWithDetailsToDB extends SourceToCreate {
+export interface SourceWithDetailsToDB {
+  source: SourceToCreate
   mediaFile: MediaFileToDB
   author: AuthorToDB
 }
@@ -115,7 +116,7 @@ export interface YearStartEnd {
 }
 
 // WORD with SIGNS and SOURCES and AUTHORS and MEDIAFILES
-export interface SourceWithAuthorMediaFile extends Omit<Source, 'authorId' | 'mediaFileId'> {
+export interface SourceWithDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
   author: Author
   mediaFile: MediaFile
 }

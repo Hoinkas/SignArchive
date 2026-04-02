@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, SubmitEvent, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
   Author,
   AuthorToDB,
   FormType,
   MediaFileToDB,
   SourceToCreate,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToDB
 } from '@shared/types'
 import {
@@ -18,7 +18,7 @@ import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceFormProps {
-  source?: SourceWithAuthorMediaFile
+  source?: SourceWithDetails
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -60,40 +60,32 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
     if (!authorOption) return
 
     const mediaFile: MediaFileToDB = { fileUrl }
     const author: AuthorToDB = { name: authorOption.label }
+    const yearStartNum = yearStart ? parseInt(yearStart) : undefined
+    const yearEndNum = yearEnd ? parseInt(yearEnd) : undefined
 
-    const yearStartStr = yearStart ? parseInt(yearStart) : undefined
-    const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
     const sourceToCreate: SourceToCreate = {
-      notes: notes,
-      yearStart: yearStartStr,
-      yearEnd: yearEndStr,
-      region
+      notes,
+      region,
+      yearStart: yearStartNum,
+      yearEnd: yearEndNum
+    }
+
+    const data: SourceWithDetailsToDB = {
+      source: sourceToCreate,
+      mediaFile,
+      author
     }
 
     if (formType === 'add') {
-      const data: SourceWithDetailsToDB = {
-        ...sourceToCreate,
-        mediaFile,
-        author
-      }
-
       addSource(data, closeForm)
     } else if (formType === 'edit' && source) {
-      const data: Partial<SourceWithDetailsToDB> = {
-        notes,
-        region,
-        yearStart: yearStartStr,
-        yearEnd: yearEndStr,
-        mediaFile: { fileUrl },
-        author
-      }
       editSource(source.id, data, closeForm)
     }
   }

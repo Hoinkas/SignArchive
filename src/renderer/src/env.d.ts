@@ -18,10 +18,13 @@ declare global {
         delete: (wordId: string) => Promise<void>
       }
       source: {
-        list: (signId: string, wordId: string) => Promise<SourceWithAuthorMediaFile[]>
+        list: (signId: string, wordId: string) => Promise<SourceWithDetails[]>
         details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
-        update: (sourceId: string, data: Partial<SourceWithDetailsToDB>) => Promise<void>
-        create: (data: SourceWithDetailsToDB) => Promise<SourceWithAuthorMediaFile>
+        update: (
+          sourceId: string,
+          data: Partial<SourceWithDetailsToDB>
+        ) => Promise<SourceWithDetails | undefined>
+        create: (data: SourceWithDetailsToDB) => Promise<SourceWithDetails>
         delete: (sourceId: string) => Promise<void>
       }
       author: {

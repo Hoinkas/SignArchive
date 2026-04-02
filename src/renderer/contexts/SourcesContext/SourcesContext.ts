@@ -1,8 +1,8 @@
 import { createContext } from 'react'
-import { SignWithDetails, SourceWithAuthorMediaFile, SourceWithDetailsToDB } from '@shared/types'
+import { SignWithDetails, SourceWithDetails, SourceWithDetailsToDB } from '@shared/types'
 
 export interface SourcesContextValue {
-  sources: SourceWithAuthorMediaFile[]
+  sources: SourceWithDetails[]
   addSource: (data: SourceWithDetailsToDB, closeForm: () => void) => void
   editSource: (
     sourceId: string,
@@ -12,6 +12,7 @@ export interface SourcesContextValue {
   deleteSource: (deleteId: string) => void
   sourcesPanelSign: SignWithDetails | null
   changeSourcesPanelSign: (data: SignWithDetails) => void
+  closeSourcesPanelSign: () => void
 }
 
 export const SourcesContext = createContext<SourcesContextValue>({
@@ -20,5 +21,6 @@ export const SourcesContext = createContext<SourcesContextValue>({
   editSource: () => {},
   deleteSource: () => {},
   sourcesPanelSign: null,
-  changeSourcesPanelSign: () => {}
+  changeSourcesPanelSign: () => {},
+  closeSourcesPanelSign: () => {}
 })
