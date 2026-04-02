@@ -5,7 +5,7 @@ import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
-import { useSign } from '@contexts/SignsContext/useSigns'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface SignTitleProps {
   sign: SignWithDetails
@@ -13,7 +13,7 @@ interface SignTitleProps {
 
 function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState(false)
-  const { deleteSign } = useSign()
+  const { deleteSign } = useSigns()
 
   const years = mergeYearText(sign.yearStart, sign.yearEnd)
   const pillText: string[] = [years]

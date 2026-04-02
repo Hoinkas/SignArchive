@@ -5,12 +5,12 @@ import SignList from './SignList/SignList'
 import AddSignForm from '@renderer/components/Form/Forms/AddSignForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import { useWord } from '@contexts/WordContext/useWord'
-import { useSign } from '@contexts/SignsContext/useSigns'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 import SourcesProvider from '@contexts/SourcesContext/SourcesProvider'
 
 function WordViewer(): React.JSX.Element {
   const { word } = useWord()
-  const { initiateSigns } = useSign()
+  const { initiateSigns } = useSigns()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {

@@ -40,6 +40,15 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
+  const changeSourcesCountInSign = (action: 'add' | 'remove', signId: string): void => {
+    const numberAction = action === 'add' ? 1 : -1
+    setSigns((prevState) =>
+      prevState.map((s) =>
+        s.id === signId ? { ...s, sourcesCount: s.sourcesCount + numberAction } : s
+      )
+    )
+  }
+
   return (
     <SignContext.Provider
       value={{
@@ -47,7 +56,8 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
         initiateSigns,
         addSign,
         editSign,
-        deleteSign
+        deleteSign,
+        changeSourcesCountInSign
       }}
     >
       {children}

@@ -9,7 +9,7 @@ import {
 } from '@renderer/components/Form/Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 import { useWord } from '@contexts/WordContext/useWord'
-import { useSign } from '@contexts/SignsContext/useSigns'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 
 const categoriesOptions: DropdownOption[] = [
   { id: '1', label: 'rzeczownik' },
@@ -25,7 +25,7 @@ interface AddSignFormProps {
 function AddSignForm(props: AddSignFormProps): React.JSX.Element {
   const { formType, setIsFormOpen } = props
   const { word } = useWord()
-  const { addSign } = useSign()
+  const { addSign } = useSigns()
 
   const [newFile, setNewFile] = useState<File | null>(null)
   const [notes, setNotes] = useState<string>('')

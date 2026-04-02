@@ -8,6 +8,7 @@ import {
 } from '@shared/types'
 import { SourcesContext } from './SourcesContext'
 import { useWord } from '@contexts/WordContext/useWord'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface Props {
   children?: React.ReactNode
@@ -15,6 +16,7 @@ interface Props {
 
 export default function SourcesProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
+  const { changeSourcesCountInSign } = useSigns()
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
   const [sources, setSources] = useState<SourceWithDetails[]>([])
 
@@ -39,6 +41,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
     window.api.source.create(sourceWithDetails).then((result) => {
       setSources((prevState) => [...prevState, result])
+      changeSourcesCountInSign('add', result.id)
       closeForm()
     })
   }
@@ -59,7 +62,9 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
   const deleteSource = (deleteId: string): void => {
     window.api.source.delete(deleteId).then(() => {
+      if (!sourcesPanelSign) return
       setSources((prevState) => prevState.filter((s) => s.id !== deleteId))
+      changeSourcesCountInSign('remove', sourcesPanelSign.id)
     })
   }
 
