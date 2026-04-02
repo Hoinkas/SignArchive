@@ -141,8 +141,8 @@ export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): 
   return transaction()
 }
 
+//TODO Add Partial and don't return Sing
 export function updateSign(signId: string, data: SignToDB): Sign | undefined {
-  //TODO Add Partial and don't return Sign
   const existing = findSignById(signId)
   if (!existing) return
 
@@ -150,10 +150,15 @@ export function updateSign(signId: string, data: SignToDB): Sign | undefined {
 
   if (data.file) {
     const file: SignFile = JSON.parse(data.file)
-    if (existing.file?.path && fs.existsSync(existing.file.path)) {
-      fs.unlinkSync(existing.file.path)
+
+    if (file.path.startsWith(SIGNS_DIR)) {
+      newFile = file
+    } else {
+      if (existing.file?.path && fs.existsSync(existing.file.path)) {
+        fs.unlinkSync(existing.file.path)
+      }
+      newFile = copySignFile(file)
     }
-    newFile = copySignFile(file)
   }
 
   const updated: Sign = {
@@ -163,14 +168,9 @@ export function updateSign(signId: string, data: SignToDB): Sign | undefined {
   }
 
   getDb()
-    .prepare(
-      `
-        UPDATE sign
-        SET notes = @notes, file = @file
-        WHERE id = @id
-      `
-    )
+    .prepare(`UPDATE sign SET notes = @notes, file = @file WHERE id = @id`)
     .run(toSqlParams({ ...updated, file: JSON.stringify(updated.file) }))
+
   return updated
 }
 
