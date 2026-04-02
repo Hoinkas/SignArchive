@@ -1,19 +1,19 @@
-import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import './SignTitle.css'
 import { SignWithDetails } from '@shared/types'
 import EditSignForm from '@renderer/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
+import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface SignTitleProps {
   sign: SignWithDetails
-  setSignValues: (sign: SignWithDetails) => void
 }
 
-function SignTitle(props: SignTitleProps): React.JSX.Element {
-  const { sign, setSignValues } = props
+function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const { deleteSign } = useSigns()
 
   const years = mergeYearText(sign.yearStart, sign.yearEnd)
   const pillText: string[] = [years]
@@ -24,14 +24,9 @@ function SignTitle(props: SignTitleProps): React.JSX.Element {
         <TagList textArray={pillText} />
       </div>
       {isFormOpen ? (
-        <EditSignForm
-          sign={sign}
-          setSignValues={setSignValues}
-          formType="edit"
-          setIsFormOpen={setIsFormOpen}
-        />
+        <EditSignForm sign={sign} formType="edit" setIsFormOpen={setIsFormOpen} />
       ) : (
-        <ActionButton text="Edytuj" setIsFormOpen={setIsFormOpen} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} />
       )}
     </div>
   )

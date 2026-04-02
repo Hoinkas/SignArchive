@@ -1,17 +1,9 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type {
-  SignWithDetails,
-  Word,
-  WordToDB,
-  WordWithCounts,
-  WordWithSignsDetails
-} from '@shared/types'
+import type { Word, WordToDB, WordWithCounts } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
-import { findSignsIdsByWordId } from './definitionSignWord'
-import { returnSignDetailsBySignWordId } from './sign'
 
 export function findWordById(wordId: string): Word | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
@@ -40,24 +32,6 @@ export function listAllWordsWithSignCount(): WordWithCounts[] {
       signsCount: row.signsCount as number
     }
   })
-}
-
-export function returnWordDetailsById(wordId: string): WordWithSignsDetails | undefined {
-  const word = findWordById(wordId)
-  if (!word) return
-
-  const signsIds = findSignsIdsByWordId(wordId)
-  const signsDetails: SignWithDetails[] = []
-
-  signsIds.forEach((signId) => {
-    const signDetails = returnSignDetailsBySignWordId(signId, wordId)
-    if (signDetails) signsDetails.push(signDetails)
-  })
-
-  return {
-    ...word,
-    signs: signsDetails
-  }
 }
 
 export function createWord(data: WordToDB): Word {
@@ -95,25 +69,24 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
       `
     )
     .run(toSqlParams(updated))
-  return rowToWord(updated)
+
+  return { ...existing, ...data }
 }
 
 export function registerWordHandlers(): void {
   ipcMain.handle('word:listWithCount', () =>
     handlerWithErrorLogging(() => listAllWordsWithSignCount())
   )
-  ipcMain.handle('word:details', (_, id: string) =>
-    handlerWithErrorLogging(() => returnWordDetailsById(id))
-  )
+  ipcMain.handle('word:details', (_, id: string) => handlerWithErrorLogging(() => findWordById(id)))
   ipcMain.handle('word:create', (_, data: WordToDB) =>
     handlerWithErrorLogging(() => createWord(data))
   )
-  ipcMain.handle('word:update', (_, id: string, data: Partial<Word>) =>
-    handlerWithErrorLogging(() => updateWord(id, data))
+  ipcMain.handle('word:update', (_, wordId: string, data: Partial<WordToDB>) =>
+    handlerWithErrorLogging(() => updateWord(wordId, data))
   )
-  // ipcMain.handle('word:delete', (_, id: string) =>
-  //   handlerWithErrorLogging(() => deleteWordById(id))
-  // )
+  ipcMain.handle('word:delete', (_, id: string) =>
+    handlerWithErrorLogging(() => deleteWordById(id))
+  )
 }
 
 // ROW MAPPERS

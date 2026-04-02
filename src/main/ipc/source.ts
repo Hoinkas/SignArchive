@@ -4,7 +4,8 @@ import type {
   Source,
   SourceSignWord,
   SourceToDB,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
+  SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
   YearStartEnd
 } from '@shared/types'
@@ -90,7 +91,7 @@ export function returnSourcesCountBySignId(signId: string): number {
   return row.count
 }
 
-export function returnSourceDetailsById(sourceId: string): SourceWithAuthorMediaFile | undefined {
+export function returnSourceDetailsById(sourceId: string): SourceWithDetails | undefined {
   const source = findSourceById(sourceId)
   if (!source) return
 
@@ -109,10 +110,10 @@ export function returnSourceDetailsById(sourceId: string): SourceWithAuthorMedia
 export function returnSourcesDetailsBySignWordId(
   signId: string,
   wordId: string
-): SourceWithAuthorMediaFile[] {
+): SourceWithDetails[] {
   const sources = findAllSourcesBySignWordId(signId, wordId)
 
-  const sourcesDetails: SourceWithAuthorMediaFile[] = []
+  const sourcesDetails: SourceWithDetails[] = []
   sources.forEach((s) => {
     const details = returnSourceDetailsById(s.id)
     if (!details) return
@@ -139,7 +140,7 @@ export function createSource(data: SourceToDB): Source {
   return source
 }
 
-export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWithAuthorMediaFile {
+export function createSourceWithDetails(data: SourceWithDetailsToCreate): SourceWithDetails {
   const transaction = getDb().transaction(() => {
     const createdMediaFile = createMediaFile(data.mediaFile)
     const createdAuthor = createAuthor(data.author)
@@ -159,7 +160,7 @@ export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWith
     }
     createSourceSignWord(sourceSignWord)
 
-    const sourceWihtDetails: SourceWithAuthorMediaFile = {
+    const sourceWihtDetails: SourceWithDetails = {
       ...createdSource,
       author: createdAuthor,
       mediaFile: createdMediaFile
@@ -170,8 +171,43 @@ export function createSourceWithDetails(data: SourceWithDetailsToDB): SourceWith
   return transaction()
 }
 
-export function deleteSourceById(id: string): void {
-  getDb().prepare('DELETE FROM source WHERE id = ?').run(id)
+export function updateSource(
+  sourceId: string,
+  data: Partial<SourceWithDetailsToDB>
+): SourceWithDetails | undefined {
+  const existing = findSourceById(sourceId)
+  if (!existing) return
+
+  const updatedAuthorId = data.author ? createAuthor(data.author).id : existing.authorId
+  const updatedMediaFileId = data.mediaFile
+    ? createMediaFile(data.mediaFile).id
+    : existing.mediaFileId
+
+  const dataToDB: Partial<Source> = {
+    ...data.source,
+    id: sourceId,
+    authorId: updatedAuthorId,
+    mediaFileId: updatedMediaFileId
+  }
+
+  getDb()
+    .prepare(
+      `
+      UPDATE source
+      SET authorId = @authorId, mediaFileId = @mediaFileId, region = @region,
+          yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes
+      WHERE id = @id
+    `
+    )
+    .run(toSqlParams(dataToDB))
+
+  const returnData = returnSourceDetailsById(sourceId)
+
+  return returnData
+}
+
+export function deleteSourceById(sourceId: string): void {
+  getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
 }
 
 export function registerSourceHandlers(): void {
@@ -179,6 +215,11 @@ export function registerSourceHandlers(): void {
     returnSourcesDetailsBySignWordId(signId, wordId)
   )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
-  ipcMain.handle('source:create', (_, data: SourceWithDetailsToDB) => createSourceWithDetails(data))
-  // ipcMain.handle('source:delete', (_, id: string) => deleteSourceById(id))
+  ipcMain.handle('source:update', (_, sourceId: string, data: Partial<SourceWithDetailsToDB>) =>
+    updateSource(sourceId, data)
+  )
+  ipcMain.handle('source:create', (_, data: SourceWithDetailsToCreate) =>
+    createSourceWithDetails(data)
+  )
+  ipcMain.handle('source:delete', (_, sourceId: string) => deleteSourceById(sourceId))
 }

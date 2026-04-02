@@ -61,6 +61,18 @@ export interface Source {
 }
 
 export type SourceToDB = Omit<Source, 'id' | 'createdAt'>
+export type SourceToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
+
+export interface SourceWithDetailsToDB {
+  source: SourceToCreate
+  mediaFile: MediaFileToDB
+  author: AuthorToDB
+}
+
+export interface SourceWithDetailsToCreate extends SourceWithDetailsToDB {
+  signId: string
+  wordId: string
+}
 
 //DEFINITION
 export interface Definition {
@@ -87,16 +99,6 @@ export interface SourceSignWord {
   wordId: string
 }
 
-export type SourceToCreate = Omit<SourceToDB, 'authorId' | 'mediaFileId'>
-
-export interface SourceWithDetailsToDB {
-  signId: string
-  wordId: string
-  source: SourceToCreate
-  mediaFile: MediaFileToDB
-  author: AuthorToDB
-}
-
 // WORD with SINGS count
 export interface WordWithCounts extends Word {
   signsCount: number
@@ -114,7 +116,7 @@ export interface YearStartEnd {
 }
 
 // WORD with SIGNS and SOURCES and AUTHORS and MEDIAFILES
-export interface SourceWithAuthorMediaFile extends Omit<Source, 'authorId' | 'mediaFileId'> {
+export interface SourceWithDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
   author: Author
   mediaFile: MediaFile
 }
@@ -122,8 +124,4 @@ export interface SourceWithAuthorMediaFile extends Omit<Source, 'authorId' | 'me
 export interface SignWithDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
-}
-
-export interface WordWithSignsDetails extends Word {
-  signs: SignWithDetails[]
 }

@@ -1,0 +1,96 @@
+/* Copied from https://codepen.io/Zorlimar/pen/vgZaox */
+
+.navWrapper {
+  position: relative;
+  display: inline-block;
+  height: fit-content;
+}
+
+.menuBtn {
+  width: 32px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: var(--button-border);
+  background: var(--color-bg);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.menuBtn:hover {
+  color: var(--color-text-active);
+  background: var(--color-bg-hover-transparent);
+}
+
+.menuBtn.open {
+  background: var(--color-bg-active);
+  border-color: var(--color-bg-active);
+}
+
+.bar {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--color-text);
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.navDropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  min-width: 80px;
+  z-index: 50;
+
+  transform-origin: top right;
+  transform: scaleY(0);
+  opacity: 0;
+  transition:
+    transform 0.25s cubic-bezier(0.5, -0.3, 0.5, 1.5),
+    opacity 0.2s;
+}
+
+.navDropdown.open {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+.navDropdown a {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-white);
+  text-decoration: none;
+  border: var(--symbol-button-border);
+  border-bottom: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.navDropdown a:first-child {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.navDropdown a:last-child {
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border-bottom: var(--symbol-button-border);
+}
+
+.navDropdown a:hover {
+  background: var(--color-bg-hover-transparent);
+  color: var(--color-text-active);
+  border: var(--symbol-button-border-active);
+
+  border-bottom: none;
+
+  & :last-child {
+    border-bottom: var(--symbol-button-border);
+  }
+}

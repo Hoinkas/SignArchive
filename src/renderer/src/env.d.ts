@@ -6,21 +6,27 @@ declare global {
   interface Window {
     api: {
       sign: {
+        list: (wordId: string) => Promise<SignWithDetails[]>
         create: (data: SignWithDetailsToDB) => Promise<SignWithDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
-        // delete: (signId: string) => Promise<void>
+        delete: (signId: string) => Promise<void>
       }
       word: {
         listWithCount: () => Promise<WordWithCounts[]>
-        details: (wordId: string) => Promise<WordWithSignsDetails>
+        details: (wordId: string) => Promise<Word>
         create: (data: WordToDB) => Promise<Word>
-        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word>
-        // delete: (wordId: string) => Promise<void>
+        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>
+        delete: (wordId: string) => Promise<void>
       }
       source: {
-        list: (signId: string, wordId: string) => Promise<SourceWithAuthorMediaFile[]>
+        list: (signId: string, wordId: string) => Promise<SourceWithDetails[]>
         details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
-        create: (data: SourceWithDetailsToDB) => Promise<SourceWithAuthorMediaFile>
+        update: (
+          sourceId: string,
+          data: Partial<SourceWithDetailsToDB>
+        ) => Promise<SourceWithDetails | undefined>
+        create: (data: SourceWithDetailsToDB) => Promise<SourceWithDetails>
+        delete: (sourceId: string) => Promise<void>
       }
       author: {
         list: () => Promise<Author[]>

@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { Word } from '@shared/types'
 import WordViewer from './pages/WordViewer/WordViewer'
 import SidePanel from './pages/SidePanel/SidePanel'
+import { useWord } from '@contexts/WordContext/useWord'
+import SignsProvider from '@contexts/SignsContext/SignsProvider'
 
 function App(): React.JSX.Element {
-  const [activeWord, setActiveWord] = useState<Word | null>(null)
+  const { activeWordId } = useWord()
 
   return (
     <div style={{ display: 'flex' }}>
-      <SidePanel activeWord={activeWord} setActiveWord={setActiveWord} />
-      {activeWord && <WordViewer word={activeWord} />}
+      <SidePanel />
+      <SignsProvider>{activeWordId && <WordViewer />}</SignsProvider>
     </div>
   )
 }

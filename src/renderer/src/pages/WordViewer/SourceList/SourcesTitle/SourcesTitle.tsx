@@ -1,13 +1,15 @@
 import { SignWithDetails } from '@shared/types'
 import './SourcesTitle.css'
 import { mergeYearText, sourcesCountText } from '@renderer/functions/namesVersionsHelpers'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourcesTitleProps {
   sign: SignWithDetails
-  closeForm: () => void
 }
 
-function SourcesTitle({ sign, closeForm }: SourcesTitleProps): React.JSX.Element {
+function SourcesTitle({ sign }: SourcesTitleProps): React.JSX.Element {
+  const { closeSourcesPanelSign } = useSources()
+
   return (
     <div className="sourcesTitleContainer">
       <div className="sourcesTitle">
@@ -17,7 +19,7 @@ function SourcesTitle({ sign, closeForm }: SourcesTitleProps): React.JSX.Element
         </div>
         <div>{sign.notes}</div>
       </div>
-      <div className="clickableSymbolCircle" onClick={closeForm}>×</div>
+      <div className="clickableSymbolCircle" onClick={() => closeSourcesPanelSign()}>×</div>
     </div>
   )
 }

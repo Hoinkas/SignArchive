@@ -1,21 +1,19 @@
 import TagList from '@renderer/components/TagList/TagList'
-import { SourceWithAuthorMediaFile } from '@shared/types'
+import { SourceWithDetails } from '@shared/types'
 import './SourceBox.css'
 import { useState } from 'react'
 import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
-import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceBoxProps {
-  wordId: string
-  signId: string
-  setSourceValues: (source: SourceWithAuthorMediaFile) => void
-  source: SourceWithAuthorMediaFile
+  source: SourceWithDetails
 }
 
-function SourceBox(props: SourceBoxProps): React.JSX.Element {
-  const { source, wordId, signId, setSourceValues } = props
+function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const { deleteSource } = useSources()
 
   const years = mergeYearText(source.yearStart, source.yearEnd)
 
@@ -30,16 +28,9 @@ function SourceBox(props: SourceBoxProps): React.JSX.Element {
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>
       {isFormOpen ? (
-        <SourceForm
-          wordId={wordId}
-          signId={signId}
-          source={source}
-          setSourceValues={setSourceValues}
-          formType={'edit'}
-          setIsFormOpen={setIsFormOpen}
-        />
+        <SourceForm source={source} formType={'edit'} setIsFormOpen={setIsFormOpen} />
       ) : (
-        <ActionButton text="edytuj" setIsFormOpen={setIsFormOpen} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(source.id)} />
       )}
     </div>
   )

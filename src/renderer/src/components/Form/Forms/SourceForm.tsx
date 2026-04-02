@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, SubmitEvent, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
   Author,
   AuthorToDB,
   FormType,
   MediaFileToDB,
   SourceToCreate,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToDB
 } from '@shared/types'
 import {
@@ -15,18 +15,17 @@ import {
   FormTwoInLineWrapper
 } from '../Form'
 import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
+import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceFormProps {
-  wordId: string
-  signId: string
-  source?: SourceWithAuthorMediaFile
-  setSourceValues: (source: SourceWithAuthorMediaFile) => void
+  source?: SourceWithDetails
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function SourceForm(props: SourceFormProps): React.JSX.Element {
-  const { wordId, signId, source, setSourceValues, formType, setIsFormOpen } = props
+  const { source, formType, setIsFormOpen } = props
+  const { addSource, editSource } = useSources()
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
@@ -61,37 +60,33 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    if (authorOption) {
-      const mediaFile: MediaFileToDB = { fileUrl }
-      const author: AuthorToDB = { name: authorOption.label }
+    if (!authorOption) return
 
-      const yearStartStr = yearStart ? parseInt(yearStart) : undefined
-      const yearEndStr = yearEnd ? parseInt(yearEnd) : undefined
-      const source: SourceToCreate = {
-        notes: notes,
-        yearStart: yearStartStr,
-        yearEnd: yearEndStr,
-        region
-      }
+    const mediaFile: MediaFileToDB = { fileUrl }
+    const author: AuthorToDB = { name: authorOption.label }
+    const yearStartNum = yearStart ? parseInt(yearStart) : undefined
+    const yearEndNum = yearEnd ? parseInt(yearEnd) : undefined
 
-      const data: SourceWithDetailsToDB = {
-        wordId,
-        signId,
-        source,
-        mediaFile,
-        author
-      }
+    const sourceToCreate: SourceToCreate = {
+      notes,
+      region,
+      yearStart: yearStartNum,
+      yearEnd: yearEndNum
+    }
 
-      window.api.source
-        .create(data)
-        .then((source) => {
-          setSourceValues(source)
-          closeForm()
-        })
-        .catch((err) => console.error('Błąd tworzenia źródła:', err))
+    const data: SourceWithDetailsToDB = {
+      source: sourceToCreate,
+      mediaFile,
+      author
+    }
+
+    if (formType === 'add') {
+      addSource(data, closeForm)
+    } else if (formType === 'edit' && source) {
+      editSource(source.id, data, closeForm)
     }
   }
 

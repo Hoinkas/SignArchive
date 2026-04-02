@@ -68,7 +68,7 @@ button {
 
 button:hover {
   color: var(--color-text-active);
-  background: var(--color-bg-hover);
+  background: var(--color-bg-hover-transparent);
 }
 
 button:active {
@@ -85,19 +85,19 @@ label {
 .searchBar {
   overflow: hidden;
   align-items: center;
-  background-color: var(--color-bg-active);
   backdrop-filter: blur(var(--space-6));
   border-radius: var(--radius-lg);
   cursor: text;
   height: var(--space-10);
   padding: var(--space-4) 0;
+  border: var(--button-border);
 
   & input {
     color: var(--color-text-active);
   }
 
   & input::placeholder {
-    color: var(--color-text-active);
+    color: var(--grey-500);
   }
 }
 

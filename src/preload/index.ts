@@ -5,12 +5,11 @@ import type {
   WordToDB,
   WordWithCounts,
   Author,
-  WordWithSignsDetails,
   SignWithDetails,
   SignWithDetailsToDB,
   SignToDB,
   Sign,
-  SourceWithAuthorMediaFile,
+  SourceWithDetails,
   SourceWithDetailsToDB
 } from '@shared/types'
 
@@ -19,28 +18,35 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', {
       sign: {
+        list: (wordId: string): Promise<SignWithDetails[]> =>
+          ipcRenderer.invoke('sign:list', wordId),
         create: (data: SignWithDetailsToDB): Promise<SignWithDetails> =>
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
-          ipcRenderer.invoke('sign:update', signId, data)
-        // delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
+          ipcRenderer.invoke('sign:update', signId, data),
+        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
       },
       word: {
         listWithCount: (): Promise<WordWithCounts[]> => ipcRenderer.invoke('word:listWithCount'),
-        details: (wordId: string): Promise<WordWithSignsDetails> =>
-          ipcRenderer.invoke('word:details', wordId),
+        details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
-        update: (wordId: string, data: Partial<Word>): Promise<Word> =>
-          ipcRenderer.invoke('word:update', wordId, data)
-        // delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
+        update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
+          ipcRenderer.invoke('word:update', wordId, data),
+        delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
       source: {
-        list: (signId: string, wordId: string): Promise<SourceWithAuthorMediaFile[]> =>
+        list: (signId: string, wordId: string): Promise<SourceWithDetails[]> =>
           ipcRenderer.invoke('source:list', signId, wordId),
-        details: (sourceId: string): Promise<SourceWithAuthorMediaFile> =>
+        details: (sourceId: string): Promise<SourceWithDetails> =>
           ipcRenderer.invoke('source:details', sourceId),
-        create: (data: SourceWithDetailsToDB): Promise<SourceWithAuthorMediaFile> =>
-          ipcRenderer.invoke('source:create', data)
+        create: (data: SourceWithDetailsToDB): Promise<SourceWithDetails> =>
+          ipcRenderer.invoke('source:create', data),
+        update: (
+          sourceId: string,
+          data: Partial<SourceWithDetailsToDB>
+        ): Promise<SourceWithDetails | undefined> =>
+          ipcRenderer.invoke('source:update', sourceId, data),
+        delete: (sourceId: string): Promise<void> => ipcRenderer.invoke('source:delete', sourceId)
       },
       author: {
         list: (): Promise<Author[]> => ipcRenderer.invoke('author:list')

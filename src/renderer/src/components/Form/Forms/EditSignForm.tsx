@@ -1,16 +1,17 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FormType, SignFile, SignToDB, SignWithDetails } from '@shared/types'
 import { FormMediaFile, FormModalWrapper, FormMultiLineInput } from '@renderer/components/Form/Form'
+import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface EditSignFormProps {
   sign: SignWithDetails
-  setSignValues: (sign: SignWithDetails) => void
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
 function EditSignForm(props: EditSignFormProps): React.JSX.Element {
-  const { sign, setSignValues, formType, setIsFormOpen } = props
+  const { sign, formType, setIsFormOpen } = props
+  const { editSign } = useSigns()
 
   const [newFile, setNewFile] = useState<File | null>(null)
   const [notes, setNotes] = useState<string>(sign.notes || '')
@@ -35,15 +36,12 @@ function EditSignForm(props: EditSignFormProps): React.JSX.Element {
       }
     }
 
-    const updatedSign: Partial<SignToDB> = {
+    const updatedSign: SignToDB = {
       notes,
-      ...(signFile && { file: JSON.stringify(signFile) })
+      file: signFile ? JSON.stringify(signFile) : JSON.stringify(sign.file)
     }
 
-    window.api.sign.update(sign.id, updatedSign).then((result) => {
-      setSignValues({ ...sign, ...result })
-      closeForm()
-    })
+    editSign(sign.id, updatedSign, closeForm)
   }
 
   return (

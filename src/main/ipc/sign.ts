@@ -44,6 +44,20 @@ export function findSignById(id: string): Sign | undefined {
   return row ? rowToSign(row as Record<string, unknown>) : undefined
 }
 
+export function findAllSignsByWordId(wordId: string): Sign[] {
+  const row = getDb()
+    .prepare(
+      `
+      SELECT * FROM sign
+      INNER JOIN definitionSignWord ON sign.id = definitionSignWord.signId
+      WHERE definitionSignWord.wordId = ?
+    `
+    )
+    .all(wordId)
+
+  return row as Sign[]
+}
+
 export function returnSignDetailsBySignWordId(
   signId: string,
   wordId: string
@@ -62,6 +76,19 @@ export function returnSignDetailsBySignWordId(
     sourcesCount,
     definitions
   }
+}
+
+export function returnSignsDetailsByWordId(wordId: string): SignWithDetails[] {
+  const signs = findAllSignsByWordId(wordId)
+
+  const signsDetails: SignWithDetails[] = []
+  signs.forEach((s) => {
+    const details = returnSignDetailsBySignWordId(s.id, wordId)
+    if (!details) return
+    signsDetails.push(details)
+  })
+
+  return signsDetails
 }
 
 export function createSign(data: SignToDB): Sign {
@@ -114,7 +141,8 @@ export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): 
   return transaction()
 }
 
-export function updateSign(signId: string, data: Partial<SignToDB>): Sign | undefined {
+//TODO Add Partial and don't return Sing
+export function updateSign(signId: string, data: SignToDB): Sign | undefined {
   const existing = findSignById(signId)
   if (!existing) return
 
@@ -122,10 +150,15 @@ export function updateSign(signId: string, data: Partial<SignToDB>): Sign | unde
 
   if (data.file) {
     const file: SignFile = JSON.parse(data.file)
-    if (existing.file?.path && fs.existsSync(existing.file.path)) {
-      fs.unlinkSync(existing.file.path)
+
+    if (file.path.startsWith(SIGNS_DIR)) {
+      newFile = file
+    } else {
+      if (existing.file?.path && fs.existsSync(existing.file.path)) {
+        fs.unlinkSync(existing.file.path)
+      }
+      newFile = copySignFile(file)
     }
-    newFile = copySignFile(file)
   }
 
   const updated: Sign = {
@@ -135,14 +168,9 @@ export function updateSign(signId: string, data: Partial<SignToDB>): Sign | unde
   }
 
   getDb()
-    .prepare(
-      `
-        UPDATE sign
-        SET notes = @notes, file = @file
-        WHERE id = @id
-      `
-    )
+    .prepare(`UPDATE sign SET notes = @notes, file = @file WHERE id = @id`)
     .run(toSqlParams({ ...updated, file: JSON.stringify(updated.file) }))
+
   return updated
 }
 
@@ -151,17 +179,16 @@ export function deleteSignById(id: string): void {
 }
 
 export function registerSignHandlers(): void {
-  ipcMain.handle('sign:list', () => listAllSigns())
-  // ipcMain.handle('sign:find', (_, id: string) => findSignById(id))
+  ipcMain.handle('sign:list', (_, wordId: string) => returnSignsDetailsByWordId(wordId))
   ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
     handlerWithErrorLogging(() => createSignWithDefinition(data))
   )
-  ipcMain.handle('sign:update', (_, singId: string, data: Partial<SignToDB>) =>
+  ipcMain.handle('sign:update', (_, singId: string, data: SignToDB) =>
     handlerWithErrorLogging(() => updateSign(singId, data))
   )
-  // ipcMain.handle('sign:delete', (_, id: string) =>
-  //   handlerWithErrorLogging(() => deleteSignById(id))
-  // )
+  ipcMain.handle('sign:delete', (_, id: string) =>
+    handlerWithErrorLogging(() => deleteSignById(id))
+  )
 }
 
 // ROW MAPPER
