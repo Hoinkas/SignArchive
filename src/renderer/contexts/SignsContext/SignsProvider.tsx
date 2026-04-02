@@ -2,21 +2,26 @@ import { useState } from 'react'
 import React from 'react'
 import { SignToDB, SignWithDetails, SignWithDetailsToDB } from '@shared/types'
 import { SignContext } from './SignsContext'
+import { useWord } from '@contexts/WordContext/useWord'
 
 interface Props {
   children?: React.ReactNode
 }
 
 export default function SignsProvider({ children }: Props): React.JSX.Element {
+  const { changeSignCountInWord } = useWord()
   const [signs, setSigns] = useState<SignWithDetails[]>([])
 
-  const initiateSigns = (signs: SignWithDetails[]): void => {
-    setSigns(signs)
+  const initiateSigns = (wordId: string): void => {
+    window.api.sign.list(wordId).then((result) => {
+      setSigns(result)
+    })
   }
 
   const addSign = (data: SignWithDetailsToDB, closeForm: () => void): void => {
     window.api.sign.create(data).then((result) => {
       setSigns((prevState) => [...prevState, result])
+      changeSignCountInWord('add')
       closeForm()
     })
   }
@@ -31,6 +36,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   const deleteSign = (deleteId: string): void => {
     window.api.sign.delete(deleteId).then(() => {
       setSigns((prevState) => prevState.filter((s) => s.id !== deleteId))
+      changeSignCountInWord('remove')
     })
   }
 

@@ -5,7 +5,6 @@ import type {
   WordToDB,
   WordWithCounts,
   Author,
-  WordWithSignsDetails,
   SignWithDetails,
   SignWithDetailsToDB,
   SignToDB,
@@ -19,6 +18,8 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', {
       sign: {
+        list: (wordId: string): Promise<SignWithDetails[]> =>
+          ipcRenderer.invoke('sign:list', wordId),
         create: (data: SignWithDetailsToDB): Promise<SignWithDetails> =>
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
@@ -27,8 +28,7 @@ if (process.contextIsolated) {
       },
       word: {
         listWithCount: (): Promise<WordWithCounts[]> => ipcRenderer.invoke('word:listWithCount'),
-        details: (wordId: string): Promise<WordWithSignsDetails> =>
-          ipcRenderer.invoke('word:details', wordId),
+        details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
         update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
           ipcRenderer.invoke('word:update', wordId, data),

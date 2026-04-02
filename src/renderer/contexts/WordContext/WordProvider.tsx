@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { WordToDB, WordWithCounts, WordWithSignsDetails } from '@shared/types'
+import { Word, WordToDB, WordWithCounts } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export default function WordProvider({ children }: Props): React.JSX.Element {
   const [wordsList, setWordsList] = useState<WordWithCounts[]>([])
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
-  const [word, setWord] = useState<WordWithSignsDetails | null>(null)
+  const [word, setWord] = useState<Word | null>(null)
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
@@ -53,6 +53,16 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     setActiveWordId(wordId)
   }
 
+  const changeSignCountInWord = (action: 'add' | 'remove'): void => {
+    if (!word) return
+    const numberAction = action === 'add' ? 1 : -1
+    setWordsList((prevState) =>
+      prevState.map((w) =>
+        w.id === word.id ? { ...w, signsCount: w.signsCount + numberAction } : w
+      )
+    )
+  }
+
   return (
     <WordContext.Provider
       value={{
@@ -62,7 +72,8 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         editWord,
         deleteWord,
         activeWordId,
-        changeActiveWord
+        changeActiveWord,
+        changeSignCountInWord
       }}
     >
       {children}

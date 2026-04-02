@@ -44,6 +44,20 @@ export function findSignById(id: string): Sign | undefined {
   return row ? rowToSign(row as Record<string, unknown>) : undefined
 }
 
+export function findAllSignsByWordId(wordId: string): Sign[] {
+  const row = getDb()
+    .prepare(
+      `
+      SELECT * FROM sign
+      INNER JOIN definitionSignWord ON sign.id = definitionSignWord.signId
+      WHERE definitionSignWord.wordId = ?
+    `
+    )
+    .all(wordId)
+
+  return row as Sign[]
+}
+
 export function returnSignDetailsBySignWordId(
   signId: string,
   wordId: string
@@ -62,6 +76,19 @@ export function returnSignDetailsBySignWordId(
     sourcesCount,
     definitions
   }
+}
+
+export function returnSignsDetailsByWordId(wordId: string): SignWithDetails[] {
+  const signs = findAllSignsByWordId(wordId)
+
+  const signsDetails: SignWithDetails[] = []
+  signs.forEach((s) => {
+    const details = returnSignDetailsBySignWordId(s.id, wordId)
+    if (!details) return
+    signsDetails.push(details)
+  })
+
+  return signsDetails
 }
 
 export function createSign(data: SignToDB): Sign {
@@ -152,8 +179,7 @@ export function deleteSignById(id: string): void {
 }
 
 export function registerSignHandlers(): void {
-  ipcMain.handle('sign:list', () => listAllSigns())
-  // ipcMain.handle('sign:find', (_, id: string) => findSignById(id))
+  ipcMain.handle('sign:list', (_, wordId: string) => returnSignsDetailsByWordId(wordId))
   ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
     handlerWithErrorLogging(() => createSignWithDefinition(data))
   )

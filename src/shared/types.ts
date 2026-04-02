@@ -125,7 +125,3 @@ export interface SignWithDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
 }
-
-export interface WordWithSignsDetails extends Word {
-  signs: SignWithDetails[]
-}

@@ -9,6 +9,7 @@ export interface WordContextValue {
   deleteWord: () => void
   activeWordId: string | null
   changeActiveWord: (wordId: string) => void
+  changeSignCountInWord: (action: 'add' | 'remove') => void
 }
 
 export const WordContext = createContext<WordContextValue>({
@@ -18,5 +19,6 @@ export const WordContext = createContext<WordContextValue>({
   editWord: () => {},
   deleteWord: () => {},
   activeWordId: null,
-  changeActiveWord: () => {}
+  changeActiveWord: () => {},
+  changeSignCountInWord: () => {}
 })

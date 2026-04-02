@@ -3,7 +3,7 @@ import { SignToDB, SignWithDetails, SignWithDetailsToDB } from '@shared/types'
 
 export interface SignContextValue {
   signs: SignWithDetails[]
-  initiateSigns: (signs: SignWithDetails[]) => void
+  initiateSigns: (wordId: string) => void
   addSign: (data: SignWithDetailsToDB, closeForm: () => void) => void
   editSign: (signId: string, updatedSign: SignToDB, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void

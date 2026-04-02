@@ -15,7 +15,7 @@ function WordViewer(): React.JSX.Element {
 
   useEffect(() => {
     if (!word) return
-    initiateSigns(word.signs)
+    initiateSigns(word.id)
   }, [initiateSigns, word])
 
   if (!word) return <div>Error</div>
