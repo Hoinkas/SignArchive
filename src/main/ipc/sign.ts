@@ -47,7 +47,7 @@ export function findAllSignsByWordId(wordId: string): Sign[] {
   const row = getDb()
     .prepare(
       `
-      SELECT * FROM sign
+      SELECT DISTINCT sign.* FROM sign
       INNER JOIN definitionSignWord ON sign.id = definitionSignWord.signId
       WHERE definitionSignWord.wordId = ?
     `

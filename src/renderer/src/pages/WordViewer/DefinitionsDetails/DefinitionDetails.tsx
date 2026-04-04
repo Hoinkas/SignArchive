@@ -21,7 +21,10 @@ function DefinitionDetails({ sign, notes }: DefinitionListProps): React.JSX.Elem
 
   return (
     <div className="definitionList">
-      <div onClick={() => setIsDefinitionListOpen(!isDefinitionListOpen)}>
+      <div
+        className="definitionMain"
+        onClick={() => setIsDefinitionListOpen(!isDefinitionListOpen)}
+      >
         <div className="definitionContent">
           {translations.length !== 0 && (
             <div>

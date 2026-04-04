@@ -11,3 +11,9 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.definitionMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4)
+}

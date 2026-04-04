@@ -14,19 +14,21 @@ function DefinitionBox({ definition }: DefinitionBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   return (
-    <li className="listContent">
-      <div>
-        <div>{definition.text}</div>
-        <div>= {definition.translation}</div>
+    <li>
+      <div className="listContent">
+        <div>
+          <div>{definition.text}</div>
+          <div className="additionalInfoItalic">= {definition.translation}</div>
+        </div>
+        {isFormOpen ? (
+          <DefinitionForm formType="edit" setIsFormOpen={setIsFormOpen} definition={definition} />
+        ) : (
+          <KebabMenu
+            setIsFormOpen={setIsFormOpen}
+            handleDelete={() => deleteDefinition(definition.id)}
+          />
+        )}
       </div>
-      {isFormOpen ? (
-        <DefinitionForm formType="edit" setIsFormOpen={setIsFormOpen} definition={definition} />
-      ) : (
-        <KebabMenu
-          setIsFormOpen={setIsFormOpen}
-          handleDelete={() => deleteDefinition(definition.id)}
-        />
-      )}
     </li>
   )
 }

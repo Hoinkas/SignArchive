@@ -7,7 +7,11 @@ The sign language sometimes uses the same sign for different words/meanings and/
 
 Made for offline use, but will be implemented into webpage.
 
-![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveWordView.png?raw=true)
+### Soucres view
+![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveSourcesView.png?raw=true)
+
+### Definitions view
+![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveDefinitionsView.png?raw=true)
 
 ## Dev stack
 Electron + React.js + Typescript

@@ -4,6 +4,7 @@
   cursor: pointer;
 
    &.active {
+    color: var(--color-text-purple);
     border-bottom: var(--button-border)
   }
 }

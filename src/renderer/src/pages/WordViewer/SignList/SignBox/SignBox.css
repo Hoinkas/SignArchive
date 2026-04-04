@@ -9,7 +9,7 @@
 
 .signBox {
   display: inline-flex;
-  height: 240px;
+  min-height: var(--media-max-height);
   flex-shrink: 0;
   overflow: hidden;
 }

@@ -161,6 +161,8 @@
   --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
 
   --clickable-symbol-font: var(--font-size-xl);
+
+  --media-max-height: 240px;
 }
 
 *,

@@ -60,7 +60,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
       ...new Set(
         definitions
           .flatMap((g) => g.definitions)
-          .map((d) => d.translation)
+          .flatMap((d) => d.translation?.split(',').map((t) => t.trim()) ?? [])
           .filter((t): t is string => !!t && t !== word?.text)
       )
     ]
