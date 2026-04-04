@@ -1,0 +1,9 @@
+.definitionTab {
+  padding: var(--space-1) var(--space-2);
+  width: fit-content;
+  cursor: pointer;
+
+   &.active {
+    border-bottom: var(--button-border)
+  }
+}

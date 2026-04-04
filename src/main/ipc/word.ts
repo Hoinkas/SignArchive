@@ -14,13 +14,14 @@ export function listAllWordsWithSignCount(): WordWithCounts[] {
   const rows = getDb()
     .prepare(
       `
-    SELECT
-      word.*,
-      COUNT(DISTINCT dsw.signId) AS signsCount
-    FROM word
-    LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
-    ORDER BY word.text
-  `
+      SELECT
+        word.*,
+        COUNT(DISTINCT dsw.signId) AS signsCount
+      FROM word
+      LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
+      GROUP BY word.id
+      ORDER BY word.text
+    `
     )
     .all()
 

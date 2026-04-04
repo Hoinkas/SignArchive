@@ -1,5 +1,5 @@
 import { SignWithDetails } from '@shared/types'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SourceBox from './SourceBox/SourceBox'
 import './SourceList.css'
 import SourcesTitle from './SourcesTitle/SourcesTitle'
@@ -12,11 +12,22 @@ interface SourceListProps {
 }
 
 function SourceList({ sign }: SourceListProps): React.JSX.Element {
-  const { sources } = useSources()
+  const { sources, closeSourcesPanelSign } = useSources()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent): void => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node) && !isFormOpen) {
+        closeSourcesPanelSign()
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [closeSourcesPanelSign, isFormOpen])
 
   return (
-    <div className="sourceListContainer">
+    <div className="sourceListContainer" ref={wrapperRef}>
       <div>
         <SourcesTitle sign={sign} />
         <div className="sourceList">

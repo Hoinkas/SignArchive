@@ -1,10 +1,11 @@
 import './SignBox.css'
 import { SignWithDetails } from '@shared/types'
 import MediaPlayer from '@renderer/components/MediaPlayer/MediaPlayer'
-import { sourcesCountText } from '@renderer/functions/namesVersionsHelpers'
+import { sourcesCountText } from '@renderer/functions/namesHelpers'
 import SignTitle from '../SignTitle/SignTitle'
-import DefinitionList from '../../DefinitionList/DefinitionList'
+import DefinitionDetails from '../../DefinitionsDetails/DefinitionDetails'
 import { useSources } from '@contexts/SourcesContext/useSources'
+import DefinitionsProvider from '@contexts/DefinitonsContext/DefinitionsProvider'
 
 interface SignBoxProps {
   sign: SignWithDetails
@@ -19,11 +20,14 @@ function SignBox({ sign }: SignBoxProps): React.JSX.Element {
       <div className="signBox">
         <MediaPlayer file={sign.file} />
         <div className="variantDetails">
-          {sign.notes && <div>{sign.notes}</div>}
-          <DefinitionList sign={sign} />
-          <a onClick={() => changeSourcesPanelSign(sign)} className="additionalInfo">
-            {sourcesCountText(sign.sourcesCount)}
-          </a>
+          <DefinitionsProvider>
+            <DefinitionDetails sign={sign} notes={sign.notes} />
+          </DefinitionsProvider>
+          <div className="bottomInfo">
+            <a onClick={() => changeSourcesPanelSign(sign)} className="additionalInfo">
+              {sourcesCountText(sign.sourcesCount)}
+            </a>
+          </div>
         </div>
       </div>
     </div>

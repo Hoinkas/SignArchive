@@ -14,8 +14,9 @@ import {
   FormSingleLineInput,
   FormTwoInLineWrapper
 } from '../Form'
-import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 import { useSources } from '@contexts/SourcesContext/useSources'
+import { DropdownOption } from '../Components/FormDropdown'
+import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 
 interface SourceFormProps {
   source?: SourceWithDetails
@@ -95,7 +96,7 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
       <FormSingleLineInput label={'Online Url'} value={fileUrl} setValue={setFilePath} />
       <FormMultiLineInput label={'Notatka do źródła'} value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
-        <FormDropdown
+        <FormCustomInputDropdown
           label="Autor / publikacja"
           options={authors.map((a) => ({ id: a.id, label: a.name }))}
           value={authorOption}

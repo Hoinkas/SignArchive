@@ -156,6 +156,10 @@ a {
   color: var(--color-text-purple);
 }
 
+ol > li::marker {
+  color: var(--color-text-purple);
+}
+
 /* :focus-visible {
   outline: 2px solid var(--color-line-purple);
   outline-offset: 2px;

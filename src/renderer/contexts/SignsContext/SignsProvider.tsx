@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import React from 'react'
 import { SignToDB, SignWithDetails, SignWithDetailsToDB } from '@shared/types'
 import { SignContext } from './SignsContext'
@@ -12,11 +12,11 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   const { changeSignCountInWord } = useWord()
   const [signs, setSigns] = useState<SignWithDetails[]>([])
 
-  const initiateSigns = (wordId: string): void => {
+  const initiateSigns = useCallback((wordId: string): void => {
     window.api.sign.list(wordId).then((result) => {
       setSigns(result)
     })
-  }
+  }, [])
 
   const addSign = (data: SignWithDetailsToDB, closeForm: () => void): void => {
     window.api.sign.create(data).then((result) => {

@@ -3,7 +3,7 @@ import { SignWithDetails } from '@shared/types'
 import EditSignForm from '@renderer/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
-import { mergeYearText } from '@renderer/functions/namesVersionsHelpers'
+import { mergeYearText } from '@renderer/functions/namesHelpers'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useSigns } from '@contexts/SignsContext/useSigns'
 

@@ -74,16 +74,44 @@ export interface SourceWithDetailsToCreate extends SourceWithDetailsToDB {
   wordId: string
 }
 
+export type DefinitionsCategories =
+  | 'autonomiczne'
+  | 'czasownik'
+  | 'liczebnik'
+  | 'metatekst'
+  | 'partykuła'
+  | 'pragmatyczne'
+  | 'przyimek'
+  | 'przymiotnik'
+  | 'przysłówek'
+  | 'rzeczownik'
+  | 'spójnik'
+  | 'zaimek'
+
+export interface DefinitionCategoryWithCount {
+  name: DefinitionsCategories
+  count: number
+}
+
 //DEFINITION
 export interface Definition {
   id: string
   createdAt: string //ISO Date
-  category: string
+  category: DefinitionsCategories
   text: string
   translation?: string
 }
 
-export type DefinitionToDB = Omit<Definition, 'id' | 'createdAt'>
+export type DefinitionToCreate = Omit<Definition, 'id' | 'createdAt'>
+export interface DefinitionToDB extends DefinitionToCreate {
+  signId: string
+  wordId: string
+}
+
+export type DefinitionsCategoriesGrouped = {
+  category: DefinitionsCategories
+  definitions: Definition[]
+}
 
 // DEFINITION with SIGN with WORD connector
 export interface DefinitionSignWord {
@@ -106,7 +134,7 @@ export interface WordWithCounts extends Word {
 
 export interface SignWithDetailsToDB {
   wordId: string
-  definition: DefinitionToDB
+  definition: DefinitionToCreate
   sign: SignToDB
 }
 

@@ -4,7 +4,7 @@ import { getDb } from '../db/client'
 import path from 'path'
 import fs from 'fs'
 import type {
-  DefinitionSignWord,
+  DefinitionToDB,
   Sign,
   SignFile,
   SignToDB,
@@ -15,7 +15,6 @@ import toSqlParams from '../utils/toSqlParams'
 import { getSourcesStartEndYearBySignAndWordId, returnSourcesCountBySignId } from './source'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
 import { createDefinition, returnAllDefinitionsBySignWordId } from './definition'
-import { createDefinitionSignWord } from './definitionSignWord'
 
 const SIGNS_DIR = path.join(app.getPath('userData'), 'signs')
 fs.mkdirSync(SIGNS_DIR, { recursive: true })
@@ -117,15 +116,12 @@ export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): 
 
   const transaction = getDb().transaction(() => {
     const createdSign = createSign(sign)
-    const createdDefinition = createDefinition(definition)
-
-    const definitionSignWord: DefinitionSignWord = {
-      wordId,
+    const definitionToDb: DefinitionToDB = {
+      ...definition,
       signId: createdSign.id,
-      definitionId: createdDefinition.id
+      wordId: signWithDetails.wordId
     }
-
-    createDefinitionSignWord(definitionSignWord)
+    const createdDefinition = createDefinition(definitionToDb)
 
     const years = getSourcesStartEndYearBySignAndWordId(createdSign.id, wordId)
 

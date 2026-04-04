@@ -10,7 +10,9 @@ import type {
   SignToDB,
   Sign,
   SourceWithDetails,
-  SourceWithDetailsToDB
+  SourceWithDetailsToDB,
+  DefinitionToDB,
+  Definition
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -50,6 +52,17 @@ if (process.contextIsolated) {
       },
       author: {
         list: (): Promise<Author[]> => ipcRenderer.invoke('author:list')
+      },
+      definition: {
+        create: (data: DefinitionToDB): Promise<Definition> =>
+          ipcRenderer.invoke('definition:create', data),
+        update: (
+          definitionId: string,
+          data: Partial<DefinitionToDB>
+        ): Promise<Definition | undefined> =>
+          ipcRenderer.invoke('definition:update', definitionId, data),
+        delete: (definitionId: string): Promise<void> =>
+          ipcRenderer.invoke('definition:delete', definitionId)
       },
       getPathForFile: (file: File): string => webUtils.getPathForFile(file)
     })

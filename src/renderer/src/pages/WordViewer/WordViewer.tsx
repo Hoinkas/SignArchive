@@ -16,7 +16,8 @@ function WordViewer(): React.JSX.Element {
   useEffect(() => {
     if (!word) return
     initiateSigns(word.id)
-  }, [initiateSigns, word])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word?.id])
 
   if (!word) return <div>Error</div>
 

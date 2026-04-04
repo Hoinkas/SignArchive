@@ -7,15 +7,11 @@ import {
   FormSingleLineInput,
   FormTwoInLineWrapper
 } from '@renderer/components/Form/Form'
-import { DropdownOption, FormDropdown } from '../Components/FormDropdown'
 import { useWord } from '@contexts/WordContext/useWord'
 import { useSigns } from '@contexts/SignsContext/useSigns'
-
-const categoriesOptions: DropdownOption[] = [
-  { id: '1', label: 'rzeczownik' },
-  { id: '2', label: 'czasownik' },
-  { id: '3', label: 'przymiotnik' }
-] //TODO add separate categories table
+import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
+import { DropdownOption } from '../Components/FormDropdown'
+import { categoriesOptions } from '../Components/DropdownOptions'
 
 interface AddSignFormProps {
   formType: FormType
@@ -67,7 +63,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
       <FormMultiLineInput label="Definicja" value={text} setValue={setText} />
       <FormTwoInLineWrapper>
-        <FormDropdown
+        <FormCustomInputDropdown
           label="Kategoria słowa"
           options={categoriesOptions}
           value={categoryOption}

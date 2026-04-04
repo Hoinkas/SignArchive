@@ -19,3 +19,7 @@ export function signCountText(count: number): string {
   if ([2, 3, 4].includes(count % 10)) return `${count} znaki`
   return `${count} znaków`
 }
+
+export function titleCase(str: string): string {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase()
+}

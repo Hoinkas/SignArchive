@@ -100,7 +100,7 @@
   --color-bg-active-light: var(--purple-300);
 
   /* other */
-  --color-line-purple: var(--purple-500);
+  --color-line-purple: var(--purple-grey-3);
   --color-line-purple-light: var(--purple-400);
   --color-line-light: var(--grey-200);
 
@@ -114,7 +114,7 @@
   --color-border-purple: var(--purple-grey-3);
 
   --color-text-light: var(--grey-500);
-  --color-text-purple: var(--purple-grey-2);
+  --color-text-purple: var(--purple-grey-3);
   --color-text-dark: var(--grey-100);
 
   --color-text-info: var(--grey-400);

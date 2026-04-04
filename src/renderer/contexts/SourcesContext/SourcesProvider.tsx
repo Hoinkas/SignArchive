@@ -4,7 +4,8 @@ import {
   SignWithDetails,
   SourceWithDetails,
   SourceWithDetailsToCreate,
-  SourceWithDetailsToDB
+  SourceWithDetailsToDB,
+  YearStartEnd
 } from '@shared/types'
 import { SourcesContext } from './SourcesContext'
 import { useWord } from '@contexts/WordContext/useWord'
@@ -30,18 +31,35 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
     setSourcesPanelSign(null)
   }
 
+  const recalculateYears = (updatedSources: SourceWithDetails[]): YearStartEnd => {
+    const years = [
+      ...updatedSources.map((s) => s.yearStart),
+      ...updatedSources.map((s) => s.yearEnd)
+    ].filter((y): y is number => y != null)
+
+    return {
+      yearStart: years.length > 0 ? Math.min(...years) : null,
+      yearEnd: years.length > 0 ? Math.max(...years) : null
+    }
+  }
+
   const addSource = (data: SourceWithDetailsToDB, closeForm: () => void): void => {
     if (!sourcesPanelSign || !word) return
 
     const sourceWithDetails: SourceWithDetailsToCreate = {
       ...data,
-      signId: sourcesPanelSign?.id,
+      signId: sourcesPanelSign.id,
       wordId: word.id
     }
 
     window.api.source.create(sourceWithDetails).then((result) => {
-      setSources((prevState) => [...prevState, result])
-      changeSourcesCountInSign('add', result.id)
+      setSources((prevSources) => {
+        const updated = [...prevSources, result]
+        const { yearStart, yearEnd } = recalculateYears(updated)
+        setSourcesPanelSign((prev) => (prev ? { ...prev, yearStart, yearEnd } : prev))
+        changeSourcesCountInSign('add', sourcesPanelSign.id)
+        return updated
+      })
       closeForm()
     })
   }
@@ -53,18 +71,28 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   ): void => {
     window.api.source.update(sourceId, updatedSource).then((result) => {
       if (!result) return
-      setSources((prevState) =>
-        prevState.map((s) => (s.id === result.id ? { ...s, ...result } : s))
-      )
+      setSources((prevSources) => {
+        const updated = prevSources.map((s) => (s.id === result.id ? { ...s, ...result } : s))
+        const { yearStart, yearEnd } = recalculateYears(updated)
+        setSourcesPanelSign((prev) => (prev ? { ...prev, yearStart, yearEnd } : prev))
+        return updated
+      })
       closeForm()
     })
   }
 
   const deleteSource = (deleteId: string): void => {
+    if (!sourcesPanelSign) return
+    const signId = sourcesPanelSign.id
+
     window.api.source.delete(deleteId).then(() => {
-      if (!sourcesPanelSign) return
-      setSources((prevState) => prevState.filter((s) => s.id !== deleteId))
-      changeSourcesCountInSign('remove', sourcesPanelSign.id)
+      setSources((prevSources) => {
+        const updated = prevSources.filter((s) => s.id !== deleteId)
+        const { yearStart, yearEnd } = recalculateYears(updated)
+        setSourcesPanelSign((prev) => (prev ? { ...prev, yearStart, yearEnd } : prev))
+        changeSourcesCountInSign('remove', signId)
+        return updated
+      })
     })
   }
 

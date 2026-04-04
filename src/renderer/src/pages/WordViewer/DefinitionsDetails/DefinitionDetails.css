@@ -1,0 +1,13 @@
+.definitionList {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: var(--space-4)
+}
+
+.definitionContent {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+}

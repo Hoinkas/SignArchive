@@ -1,0 +1,10 @@
+.definitionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3)
+}
+
+.definitionTabList {
+  display: inline-flex;
+  overflow: auto;
+}

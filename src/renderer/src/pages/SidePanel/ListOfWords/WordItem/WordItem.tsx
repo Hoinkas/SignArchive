@@ -1,6 +1,6 @@
 import './WordItem.css'
 import { WordWithCounts } from '@shared/types'
-import { signCountText } from '@renderer/functions/namesVersionsHelpers'
+import { signCountText } from '@renderer/functions/namesHelpers'
 import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordProps {

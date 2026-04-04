@@ -1,4 +1,4 @@
-import type { Word, WordToDB } from '@shared/types'
+import type { DefinitionToDB, Word, WordToDB } from '@shared/types'
 
 /// <reference types="vite/client" />
 
@@ -30,6 +30,14 @@ declare global {
       }
       author: {
         list: () => Promise<Author[]>
+      }
+      definition: {
+        create: (data: DefinitionToDB) => Promise<Definition>
+        update: (
+          definitionId: string,
+          data: Partial<DefinitionToDB>
+        ) => Promise<Definition | undefined>
+        delete: (definitionId: string) => Promise<void>
       }
       getPathForFile: (file: File) => string
     }

@@ -1,6 +1,6 @@
 import { SignWithDetails } from '@shared/types'
 import './SourcesTitle.css'
-import { mergeYearText, sourcesCountText } from '@renderer/functions/namesVersionsHelpers'
+import { mergeYearText, sourcesCountText } from '@renderer/functions/namesHelpers'
 import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourcesTitleProps {
