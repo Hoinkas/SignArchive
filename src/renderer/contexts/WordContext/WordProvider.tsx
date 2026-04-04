@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import React from 'react'
-import { Tag, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
+import { Tag, TagToDB, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -11,22 +11,17 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   const [wordsList, setWordsList] = useState<WordWithCount[]>([])
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<WordWithTags | null>(null)
+  const [allTags, setAllTags] = useState<Tag[]>([])
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
+    window.api.tag.list().then(setAllTags)
   }, [])
 
   useEffect(() => {
     if (!activeWordId) return
     window.api.word.details(activeWordId).then(setWord)
   }, [activeWordId])
-
-  const allTags = useMemo((): Tag[] => {
-    const result: Tag[] = []
-    window.api.tag.list().then((result) => result.map((r) => result.push(r)))
-
-    return result
-  }, [])
 
   const addWord = (word: WordToDB, closeForm: () => void): void => {
     window.api.word.create(word).then((result) => {
@@ -40,7 +35,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
     window.api.word.update(word.id, updateWord).then((result) => {
       if (!result) return
-      setWord({ ...word, ...result })
+      setWord(result)
       setWordsList((prevState) =>
         prevState.map((w) => (w.id === result.id ? { ...w, ...result } : w))
       )
@@ -70,17 +65,19 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
-  const addTag = (tag: string): Tag | undefined => {
+  const addTag = async (tag: TagToDB): Promise<Tag | undefined> => {
     if (!word) return
 
-    let exists = allTags.find((t) => t.name === tag)
-
-    if (!exists)
-      window.api.tag.create(word?.id, tag).then((result) => {
-        exists = result
-      })
+    let exists = allTags.find((t) => t.name === tag.name)
+    if (!exists) {
+      exists = await window.api.tag.create(word.id, tag)
+    }
 
     return exists
+  }
+
+  const deleteTag = (tag: Tag): void => {
+    window.api.tag.delete(tag.id)
   }
 
   return (
@@ -95,7 +92,8 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         changeActiveWord,
         changeSignCountInWord,
         allTags,
-        addTag
+        addTag,
+        deleteTag
       }}
     >
       {children}

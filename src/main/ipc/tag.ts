@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Tag, TagToDB } from '@shared/types'
+import type { Tag, TagToDB, TagWord } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { ipcMain } from 'electron'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
@@ -59,26 +59,28 @@ export function createTag(data: TagToDB): Tag {
 }
 
 export function deleteTag(tagId: string): void {
-  getDb().prepare('DELETE FROM word WHERE id = ?').run(id)
+  getDb().prepare('DELETE FROM tag WHERE id = ?').run(tagId)
 }
 
 export function createTagAndTagWord(wordId: string, data: TagToDB): Tag {
-  const tag = createTag(data)
-  createTagWord(tag.id, wordId)
+  const transaction = getDb().transaction(() => {
+    const tag = createTag(data)
 
-  return tag
-}
+    const tagWord: TagWord = { tagId: tag.id, wordId }
+    createTagWord(tagWord)
 
-export function deleteTagAndTagWord(tagId: string): Tag {
-  const tag = createTag(data)
-  createTagWord(tag.id, wordId)
+    return tag
+  })
 
-  return tag
+  return transaction()
 }
 
 export function registerTagHandlers(): void {
   ipcMain.handle('tag:list', () => handlerWithErrorLogging(listAllTags))
   ipcMain.handle('tag:create', (_, wordId: string, data: TagToDB) =>
     handlerWithErrorLogging(() => createTagAndTagWord(wordId, data))
+  )
+  ipcMain.handle('tag:delete', (_, tagId: string) =>
+    handlerWithErrorLogging(() => deleteTag(tagId))
   )
 }

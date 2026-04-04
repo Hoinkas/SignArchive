@@ -35,7 +35,7 @@ if (process.contextIsolated) {
         details: (wordId: string): Promise<WordWithTags> =>
           ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
-        update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
+        update: (wordId: string, data: Partial<WordToDB>): Promise<WordWithTags | undefined> =>
           ipcRenderer.invoke('word:update', wordId, data),
         delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
@@ -70,7 +70,8 @@ if (process.contextIsolated) {
       tag: {
         list: (): Promise<Tag[]> => ipcRenderer.invoke('tag:list'),
         create: (wordId: string, data: TagToDB): Promise<Tag> =>
-          ipcRenderer.invoke('tag:create', wordId, data)
+          ipcRenderer.invoke('tag:create', wordId, data),
+        delete: (tagId: string): Promise<void> => ipcRenderer.invoke('tag:delete', tagId)
       },
       getPathForFile: (file: File): string => webUtils.getPathForFile(file)
     })

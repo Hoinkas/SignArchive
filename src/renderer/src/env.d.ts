@@ -15,7 +15,7 @@ declare global {
         listWithCount: () => Promise<WordWithCount[]>
         details: (wordId: string) => Promise<WordWithTags>
         create: (data: WordToDB) => Promise<Word>
-        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>
+        update: (wordId: string, data: Partial<WordToDB>) => Promise<WordWithTags | undefined>
         delete: (wordId: string) => Promise<void>
       }
       source: {
@@ -42,6 +42,7 @@ declare global {
       tag: {
         list: () => Promise<Tag[]>
         create: (wordId: string, data: TagToDB) => Promise<Tag>
+        delete: (tagId: string) => Promise<void>
       }
       getPathForFile: (file: File) => string
     }

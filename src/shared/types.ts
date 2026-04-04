@@ -119,6 +119,11 @@ export interface Tag {
   name: string
 }
 
+export interface TagWord {
+  tagId: string
+  wordId: string
+}
+
 export type TagToDB = Omit<Tag, 'id' | 'createdAt'>
 export type TagDropdownOption = Omit<Tag, 'createdAt'>
 

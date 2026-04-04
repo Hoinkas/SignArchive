@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Tag, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
+import { Tag, TagToDB, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
 
 export interface WordContextValue {
   word: WordWithTags | null
@@ -11,7 +11,8 @@ export interface WordContextValue {
   changeActiveWord: (wordId: string) => void
   changeSignCountInWord: (action: 'add' | 'remove') => void
   allTags: Tag[]
-  addTag: (tag: string) => Tag | undefined
+  addTag: (tag: TagToDB) => Promise<Tag | undefined>
+  deleteTag: (tag: Tag) => void
 }
 
 export const WordContext = createContext<WordContextValue>({
@@ -24,5 +25,6 @@ export const WordContext = createContext<WordContextValue>({
   changeActiveWord: () => {},
   changeSignCountInWord: () => {},
   allTags: [],
-  addTag: () => undefined
+  addTag: () => Promise.resolve(undefined),
+  deleteTag: () => {}
 })

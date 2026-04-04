@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, WordToDB, WordWithTags } from '@shared/types'
+import { FormType, Tag, WordToDB, WordWithTags } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
 
@@ -14,7 +14,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   const { addWord, editWord } = useWord()
 
   const [text, setText] = useState<string>(word?.text || '')
-  const [tags, setTags] = useState<string[]>(word?.tags.map((t) => t.name) || [])
+  const [tags, setTags] = useState<Tag[]>(word?.tags || [])
 
   const closeForm = (): void => {
     setText('')

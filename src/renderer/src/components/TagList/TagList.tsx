@@ -1,19 +1,18 @@
 import { Dispatch, SetStateAction } from 'react'
-import Tag from './Tag'
 import './TagList.css'
+import { Tag } from '@shared/types'
+import TagBox from './TagBox'
 
 interface TagListProps {
-  textArray: string[]
-  setTags?: Dispatch<SetStateAction<string[]>>
+  tags: Tag[]
+  setTags: Dispatch<SetStateAction<Tag[]>>
 }
 
-function TagList(props: TagListProps): React.JSX.Element {
-  const { textArray, setTags } = props
-
+function TagList({ tags, setTags }: TagListProps): React.JSX.Element {
   return (
     <div className="tagList">
-      {textArray.map((text, key) => (
-        <Tag key={key} text={text} index={key} setTags={setTags} />
+      {tags.map((tag, key) => (
+        <TagBox key={key} tag={tag} setTags={setTags} />
       ))}
     </div>
   )

@@ -2,7 +2,7 @@ import { SetStateAction, SubmitEvent, useRef, useState } from 'react'
 import './Form.css'
 import TagList from '../TagList/TagList'
 import AddTagForm from './Forms/AddTagForm'
-import { FormType, TagDropdownOption } from '@shared/types'
+import { FormType, Tag } from '@shared/types'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -87,23 +87,23 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
 
 interface FormTagsProps {
   label: string
-  tags: string[]
-  setTags: (value: SetStateAction<string[]>) => void
+  tags: Tag[]
+  setTags: (value: SetStateAction<Tag[]>) => void
 }
 
 export function FormTags(props: FormTagsProps): React.JSX.Element {
   const { label, tags, setTags } = props
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
 
-  const handleTagAdd = (newTag: TagDropdownOption): void => {
-    setTags((prevState) => [...prevState, newTag.name])
+  const handleTagAdd = (tag: Tag): void => {
+    setTags((prevState) => [...prevState, tag])
   }
 
   return (
     <div className="formGroup">
       <label>{label}</label>
       <div className="tagsGroup">
-        <TagList textArray={tags} setTags={setTags} />
+        <TagList tags={tags} setTags={setTags} />
         {isTagFormOpen ? (
           <AddTagForm handleTagAdd={handleTagAdd} setIsTagFormOpen={setIsTagFormOpen} />
         ) : (

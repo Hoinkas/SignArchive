@@ -2,10 +2,10 @@ import './SignTitle.css'
 import { SignDetails } from '@shared/types'
 import EditSignForm from '@renderer/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
-import TagList from '@renderer/components/TagList/TagList'
 import { mergeYearText } from '@renderer/functions/namesHelpers'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useSigns } from '@contexts/SignsContext/useSigns'
+import PillList from '@renderer/components/PillList/PillList'
 
 interface SignTitleProps {
   sign: SignDetails
@@ -21,7 +21,7 @@ function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
   return (
     <div className="signTitle">
       <div className="tagBox">
-        <TagList textArray={pillText} />
+        <PillList textArray={pillText} />
       </div>
       {isFormOpen ? (
         <EditSignForm sign={sign} formType="edit" setIsFormOpen={setIsFormOpen} />

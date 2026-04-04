@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import TagList from '../../../components/TagList/TagList'
 import './WordTitle.css'
 import { WordWithTags } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useWord } from '@contexts/WordContext/useWord'
+import PillList from '@renderer/components/PillList/PillList'
 
 interface WordTitleProps {
   word: WordWithTags
@@ -25,7 +25,7 @@ function WordTitle({ word }: WordTitleProps): React.JSX.Element {
             <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} />
           </div>
           <div className="wordTitleDetails">
-            <TagList textArray={word.tags.map((t) => t.name)} />
+            <PillList textArray={word.tags.map((t) => t.name)} />
           </div>
         </div>
       )}

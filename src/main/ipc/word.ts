@@ -67,7 +67,7 @@ export function deleteWordById(id: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(id)
 }
 
-export function updateWord(wordId: string, data: Partial<WordToDB>): Word | undefined {
+export function updateWord(wordId: string, data: Partial<WordToDB>): WordWithTags | undefined {
   const existing = findWordById(wordId)
   if (!existing) return
 
@@ -81,7 +81,9 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
     )
     .run(toSqlParams(data))
 
-  return { ...existing, ...data }
+  const result = returnWordDetailsByWordId(existing.id)
+
+  return result
 }
 
 export function registerWordHandlers(): void {

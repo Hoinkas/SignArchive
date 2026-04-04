@@ -2,8 +2,8 @@ import './DefinitionDetails.css'
 import { SignDetails } from '@shared/types'
 import { useEffect, useState } from 'react'
 import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
-import TagList from '@renderer/components/TagList/TagList'
 import DefinitionContainer from './DefinitionLContainer/DefinitionContainer'
+import PillList from '@renderer/components/PillList/PillList'
 
 interface DefinitionListProps {
   sign: SignDetails
@@ -29,7 +29,7 @@ function DefinitionDetails({ sign, notes }: DefinitionListProps): React.JSX.Elem
           {translations.length !== 0 && (
             <div>
               Również:
-              <TagList textArray={translations} />
+              <PillList textArray={translations} />
             </div>
           )}
           <p> {isDefinitionListOpen ? '▲' : '▼'} </p>
