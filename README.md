@@ -23,7 +23,6 @@ pnpm dev
 ```
 
 ## To do
-- [ ] Tags adding and selecting in dropdown menu
 - [ ] Adding existing sign to different meaning and/or word
 - [ ] Frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 - [ ] Form restrictions and error throwing
