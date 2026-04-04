@@ -1,23 +1,13 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Word, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
+import type { Word, WordToDB, WordWithCount } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
-import { listAllTagsByWordId } from './tag'
 
 export function findWordById(wordId: string): Word | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
   return row ? (row as Word) : undefined
-}
-
-export function returnWordDetailsByWordId(wordId: string): WordWithTags | undefined {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId) as Word | undefined
-  if (!row) return undefined
-
-  const tags = listAllTagsByWordId(wordId)
-
-  return { ...row, tags } as WordWithTags
 }
 
 export function listAllWordsCount(): WordWithCount[] {
@@ -67,7 +57,7 @@ export function deleteWordById(id: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(id)
 }
 
-export function updateWord(wordId: string, data: Partial<WordToDB>): WordWithTags | undefined {
+export function updateWord(wordId: string, data: Partial<WordToDB>): Word | undefined {
   const existing = findWordById(wordId)
   if (!existing) return
 
@@ -81,16 +71,12 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): WordWithTag
     )
     .run(toSqlParams(data))
 
-  const result = returnWordDetailsByWordId(existing.id)
-
-  return result
+  return findWordById(existing.id)
 }
 
 export function registerWordHandlers(): void {
   ipcMain.handle('word:listWithCount', () => handlerWithErrorLogging(() => listAllWordsCount()))
-  ipcMain.handle('word:details', (_, id: string) =>
-    handlerWithErrorLogging(() => returnWordDetailsByWordId(id))
-  )
+  ipcMain.handle('word:details', (_, id: string) => handlerWithErrorLogging(() => findWordById(id)))
   ipcMain.handle('word:create', (_, data: WordToDB) =>
     handlerWithErrorLogging(() => createWord(data))
   )

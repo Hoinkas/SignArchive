@@ -1,25 +1,17 @@
-import { useWord } from '@contexts/WordContext/useWord'
-import { Dispatch, SetStateAction } from 'react'
 import { Tag } from '@shared/types'
+import { useTags } from '@contexts/TagsContext/useTags'
 
 interface TagProps {
   tag: Tag
-  setTags: Dispatch<SetStateAction<Tag[]>>
 }
 
-function TagBox({ tag, setTags }: TagProps): React.JSX.Element {
-  const { deleteTag } = useWord()
-
-  const handleTagDelete = (): void => {
-    if (!setTags) return
-    deleteTag(tag)
-    setTags((prevState) => prevState.filter((t) => t.id !== tag.id))
-  }
+function TagBox({ tag }: TagProps): React.JSX.Element {
+  const { deleteTag } = useTags()
 
   return (
     <div className="tag">
       {tag.name}
-      <button type="button" onClick={() => handleTagDelete()}>
+      <button type="button" onClick={() => deleteTag(tag)}>
         x
       </button>
     </div>

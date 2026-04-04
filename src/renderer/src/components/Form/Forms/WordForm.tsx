@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, Tag, WordToDB, WordWithTags } from '@shared/types'
+import { FormType, Tag, WordToDB, Word } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordFormProps {
-  word?: WordWithTags
+  word?: Word
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }

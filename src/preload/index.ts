@@ -13,7 +13,6 @@ import type {
   SourceWithDetailsToDB,
   DefinitionToDB,
   Definition,
-  WordWithTags,
   Tag,
   TagToDB
 } from '@shared/types'
@@ -32,10 +31,9 @@ if (process.contextIsolated) {
       },
       word: {
         listWithCount: (): Promise<WordWithCount[]> => ipcRenderer.invoke('word:listWithCount'),
-        details: (wordId: string): Promise<WordWithTags> =>
-          ipcRenderer.invoke('word:details', wordId),
+        details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
-        update: (wordId: string, data: Partial<WordToDB>): Promise<WordWithTags | undefined> =>
+        update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
           ipcRenderer.invoke('word:update', wordId, data),
         delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
@@ -69,6 +67,8 @@ if (process.contextIsolated) {
       },
       tag: {
         list: (): Promise<Tag[]> => ipcRenderer.invoke('tag:list'),
+        listByWordId: (wordId: string): Promise<Tag[]> =>
+          ipcRenderer.invoke('tag:listByWordId', wordId),
         create: (wordId: string, data: TagToDB): Promise<Tag> =>
           ipcRenderer.invoke('tag:create', wordId, data),
         delete: (tagId: string): Promise<void> => ipcRenderer.invoke('tag:delete', tagId)

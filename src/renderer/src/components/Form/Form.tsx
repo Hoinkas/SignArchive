@@ -1,8 +1,8 @@
-import { SetStateAction, SubmitEvent, useRef, useState } from 'react'
+import { SubmitEvent, useRef, useState } from 'react'
 import './Form.css'
 import TagList from '../TagList/TagList'
 import AddTagForm from './Forms/AddTagForm'
-import { FormType, Tag } from '@shared/types'
+import { FormType } from '@shared/types'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -87,25 +87,18 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
 
 interface FormTagsProps {
   label: string
-  tags: Tag[]
-  setTags: (value: SetStateAction<Tag[]>) => void
 }
 
-export function FormTags(props: FormTagsProps): React.JSX.Element {
-  const { label, tags, setTags } = props
+export function FormTags({ label }: FormTagsProps): React.JSX.Element {
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
-
-  const handleTagAdd = (tag: Tag): void => {
-    setTags((prevState) => [...prevState, tag])
-  }
 
   return (
     <div className="formGroup">
       <label>{label}</label>
       <div className="tagsGroup">
-        <TagList tags={tags} setTags={setTags} />
+        <TagList />
         {isTagFormOpen ? (
-          <AddTagForm handleTagAdd={handleTagAdd} setIsTagFormOpen={setIsTagFormOpen} />
+          <AddTagForm setIsTagFormOpen={setIsTagFormOpen} />
         ) : (
           <button type="button" onClick={() => setIsTagFormOpen(true)}>
             +dodaj tag

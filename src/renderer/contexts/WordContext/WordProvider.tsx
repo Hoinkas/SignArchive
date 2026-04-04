@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { Tag, TagToDB, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
+import { WordToDB, WordWithCount, Word } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -10,12 +10,10 @@ interface Props {
 export default function WordProvider({ children }: Props): React.JSX.Element {
   const [wordsList, setWordsList] = useState<WordWithCount[]>([])
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
-  const [word, setWord] = useState<WordWithTags | null>(null)
-  const [allTags, setAllTags] = useState<Tag[]>([])
+  const [word, setWord] = useState<Word | null>(null)
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
-    window.api.tag.list().then(setAllTags)
   }, [])
 
   useEffect(() => {
@@ -65,21 +63,6 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
-  const addTag = async (tag: TagToDB): Promise<Tag | undefined> => {
-    if (!word) return
-
-    let exists = allTags.find((t) => t.name === tag.name)
-    if (!exists) {
-      exists = await window.api.tag.create(word.id, tag)
-    }
-
-    return exists
-  }
-
-  const deleteTag = (tag: Tag): void => {
-    window.api.tag.delete(tag.id)
-  }
-
   return (
     <WordContext.Provider
       value={{
@@ -90,10 +73,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         deleteWord,
         activeWordId,
         changeActiveWord,
-        changeSignCountInWord,
-        allTags,
-        addTag,
-        deleteTag
+        changeSignCountInWord
       }}
     >
       {children}

@@ -152,11 +152,6 @@ export interface WordWithCount extends Word {
   signsCount: number
 }
 
-// WORD with TAGS
-export interface WordWithTags extends Word {
-  tags: Tag[]
-}
-
 export interface SignDetailsToDB {
   wordId: string
   definition: DefinitionToCreate

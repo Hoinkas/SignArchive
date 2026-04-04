@@ -23,6 +23,7 @@ export function listAllTagsByWordId(wordId: string): Tag[] {
     `
     )
     .all(wordId)
+
   return rows as Tag[]
 }
 
@@ -77,6 +78,9 @@ export function createTagAndTagWord(wordId: string, data: TagToDB): Tag {
 
 export function registerTagHandlers(): void {
   ipcMain.handle('tag:list', () => handlerWithErrorLogging(listAllTags))
+  ipcMain.handle('tag:listByWordId', (_, wordId) =>
+    handlerWithErrorLogging(() => listAllTagsByWordId(wordId))
+  )
   ipcMain.handle('tag:create', (_, wordId: string, data: TagToDB) =>
     handlerWithErrorLogging(() => createTagAndTagWord(wordId, data))
   )

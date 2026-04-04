@@ -13,9 +13,9 @@ declare global {
       }
       word: {
         listWithCount: () => Promise<WordWithCount[]>
-        details: (wordId: string) => Promise<WordWithTags>
+        details: (wordId: string) => Promise<Word>
         create: (data: WordToDB) => Promise<Word>
-        update: (wordId: string, data: Partial<WordToDB>) => Promise<WordWithTags | undefined>
+        update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>
         delete: (wordId: string) => Promise<void>
       }
       source: {
@@ -41,6 +41,7 @@ declare global {
       }
       tag: {
         list: () => Promise<Tag[]>
+        listByWordId: (wordId: string) => Promise<Tag[]>
         create: (wordId: string, data: TagToDB) => Promise<Tag>
         delete: (tagId: string) => Promise<void>
       }
