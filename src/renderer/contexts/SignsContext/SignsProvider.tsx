@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import React from 'react'
-import { SignToDB, SignWithDetails, SignWithDetailsToDB } from '@shared/types'
+import { SignToDB, SignDetails, SignDetailsToDB } from '@shared/types'
 import { SignContext } from './SignsContext'
 import { useWord } from '@contexts/WordContext/useWord'
 
@@ -10,7 +10,7 @@ interface Props {
 
 export default function SignsProvider({ children }: Props): React.JSX.Element {
   const { changeSignCountInWord } = useWord()
-  const [signs, setSigns] = useState<SignWithDetails[]>([])
+  const [signs, setSigns] = useState<SignDetails[]>([])
 
   const initiateSigns = useCallback((wordId: string): void => {
     window.api.sign.list(wordId).then((result) => {
@@ -18,7 +18,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }, [])
 
-  const addSign = (data: SignWithDetailsToDB, closeForm: () => void): void => {
+  const addSign = (data: SignDetailsToDB, closeForm: () => void): void => {
     window.api.sign.create(data).then((result) => {
       setSigns((prevState) => [...prevState, result])
       changeSignCountInWord('add')

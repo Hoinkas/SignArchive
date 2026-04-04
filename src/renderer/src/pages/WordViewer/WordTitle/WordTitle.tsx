@@ -1,18 +1,19 @@
 import { useState } from 'react'
-import TagList from '../../../components/TagList/TagList'
 import './WordTitle.css'
 import { Word } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useWord } from '@contexts/WordContext/useWord'
+import PillList from '@renderer/components/PillList/PillList'
+import { useTags } from '@contexts/TagsContext/useTags'
 
 interface WordTitleProps {
   word: Word
 }
 
-function WordTitle(props: WordTitleProps): React.JSX.Element {
-  const { word } = props
+function WordTitle({ word }: WordTitleProps): React.JSX.Element {
   const { deleteWord } = useWord()
+  const { tags } = useTags()
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   return (
@@ -25,7 +26,9 @@ function WordTitle(props: WordTitleProps): React.JSX.Element {
             <h1>{word.text}</h1>
             <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} />
           </div>
-          <div className="wordTitleDetails">{word.tags && <TagList textArray={word.tags} />}</div>
+          <div className="wordTitleDetails">
+            <PillList textArray={tags.map((t) => t.name)} />
+          </div>
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import type {
   Source,
   SourceSignWord,
   SourceToDB,
-  SourceWithDetails,
+  SourceDetails,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
   YearStartEnd
@@ -14,12 +14,6 @@ import { createAuthor, findAuthorById } from './author'
 import { createMediaFile, findMediaFileById } from './mediaFile'
 import { ipcMain } from 'electron'
 import { createSourceSignWord } from './sourceSignWord'
-
-export function listAllSources(): Source[] {
-  const db = getDb()
-  const rows = db.prepare('SELECT * FROM source ORDER BY name').all()
-  return rows as Source[]
-}
 
 export function findSourceById(id: string): Source | undefined {
   const row = getDb().prepare('SELECT * FROM source WHERE id = ?').get(id)
@@ -91,7 +85,7 @@ export function returnSourcesCountBySignId(signId: string): number {
   return row.count
 }
 
-export function returnSourceDetailsById(sourceId: string): SourceWithDetails | undefined {
+export function returnSourceDetailsById(sourceId: string): SourceDetails | undefined {
   const source = findSourceById(sourceId)
   if (!source) return
 
@@ -107,13 +101,10 @@ export function returnSourceDetailsById(sourceId: string): SourceWithDetails | u
   }
 }
 
-export function returnSourcesDetailsBySignWordId(
-  signId: string,
-  wordId: string
-): SourceWithDetails[] {
+export function returnSourcesDetailsBySignWordId(signId: string, wordId: string): SourceDetails[] {
   const sources = findAllSourcesBySignWordId(signId, wordId)
 
-  const sourcesDetails: SourceWithDetails[] = []
+  const sourcesDetails: SourceDetails[] = []
   sources.forEach((s) => {
     const details = returnSourceDetailsById(s.id)
     if (!details) return
@@ -140,7 +131,7 @@ export function createSource(data: SourceToDB): Source {
   return source
 }
 
-export function createSourceWithDetails(data: SourceWithDetailsToCreate): SourceWithDetails {
+export function createSourceWithDetails(data: SourceWithDetailsToCreate): SourceDetails {
   const transaction = getDb().transaction(() => {
     const createdMediaFile = createMediaFile(data.mediaFile)
     const createdAuthor = createAuthor(data.author)
@@ -160,7 +151,7 @@ export function createSourceWithDetails(data: SourceWithDetailsToCreate): Source
     }
     createSourceSignWord(sourceSignWord)
 
-    const sourceWihtDetails: SourceWithDetails = {
+    const sourceWihtDetails: SourceDetails = {
       ...createdSource,
       author: createdAuthor,
       mediaFile: createdMediaFile
@@ -174,7 +165,7 @@ export function createSourceWithDetails(data: SourceWithDetailsToCreate): Source
 export function updateSource(
   sourceId: string,
   data: Partial<SourceWithDetailsToDB>
-): SourceWithDetails | undefined {
+): SourceDetails | undefined {
   const existing = findSourceById(sourceId)
   if (!existing) return
 

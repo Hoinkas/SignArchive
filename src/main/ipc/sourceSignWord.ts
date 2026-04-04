@@ -2,6 +2,7 @@ import { getDb } from '../db/client'
 import type { SourceSignWord } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 
+//TODO Delete those functions and apply SQL queries in implementing functions
 export function findSignsIdsByWordId(wordId: string): string[] {
   const db = getDb()
   const rows = db

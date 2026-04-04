@@ -8,8 +8,8 @@ import type {
   Sign,
   SignFile,
   SignToDB,
-  SignWithDetails,
-  SignWithDetailsToDB
+  SignDetails,
+  SignDetailsToDB
 } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { getSourcesStartEndYearBySignAndWordId, returnSourcesCountBySignId } from './source'
@@ -30,12 +30,6 @@ function copySignFile(signFile: SignFile): SignFile {
     ...signFile,
     path: destPath
   }
-}
-
-export function listAllSigns(): Sign[] {
-  const db = getDb()
-  const rows = db.prepare('SELECT * FROM sign ORDER BY createdAt DESC').all()
-  return rows.map((row: Record<string, unknown>) => rowToSign(row))
 }
 
 export function findSignById(id: string): Sign | undefined {
@@ -60,7 +54,7 @@ export function findAllSignsByWordId(wordId: string): Sign[] {
 export function returnSignDetailsBySignWordId(
   signId: string,
   wordId: string
-): SignWithDetails | undefined {
+): SignDetails | undefined {
   const sign = findSignById(signId)
   if (!sign) return
 
@@ -77,10 +71,10 @@ export function returnSignDetailsBySignWordId(
   }
 }
 
-export function returnSignsDetailsByWordId(wordId: string): SignWithDetails[] {
+export function returnSignsDetailsByWordId(wordId: string): SignDetails[] {
   const signs = findAllSignsByWordId(wordId)
 
-  const signsDetails: SignWithDetails[] = []
+  const signsDetails: SignDetails[] = []
   signs.forEach((s) => {
     const details = returnSignDetailsBySignWordId(s.id, wordId)
     if (!details) return
@@ -111,7 +105,7 @@ export function createSign(data: SignToDB): Sign {
   return sign
 }
 
-export function createSignWithDefinition(signWithDetails: SignWithDetailsToDB): SignWithDetails {
+export function createSignWithDefinition(signWithDetails: SignDetailsToDB): SignDetails {
   const { wordId, sign, definition } = signWithDetails
 
   const transaction = getDb().transaction(() => {
@@ -176,7 +170,7 @@ export function deleteSignById(id: string): void {
 
 export function registerSignHandlers(): void {
   ipcMain.handle('sign:list', (_, wordId: string) => returnSignsDetailsByWordId(wordId))
-  ipcMain.handle('sign:create', async (_, data: SignWithDetailsToDB) =>
+  ipcMain.handle('sign:create', async (_, data: SignDetailsToDB) =>
     handlerWithErrorLogging(() => createSignWithDefinition(data))
   )
   ipcMain.handle('sign:update', (_, singId: string, data: SignToDB) =>

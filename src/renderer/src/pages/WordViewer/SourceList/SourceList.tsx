@@ -1,4 +1,4 @@
-import { SignWithDetails } from '@shared/types'
+import { SignDetails } from '@shared/types'
 import { useEffect, useRef, useState } from 'react'
 import SourceBox from './SourceBox/SourceBox'
 import './SourceList.css'
@@ -8,7 +8,7 @@ import SourceForm from '@renderer/components/Form/Forms/SourceForm'
 import { useSources } from '@contexts/SourcesContext/useSources'
 
 interface SourceListProps {
-  sign: SignWithDetails
+  sign: SignDetails
 }
 
 function SourceList({ sign }: SourceListProps): React.JSX.Element {

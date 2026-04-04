@@ -3,16 +3,18 @@ import { electronAPI } from '@electron-toolkit/preload'
 import type {
   Word,
   WordToDB,
-  WordWithCounts,
+  WordWithCount,
   Author,
-  SignWithDetails,
-  SignWithDetailsToDB,
+  SignDetails,
+  SignDetailsToDB,
   SignToDB,
   Sign,
-  SourceWithDetails,
+  SourceDetails,
   SourceWithDetailsToDB,
   DefinitionToDB,
-  Definition
+  Definition,
+  Tag,
+  TagToDB
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -20,16 +22,15 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', {
       sign: {
-        list: (wordId: string): Promise<SignWithDetails[]> =>
-          ipcRenderer.invoke('sign:list', wordId),
-        create: (data: SignWithDetailsToDB): Promise<SignWithDetails> =>
+        list: (wordId: string): Promise<SignDetails[]> => ipcRenderer.invoke('sign:list', wordId),
+        create: (data: SignDetailsToDB): Promise<SignDetails> =>
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
           ipcRenderer.invoke('sign:update', signId, data),
         delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
       },
       word: {
-        listWithCount: (): Promise<WordWithCounts[]> => ipcRenderer.invoke('word:listWithCount'),
+        listWithCount: (): Promise<WordWithCount[]> => ipcRenderer.invoke('word:listWithCount'),
         details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
         update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
@@ -37,16 +38,16 @@ if (process.contextIsolated) {
         delete: (wordId: string): Promise<void> => ipcRenderer.invoke('word:delete', wordId)
       },
       source: {
-        list: (signId: string, wordId: string): Promise<SourceWithDetails[]> =>
+        list: (signId: string, wordId: string): Promise<SourceDetails[]> =>
           ipcRenderer.invoke('source:list', signId, wordId),
-        details: (sourceId: string): Promise<SourceWithDetails> =>
+        details: (sourceId: string): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:details', sourceId),
-        create: (data: SourceWithDetailsToDB): Promise<SourceWithDetails> =>
+        create: (data: SourceWithDetailsToDB): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:create', data),
         update: (
           sourceId: string,
           data: Partial<SourceWithDetailsToDB>
-        ): Promise<SourceWithDetails | undefined> =>
+        ): Promise<SourceDetails | undefined> =>
           ipcRenderer.invoke('source:update', sourceId, data),
         delete: (sourceId: string): Promise<void> => ipcRenderer.invoke('source:delete', sourceId)
       },
@@ -63,6 +64,14 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('definition:update', definitionId, data),
         delete: (definitionId: string): Promise<void> =>
           ipcRenderer.invoke('definition:delete', definitionId)
+      },
+      tag: {
+        list: (): Promise<Tag[]> => ipcRenderer.invoke('tag:list'),
+        listByWordId: (wordId: string): Promise<Tag[]> =>
+          ipcRenderer.invoke('tag:listByWordId', wordId),
+        create: (wordId: string, data: TagToDB): Promise<Tag> =>
+          ipcRenderer.invoke('tag:create', wordId, data),
+        delete: (tagId: string): Promise<void> => ipcRenderer.invoke('tag:delete', tagId)
       },
       getPathForFile: (file: File): string => webUtils.getPathForFile(file)
     })

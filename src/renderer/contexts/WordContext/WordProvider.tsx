@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { Word, WordToDB, WordWithCounts } from '@shared/types'
+import { WordToDB, WordWithCount, Word } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
-  const [wordsList, setWordsList] = useState<WordWithCounts[]>([])
+  const [wordsList, setWordsList] = useState<WordWithCount[]>([])
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<Word | null>(null)
 
@@ -33,7 +33,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
     window.api.word.update(word.id, updateWord).then((result) => {
       if (!result) return
-      setWord({ ...word, ...result })
+      setWord(result)
       setWordsList((prevState) =>
         prevState.map((w) => (w.id === result.id ? { ...w, ...result } : w))
       )

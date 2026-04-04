@@ -16,8 +16,6 @@ export function getDb(): Database.Database {
   }
 
   db = new Database(dbPath)
-  db.pragma('journal_mode = WAL')
-  db.pragma('foreign_keys = ON')
 
   // if (process.env.NODE_ENV === 'development') {
   //   db.on('trace', (sql: string) => console.log('[SQL]', sql))

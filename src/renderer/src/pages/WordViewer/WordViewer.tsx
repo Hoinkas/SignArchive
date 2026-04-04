@@ -7,6 +7,7 @@ import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import { useWord } from '@contexts/WordContext/useWord'
 import { useSigns } from '@contexts/SignsContext/useSigns'
 import SourcesProvider from '@contexts/SourcesContext/SourcesProvider'
+import TagsProvider from '@contexts/TagsContext/TagsProvider'
 
 function WordViewer(): React.JSX.Element {
   const { word } = useWord()
@@ -23,7 +24,9 @@ function WordViewer(): React.JSX.Element {
 
   return (
     <div className="wordViewer">
-      <WordTitle word={word} />
+      <TagsProvider>
+        <WordTitle word={word} />
+      </TagsProvider>
       <SourcesProvider>
         <SignList />
       </SourcesProvider>

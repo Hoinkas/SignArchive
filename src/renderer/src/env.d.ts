@@ -6,26 +6,26 @@ declare global {
   interface Window {
     api: {
       sign: {
-        list: (wordId: string) => Promise<SignWithDetails[]>
-        create: (data: SignWithDetailsToDB) => Promise<SignWithDetails>
+        list: (wordId: string) => Promise<SignDetails[]>
+        create: (data: SignDetailsToDB) => Promise<SignDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
         delete: (signId: string) => Promise<void>
       }
       word: {
-        listWithCount: () => Promise<WordWithCounts[]>
+        listWithCount: () => Promise<WordWithCount[]>
         details: (wordId: string) => Promise<Word>
         create: (data: WordToDB) => Promise<Word>
         update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>
         delete: (wordId: string) => Promise<void>
       }
       source: {
-        list: (signId: string, wordId: string) => Promise<SourceWithDetails[]>
+        list: (signId: string, wordId: string) => Promise<SourceDetails[]>
         details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
         update: (
           sourceId: string,
           data: Partial<SourceWithDetailsToDB>
-        ) => Promise<SourceWithDetails | undefined>
-        create: (data: SourceWithDetailsToDB) => Promise<SourceWithDetails>
+        ) => Promise<SourceDetails | undefined>
+        create: (data: SourceWithDetailsToDB) => Promise<SourceDetails>
         delete: (sourceId: string) => Promise<void>
       }
       author: {
@@ -38,6 +38,12 @@ declare global {
           data: Partial<DefinitionToDB>
         ) => Promise<Definition | undefined>
         delete: (definitionId: string) => Promise<void>
+      }
+      tag: {
+        list: () => Promise<Tag[]>
+        listByWordId: (wordId: string) => Promise<Tag[]>
+        create: (wordId: string, data: TagToDB) => Promise<Tag>
+        delete: (tagId: string) => Promise<void>
       }
       getPathForFile: (file: File) => string
     }

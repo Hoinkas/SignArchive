@@ -6,7 +6,6 @@ export interface Word {
   id: string
   createdAt: string //ISO Date
   text: string
-  tags?: string[]
 }
 
 export type WordToDB = Omit<Word, 'id' | 'createdAt'>
@@ -74,6 +73,7 @@ export interface SourceWithDetailsToCreate extends SourceWithDetailsToDB {
   wordId: string
 }
 
+//DEFINITION
 export type DefinitionsCategories =
   | 'autonomiczne'
   | 'czasownik'
@@ -93,7 +93,6 @@ export interface DefinitionCategoryWithCount {
   count: number
 }
 
-//DEFINITION
 export interface Definition {
   id: string
   createdAt: string //ISO Date
@@ -113,6 +112,21 @@ export type DefinitionsCategoriesGrouped = {
   definitions: Definition[]
 }
 
+// TAGS
+export interface Tag {
+  id: string
+  createdAt: string //ISO Date
+  name: string
+}
+
+export interface TagWord {
+  tagId: string
+  wordId: string
+}
+
+export type TagToDB = Omit<Tag, 'id' | 'createdAt'>
+export type TagDropdownOption = Omit<Tag, 'createdAt'>
+
 // DEFINITION with SIGN with WORD connector
 export interface DefinitionSignWord {
   definitionId: string
@@ -127,12 +141,18 @@ export interface SourceSignWord {
   wordId: string
 }
 
+// TAG with WORD connector
+export interface TagWord {
+  tagId: string
+  wordId: string
+}
+
 // WORD with SINGS count
-export interface WordWithCounts extends Word {
+export interface WordWithCount extends Word {
   signsCount: number
 }
 
-export interface SignWithDetailsToDB {
+export interface SignDetailsToDB {
   wordId: string
   definition: DefinitionToCreate
   sign: SignToDB
@@ -144,12 +164,12 @@ export interface YearStartEnd {
 }
 
 // WORD with SIGNS and SOURCES and AUTHORS and MEDIAFILES
-export interface SourceWithDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
+export interface SourceDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
   author: Author
   mediaFile: MediaFile
 }
 
-export interface SignWithDetails extends Sign, YearStartEnd {
+export interface SignDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
 }

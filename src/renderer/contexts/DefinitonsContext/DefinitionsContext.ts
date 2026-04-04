@@ -5,12 +5,12 @@ import {
   DefinitionsCategoriesGrouped,
   DefinitionCategoryWithCount,
   DefinitionToCreate,
-  SignWithDetails
+  SignDetails
 } from '@shared/types'
 
 export interface DefinitionsContextValue {
   definitions: DefinitionsCategoriesGrouped[]
-  initiateDefinitions: (sign: SignWithDetails) => void
+  initiateDefinitions: (sign: SignDetails) => void
   categories: DefinitionCategoryWithCount[]
   categoriesNames: DefinitionsCategories[]
   translations: string[]

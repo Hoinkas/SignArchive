@@ -23,13 +23,9 @@ pnpm dev
 ```
 
 ## To do
-- [ ] Definitions adding, showing, editing and deleting
-- [ ] Tags adding and selecting in dropdown menu
-- [ ] Tags info showing and update in sign title
 - [ ] Adding existing sign to different meaning and/or word
 - [ ] Frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 - [ ] Form restrictions and error throwing
-- [ ] Separate tab with word forms and declensions (especially for polish declensions)
 - [ ] Seperate tab for embedded numerals
 - [ ] Screen size responsiveness
 - [ ] Better UI and better colors dark and white theme
