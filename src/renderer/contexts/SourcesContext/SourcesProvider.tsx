@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import React from 'react'
 import {
-  SignWithDetails,
-  SourceWithDetails,
+  SignDetails,
+  SourceDetails,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
   YearStartEnd
@@ -18,10 +18,10 @@ interface Props {
 export default function SourcesProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
   const { changeSourcesCountInSign } = useSigns()
-  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignWithDetails | null>(null)
-  const [sources, setSources] = useState<SourceWithDetails[]>([])
+  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignDetails | null>(null)
+  const [sources, setSources] = useState<SourceDetails[]>([])
 
-  const changeSourcesPanelSign = (data: SignWithDetails): void => {
+  const changeSourcesPanelSign = (data: SignDetails): void => {
     if (!word) return
     setSourcesPanelSign(data)
     window.api.source.list(data.id, word.id).then(setSources)
@@ -31,7 +31,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
     setSourcesPanelSign(null)
   }
 
-  const recalculateYears = (updatedSources: SourceWithDetails[]): YearStartEnd => {
+  const recalculateYears = (updatedSources: SourceDetails[]): YearStartEnd => {
     const years = [
       ...updatedSources.map((s) => s.yearStart),
       ...updatedSources.map((s) => s.yearEnd)

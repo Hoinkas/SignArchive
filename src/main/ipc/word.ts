@@ -1,16 +1,26 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Word, WordToDB, WordWithCounts } from '@shared/types'
+import type { Word, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
+import { listAllTagsByWordId } from './tag'
 
 export function findWordById(wordId: string): Word | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
-  return row ? rowToWord(row as Record<string, unknown>) : undefined
+  return row ? (row as Word) : undefined
 }
 
-export function listAllWordsWithSignCount(): WordWithCounts[] {
+export function returnWordDetailsByWordId(wordId: string): WordWithTags | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId) as Word | undefined
+  if (!row) return undefined
+
+  const tags = listAllTagsByWordId(wordId)
+
+  return { ...row, tags } as WordWithTags
+}
+
+export function listAllWordsCount(): WordWithCount[] {
   const rows = getDb()
     .prepare(
       `
@@ -29,8 +39,9 @@ export function listAllWordsWithSignCount(): WordWithCounts[] {
 
   return rows.map((row: Record<string, unknown>) => {
     return {
-      ...rowToWord(row),
-      signsCount: row.signsCount as number
+      ...row,
+      signsCount: row.signsCount as number,
+      tags: row.tags as string[]
     }
   })
 }
@@ -44,10 +55,11 @@ export function createWord(data: WordToDB): Word {
   }
   db.prepare(
     `
-    INSERT INTO word (id, createdAt, text, tags)
-    VALUES (@id, @createdAt, @text, @tags)
+    INSERT INTO word (id, createdAt, text)
+    VALUES (@id, @createdAt, @text)
   `
-  ).run(rowToSQL(word))
+  ).run(toSqlParams(word))
+
   return word
 }
 
@@ -59,26 +71,24 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
   const existing = findWordById(wordId)
   if (!existing) return
 
-  const updated: Record<string, unknown> = rowToSQL({ ...existing, ...data })
-
   getDb()
     .prepare(
       `
         UPDATE word
-        SET text = @text, tags = @tags
+        SET text = @text
         WHERE id = @id
       `
     )
-    .run(toSqlParams(updated))
+    .run(toSqlParams(data))
 
   return { ...existing, ...data }
 }
 
 export function registerWordHandlers(): void {
-  ipcMain.handle('word:listWithCount', () =>
-    handlerWithErrorLogging(() => listAllWordsWithSignCount())
+  ipcMain.handle('word:listWithCount', () => handlerWithErrorLogging(() => listAllWordsCount()))
+  ipcMain.handle('word:details', (_, id: string) =>
+    handlerWithErrorLogging(() => returnWordDetailsByWordId(id))
   )
-  ipcMain.handle('word:details', (_, id: string) => handlerWithErrorLogging(() => findWordById(id)))
   ipcMain.handle('word:create', (_, data: WordToDB) =>
     handlerWithErrorLogging(() => createWord(data))
   )
@@ -88,21 +98,4 @@ export function registerWordHandlers(): void {
   ipcMain.handle('word:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteWordById(id))
   )
-}
-
-// ROW MAPPERS
-export function rowToWord(row: Record<string, unknown>): Word {
-  return {
-    id: row.id as string,
-    createdAt: row.createdAt as string,
-    text: row.text as string,
-    tags: row.tags ? JSON.parse(row.tags as string) : []
-  }
-}
-
-function rowToSQL(row: Word): Record<string, unknown> {
-  return toSqlParams({
-    ...row,
-    tags: JSON.stringify(row.tags ?? [])
-  })
 }

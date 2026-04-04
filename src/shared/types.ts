@@ -120,6 +120,7 @@ export interface Tag {
 }
 
 export type TagToDB = Omit<Tag, 'id' | 'createdAt'>
+export type TagDropdownOption = Omit<Tag, 'createdAt'>
 
 // DEFINITION with SIGN with WORD connector
 export interface DefinitionSignWord {
@@ -142,11 +143,16 @@ export interface TagWord {
 }
 
 // WORD with SINGS count
-export interface WordWithCounts extends Word {
+export interface WordWithCount extends Word {
   signsCount: number
 }
 
-export interface SignWithDetailsToDB {
+// WORD with TAGS
+export interface WordWithTags extends Word {
+  tags: Tag[]
+}
+
+export interface SignDetailsToDB {
   wordId: string
   definition: DefinitionToCreate
   sign: SignToDB
@@ -158,12 +164,12 @@ export interface YearStartEnd {
 }
 
 // WORD with SIGNS and SOURCES and AUTHORS and MEDIAFILES
-export interface SourceWithDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
+export interface SourceDetails extends Omit<Source, 'authorId' | 'mediaFileId'> {
   author: Author
   mediaFile: MediaFile
 }
 
-export interface SignWithDetails extends Sign, YearStartEnd {
+export interface SignDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
 }

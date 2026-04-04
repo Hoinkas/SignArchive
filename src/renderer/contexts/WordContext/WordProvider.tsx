@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
-import { Word, WordToDB, WordWithCounts } from '@shared/types'
+import { Tag, WordToDB, WordWithCount, WordWithTags } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
-  const [wordsList, setWordsList] = useState<WordWithCounts[]>([])
+  const [wordsList, setWordsList] = useState<WordWithCount[]>([])
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
-  const [word, setWord] = useState<Word | null>(null)
+  const [word, setWord] = useState<WordWithTags | null>(null)
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
@@ -20,6 +20,13 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     if (!activeWordId) return
     window.api.word.details(activeWordId).then(setWord)
   }, [activeWordId])
+
+  const allTags = useMemo((): Tag[] => {
+    const result: Tag[] = []
+    window.api.tag.list().then((result) => result.map((r) => result.push(r)))
+
+    return result
+  }, [])
 
   const addWord = (word: WordToDB, closeForm: () => void): void => {
     window.api.word.create(word).then((result) => {
@@ -63,6 +70,19 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
+  const addTag = (tag: string): Tag | undefined => {
+    if (!word) return
+
+    let exists = allTags.find((t) => t.name === tag)
+
+    if (!exists)
+      window.api.tag.create(word?.id, tag).then((result) => {
+        exists = result
+      })
+
+    return exists
+  }
+
   return (
     <WordContext.Provider
       value={{
@@ -73,7 +93,9 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         deleteWord,
         activeWordId,
         changeActiveWord,
-        changeSignCountInWord
+        changeSignCountInWord,
+        allTags,
+        addTag
       }}
     >
       {children}

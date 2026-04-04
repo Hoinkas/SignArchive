@@ -13,7 +13,7 @@ function TagList(props: TagListProps): React.JSX.Element {
   return (
     <div className="tagList">
       {textArray.map((text, key) => (
-        <Tag key={key} text={text} setTags={setTags} />
+        <Tag key={key} text={text} index={key} setTags={setTags} />
       ))}
     </div>
   )

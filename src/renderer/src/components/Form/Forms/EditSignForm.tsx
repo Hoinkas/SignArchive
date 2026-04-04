@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, SignFile, SignToDB, SignWithDetails } from '@shared/types'
+import { FormType, SignFile, SignToDB, SignDetails } from '@shared/types'
 import { FormMediaFile, FormModalWrapper, FormMultiLineInput } from '@renderer/components/Form/Form'
 import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface EditSignFormProps {
-  sign: SignWithDetails
+  sign: SignDetails
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }

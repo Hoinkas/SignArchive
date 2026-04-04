@@ -1,5 +1,5 @@
 import './SignBox.css'
-import { SignWithDetails } from '@shared/types'
+import { SignDetails } from '@shared/types'
 import MediaPlayer from '@renderer/components/MediaPlayer/MediaPlayer'
 import { sourcesCountText } from '@renderer/functions/namesHelpers'
 import SignTitle from '../SignTitle/SignTitle'
@@ -8,7 +8,7 @@ import { useSources } from '@contexts/SourcesContext/useSources'
 import DefinitionsProvider from '@contexts/DefinitonsContext/DefinitionsProvider'
 
 interface SignBoxProps {
-  sign: SignWithDetails
+  sign: SignDetails
 }
 
 function SignBox({ sign }: SignBoxProps): React.JSX.Element {

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { DefinitionToDB, FormType, SignFile, SignToDB, SignWithDetailsToDB } from '@shared/types'
+import { DefinitionToDB, FormType, SignFile, SignToDB, SignDetailsToDB } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -52,7 +52,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
 
     const sign: SignToDB = { notes, file: JSON.stringify(signFile) }
     const definition: DefinitionToDB = { category: categoryOption.label, text, translation }
-    const data: SignWithDetailsToDB = { wordId: word.id, sign, definition }
+    const data: SignDetailsToDB = { wordId: word.id, sign, definition }
 
     addSign(data, closeForm)
   }

@@ -5,7 +5,7 @@ import {
   FormType,
   MediaFileToDB,
   SourceToCreate,
-  SourceWithDetails,
+  SourceDetails,
   SourceWithDetailsToDB
 } from '@shared/types'
 import {
@@ -19,7 +19,7 @@ import { DropdownOption } from '../Components/FormDropdown'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 
 interface SourceFormProps {
-  source?: SourceWithDetails
+  source?: SourceDetails
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }

@@ -1,8 +1,8 @@
 import { createContext } from 'react'
-import { SignWithDetails, SourceWithDetails, SourceWithDetailsToDB } from '@shared/types'
+import { SignDetails, SourceDetails, SourceWithDetailsToDB } from '@shared/types'
 
 export interface SourcesContextValue {
-  sources: SourceWithDetails[]
+  sources: SourceDetails[]
   addSource: (data: SourceWithDetailsToDB, closeForm: () => void) => void
   editSource: (
     sourceId: string,
@@ -10,8 +10,8 @@ export interface SourcesContextValue {
     closeForm: () => void
   ) => void
   deleteSource: (deleteId: string) => void
-  sourcesPanelSign: SignWithDetails | null
-  changeSourcesPanelSign: (data: SignWithDetails) => void
+  sourcesPanelSign: SignDetails | null
+  changeSourcesPanelSign: (data: SignDetails) => void
   closeSourcesPanelSign: () => void
 }
 

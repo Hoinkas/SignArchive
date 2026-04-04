@@ -6,7 +6,7 @@ import {
   DefinitionCategoryWithCount,
   DefinitionToCreate,
   DefinitionToDB,
-  SignWithDetails
+  SignDetails
 } from '@shared/types'
 import { DefinitionsContext } from './DefinitionsContext'
 import { useWord } from '@contexts/WordContext/useWord'
@@ -17,11 +17,11 @@ interface Props {
 
 export default function DefinitionsProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
-  const [sign, setSign] = useState<SignWithDetails | null>(null)
+  const [sign, setSign] = useState<SignDetails | null>(null)
   const [definitions, setDefinitions] = useState<DefinitionsCategoriesGrouped[]>([])
   const [activeCategory, setActiveCategory] = useState<DefinitionsCategories | null>(null)
 
-  const initiateDefinitions = useCallback((sign: SignWithDetails): void => {
+  const initiateDefinitions = useCallback((sign: SignDetails): void => {
     const rawDefinitions = sign.definitions
     if (rawDefinitions.length === 0) return
     setSign(sign)
@@ -61,7 +61,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
         definitions
           .flatMap((g) => g.definitions)
           .flatMap((d) => d.translation?.split(',').map((t) => t.trim()) ?? [])
-          .filter((t): t is string => !!t && t !== word?.text)
+          .filter((t): t is string => !!t && t.toUpperCase() !== word?.text.toUpperCase())
       )
     ]
   }, [definitions, word?.text])

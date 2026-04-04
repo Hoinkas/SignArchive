@@ -5,8 +5,7 @@ export function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS word (
       id                  TEXT PRIMARY KEY,
       createdAt           TEXT NOT NULL,
-      text                TEXT NOT NULL,
-      tags                TEXT
+      text                TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS sign (
@@ -47,6 +46,12 @@ export function initSchema(db: Database.Database): void {
       translation TEXT
     );
 
+    CREATE TABLE IF NOT EXISTS tag (
+      id          TEXT NOT NULL,
+      createdAt   TEXT NOT NULL,
+      name        TEXT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS sourceSignWord (
       sourceId            TEXT NOT NULL REFERENCES source(id) ON DELETE CASCADE,
       wordId              TEXT NOT NULL REFERENCES word(id) ON DELETE CASCADE,
@@ -61,6 +66,12 @@ export function initSchema(db: Database.Database): void {
       PRIMARY KEY (definitionId, signId, wordId)
     );
 
+    CREATE TABLE IF NOT EXISTS tagWord (
+      tagId               TEXT NOT NULL REFERENCES tag(id) ON DELETE CASCADE,
+      wordId              TEXT NOT NULL REFERENCES word(id) ON DELETE CASCADE,
+      PRIMARY KEY (tagId, wordId)
+    );
+
     CREATE INDEX IF NOT EXISTS idx_sourceSignWord_signId ON sourceSignWord(signId);
     CREATE INDEX IF NOT EXISTS idx_sourceSignWord_sourceId ON sourceSignWord(sourceId);
     CREATE INDEX IF NOT EXISTS idx_sourceSignWord_wordId ON sourceSignWord(wordId);
@@ -71,5 +82,8 @@ export function initSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_definitionSignWord_definitionId ON definitionSignWord(definitionId);
     CREATE INDEX IF NOT EXISTS idx_definitionSignWord_signId ON definitionSignWord(signId);
     CREATE INDEX IF NOT EXISTS idx_definitionSignWord_wordId ON definitionSignWord(wordId);
+
+    CREATE INDEX IF NOT EXISTS idx_tagWord_wordId ON tagWord(wordId);
+    CREATE INDEX IF NOT EXISTS idx_tagWord_tagId ON tagWord(tagId);
   `)
 }

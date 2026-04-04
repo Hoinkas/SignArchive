@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, Word, WordToDB } from '@shared/types'
+import { FormType, WordToDB, WordWithTags } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordFormProps {
-  word?: Word
+  word?: WordWithTags
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -14,7 +14,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   const { addWord, editWord } = useWord()
 
   const [text, setText] = useState<string>(word?.text || '')
-  const [tags, setTags] = useState<string[]>(word?.tags || [])
+  const [tags, setTags] = useState<string[]>(word?.tags.map((t) => t.name) || [])
 
   const closeForm = (): void => {
     setText('')
@@ -26,10 +26,10 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     event.preventDefault()
 
     if (formType === 'add') {
-      const newWord: WordToDB = { text, tags }
+      const newWord: WordToDB = { text }
       addWord(newWord, closeForm)
     } else if (formType === 'edit' && word) {
-      const updateWord: WordToDB = { ...word, text, tags }
+      const updateWord: WordToDB = { ...word, text }
       editWord(updateWord, closeForm)
     }
   }

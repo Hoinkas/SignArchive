@@ -1,12 +1,12 @@
 import './DefinitionDetails.css'
-import { SignWithDetails } from '@shared/types'
+import { SignDetails } from '@shared/types'
 import { useEffect, useState } from 'react'
 import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
 import TagList from '@renderer/components/TagList/TagList'
 import DefinitionContainer from './DefinitionLContainer/DefinitionContainer'
 
 interface DefinitionListProps {
-  sign: SignWithDetails
+  sign: SignDetails
   notes: string | undefined
 }
 

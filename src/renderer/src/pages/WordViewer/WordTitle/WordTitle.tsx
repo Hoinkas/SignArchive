@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import TagList from '../../../components/TagList/TagList'
 import './WordTitle.css'
-import { Word } from '@shared/types'
+import { WordWithTags } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordTitleProps {
-  word: Word
+  word: WordWithTags
 }
 
-function WordTitle(props: WordTitleProps): React.JSX.Element {
-  const { word } = props
+function WordTitle({ word }: WordTitleProps): React.JSX.Element {
   const { deleteWord } = useWord()
   const [isFormOpen, setIsFormOpen] = useState(false)
 
@@ -25,7 +24,9 @@ function WordTitle(props: WordTitleProps): React.JSX.Element {
             <h1>{word.text}</h1>
             <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} />
           </div>
-          <div className="wordTitleDetails">{word.tags && <TagList textArray={word.tags} />}</div>
+          <div className="wordTitleDetails">
+            <TagList textArray={word.tags.map((t) => t.name)} />
+          </div>
         </div>
       )}
     </div>

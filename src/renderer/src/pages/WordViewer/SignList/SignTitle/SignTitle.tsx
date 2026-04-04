@@ -1,5 +1,5 @@
 import './SignTitle.css'
-import { SignWithDetails } from '@shared/types'
+import { SignDetails } from '@shared/types'
 import EditSignForm from '@renderer/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
 import TagList from '@renderer/components/TagList/TagList'
@@ -8,7 +8,7 @@ import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useSigns } from '@contexts/SignsContext/useSigns'
 
 interface SignTitleProps {
-  sign: SignWithDetails
+  sign: SignDetails
 }
 
 function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
