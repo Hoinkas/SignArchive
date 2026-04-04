@@ -2,20 +2,13 @@ import { getDb } from '../db/client'
 import type { DefinitionSignWord } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 
+//TODO Delete those functions and apply SQL queries in implementing functions
 export function findSignsIdsByWordId(wordId: string): string[] {
   const db = getDb()
   const rows = db
     .prepare('SELECT * FROM definitionSignWord WHERE wordId = ?')
     .all(wordId) as DefinitionSignWord[]
   return rows.map((dsw) => dsw.signId)
-}
-
-export function findDefinitionsIdsBySignWordId(signId: string, wordId: string): string[] {
-  const db = getDb()
-  const rows = db
-    .prepare('SELECT * FROM definitionSignWord WHERE signId = ? AND wordId = ?')
-    .all(signId, wordId) as DefinitionSignWord[]
-  return rows.map((dsw) => dsw.definitionId)
 }
 
 export function createDefinitionSignWord(data: DefinitionSignWord): DefinitionSignWord {

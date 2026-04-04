@@ -32,12 +32,6 @@ function copySignFile(signFile: SignFile): SignFile {
   }
 }
 
-export function listAllSigns(): Sign[] {
-  const db = getDb()
-  const rows = db.prepare('SELECT * FROM sign ORDER BY createdAt DESC').all()
-  return rows.map((row: Record<string, unknown>) => rowToSign(row))
-}
-
 export function findSignById(id: string): Sign | undefined {
   const row = getDb().prepare('SELECT * FROM sign WHERE id = ?').get(id)
   return row ? rowToSign(row as Record<string, unknown>) : undefined

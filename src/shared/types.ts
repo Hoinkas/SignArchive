@@ -6,7 +6,6 @@ export interface Word {
   id: string
   createdAt: string //ISO Date
   text: string
-  tags?: string[]
 }
 
 export type WordToDB = Omit<Word, 'id' | 'createdAt'>
@@ -74,6 +73,7 @@ export interface SourceWithDetailsToCreate extends SourceWithDetailsToDB {
   wordId: string
 }
 
+//DEFINITION
 export type DefinitionsCategories =
   | 'autonomiczne'
   | 'czasownik'
@@ -93,7 +93,6 @@ export interface DefinitionCategoryWithCount {
   count: number
 }
 
-//DEFINITION
 export interface Definition {
   id: string
   createdAt: string //ISO Date
@@ -113,6 +112,15 @@ export type DefinitionsCategoriesGrouped = {
   definitions: Definition[]
 }
 
+// TAGS
+export interface Tag {
+  id: string
+  createdAt: string //ISO Date
+  name: string
+}
+
+export type TagToDB = Omit<Tag, 'id' | 'createdAt'>
+
 // DEFINITION with SIGN with WORD connector
 export interface DefinitionSignWord {
   definitionId: string
@@ -124,6 +132,12 @@ export interface DefinitionSignWord {
 export interface SourceSignWord {
   sourceId: string
   signId: string
+  wordId: string
+}
+
+// TAG with WORD connector
+export interface TagWord {
+  tagId: string
   wordId: string
 }
 

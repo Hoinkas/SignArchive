@@ -42,13 +42,6 @@ export function createAuthor(data: AuthorToDB): Author {
   return author
 }
 
-export function deleteAuthorById(id: string): void {
-  getDb().prepare('DELETE FROM author WHERE id = ?').run(id)
-}
-
 export function registerAuthorHandlers(): void {
   ipcMain.handle('author:list', () => handlerWithErrorLogging(listAllAuthors))
-  // ipcMain.handle('author:find', (_, id: string) => findAuthorById(id))
-  // ipcMain.handle('author:create', (_, data: AuthorToDB) => createAuthor(data))
-  // ipcMain.handle('author:delete', (_, id: string) => deleteAuthorById(id))
 }

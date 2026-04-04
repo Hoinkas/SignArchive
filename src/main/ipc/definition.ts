@@ -76,8 +76,6 @@ export function deleteDefinitionById(id: string): void {
 }
 
 export function registerDefinitionHandlers(): void {
-  // ipcMain.handle('definition:list', () => handlerWithErrorLogging(listAllDefinitions))
-  // ipcMain.handle('definition:find', (_, id: string) => findDefinitionById(id))
   ipcMain.handle('definition:create', (_, data: DefinitionToDB) => createDefinition(data))
   ipcMain.handle('definition:delete', (_, definitionId: string) =>
     deleteDefinitionById(definitionId)
