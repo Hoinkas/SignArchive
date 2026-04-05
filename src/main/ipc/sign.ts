@@ -12,7 +12,12 @@ import type {
   SignDetailsToDB
 } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
-import { getSourcesStartEndYearBySignAndWordId, returnSourcesCountBySignId } from './source'
+import {
+  getSourcesStartEndYearBySignAndWordId,
+  returnAllPlacesBySignAndWordId,
+  returnSourcesCountBySignId,
+  returnYearsPlacesBySignAndWordId
+} from './source'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
 import { createDefinition, returnAllDefinitionsBySignWordId } from './definition'
 
@@ -61,7 +66,7 @@ export function returnSignDetailsBySignWordId(
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(sign.id, wordId)
   const sourcesCount = returnSourcesCountBySignId(sign.id)
   const definitions = returnAllDefinitionsBySignWordId(signId, wordId)
-  const places = returnAllPlacesBySignId(signId, wordId)
+  const regions = returnAllPlacesBySignAndWordId(signId, wordId)
 
   return {
     ...sign,
@@ -69,7 +74,7 @@ export function returnSignDetailsBySignWordId(
     yearEnd,
     sourcesCount,
     definitions,
-    places
+    regions
   }
 }
 
@@ -170,25 +175,6 @@ export function deleteSignById(id: string): void {
   getDb().prepare('DELETE FROM sign WHERE id = ?').run(id)
 }
 
-export function returnAllPlacesBySignId(signId: string, wordId: string): string[] {
-  const rows = getDb()
-    .prepare(
-      `
-        SELECT DISTINCT source.region FROM source
-        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-        WHERE sourceSignWord.wordId = ? AND sourceSignWord.signId = ?
-      `
-    )
-    .all(wordId, signId)
-
-  const result: string[] = []
-  rows.forEach((r) => {
-    if (r.region) result.push(r.region)
-  })
-
-  return result
-}
-
 export function registerSignHandlers(): void {
   ipcMain.handle('sign:list', (_, wordId: string) => returnSignsDetailsByWordId(wordId))
   ipcMain.handle('sign:create', async (_, data: SignDetailsToDB) =>
@@ -200,8 +186,8 @@ export function registerSignHandlers(): void {
   ipcMain.handle('sign:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteSignById(id))
   )
-  ipcMain.handle('sign:years', (_, signId: string, wordId: string) =>
-    handlerWithErrorLogging(() => getSourcesStartEndYearBySignAndWordId(signId, wordId))
+  ipcMain.handle('sign:yearsPlaces', (_, signId: string, wordId: string) =>
+    handlerWithErrorLogging(() => returnYearsPlacesBySignAndWordId(signId, wordId))
   )
 }
 

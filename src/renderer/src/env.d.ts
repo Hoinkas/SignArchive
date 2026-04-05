@@ -1,4 +1,4 @@
-import type { DefinitionToDB, Word, WordToDB } from '@shared/types'
+import type { DefinitionToDB, Word, WordToDB, YearsRegions } from '@shared/types'
 
 /// <reference types="vite/client" />
 
@@ -10,7 +10,7 @@ declare global {
         create: (data: SignDetailsToDB) => Promise<SignDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
         delete: (signId: string) => Promise<void>
-        years: (signId: string, wordId: string) => Promise<YearStartEnd>
+        yearsPlaces: (signId: string, wordId: string) => Promise<YearsRegions>
       }
       word: {
         listWithCount: () => Promise<WordWithCountCategories[]>

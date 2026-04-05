@@ -176,5 +176,9 @@ export interface SourceDetails extends Omit<Source, 'authorId' | 'mediaFileId'> 
 export interface SignDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
-  places: string[]
+  regions: string[]
+}
+
+export interface YearsRegions extends YearStartEnd {
+  regions: string[]
 }

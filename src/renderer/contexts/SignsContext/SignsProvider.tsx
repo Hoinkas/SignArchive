@@ -40,19 +40,10 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const changeSourcesCountInSign = (action: 'add' | 'remove', signId: string): void => {
-    const numberAction = action === 'add' ? 1 : -1
-    setSigns((prevState) =>
-      prevState.map((s) =>
-        s.id === signId ? { ...s, sourcesCount: s.sourcesCount + numberAction } : s
-      )
-    )
-  }
-
-  const updateSignYears = (signId: string): void => {
+  const updateSignSource = (signId: string): void => {
     if (!word) return
 
-    window.api.sign.years(signId, word?.id).then((result) => {
+    window.api.sign.yearsPlaces(signId, word?.id).then((result) => {
       setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, ...result } : s)))
     })
   }
@@ -65,8 +56,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
         addSign,
         editSign,
         deleteSign,
-        changeSourcesCountInSign,
-        updateSignYears
+        updateSignSource
       }}
     >
       {children}

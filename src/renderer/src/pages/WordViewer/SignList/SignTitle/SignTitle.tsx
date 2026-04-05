@@ -16,7 +16,7 @@ function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
   const { deleteSign } = useSigns()
 
   const years = mergeYearText(sign.yearStart, sign.yearEnd)
-  const pillText: string[] = [years, ...sign.places]
+  const pillText: string[] = [years, ...sign.regions]
 
   return (
     <div className="signTitle">
