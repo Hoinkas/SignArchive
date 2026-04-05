@@ -61,13 +61,15 @@ export function returnSignDetailsBySignWordId(
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(sign.id, wordId)
   const sourcesCount = returnSourcesCountBySignId(sign.id)
   const definitions = returnAllDefinitionsBySignWordId(signId, wordId)
+  const places = returnAllPlacesBySignId(signId, wordId)
 
   return {
     ...sign,
     yearStart,
     yearEnd,
     sourcesCount,
-    definitions
+    definitions,
+    places
   }
 }
 
@@ -85,8 +87,6 @@ export function returnSignsDetailsByWordId(wordId: string): SignDetails[] {
 }
 
 export function createSign(data: SignToDB): Sign {
-  const db = getDb()
-
   const parsedFile = JSON.parse(data.file) as SignFile
   const signFile: SignFile = copySignFile(parsedFile)
 
@@ -96,12 +96,14 @@ export function createSign(data: SignToDB): Sign {
     ...data,
     file: signFile
   }
-  db.prepare(
-    `
-      INSERT INTO sign (id, createdAt, notes, file)
-      VALUES (@id, @createdAt, @notes, @file)
-    `
-  ).run(toSqlParams({ ...sign, file: JSON.stringify(sign.file) }))
+  getDb()
+    .prepare(
+      `
+        INSERT INTO sign (id, createdAt, notes, file)
+        VALUES (@id, @createdAt, @notes, @file)
+      `
+    )
+    .run(toSqlParams({ ...sign, file: JSON.stringify(sign.file) }))
   return sign
 }
 
@@ -166,6 +168,25 @@ export function updateSign(signId: string, data: SignToDB): Sign | undefined {
 
 export function deleteSignById(id: string): void {
   getDb().prepare('DELETE FROM sign WHERE id = ?').run(id)
+}
+
+export function returnAllPlacesBySignId(signId: string, wordId: string): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+        SELECT DISTINCT source.region FROM source
+        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+        WHERE sourceSignWord.wordId = ? AND sourceSignWord.signId = ?
+      `
+    )
+    .all(wordId, signId)
+
+  const result: string[] = []
+  rows.forEach((r) => {
+    if (r.region) result.push(r.region)
+  })
+
+  return result
 }
 
 export function registerSignHandlers(): void {

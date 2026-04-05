@@ -68,14 +68,12 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
 
     const mediaFile: MediaFileToDB = { fileUrl }
     const author: AuthorToDB = { name: authorOption.label }
-    const yearStartNum = yearStart ? parseInt(yearStart) : undefined
-    const yearEndNum = yearEnd ? parseInt(yearEnd) : undefined
 
     const sourceToCreate: SourceToCreate = {
-      notes,
-      region,
-      yearStart: yearStartNum,
-      yearEnd: yearEndNum
+      notes: notes === '' ? undefined : notes,
+      region: region === '' ? undefined : region,
+      yearStart: yearStart ? parseInt(yearStart) : undefined,
+      yearEnd: yearEnd ? parseInt(yearEnd) : undefined
     }
 
     const data: SourceWithDetailsToDB = {
