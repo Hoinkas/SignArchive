@@ -1,6 +1,9 @@
+.searchContainer {
+  margin: var(--space-6) var(--space-3);
+}
+
 .searchBar {
   display: inline-flex;
-  margin: var(--space-6) var(--space-3);
 
   & input {
     padding-right: 0;

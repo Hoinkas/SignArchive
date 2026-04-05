@@ -37,7 +37,7 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
   }
 
   return ( //TODO Search as form for accesibility
-    <div>
+    <div className="searchContainer">
       <div className="searchBar">
         <input
           type="search"
