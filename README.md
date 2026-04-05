@@ -25,33 +25,18 @@ pnpm dev
 ## Releases
 ### Version 1.0
 - [x] View word list
-- [x] Add word
-- [x] View word details
-- [x] Edit word
-- [x] Delete word
-- [x] View sign list
-- [x] View media and sign details
-- [x] edit sign
-- [x] delete sign
-- [x] view list of sources
-- [x] add source
-- [x] view source details
-- [x] edit source
-- [x] delete source
-- [x] view list of definitions
-- [x] add definition
-- [x] edit definition
-- [x] delete definition
-- [x] view definition categories
-- [x] edit category in definition
-- [x] view tags in sign
-- [x] add, edit, and delete tags in sign
-- [ ] filtering word search by category and place
-- [ ] add numeral tab in sign view
-- [ ] reusing sign in new words and creating words based on sign definitions
-- [ ] saving responsiveness
-- [ ] exporting to a webpage using Node.js, Express, Axios
-- [ ] admin account
+- [x] View word details. Add, edit, delete word
+- [x] View sign details list. Add, edit, delete sign
+- [x] View sources details list. Add, edit, delete source
+- [x] View definitions details list. Add, edit, delete definition
+- [x] View definition categories. Edit category
+- [x] View tags in sign. Add, edit, delete tags in sign
+- [ ] Filtering word search by category and place
+- [ ] Add numeral tab in sign view
+- [ ] Reusing sign in new words and creating words based on sign definitions
+- [ ] Adding screen responsiveness
+- [ ] Exporting to a webpage using Node.js, Express, Axios
+- [ ] Admin account
 
 ###  Version 2.0
 - [ ] White theme version
