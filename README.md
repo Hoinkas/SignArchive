@@ -32,6 +32,7 @@ pnpm dev
 - [x] View definition categories. Edit category
 - [x] View tags in sign. Add, edit, delete tags in sign
 - [ ] Filtering word search by category and place
+- [x] White theme version
 - [ ] Add numeral tab in sign view
 - [ ] Reusing sign in new words and creating words based on sign definitions
 - [ ] Adding screen responsiveness
@@ -39,7 +40,6 @@ pnpm dev
 - [ ] Admin account
 
 ###  Version 2.0
-- [ ] White theme version
 - [ ] Font size adjustment
 - [ ] Keyboard support
 - [ ] Screen reader compatibility (HTML classes, Arial labels, and focus)

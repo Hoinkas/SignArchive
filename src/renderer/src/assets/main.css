@@ -153,7 +153,7 @@ label {
 a {
   text-decoration: underline;
   cursor: pointer;
-  color: var(--color-text-purple);
+  color: var(--colot-text-link);
 }
 
 ol > li::marker {
