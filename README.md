@@ -43,7 +43,6 @@ pnpm dev
 - [ ] Font size adjustment
 - [ ] Keyboard support
 - [ ] Screen reader compatibility (HTML classes, Arial labels, and focus)
-- [ ] Video slow-motion and fast-forward
 - [ ] Signs frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 
 ### Future
