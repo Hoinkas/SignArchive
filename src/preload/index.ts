@@ -3,7 +3,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 import type {
   Word,
   WordToDB,
-  WordWithCount,
+  WordWithCountCategories,
   Author,
   SignDetails,
   SignDetailsToDB,
@@ -33,7 +33,8 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('sign:years', signId, wordId)
       },
       word: {
-        listWithCount: (): Promise<WordWithCount[]> => ipcRenderer.invoke('word:listWithCount'),
+        listWithCount: (): Promise<WordWithCountCategories[]> =>
+          ipcRenderer.invoke('word:listWithCount'),
         details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
         update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>

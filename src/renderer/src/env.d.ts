@@ -13,7 +13,7 @@ declare global {
         years: (signId: string, wordId: string) => Promise<YearStartEnd>
       }
       word: {
-        listWithCount: () => Promise<WordWithCount[]>
+        listWithCount: () => Promise<WordWithCountCategories[]>
         details: (wordId: string) => Promise<Word>
         create: (data: WordToDB) => Promise<Word>
         update: (wordId: string, data: Partial<WordToDB>) => Promise<Word | undefined>

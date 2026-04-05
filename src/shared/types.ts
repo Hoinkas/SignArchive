@@ -152,6 +152,10 @@ export interface WordWithCount extends Word {
   signsCount: number
 }
 
+export interface WordWithCountCategories extends WordWithCount {
+  categories: Tag[]
+}
+
 export interface SignDetailsToDB {
   wordId: string
   definition: DefinitionToCreate

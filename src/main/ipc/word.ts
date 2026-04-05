@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import type { Word, WordToDB, WordWithCount } from '@shared/types'
+import type { Tag, Word, WordToDB, WordWithCount, WordWithCountCategories } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
 
@@ -10,7 +10,7 @@ export function findWordById(wordId: string): Word | undefined {
   return row ? (row as Word) : undefined
 }
 
-export function listAllWordsCount(): WordWithCount[] {
+export function listAllWordsCountCategories(): WordWithCountCategories[] {
   const rows = getDb()
     .prepare(
       `
@@ -23,17 +23,15 @@ export function listAllWordsCount(): WordWithCount[] {
       ORDER BY word.text
     `
     )
-    .all()
+    .all() as WordWithCount[]
 
   if (!rows[0].id) return []
 
-  return rows.map((row: Record<string, unknown>) => {
-    return {
-      ...row,
-      signsCount: row.signsCount as number,
-      tags: row.tags as string[]
-    }
+  const words: WordWithCountCategories[] = rows.map((w) => {
+    return { ...w, categories: allCategoriesByWordId(w.id) }
   })
+
+  return words
 }
 
 export function createWord(data: WordToDB): Word {
@@ -74,8 +72,26 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
   return findWordById(existing.id)
 }
 
+export function allCategoriesByWordId(wordId: string): Tag[] {
+  const db = getDb()
+
+  const rows = db
+    .prepare(
+      `
+      SELECT DISTINCT tag.* FROM tag
+      INNER JOIN tagWord ON tag.id = tagWord.tagId
+      WHERE tagWord.wordId = ?
+    `
+    )
+    .all(wordId)
+
+  return rows as Tag[]
+}
+
 export function registerWordHandlers(): void {
-  ipcMain.handle('word:listWithCount', () => handlerWithErrorLogging(() => listAllWordsCount()))
+  ipcMain.handle('word:listWithCount', () =>
+    handlerWithErrorLogging(() => listAllWordsCountCategories())
+  )
   ipcMain.handle('word:details', (_, id: string) => handlerWithErrorLogging(() => findWordById(id)))
   ipcMain.handle('word:create', (_, data: WordToDB) =>
     handlerWithErrorLogging(() => createWord(data))

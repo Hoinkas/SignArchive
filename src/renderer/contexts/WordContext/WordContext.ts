@@ -1,9 +1,9 @@
 import { createContext } from 'react'
-import { WordToDB, WordWithCount, Word } from '@shared/types'
+import { WordToDB, WordWithCountCategories, Word } from '@shared/types'
 
 export interface WordContextValue {
   word: Word | null
-  wordsList: WordWithCount[]
+  wordsList: WordWithCountCategories[]
   addWord: (word: WordToDB, closeForm: () => void) => void
   editWord: (word: Partial<WordToDB>, closeForm: () => void) => void
   deleteWord: () => void

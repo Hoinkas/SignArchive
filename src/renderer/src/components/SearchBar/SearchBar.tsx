@@ -13,10 +13,10 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
     setSearchWord(e.target.value.replaceAll('\u00A0', '').trimEnd())
   }
 
-  return (
+  return ( //TODO Search as form for accesibility
     <div className="searchBar">
       <input
-        type="text"
+        type="search"
         placeholder="Wyszukaj znaki.."
         value={searchWord}
         onChange={handleNameChange}

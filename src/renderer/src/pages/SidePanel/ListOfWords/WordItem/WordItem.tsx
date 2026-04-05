@@ -1,10 +1,10 @@
 import './WordItem.css'
-import { WordWithCount } from '@shared/types'
+import { WordWithCountCategories } from '@shared/types'
 import { signCountText } from '@renderer/functions/namesHelpers'
 import { useWord } from '@contexts/WordContext/useWord'
 
 interface WordProps {
-  word: WordWithCount
+  word: WordWithCountCategories
 }
 
 function WordItem(props: WordProps): React.JSX.Element {
