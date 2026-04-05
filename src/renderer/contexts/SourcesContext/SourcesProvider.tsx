@@ -17,7 +17,7 @@ interface Props {
 
 export default function SourcesProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
-  const { changeSourcesCountInSign } = useSigns()
+  const { changeSourcesCountInSign, updateSignYears } = useSigns()
   const [sourcesPanelSign, setSourcesPanelSign] = useState<SignDetails | null>(null)
   const [sources, setSources] = useState<SourceDetails[]>([])
 
@@ -32,15 +32,18 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   }
 
   const recalculateYears = (updatedSources: SourceDetails[]): YearStartEnd => {
-    const years = [
+    const yearsRaw = [
       ...updatedSources.map((s) => s.yearStart),
       ...updatedSources.map((s) => s.yearEnd)
     ].filter((y): y is number => y != null)
 
-    return {
-      yearStart: years.length > 0 ? Math.min(...years) : null,
-      yearEnd: years.length > 0 ? Math.max(...years) : null
+    const years: YearStartEnd = {
+      yearStart: yearsRaw.length > 0 ? Math.min(...yearsRaw) : null,
+      yearEnd: yearsRaw.length > 0 ? Math.max(...yearsRaw) : null
     }
+
+    if (sourcesPanelSign) updateSignYears(sourcesPanelSign?.id)
+    return years
   }
 
   const addSource = (data: SourceWithDetailsToDB, closeForm: () => void): void => {

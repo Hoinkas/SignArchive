@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function SignsProvider({ children }: Props): React.JSX.Element {
-  const { changeSignCountInWord } = useWord()
+  const { changeSignCountInWord, word } = useWord()
   const [signs, setSigns] = useState<SignDetails[]>([])
 
   const initiateSigns = useCallback((wordId: string): void => {
@@ -49,6 +49,14 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     )
   }
 
+  const updateSignYears = (signId: string): void => {
+    if (!word) return
+
+    window.api.sign.years(signId, word?.id).then((result) => {
+      setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, ...result } : s)))
+    })
+  }
+
   return (
     <SignContext.Provider
       value={{
@@ -57,7 +65,8 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
         addSign,
         editSign,
         deleteSign,
-        changeSourcesCountInSign
+        changeSourcesCountInSign,
+        updateSignYears
       }}
     >
       {children}

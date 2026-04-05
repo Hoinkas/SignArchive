@@ -14,7 +14,8 @@ import type {
   DefinitionToDB,
   Definition,
   Tag,
-  TagToDB
+  TagToDB,
+  YearStartEnd
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -27,7 +28,9 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
           ipcRenderer.invoke('sign:update', signId, data),
-        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
+        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId),
+        years: (signId: string, wordId: string): Promise<YearStartEnd> =>
+          ipcRenderer.invoke('sign:years', signId, wordId)
       },
       word: {
         listWithCount: (): Promise<WordWithCount[]> => ipcRenderer.invoke('word:listWithCount'),

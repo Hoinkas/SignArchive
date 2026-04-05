@@ -179,6 +179,9 @@ export function registerSignHandlers(): void {
   ipcMain.handle('sign:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteSignById(id))
   )
+  ipcMain.handle('sign:years', (_, signId: string, wordId: string) =>
+    handlerWithErrorLogging(() => getSourcesStartEndYearBySignAndWordId(signId, wordId))
+  )
 }
 
 // ROW MAPPER

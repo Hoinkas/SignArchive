@@ -10,6 +10,7 @@ declare global {
         create: (data: SignDetailsToDB) => Promise<SignDetails>
         update: (signId: string, data: Partial<SignToDB>) => Promise<Sign>
         delete: (signId: string) => Promise<void>
+        years: (signId: string, wordId: string) => Promise<YearStartEnd>
       }
       word: {
         listWithCount: () => Promise<WordWithCount[]>
