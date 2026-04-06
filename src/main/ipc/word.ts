@@ -28,7 +28,7 @@ export function listAllWordsCountCategories(): WordWithCountCategories[] {
   if (!rows[0].id) return []
 
   const words: WordWithCountCategories[] = rows.map((w) => {
-    return { ...w, categories: allCategoriesByWordId(w.id) }
+    return { ...w, categories: allCategoriesByWordId(w.id), regions: allRegionsByWordId(w.id) }
   })
 
   return words
@@ -86,6 +86,22 @@ export function allCategoriesByWordId(wordId: string): Tag[] {
     .all(wordId)
 
   return rows as Tag[]
+}
+
+export function allRegionsByWordId(wordId: string): string[] {
+  const db = getDb()
+
+  const rows = db
+    .prepare(
+      `
+      SELECT DISTINCT source.region FROM source
+      INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+      WHERE sourceSignWord.wordId = ?
+    `
+    )
+    .all(wordId)
+
+  return rows.map((r) => r.region) as string[]
 }
 
 export function registerWordHandlers(): void {

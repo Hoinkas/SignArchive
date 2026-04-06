@@ -1,33 +1,24 @@
-import { useWord } from '@contexts/WordContext/useWord'
+import { useSearch } from '@contexts/SearchCotext/useSearch'
 import './ListOfWords.css'
-import WordItem from './WordItem/WordItem'
-import { DropdownOption } from '@renderer/components/Form/Components/FormDropdown'
+import { useWord } from '@contexts/WordContext/useWord'
+import { signCountText } from '@renderer/functions/namesHelpers'
 import { WordWithCountCategories } from '@shared/types'
 
-interface ListOfWordsProps {
-  searchWord: string
-  tagOption: DropdownOption | null
-}
-
-function ListOfWords({ searchWord, tagOption }: ListOfWordsProps): React.JSX.Element {
-  const { wordsList } = useWord()
-
-  function filterBySearch(words: WordWithCountCategories[]): WordWithCountCategories[] {
-    if (searchWord == '') return words
-    return words.filter((w) => w.text.toUpperCase().includes(searchWord.toUpperCase()))
-  }
-
-  function filterByTags(words: WordWithCountCategories[]): WordWithCountCategories[] {
-    if (!tagOption) return words
-    return words.filter((w) => w.categories.find((c) => c.id === tagOption.id))
-  }
-
-  const wordsToList = filterByTags(filterBySearch(wordsList))
+function ListOfWords(): React.JSX.Element {
+  const { filteredWords } = useSearch()
+  const { activeWordId, changeActiveWord } = useWord()
 
   return (
     <ul className="listOfWords">
-      {wordsToList.map((word, key) => (
-        <WordItem key={key} word={word} />
+      {filteredWords.map((word: WordWithCountCategories, key: number) => (
+        <li
+          key={key}
+          className={word.id === activeWordId ? 'word active' : 'word'}
+          onClick={() => changeActiveWord(word.id)}
+        >
+          <div>{word.text}</div>
+          <div className="additionalInfo">{signCountText(word.signsCount)}</div>
+        </li>
       ))}
     </ul>
   )

@@ -72,7 +72,7 @@ export function getSourcesStartEndYearBySignAndWordId(
   } as YearStartEnd
 }
 
-export function returnAllPlacesBySignAndWordId(signId: string, wordId: string): string[] {
+export function returnAllRegionsBySignAndWordId(signId: string, wordId: string): string[] {
   const rows = getDb()
     .prepare(
       `
@@ -91,9 +91,27 @@ export function returnAllPlacesBySignAndWordId(signId: string, wordId: string): 
   return result
 }
 
-export function returnYearsPlacesBySignAndWordId(signId: string, wordId: string): YearsRegions {
+export function returnAllRegions(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+        SELECT DISTINCT source.region FROM source
+        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+      `
+    )
+    .all()
+
+  const result: string[] = []
+  rows.forEach((r) => {
+    if (r.region) result.push(r.region)
+  })
+
+  return result
+}
+
+export function returnYearsRegionsBySignAndWordId(signId: string, wordId: string): YearsRegions {
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(signId, wordId)
-  const regions = returnAllPlacesBySignAndWordId(signId, wordId)
+  const regions = returnAllRegionsBySignAndWordId(signId, wordId)
 
   return { yearStart, yearEnd, regions }
 }
@@ -233,6 +251,7 @@ export function registerSourceHandlers(): void {
     returnSourcesDetailsBySignWordId(signId, wordId)
   )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
+  ipcMain.handle('source:regions', () => returnAllRegions())
   ipcMain.handle('source:update', (_, sourceId: string, data: Partial<SourceWithDetailsToDB>) =>
     updateSource(sourceId, data)
   )

@@ -29,8 +29,8 @@ if (process.contextIsolated) {
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
           ipcRenderer.invoke('sign:update', signId, data),
         delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId),
-        yearsPlaces: (signId: string, wordId: string): Promise<YearsRegions> =>
-          ipcRenderer.invoke('sign:yearsPlaces', signId, wordId)
+        yearsRegions: (signId: string, wordId: string): Promise<YearsRegions> =>
+          ipcRenderer.invoke('sign:yearsRegions', signId, wordId)
       },
       word: {
         listWithCount: (): Promise<WordWithCountCategories[]> =>
@@ -46,6 +46,7 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('source:list', signId, wordId),
         details: (sourceId: string): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:details', sourceId),
+        regions: (): Promise<string[]> => ipcRenderer.invoke('source:regions'),
         create: (data: SourceWithDetailsToDB): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:create', data),
         update: (

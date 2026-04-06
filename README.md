@@ -31,7 +31,7 @@ pnpm dev
 - [x] View definitions details list. Add, edit, delete definition
 - [x] View definition categories. Edit category
 - [x] View tags in sign. Add, edit, delete tags in sign
-- [ ] Filtering word search by category and place
+- [ ] Filtering word search by category and region
 - [x] White theme version
 - [ ] Add numeral tab in sign view
 - [ ] Reusing sign in new words and creating words based on sign definitions

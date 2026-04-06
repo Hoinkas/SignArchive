@@ -154,6 +154,7 @@ export interface WordWithCount extends Word {
 
 export interface WordWithCountCategories extends WordWithCount {
   categories: Tag[]
+  regions: string[]
 }
 
 export interface SignDetailsToDB {

@@ -1,39 +1,28 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useState } from 'react'
 import './SearchBar.css'
 import SearchIcon from '@renderer/assets/icons/SearchIcon'
 import FilterIcon from '@renderer/assets/icons/FilterIcon'
 import FormDropdown, { DropdownOption } from '../Form/Components/FormDropdown'
+import { useSearch } from '@contexts/SearchCotext/useSearch'
 
-interface SearchBarProps {
-  searchWord: string
-  setSearchWord: Dispatch<SetStateAction<string>>
-  tagOption: DropdownOption | null
-  setTagOption: Dispatch<SetStateAction<DropdownOption | null>>
-}
-
-function SearchBar(props: SearchBarProps): React.JSX.Element {
-  const { searchWord, setSearchWord, tagOption, setTagOption } = props
-
+function SearchBar(): React.JSX.Element {
+  const {
+    handleChange,
+    handleNameChange,
+    searchWord,
+    categoriesOptions,
+    categoryOption,
+    regionsOptions,
+    regionOption
+  } = useSearch()
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
-  const [tagsOptions, setTagsOptions] = useState<DropdownOption[]>([])
-
-  useEffect(() => {
-    window.api.tag.list().then((result) =>
-      setTagsOptions(
-        result.map((t) => {
-          return { id: t.id, label: t.name }
-        })
-      )
-    )
-  }, [])
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchWord(e.target.value.replaceAll('\u00A0', '').trimEnd())
-  }
 
   const handleFilterClick = (): void => {
-    if (isFilterOpen) setTagOption(null)
     setIsFilterOpen(!isFilterOpen)
+
+    if (!isFilterOpen) return
+    handleChange('category', null)
+    handleChange('region', null)
   }
 
   return ( //TODO Search as form for accesibility
@@ -43,7 +32,7 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
           type="search"
           placeholder="Wyszukaj znaki.."
           value={searchWord}
-          onChange={handleNameChange}
+          onChange={(e) => handleNameChange(e.target.value)}
         />
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
@@ -53,7 +42,20 @@ function SearchBar(props: SearchBarProps): React.JSX.Element {
         </div>
       </div>
       {isFilterOpen && (
-        <FormDropdown label="" options={tagsOptions} value={tagOption} setValue={setTagOption} />
+        <FormDropdown
+          label="Kategorie"
+          options={categoriesOptions}
+          value={categoryOption}
+          setValue={(value: DropdownOption | null) => handleChange('category', value)}
+        />
+      )}
+      {isFilterOpen && (
+        <FormDropdown
+          label="Regiony"
+          options={regionsOptions}
+          value={regionOption}
+          setValue={(value: DropdownOption | null) => handleChange('region', value)}
+        />
       )}
     </div>
   )

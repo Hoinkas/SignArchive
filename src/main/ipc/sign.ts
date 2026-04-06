@@ -14,9 +14,9 @@ import type {
 import toSqlParams from '../utils/toSqlParams'
 import {
   getSourcesStartEndYearBySignAndWordId,
-  returnAllPlacesBySignAndWordId,
+  returnAllRegionsBySignAndWordId,
   returnSourcesCountBySignId,
-  returnYearsPlacesBySignAndWordId
+  returnYearsRegionsBySignAndWordId
 } from './source'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
 import { createDefinition, returnAllDefinitionsBySignWordId } from './definition'
@@ -66,7 +66,7 @@ export function returnSignDetailsBySignWordId(
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(sign.id, wordId)
   const sourcesCount = returnSourcesCountBySignId(sign.id)
   const definitions = returnAllDefinitionsBySignWordId(signId, wordId)
-  const regions = returnAllPlacesBySignAndWordId(signId, wordId)
+  const regions = returnAllRegionsBySignAndWordId(signId, wordId)
 
   return {
     ...sign,
@@ -186,8 +186,8 @@ export function registerSignHandlers(): void {
   ipcMain.handle('sign:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteSignById(id))
   )
-  ipcMain.handle('sign:yearsPlaces', (_, signId: string, wordId: string) =>
-    handlerWithErrorLogging(() => returnYearsPlacesBySignAndWordId(signId, wordId))
+  ipcMain.handle('sign:yearsRegions', (_, signId: string, wordId: string) =>
+    handlerWithErrorLogging(() => returnYearsRegionsBySignAndWordId(signId, wordId))
   )
 }
 

@@ -43,7 +43,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   const updateSignSource = (signId: string): void => {
     if (!word) return
 
-    window.api.sign.yearsPlaces(signId, word?.id).then((result) => {
+    window.api.sign.yearsRegions(signId, word?.id).then((result) => {
       setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, ...result } : s)))
     })
   }
