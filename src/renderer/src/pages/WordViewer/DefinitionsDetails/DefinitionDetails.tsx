@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
 import DefinitionContainer from './DefinitionLContainer/DefinitionContainer'
 import PillList from '@renderer/components/PillList/PillList'
+import ArrowUpIcon from '@renderer/assets/icons/ArrowUpIcon'
+import ArrowDownIcon from '@renderer/assets/icons/ArrowDownIcon'
 
 interface DefinitionListProps {
   sign: SignDetails
@@ -32,7 +34,7 @@ function DefinitionDetails({ sign, notes }: DefinitionListProps): React.JSX.Elem
               <PillList textArray={translations} />
             </div>
           )}
-          <p> {isDefinitionListOpen ? '▲' : '▼'} </p>
+          <p> {isDefinitionListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </p>
         </div>
         {notes && <div>{notes}</div>}
       </div>
