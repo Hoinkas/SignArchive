@@ -4,6 +4,7 @@
 
 .searchBar {
   display: inline-flex;
+  margin-bottom: var(--space-2);
 
   & input {
     padding-right: 0;
