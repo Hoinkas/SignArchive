@@ -60,6 +60,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
   return (
     <SearchContext.Provider
       value={{
+        searchWord,
         filteredWords,
         categoriesOptions,
         categoryOption,
