@@ -7,10 +7,4 @@
   justify-content: center;
   overflow: hidden;
   border-right: var(--line-border);
-
-  & ul {
-    padding-inline-start: 0px;
-    display: flex;
-    flex-direction: column;
-  }
 }

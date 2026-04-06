@@ -10,15 +10,12 @@ interface Props {
 }
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
-  const { wordsList } = useWord()
-
+  const { allWords } = useWord()
   const [searchWord, setSearchWord] = useState('')
   const [categoriesOptions, setCategoriesOptions] = useState<DropdownOption[]>([])
   const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(null)
   const [regionsOptions, setRegionsOptions] = useState<DropdownOption[]>([])
   const [regionOption, setRegionOption] = useState<DropdownOption | null>(null)
-
-  console.log(wordsList)
 
   useEffect(() => {
     window.api.tag.list().then((result) =>
@@ -40,13 +37,13 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
   const filteredWords = useMemo((): WordWithCountCategories[] => {
     const upper = searchWord.toUpperCase()
 
-    return wordsList.filter((w) => {
+    return allWords.filter((w) => {
       if (searchWord && !w.text.toUpperCase().includes(upper)) return false
       if (categoryOption && !w.categories.some((c) => c.id === categoryOption.id)) return false
       if (regionOption && !w.regions.includes(regionOption.label)) return false
       return true
     })
-  }, [wordsList, searchWord, categoryOption, regionOption])
+  }, [allWords, searchWord, categoryOption, regionOption])
 
   const handleChange = (type: 'category' | 'region', value: DropdownOption | null): void => {
     if (type === 'category') setCategoryOption(value)

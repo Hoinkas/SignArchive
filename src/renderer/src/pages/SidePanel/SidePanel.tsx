@@ -5,6 +5,7 @@ import ListOfWords from './ListOfWords/ListOfWords'
 import ThemeSwitch from '@renderer/components/ThemeSwitch/ThemeSwitch'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import WordForm from '@renderer/components/Form/Forms/WordForm'
+import WordListDetails from './WordListDetails/WordListDetails'
 
 function SidePanel(): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
@@ -24,7 +25,7 @@ function SidePanel(): React.JSX.Element {
       >
         <ActionButton text="Dodaj słowo" setIsFormOpen={setIsFormOpen} />
       </div>
-
+      <WordListDetails />
       <ListOfWords />
       {isFormOpen && ( //TODO wrap with form Wrapper
         <div className="formContainer">

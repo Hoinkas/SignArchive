@@ -1,0 +1,15 @@
+.wordListDetails {
+  padding: 0 var(--space-2) 0 var(--space-4);
+  display: inline-flex;
+  align-content: center;
+  justify-content: space-between;
+
+  & p {
+    align-content: center;
+    font-weight: bold;
+  }
+
+  & svg {
+    cursor: pointer;
+  }
+}
