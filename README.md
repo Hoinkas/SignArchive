@@ -7,11 +7,11 @@ The sign language sometimes uses the same sign for different words and/or the sa
 
 Made for offline use, but will be implemented into webpage.
 
-### Soucres view
-![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveSourcesView.png?raw=true)
-
 ### Definitions view
 ![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveDefinitionsView.png?raw=true)
+
+### Soucres view
+![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveSourcesView.png?raw=true)
 
 ## Dev stack
 Electron + React.js + Typescript + SQLite
@@ -50,10 +50,10 @@ pnpm dev
 - [ ] Signs frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 
 ### Future
-- [ ] Generating thumbnails from videos with ghost movements
+- [ ] Generating video thumbnails with ghost movements from videos
 - [ ] Generating files with landmarks from videos
-- [ ] Displaying a Three.js motion model with markers
-- [ ] Recognizing a character from a webcam or video
+- [ ] Displaying a Three.js motion model moving based on generated landmarks
+- [ ] Recognizing a sign from a webcam or video
 - [ ] Adding HamNoSys sign transcript
-- [ ] Storing multiple videos for a single character to share with students who want to teach their ML with many clips of same word
-- [ ] User accounts with moderation and voting on new characters and editing old ones
+- [ ] Storing multiple videos for a single sign to share with students who want to teach their ML with many clips of same word
+- [ ] User accounts with moderation and voting on new signs and editing old ones
