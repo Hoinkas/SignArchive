@@ -3,6 +3,7 @@ import { WordWithCountCategories } from '@shared/types'
 import { DropdownOption } from '@renderer/components/Form/Components/FormDropdown'
 
 export interface SearchContextValue {
+  searchWord: string
   filteredWords: WordWithCountCategories[]
   categoriesOptions: DropdownOption[]
   categoryOption: DropdownOption | null
@@ -13,6 +14,7 @@ export interface SearchContextValue {
 }
 
 export const SearchContext = createContext<SearchContextValue>({
+  searchWord: '',
   filteredWords: [],
   categoriesOptions: [],
   categoryOption: null,

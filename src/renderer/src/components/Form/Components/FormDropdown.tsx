@@ -22,9 +22,15 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const handleSelect = (option: DropdownOption): void => {
+    setIsOpen(false)
+
+    if (option === value) {
+      setValue(null)
+      setQuery('')
+      return
+    }
     setValue(option)
     setQuery(option.label)
-    setIsOpen(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -61,7 +67,7 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
       <div className="dropdownWrapper">
         <input
           className={`formInput ${isOpen ? 'dropdownOpen' : ''}`}
-          type="text"
+          type="search"
           value={query}
           placeholder={placeholder}
           onChange={handleChange}
