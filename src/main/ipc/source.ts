@@ -7,7 +7,8 @@ import type {
   SourceDetails,
   SourceWithDetailsToCreate,
   SourceWithDetailsToDB,
-  YearStartEnd
+  YearStartEnd,
+  YearsRegions
 } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { createAuthor, findAuthorById } from './author'
@@ -69,6 +70,50 @@ export function getSourcesStartEndYearBySignAndWordId(
     yearStart: Math.min(...yearsRaw),
     yearEnd: Math.max(...yearsRaw)
   } as YearStartEnd
+}
+
+export function returnAllRegionsBySignAndWordId(signId: string, wordId: string): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+        SELECT DISTINCT source.region FROM source
+        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+        WHERE sourceSignWord.wordId = ? AND sourceSignWord.signId = ?
+      `
+    )
+    .all(wordId, signId)
+
+  const result: string[] = []
+  rows.forEach((r) => {
+    if (r.region) result.push(r.region)
+  })
+
+  return result
+}
+
+export function returnAllRegions(): string[] {
+  const rows = getDb()
+    .prepare(
+      `
+        SELECT DISTINCT source.region FROM source
+        INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
+      `
+    )
+    .all()
+
+  const result: string[] = []
+  rows.forEach((r) => {
+    if (r.region) result.push(r.region)
+  })
+
+  return result
+}
+
+export function returnYearsRegionsBySignAndWordId(signId: string, wordId: string): YearsRegions {
+  const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(signId, wordId)
+  const regions = returnAllRegionsBySignAndWordId(signId, wordId)
+
+  return { yearStart, yearEnd, regions }
 }
 
 export function returnSourcesCountBySignId(signId: string): number {
@@ -206,6 +251,7 @@ export function registerSourceHandlers(): void {
     returnSourcesDetailsBySignWordId(signId, wordId)
   )
   ipcMain.handle('source:details', (_, sourceId: string) => returnSourceDetailsById(sourceId))
+  ipcMain.handle('source:regions', () => returnAllRegions())
   ipcMain.handle('source:update', (_, sourceId: string, data: Partial<SourceWithDetailsToDB>) =>
     updateSource(sourceId, data)
   )

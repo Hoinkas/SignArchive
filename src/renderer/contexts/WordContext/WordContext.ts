@@ -1,9 +1,11 @@
 import { createContext } from 'react'
-import { WordToDB, WordWithCount, Word } from '@shared/types'
+import { WordToDB, WordWithCountCategories, Word } from '@shared/types'
 
 export interface WordContextValue {
   word: Word | null
-  wordsList: WordWithCount[]
+  allWords: WordWithCountCategories[]
+  toggleSort: () => void
+  isDescending: boolean
   addWord: (word: WordToDB, closeForm: () => void) => void
   editWord: (word: Partial<WordToDB>, closeForm: () => void) => void
   deleteWord: () => void
@@ -14,7 +16,9 @@ export interface WordContextValue {
 
 export const WordContext = createContext<WordContextValue>({
   word: null,
-  wordsList: [],
+  allWords: [],
+  toggleSort: () => {},
+  isDescending: false,
   addWord: () => {},
   editWord: () => {},
   deleteWord: () => {},

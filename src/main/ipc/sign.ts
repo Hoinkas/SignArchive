@@ -12,7 +12,12 @@ import type {
   SignDetailsToDB
 } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
-import { getSourcesStartEndYearBySignAndWordId, returnSourcesCountBySignId } from './source'
+import {
+  getSourcesStartEndYearBySignAndWordId,
+  returnAllRegionsBySignAndWordId,
+  returnSourcesCountBySignId,
+  returnYearsRegionsBySignAndWordId
+} from './source'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
 import { createDefinition, returnAllDefinitionsBySignWordId } from './definition'
 
@@ -61,13 +66,15 @@ export function returnSignDetailsBySignWordId(
   const { yearStart, yearEnd } = getSourcesStartEndYearBySignAndWordId(sign.id, wordId)
   const sourcesCount = returnSourcesCountBySignId(sign.id)
   const definitions = returnAllDefinitionsBySignWordId(signId, wordId)
+  const regions = returnAllRegionsBySignAndWordId(signId, wordId)
 
   return {
     ...sign,
     yearStart,
     yearEnd,
     sourcesCount,
-    definitions
+    definitions,
+    regions
   }
 }
 
@@ -85,8 +92,6 @@ export function returnSignsDetailsByWordId(wordId: string): SignDetails[] {
 }
 
 export function createSign(data: SignToDB): Sign {
-  const db = getDb()
-
   const parsedFile = JSON.parse(data.file) as SignFile
   const signFile: SignFile = copySignFile(parsedFile)
 
@@ -96,12 +101,14 @@ export function createSign(data: SignToDB): Sign {
     ...data,
     file: signFile
   }
-  db.prepare(
-    `
-      INSERT INTO sign (id, createdAt, notes, file)
-      VALUES (@id, @createdAt, @notes, @file)
-    `
-  ).run(toSqlParams({ ...sign, file: JSON.stringify(sign.file) }))
+  getDb()
+    .prepare(
+      `
+        INSERT INTO sign (id, createdAt, notes, file)
+        VALUES (@id, @createdAt, @notes, @file)
+      `
+    )
+    .run(toSqlParams({ ...sign, file: JSON.stringify(sign.file) }))
   return sign
 }
 
@@ -178,6 +185,9 @@ export function registerSignHandlers(): void {
   )
   ipcMain.handle('sign:delete', (_, id: string) =>
     handlerWithErrorLogging(() => deleteSignById(id))
+  )
+  ipcMain.handle('sign:yearsRegions', (_, signId: string, wordId: string) =>
+    handlerWithErrorLogging(() => returnYearsRegionsBySignAndWordId(signId, wordId))
   )
 }
 

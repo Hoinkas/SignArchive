@@ -1,24 +1,24 @@
-import { useWord } from '@contexts/WordContext/useWord'
+import { useSearch } from '@contexts/SearchCotext/useSearch'
 import './ListOfWords.css'
-import WordItem from './WordItem/WordItem'
+import { useWord } from '@contexts/WordContext/useWord'
+import { signCountText } from '@renderer/functions/namesHelpers'
+import { WordWithCountCategories } from '@shared/types'
 
-interface ListOfWordsProps {
-  searchWord: string
-}
-
-function ListOfWords(props: ListOfWordsProps): React.JSX.Element {
-  const { searchWord } = props
-  const { wordsList } = useWord()
-
-  const wordFiltered = wordsList.filter((w) =>
-    w.text.toUpperCase().includes(searchWord.toUpperCase())
-  )
-  const wordsToList = searchWord == '' ? wordsList : wordFiltered
+function ListOfWords(): React.JSX.Element {
+  const { filteredWords } = useSearch()
+  const { activeWordId, changeActiveWord } = useWord()
 
   return (
     <ul className="listOfWords">
-      {wordsToList.map((word, key) => (
-        <WordItem key={key} word={word} />
+      {filteredWords.map((word: WordWithCountCategories, key: number) => (
+        <li
+          key={key}
+          className={word.id === activeWordId ? 'word active' : 'word'}
+          onClick={() => changeActiveWord(word.id)}
+        >
+          <div>{word.text}</div>
+          <div className="additionalInfo">{signCountText(word.signsCount)}</div>
+        </li>
       ))}
     </ul>
   )

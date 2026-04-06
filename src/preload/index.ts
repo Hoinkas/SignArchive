@@ -3,7 +3,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 import type {
   Word,
   WordToDB,
-  WordWithCount,
+  WordWithCountCategories,
   Author,
   SignDetails,
   SignDetailsToDB,
@@ -14,7 +14,8 @@ import type {
   DefinitionToDB,
   Definition,
   Tag,
-  TagToDB
+  TagToDB,
+  YearsRegions
 } from '@shared/types'
 
 if (process.contextIsolated) {
@@ -27,10 +28,13 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('sign:create', data),
         update: (signId: string, data: Partial<SignToDB>): Promise<Sign> =>
           ipcRenderer.invoke('sign:update', signId, data),
-        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId)
+        delete: (signId: string): Promise<void> => ipcRenderer.invoke('sign:delete', signId),
+        yearsRegions: (signId: string, wordId: string): Promise<YearsRegions> =>
+          ipcRenderer.invoke('sign:yearsRegions', signId, wordId)
       },
       word: {
-        listWithCount: (): Promise<WordWithCount[]> => ipcRenderer.invoke('word:listWithCount'),
+        listWithCount: (): Promise<WordWithCountCategories[]> =>
+          ipcRenderer.invoke('word:listWithCount'),
         details: (wordId: string): Promise<Word> => ipcRenderer.invoke('word:details', wordId),
         create: (data: WordToDB): Promise<Word> => ipcRenderer.invoke('word:create', data),
         update: (wordId: string, data: Partial<WordToDB>): Promise<Word | undefined> =>
@@ -42,6 +46,7 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('source:list', signId, wordId),
         details: (sourceId: string): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:details', sourceId),
+        regions: (): Promise<string[]> => ipcRenderer.invoke('source:regions'),
         create: (data: SourceWithDetailsToDB): Promise<SourceDetails> =>
           ipcRenderer.invoke('source:create', data),
         update: (

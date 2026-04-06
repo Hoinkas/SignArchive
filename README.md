@@ -31,19 +31,22 @@ pnpm dev
 - [x] View definitions details list. Add, edit, delete definition
 - [x] View definition categories. Edit category
 - [x] View tags in sign. Add, edit, delete tags in sign
-- [ ] Filtering word search by category and place
+- [x] Sorting words list
+- [x] Filtering word list by category and region
+- [x] White theme version
+- [ ] Showing form requirements and errors
 - [ ] Add numeral tab in sign view
 - [ ] Reusing sign in new words and creating words based on sign definitions
-- [ ] Adding screen responsiveness
 - [ ] Exporting to a webpage using Node.js, Express, Axios
 - [ ] Admin account
 
 ###  Version 2.0
-- [ ] White theme version
+- [ ] Improved screen responsiveness
 - [ ] Font size adjustment
 - [ ] Keyboard support
+- [ ] Feedback from backend for user's actions (error, success, failure)
 - [ ] Screen reader compatibility (HTML classes, Arial labels, and focus)
-- [ ] Video slow-motion and fast-forward
+- [ ] Downloading json of a word or/and signs
 - [ ] Signs frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 
 ### Future

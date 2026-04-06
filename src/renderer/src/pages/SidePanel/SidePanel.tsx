@@ -5,15 +5,15 @@ import ListOfWords from './ListOfWords/ListOfWords'
 import ThemeSwitch from '@renderer/components/ThemeSwitch/ThemeSwitch'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import WordForm from '@renderer/components/Form/Forms/WordForm'
+import WordListDetails from './WordListDetails/WordListDetails'
 
 function SidePanel(): React.JSX.Element {
-  const [searchWord, setSearchWord] = useState('')
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   return (
     <div className="sidepanel">
       <ThemeSwitch />
-      <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
+      <SearchBar />
 
       <div
         style={{
@@ -25,8 +25,8 @@ function SidePanel(): React.JSX.Element {
       >
         <ActionButton text="Dodaj słowo" setIsFormOpen={setIsFormOpen} />
       </div>
-
-      <ListOfWords searchWord={searchWord} />
+      <WordListDetails />
+      <ListOfWords />
       {isFormOpen && ( //TODO wrap with form Wrapper
         <div className="formContainer">
           <div className="formBox">

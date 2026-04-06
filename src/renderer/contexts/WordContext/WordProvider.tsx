@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
-import { WordToDB, WordWithCount, Word } from '@shared/types'
+import { WordToDB, WordWithCountCategories, Word } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
-  const [wordsList, setWordsList] = useState<WordWithCount[]>([])
+  const [wordsList, setWordsList] = useState<WordWithCountCategories[]>([])
+  const [isDescending, setIsDescending] = useState<boolean>(false)
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<Word | null>(null)
 
@@ -23,7 +24,10 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   const addWord = (word: WordToDB, closeForm: () => void): void => {
     window.api.word.create(word).then((result) => {
-      setWordsList((prevState) => [...prevState, { ...result, signsCount: 0 }])
+      setWordsList((prevState) => [
+        ...prevState,
+        { ...result, signsCount: 0, categories: [], regions: [] }
+      ])
       closeForm()
     })
   }
@@ -63,11 +67,24 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
+  const allWords = useMemo((): WordWithCountCategories[] => {
+    return [...wordsList].sort((a, b) => {
+      const comparison = a.text.localeCompare(b.text, 'pl')
+      return isDescending ? -comparison : comparison
+    })
+  }, [wordsList, isDescending])
+
+  const toggleSort = (): void => {
+    setIsDescending((prev) => !prev)
+  }
+
   return (
     <WordContext.Provider
       value={{
         word,
-        wordsList,
+        allWords,
+        toggleSort,
+        isDescending,
         addWord,
         editWord,
         deleteWord,

@@ -6,6 +6,13 @@ export function mergeYearText(yearStart: yearType, yearEnd: yearType): string {
   return yearStart?.toString() || yearEnd?.toString() || 'brak roku'
 }
 
+export const wordsCountText = (count: number): string => {
+  if (count === 1) return '1 słowo'
+  if ([12, 13, 14].includes(count)) return `${count} słów`
+  if ([2, 3, 4].includes(count % 10)) return `${count} słowa`
+  return `${count} słów`
+}
+
 export const sourcesCountText = (count: number): string => {
   if (count === 1) return '1 źródło'
   if ([12, 13, 14].includes(count)) return `${count} źródeł`

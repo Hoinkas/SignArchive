@@ -152,6 +152,11 @@ export interface WordWithCount extends Word {
   signsCount: number
 }
 
+export interface WordWithCountCategories extends WordWithCount {
+  categories: Tag[]
+  regions: string[]
+}
+
 export interface SignDetailsToDB {
   wordId: string
   definition: DefinitionToCreate
@@ -172,4 +177,9 @@ export interface SourceDetails extends Omit<Source, 'authorId' | 'mediaFileId'> 
 export interface SignDetails extends Sign, YearStartEnd {
   sourcesCount: number
   definitions: Definition[]
+  regions: string[]
+}
+
+export interface YearsRegions extends YearStartEnd {
+  regions: string[]
 }
