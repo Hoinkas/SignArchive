@@ -125,14 +125,16 @@ export function createSignWithDefinition(signWithDetails: SignDetailsToDB): Sign
     const createdDefinition = createDefinition(definitionToDb)
 
     const years = getSourcesStartEndYearBySignAndWordId(createdSign.id, wordId)
-
-    return {
+    const result: SignDetails = {
       ...createdSign,
       yearStart: years.yearStart ?? null,
       yearEnd: years.yearEnd ?? null,
       sourcesCount: 0,
-      definitions: [createdDefinition]
+      definitions: [createdDefinition],
+      regions: []
     }
+
+    return result
   })
 
   return transaction()

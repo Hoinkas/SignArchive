@@ -135,7 +135,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
     })
   }
 
-  const deleteDefinition = (definitionId: string): void => {
+  const deleteDefinition = (definitionId: string): void => {//TODO If it's the last definition block possibility of removing the last one
     window.api.definition.delete(definitionId).then(() => {
       setDefinitions((prevState) =>
         prevState

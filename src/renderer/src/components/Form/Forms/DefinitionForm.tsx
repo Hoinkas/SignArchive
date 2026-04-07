@@ -7,7 +7,7 @@ import {
 } from '@renderer/components/Form/Form'
 import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
 import FormDropdown, { DropdownOption } from '../Components/FormDropdown'
-import { DEFINITIONS_CATEGORIES } from '../Components/DropdownOptions'
+import { categoriesOptions } from '../Components/DropdownOptions'
 
 interface DefinitionFormProps {
   definition?: Definition
@@ -20,11 +20,6 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
   const { activeCategory } = useDefinitions()
   const { definition, formType, setIsFormOpen, category } = props
   const { addDefinition, editDefinition } = useDefinitions()
-
-  const categoriesOptions: DropdownOption[] = DEFINITIONS_CATEGORIES.map((e, key) => {
-    const option: DropdownOption = { id: key.toString(), label: e }
-    return option
-  })
 
   const findOption = categoriesOptions.find((c) => c.label === (category || activeCategory))
 

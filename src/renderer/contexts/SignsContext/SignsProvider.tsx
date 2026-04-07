@@ -13,9 +13,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   const [signs, setSigns] = useState<SignDetails[]>([])
 
   const initiateSigns = useCallback((wordId: string): void => {
-    window.api.sign.list(wordId).then((result) => {
-      setSigns(result)
-    })
+    window.api.sign.list(wordId).then((result) => setSigns(result))
   }, [])
 
   const addSign = (data: SignDetailsToDB, closeForm: () => void): void => {
@@ -40,11 +38,16 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const updateSignSource = (signId: string): void => {
+  const updateSignSource = (signId: string, action?: 'add' | 'delete'): void => {
     if (!word) return
 
     window.api.sign.yearsRegions(signId, word?.id).then((result) => {
-      setSigns((prevState) => prevState.map((s) => (s.id === signId ? { ...s, ...result } : s)))
+      setSigns((prevState) => {
+        const countAction = action ? (action === 'add' ? 1 : -1) : 0
+        return prevState.map((s) =>
+          s.id === signId ? { ...s, ...result, sourcesCount: s.sourcesCount + countAction } : s
+        )
+      })
     })
   }
 
