@@ -3,13 +3,17 @@ import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import { DropdownOption } from '../Components/FormDropdown'
 import { TagToDB } from '@shared/types'
 import { useTags } from '@contexts/TagsContext/useTags'
+import { useWord } from '@contexts/WordContext/useWord'
 
 interface AddTagFormProps {
   setIsTagFormOpen: Dispatch<SetStateAction<boolean>>
+  required?: boolean
+  submitted?: boolean
 }
 
-function AddTagForm({ setIsTagFormOpen }: AddTagFormProps): React.JSX.Element {
-  const { allTags, addTag } = useTags()
+function AddTagForm({ setIsTagFormOpen, required, submitted }: AddTagFormProps): React.JSX.Element {
+  const { addTag } = useTags()
+  const { allTags } = useWord()
   const [tag, setTag] = useState<DropdownOption | null>(null)
 
   const handleAddTagForm = async (): Promise<void> => {
@@ -27,7 +31,14 @@ function AddTagForm({ setIsTagFormOpen }: AddTagFormProps): React.JSX.Element {
 
   return (
     <div style={{ display: 'inline-flex', gap: 'var(--space-4)' }}>
-      <FormCustomInputDropdown label="" options={tagsAsOptions} value={tag} setValue={setTag} />
+      <FormCustomInputDropdown
+        label=""
+        options={tagsAsOptions}
+        value={tag}
+        setValue={setTag}
+        required={required}
+        submitted={submitted}
+      />
       <button type="button" onClick={() => handleAddTagForm()}>
         Dodaj
       </button>

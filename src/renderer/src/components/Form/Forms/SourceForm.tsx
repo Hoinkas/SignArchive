@@ -27,6 +27,7 @@ interface SourceFormProps {
 function SourceForm(props: SourceFormProps): React.JSX.Element {
   const { source, formType, setIsFormOpen } = props
   const { addSource, editSource } = useSources()
+  const [submitted, setSubmitted] = useState(false)
 
   const [notes, setNotes] = useState<string>(source?.notes || '')
   const [region, setRegion] = useState<string>(source?.region || '')
@@ -61,10 +62,12 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
+  const isValid = authorOption && fileUrl
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
-
-    if (!authorOption) return
+    setSubmitted(true)
+    if (!isValid) return
 
     const mediaFile: MediaFileToDB = { fileUrl }
     const author: AuthorToDB = { name: authorOption.label }
@@ -91,7 +94,13 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormSingleLineInput label={'Online Url'} value={fileUrl} setValue={setFilePath} />
+      <FormSingleLineInput
+        label={'Online Url'}
+        value={fileUrl}
+        setValue={setFilePath}
+        required
+        submitted={submitted}
+      />
       <FormMultiLineInput label={'Notatka do źródła'} value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
         <FormCustomInputDropdown
@@ -99,6 +108,8 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
           options={authors.map((a) => ({ id: a.id, label: a.name }))}
           value={authorOption}
           setValue={setAuthorOption}
+          required
+          submitted={submitted}
         />
         <FormSingleLineInput label={'Region'} value={region} setValue={setRegion} />
       </FormTwoInLineWrapper>

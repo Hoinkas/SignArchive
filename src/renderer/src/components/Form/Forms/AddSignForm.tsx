@@ -35,6 +35,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
   const [text, setText] = useState<string>('')
   const [translation, setTranslation] = useState<string>('')
   const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(null)
+  const [submitted, setSubmitted] = useState(false)
 
   const closeForm = (): void => {
     setNewFile(null)
@@ -45,8 +46,12 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
+  const isValid = newFile && text && categoryOption
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setSubmitted(true)
+    if (!isValid) return
 
     if (!newFile || !categoryOption || !word || text === '') return
 
@@ -70,15 +75,23 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMediaFile newFile={newFile} setNewFile={setNewFile} />
+      <FormMediaFile newFile={newFile} setNewFile={setNewFile} required submitted={submitted} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
-      <FormMultiLineInput label="Definicja" value={text} setValue={setText} />
+      <FormMultiLineInput
+        label="Definicja"
+        value={text}
+        setValue={setText}
+        required
+        submitted={submitted}
+      />
       <FormTwoInLineWrapper>
         <FormCustomInputDropdown
           label="Kategoria słowa"
           options={categoriesOptions}
           value={categoryOption}
           setValue={setCategoryOption}
+          required
+          submitted={submitted}
         />
         <FormSingleLineInput
           label="Odpowiednik w pisanym"

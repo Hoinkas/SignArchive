@@ -16,7 +16,7 @@ export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
 
   return (
     <div className="formContainer">
-      <form className="formBox" onSubmit={handleSubmit}>
+      <form className="formBox" onSubmit={handleSubmit} noValidate>
         {children}
         <FormButtons formType={formType} closeForm={closeForm} />
       </form>
@@ -28,7 +28,7 @@ export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
   const { children, handleSubmit, formType, closeForm } = props
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       {children}
       <FormButtons formType={formType} closeForm={closeForm} />
     </form>
@@ -48,22 +48,30 @@ interface FormSingleLineInputProps {
   value: string
   setValue: (value: string) => void
   isNumber?: boolean
+  required?: boolean
+  submitted?: boolean
 }
 
 export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.Element {
-  const { label, value, setValue, isNumber = false } = props
+  const { label, value, setValue, isNumber = false, required = false, submitted = false } = props
+
+  const showError = submitted && required && value === ''
 
   return (
     <div className="formGroup">
-      <label>{label}</label>
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
       <input
-        className="formInput"
+        className={`formInput${showError ? ' inputError' : ''}`}
         type={isNumber ? 'number' : 'text'}
         min={1000}
         max={new Date().getFullYear()}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
+      {showError && <span className="inputErrorText">Tekst wymagany</span>}
     </div>
   )
 }
@@ -72,33 +80,56 @@ interface FormMultiLineInputProps {
   label: string
   value: string
   setValue: (value: string) => void
+  required?: boolean
+  submitted?: boolean
 }
 
 export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.Element {
-  const { label, value, setValue } = props
+  const { label, value, setValue, required = false, submitted = false } = props
+
+  const showError = submitted && required && value === ''
 
   return (
-    <div className="formGroup">
-      <label>{label}</label>
-      <textarea onChange={(event) => setValue(event.target.value)} value={value} />
+    <div className="formGroup ">
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
+      <textarea
+        className={`formInput${showError ? ' inputError' : ''}`}
+        onChange={(event) => setValue(event.target.value)}
+        value={value}
+        required={required}
+      />
+      {showError && <span className="inputErrorText">Tekst wymagany</span>}
     </div>
   )
 }
 
 interface FormTagsProps {
   label: string
+  required?: boolean
+  submitted?: boolean
 }
 
-export function FormTags({ label }: FormTagsProps): React.JSX.Element {
-  const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
+export function FormTags(props: FormTagsProps): React.JSX.Element {
+  const { label, required = false, submitted = false } = props
 
+  const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
   return (
     <div className="formGroup">
-      <label>{label}</label>
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
       <div className="tagsGroup">
         <TagList />
         {isTagFormOpen ? (
-          <AddTagForm setIsTagFormOpen={setIsTagFormOpen} />
+          <AddTagForm
+            setIsTagFormOpen={setIsTagFormOpen}
+            required={required}
+            submitted={submitted}
+          />
         ) : (
           <button type="button" onClick={() => setIsTagFormOpen(true)}>
             +dodaj tag
@@ -133,22 +164,30 @@ interface FormMediaFileProps {
   existingFile?: SignFile
   newFile: File | null
   setNewFile: (file: File | null) => void
+  required?: boolean
+  submitted?: boolean
 }
 
-export function FormMediaFile({
-  existingFile,
-  newFile,
-  setNewFile
-}: FormMediaFileProps): React.JSX.Element {
+export function FormMediaFile(props: FormMediaFileProps): React.JSX.Element {
+  const { existingFile, newFile, setNewFile, required = false, submitted = false } = props
   const inputRef = useRef<HTMLInputElement>(null)
 
   const label = newFile?.name ?? existingFile?.originalName ?? 'Wybierz plik'
   const hasFile = !!(newFile || existingFile)
 
+  const showError = submitted && required && !existingFile
+
   return (
     <div className="formGroup">
-      <label>Plik ze znakiem</label>
-      <button type="button" className="fileInput" onClick={() => inputRef.current?.click()}>
+      <label>
+        Plik ze znakiem
+        {required && <span> *</span>}
+      </label>
+      <button
+        type="button"
+        className={`fileInput${showError ? ' inputError' : ''}`}
+        onClick={() => inputRef.current?.click()}
+      >
         <span style={{ color: hasFile ? 'inherit' : 'var(--text-muted)' }}>{label}</span>
         {newFile && (
           <span
@@ -168,7 +207,9 @@ export function FormMediaFile({
         accept="video/*,image/*,text/*"
         style={{ display: 'none' }}
         onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
+        required={required}
       />
+      {showError && <span className="inputErrorText">Plik wymagany</span>}
     </div>
   )
 }

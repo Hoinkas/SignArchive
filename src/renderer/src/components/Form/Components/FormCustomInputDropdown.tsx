@@ -8,10 +8,20 @@ interface FormDropdownProps {
   value: DropdownOption | null
   setValue: (value: DropdownOption | null) => void
   placeholder?: string
+  required?: boolean
+  submitted?: boolean
 }
 
 export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Element {
-  const { label, options, value, setValue, placeholder = 'Szukaj lub wpisz...' } = props
+  const {
+    label,
+    options,
+    value,
+    setValue,
+    placeholder = 'Szukaj lub wpisz...',
+    required = false,
+    submitted = false
+  } = props
 
   const [query, setQuery] = useState<string>(value?.label || '')
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -61,19 +71,24 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
   }, [])
 
   const isListVisible = isOpen && (filtered.length > 0 || query.trim().length > 0)
+  const showError = required && submitted && value === null
 
   return (
     <div className="formGroup" ref={containerRef}>
-      <label>{label}</label>
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
       <div className="dropdownWrapper">
         <input
-          className={`formInput ${isListVisible ? 'dropdownOpen' : ''}`}
+          className={`formInput ${isOpen ? ' dropdownOpen' : ''}${showError ? ' inputError' : ''}`}
           type="text"
           value={query}
           placeholder={placeholder}
           onChange={handleChange}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
+          required={required}
         />
         {isListVisible && (
           <div className="dropdownList">
@@ -94,6 +109,7 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
                 )}
           </div>
         )}
+        {showError && <span className="inputErrorText">Wybór wymagany</span>}
       </div>
     </div>
   )

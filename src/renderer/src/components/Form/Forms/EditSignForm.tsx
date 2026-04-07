@@ -15,6 +15,7 @@ function EditSignForm(props: EditSignFormProps): React.JSX.Element {
 
   const [newFile, setNewFile] = useState<File | null>(null)
   const [notes, setNotes] = useState<string>(sign.notes || '')
+  const [submitted, setSubmitted] = useState(false)
 
   const closeForm = (): void => {
     setNotes('')
@@ -22,8 +23,12 @@ function EditSignForm(props: EditSignFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
+  const isValid = newFile !== null
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setSubmitted(true)
+    if (!isValid) return
 
     let signFile: SignFile | undefined
 
@@ -46,7 +51,13 @@ function EditSignForm(props: EditSignFormProps): React.JSX.Element {
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMediaFile existingFile={sign.file} newFile={newFile} setNewFile={setNewFile} />
+      <FormMediaFile
+        existingFile={sign.file}
+        newFile={newFile}
+        setNewFile={setNewFile}
+        required
+        submitted={submitted}
+      />
       <FormMultiLineInput label="Notatka" value={notes} setValue={setNotes} />
     </FormModalWrapper>
   )

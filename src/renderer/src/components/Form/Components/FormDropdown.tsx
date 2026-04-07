@@ -12,10 +12,20 @@ interface FormDropdownProps {
   value: DropdownOption | null
   setValue: (value: DropdownOption | null) => void
   placeholder?: string
+  required?: boolean
+  submitted?: boolean
 }
 
 function FormDropdown(props: FormDropdownProps): React.JSX.Element {
-  const { label, options, value, setValue, placeholder = 'Szukaj lub wpisz...' } = props
+  const {
+    label,
+    options,
+    value,
+    setValue,
+    placeholder = 'Szukaj lub wpisz...',
+    required = false,
+    submitted = false
+  } = props
 
   const [query, setQuery] = useState<string>(value?.label || '')
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -58,12 +68,17 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const showError = required && submitted && value === null
+
   return (
     <div className="formGroup" ref={containerRef}>
-      <label>{label}</label>
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
       <div className="dropdownWrapper">
         <input
-          className={`formInput ${isOpen ? 'dropdownOpen' : ''}`}
+          className={`formInput ${isOpen ? ' dropdownOpen' : ''}${showError ? ' inputError' : ''}`}
           type="search"
           value={query}
           placeholder={placeholder}
@@ -84,6 +99,7 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
             ))}
           </div>
         )}
+        {showError && <span className="inputErrorText">Wybór wymagany</span>}
       </div>
     </div>
   )
