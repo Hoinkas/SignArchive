@@ -21,16 +21,14 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleSelect = (option: DropdownOption): void => {
-    setIsOpen(false)
+  const filtered = query.trim()
+    ? options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()))
+    : options
 
-    if (option === value) {
-      setValue(null)
-      setQuery('')
-      return
-    }
+  const handleSelect = (option: DropdownOption): void => {
     setValue(option)
     setQuery(option.label)
+    setIsOpen(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -38,10 +36,9 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     e.preventDefault()
     e.stopPropagation()
 
-    if (query.trim()) {
-      const custom: DropdownOption = { id: crypto.randomUUID(), label: query.trim() }
-      setValue(custom)
-      setIsOpen(false)
+    if (filtered.length > 0) {
+      handleSelect(filtered[0])
+      return
     }
   }
 

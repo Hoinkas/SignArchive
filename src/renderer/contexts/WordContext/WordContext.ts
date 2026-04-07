@@ -1,7 +1,8 @@
 import { createContext } from 'react'
-import { WordToDB, WordWithCountCategories, Word } from '@shared/types'
+import { WordToDB, WordWithCountCategories, Word, Tag } from '@shared/types'
 
 export interface WordContextValue {
+  allTags: Tag[]
   word: Word | null
   allWords: WordWithCountCategories[]
   toggleSort: () => void
@@ -15,6 +16,7 @@ export interface WordContextValue {
 }
 
 export const WordContext = createContext<WordContextValue>({
+  allTags: [],
   word: null,
   allWords: [],
   toggleSort: () => {},

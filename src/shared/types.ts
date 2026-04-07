@@ -8,7 +8,9 @@ export interface Word {
   text: string
 }
 
-export type WordToDB = Omit<Word, 'id' | 'createdAt'>
+export interface WordToDB extends Omit<Word, 'id' | 'createdAt'> {
+  tagIds?: string[]
+}
 
 // SIGN
 export interface Sign {

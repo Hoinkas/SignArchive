@@ -45,7 +45,8 @@ declare global {
         list: () => Promise<Tag[]>
         listByWordId: (wordId: string) => Promise<Tag[]>
         create: (wordId: string, data: TagToDB) => Promise<Tag>
-        delete: (tagId: string) => Promise<void>
+        addToWord: (tagId: string, wordId: string) => Promise<void>
+        removeFromWord: (tagId: string, wordId: string) => Promise<void>
       }
       getPathForFile: (file: File) => string
     }

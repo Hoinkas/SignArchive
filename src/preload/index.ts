@@ -76,7 +76,10 @@ if (process.contextIsolated) {
           ipcRenderer.invoke('tag:listByWordId', wordId),
         create: (wordId: string, data: TagToDB): Promise<Tag> =>
           ipcRenderer.invoke('tag:create', wordId, data),
-        delete: (tagId: string): Promise<void> => ipcRenderer.invoke('tag:delete', tagId)
+        addToWord: (tagId: string, wordId: string) =>
+          ipcRenderer.invoke('tag:addToWord', tagId, wordId),
+        removeFromWord: (tagId: string, wordId: string) =>
+          ipcRenderer.invoke('tag:removeFromWord', tagId, wordId)
       },
       getPathForFile: (file: File): string => webUtils.getPathForFile(file)
     })

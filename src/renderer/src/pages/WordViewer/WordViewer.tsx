@@ -26,17 +26,21 @@ function WordViewer(): React.JSX.Element {
 
   return (
     <div className="wordViewer">
-      <TagsProvider>
+      <TagsProvider wordId={word.id}>
         <WordTitle word={word} />
       </TagsProvider>
       <SourcesProvider>
         <SignList />
       </SourcesProvider>
-      {isAdmin ? (isFormOpen ? (
-        <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
+      {isAdmin ? (
+        isFormOpen ? (
+          <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
+        ) : (
+          <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
+        )
       ) : (
-        <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
-      )) : <div></div>}
+        <div></div>
+      )}
     </div>
   )
 }

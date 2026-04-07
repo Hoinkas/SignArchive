@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, WordToDB, Word } from '@shared/types'
+import { FormType, Word } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
+import { useTags } from '@contexts/TagsContext/useTags'
 
 interface WordFormProps {
   word?: Word
@@ -11,7 +12,8 @@ interface WordFormProps {
 
 function WordForm(props: WordFormProps): React.JSX.Element {
   const { word, formType, setIsFormOpen } = props
-  const { addWord, editWord } = useWord()
+  const { tags } = useTags()
+  const { addWord } = useWord()
 
   const [text, setText] = useState<string>(word?.text || '')
 
@@ -22,13 +24,8 @@ function WordForm(props: WordFormProps): React.JSX.Element {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-
     if (formType === 'add') {
-      const newWord: WordToDB = { text }
-      addWord(newWord, closeForm)
-    } else if (formType === 'edit' && word) {
-      const updateWord: WordToDB = { ...word, text }
-      editWord(updateWord, closeForm)
+      addWord({ text, tagIds: tags.map(t => t.id) }, closeForm)
     }
   }
 
