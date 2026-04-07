@@ -170,7 +170,7 @@ a {
 }
 
 ol > li::marker {
-  color: var(--color-text-purple);
+  color: var(--color-text-info);
 }
 
 /* :focus-visible {

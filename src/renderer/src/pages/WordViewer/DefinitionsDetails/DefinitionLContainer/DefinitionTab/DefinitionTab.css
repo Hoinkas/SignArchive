@@ -4,7 +4,8 @@
   cursor: pointer;
 
    &.active {
-    color: var(--color-text-purple);
-    border-bottom: var(--button-border)
+    color: var(--color-text-info);
+    border-bottom: var(--button-border);
+    border-color: var(--color-text-info);
   }
 }
