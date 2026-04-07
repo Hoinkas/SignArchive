@@ -6,6 +6,7 @@ import SourcesTitle from './SourcesTitle/SourcesTitle'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
 import SourceForm from '@renderer/components/Form/Forms/SourceForm'
 import { useSources } from '@contexts/SourcesContext/useSources'
+import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
 
 interface SourceListProps {
   sign: SignDetails
@@ -13,6 +14,7 @@ interface SourceListProps {
 
 function SourceList({ sign }: SourceListProps): React.JSX.Element {
   const { sources, closeSourcesPanelSign } = useSources()
+  const { isAdmin } = usePermissions()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -36,11 +38,11 @@ function SourceList({ sign }: SourceListProps): React.JSX.Element {
           ))}
         </div>
       </div>
-      {isFormOpen ? (
+      {isAdmin ? (isFormOpen ? (
         <SourceForm formType={'add'} setIsFormOpen={setIsFormOpen} />
       ) : (
         <ActionButton text="Dodaj źródło" isAtEnd={true} setIsFormOpen={setIsFormOpen} />
-      )}
+      )) : <div></div>}
     </div>
   )
 }

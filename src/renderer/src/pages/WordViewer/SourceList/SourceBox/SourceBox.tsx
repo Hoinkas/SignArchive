@@ -6,6 +6,7 @@ import SourceForm from '@renderer/components/Form/Forms/SourceForm'
 import KebabMenu from '@renderer/components/KebabMenu/KebabMenu'
 import { useSources } from '@contexts/SourcesContext/useSources'
 import PillList from '@renderer/components/PillList/PillList'
+import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
 
 interface SourceBoxProps {
   source: SourceDetails
@@ -14,6 +15,7 @@ interface SourceBoxProps {
 function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
   const { deleteSource } = useSources()
+  const { isAdmin } = usePermissions()
 
   const years = mergeYearText(source.yearStart, source.yearEnd)
 
@@ -27,11 +29,11 @@ function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
         <PillList textArray={pillText} />
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>
-      {isFormOpen ? (
+      {isAdmin ? (isFormOpen ? (
         <SourceForm source={source} formType={'edit'} setIsFormOpen={setIsFormOpen} />
       ) : (
         <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSource(source.id)} />
-      )}
+      )) : <div></div>}
     </div>
   )
 }
