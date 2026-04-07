@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
 import {
   FormType,
   SignFile,
@@ -45,7 +45,7 @@ function AddSignForm(props: AddSignFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
     if (!newFile || !categoryOption || !word || text === '') return

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
   Author,
   AuthorToDB,
@@ -61,7 +61,7 @@ function SourceForm(props: SourceFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
     if (!authorOption) return

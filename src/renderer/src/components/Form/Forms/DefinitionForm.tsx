@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
 import { Definition, DefinitionsCategories, DefinitionToCreate, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
@@ -33,7 +33,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
     if (!categoryOption) return

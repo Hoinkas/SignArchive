@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
 import { FormType, SignFile, SignToDB, SignDetails } from '@shared/types'
 import { FormMediaFile, FormModalWrapper, FormMultiLineInput } from '@renderer/components/Form/Form'
 import { useSigns } from '@contexts/SignsContext/useSigns'
@@ -22,7 +22,7 @@ function EditSignForm(props: EditSignFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
     let signFile: SignFile | undefined

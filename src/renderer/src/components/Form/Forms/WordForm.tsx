@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
 import { FormType, Word } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
@@ -22,10 +22,10 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
     if (formType === 'add') {
-      addWord({ text, tagIds: tags.map(t => t.id) }, closeForm)
+      addWord({ text, tagIds: tags.map((t) => t.id) }, closeForm)
     }
   }
 
