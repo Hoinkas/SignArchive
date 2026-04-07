@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
 import { Definition, DefinitionsCategories, DefinitionToCreate, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
@@ -7,7 +7,7 @@ import {
 } from '@renderer/components/Form/Form'
 import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
 import FormDropdown, { DropdownOption } from '../Components/FormDropdown'
-import { DEFINITIONS_CATEGORIES } from '../Components/DropdownOptions'
+import { categoriesOptions } from '../Components/DropdownOptions'
 
 interface DefinitionFormProps {
   definition?: Definition
@@ -21,16 +21,12 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
   const { definition, formType, setIsFormOpen, category } = props
   const { addDefinition, editDefinition } = useDefinitions()
 
-  const categoriesOptions: DropdownOption[] = DEFINITIONS_CATEGORIES.map((e, key) => {
-    const option: DropdownOption = { id: key.toString(), label: e }
-    return option
-  })
-
   const findOption = categoriesOptions.find((c) => c.label === (category || activeCategory))
 
   const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(findOption ?? null)
   const [text, setText] = useState<string>(definition?.text || '')
   const [translation, setTranslation] = useState<string>(definition?.translation || '')
+  const [submitted, setSubmitted] = useState(false)
 
   const closeForm = (): void => {
     setText('')
@@ -38,8 +34,12 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const isValid = categoryOption && text
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setSubmitted(true)
+    if (!isValid) return
 
     if (!categoryOption) return
     const definitionToCreate: DefinitionToCreate = {
@@ -62,8 +62,16 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
         options={categoriesOptions}
         value={categoryOption}
         setValue={setCategoryOption}
+        required
+        submitted={submitted}
       />
-      <FormMultiLineInput label="Definicja" value={text} setValue={setText} />
+      <FormMultiLineInput
+        label="Definicja"
+        value={text}
+        setValue={setText}
+        required
+        submitted={submitted}
+      />
       <FormSingleLineInput
         label="Odpowiednik w pisanym"
         value={translation}

@@ -4,35 +4,21 @@
   --grey-50:  #F8F8F9;
   --grey-100: #EDEDEF;
   --grey-200: #D4D4D8;
-  --grey-300: #A1A1AA;
   --grey-400: #71717A;
   --grey-500: #52525B;
   --grey-600: #3F3F46;
   --grey-700: #323236;
-  --grey-800: #202127;
   --grey-900: #1b1b1f;
 
   /* --purple-h: 245;
   --purple-s: 80%; */
   /* --purple-900: hsl(var(--purple-h), var(--purple-s), 10%); */
 
-  --purple-50:  #F2EBFF;
-  --purple-100: #E4D7FE;
-  --purple-200: #C8AFFD;
-  --purple-300: #AC8DFB;
   --purple-400: #8B66F9;
-  --purple-500: #6B40F7;
-  --purple-600: #4519F5;
-  --purple-700: #2D09E1;
-  --purple-800: #2208BA;
-  --purple-900: #160594;
 
-  --purple-grey-6: #1e1e2e;
-  --purple-grey-5: #202127;
   --purple-grey-4: #291F5B;
   --purple-grey-3: #331D8E;
   --purple-grey-2: #3C1BC2;
-  --purple-grey-1: #4519F5;
 }
 
 :root {
@@ -97,7 +83,7 @@
   --color-bg-hover-transparent-light: color-mix(in srgb, var(--purple-grey-2) 70%, transparent);
 
   --color-bg-active-dark: var(--purple-grey-3);
-  --color-bg-active-light: var(--purple-300);
+  --color-bg-active-light: var(--purple-400);
 
   /* other */
   --color-line-purple: var(--purple-grey-3);

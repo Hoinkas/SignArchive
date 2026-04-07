@@ -170,7 +170,18 @@ a {
 }
 
 ol > li::marker {
-  color: var(--color-text-purple);
+  color: var(--color-text-info);
+}
+
+.inputError {
+  border-color: red !important;
+}
+
+.inputErrorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }
 
 /* :focus-visible {

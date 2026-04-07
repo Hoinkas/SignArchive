@@ -5,12 +5,6 @@ export interface DropdownOption {
   label: string
 }
 
-export const categoriesOptions: DropdownOption[] = [
-  { id: '1', label: 'rzeczownik' },
-  { id: '2', label: 'czasownik' },
-  { id: '3', label: 'przymiotnik' }
-] //TODO add separate categories table
-
 export const DEFINITIONS_CATEGORIES: DefinitionsCategories[] = [
   'autonomiczne',
   'czasownik',
@@ -25,3 +19,7 @@ export const DEFINITIONS_CATEGORIES: DefinitionsCategories[] = [
   'spójnik',
   'zaimek'
 ]
+
+export const categoriesOptions: DropdownOption[] = DEFINITIONS_CATEGORIES.map((e, key) => {
+  return { id: key.toString(), label: e }
+}) //TODO add separate categories table

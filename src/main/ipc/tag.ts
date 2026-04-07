@@ -76,15 +76,24 @@ export function createTagAndTagWord(wordId: string, data: TagToDB): Tag {
   return transaction()
 }
 
+export function addTagToWord(tagId: string, wordId: string): void {
+  const tagWord: TagWord = { tagId, wordId }
+  createTagWord(tagWord)
+}
+
+export function removeTagFromWord(tagId: string, wordId: string): void {
+  getDb().prepare('DELETE FROM tagWord WHERE tagId = ? AND wordId = ?').run(tagId, wordId)
+}
+
 export function registerTagHandlers(): void {
   ipcMain.handle('tag:list', () => handlerWithErrorLogging(listAllTags))
   ipcMain.handle('tag:listByWordId', (_, wordId) =>
     handlerWithErrorLogging(() => listAllTagsByWordId(wordId))
   )
-  ipcMain.handle('tag:create', (_, wordId: string, data: TagToDB) =>
-    handlerWithErrorLogging(() => createTagAndTagWord(wordId, data))
+  ipcMain.handle('tag:addToWord', (_, tagId: string, wordId: string) =>
+    handlerWithErrorLogging(() => addTagToWord(tagId, wordId))
   )
-  ipcMain.handle('tag:delete', (_, tagId: string) =>
-    handlerWithErrorLogging(() => deleteTag(tagId))
+  ipcMain.handle('tag:removeFromWord', (_, tagId: string, wordId: string) =>
+    handlerWithErrorLogging(() => removeTagFromWord(tagId, wordId))
   )
 }

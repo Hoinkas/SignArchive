@@ -5,8 +5,10 @@ import DefinitionBox from './DefinitionBox/DefinitionBox'
 import { useState } from 'react'
 import DefinitonForm from '@renderer/components/Form/Forms/DefinitionForm'
 import ActionButton from '@renderer/components/ActionButton/ActionButton'
+import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
 
 function DefinitionContainer(): React.JSX.Element {
+  const { isAdmin } = usePermissions()
   const { filteredDefinitions, categories } = useDefinitions()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
@@ -23,11 +25,11 @@ function DefinitionContainer(): React.JSX.Element {
         ))}
       </ol>
       <div>
-        {isFormOpen ? (
+        {isAdmin ? (isFormOpen ? (
           <DefinitonForm formType="add" setIsFormOpen={setIsFormOpen} />
         ) : (
           <ActionButton text="Dodaj definicję" setIsFormOpen={setIsFormOpen} />
-        )}
+        )) : <div></div>}
       </div>
     </div>
   )

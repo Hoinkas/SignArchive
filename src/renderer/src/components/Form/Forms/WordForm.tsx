@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import { FormType, Tag, WordToDB, Word } from '@shared/types'
+import { SubmitEvent, Dispatch, SetStateAction, useState } from 'react'
+import { FormType, Word } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@contexts/WordContext/useWord'
+import { useTags } from '@contexts/TagsContext/useTags'
 
 interface WordFormProps {
   word?: Word
@@ -11,26 +12,28 @@ interface WordFormProps {
 
 function WordForm(props: WordFormProps): React.JSX.Element {
   const { word, formType, setIsFormOpen } = props
+  const { tags } = useTags()
   const { addWord, editWord } = useWord()
 
   const [text, setText] = useState<string>(word?.text || '')
-  const [tags, setTags] = useState<Tag[]>(word?.tags || [])
+  const [submitted, setSubmitted] = useState(false)
 
   const closeForm = (): void => {
     setText('')
-    setTags([])
     setIsFormOpen(false)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const isValid = text.trim() !== ''
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setSubmitted(true)
+    if (!isValid) return
 
     if (formType === 'add') {
-      const newWord: WordToDB = { text }
-      addWord(newWord, closeForm)
+      addWord({ text, tagIds: tags.map((t) => t.id) }, closeForm)
     } else if (formType === 'edit' && word) {
-      const updateWord: WordToDB = { ...word, text }
-      editWord(updateWord, closeForm)
+      editWord({ text, tagIds: tags.map((t) => t.id) }, closeForm)
     }
   }
 
@@ -38,8 +41,14 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     <div>
       {formType === 'edit' && <h2>{text}</h2>}
       <FormWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-        <FormSingleLineInput label="Słowo" value={text} setValue={setText} />
-        <FormTags label="Tagi" tags={tags} setTags={setTags} />
+        <FormSingleLineInput
+          label="Słowo"
+          value={text}
+          setValue={setText}
+          required
+          submitted={submitted}
+        />
+        <FormTags label="Tagi" />
       </FormWrapper>
     </div>
   )

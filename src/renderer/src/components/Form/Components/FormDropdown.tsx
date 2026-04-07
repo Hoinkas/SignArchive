@@ -12,25 +12,33 @@ interface FormDropdownProps {
   value: DropdownOption | null
   setValue: (value: DropdownOption | null) => void
   placeholder?: string
+  required?: boolean
+  submitted?: boolean
 }
 
 function FormDropdown(props: FormDropdownProps): React.JSX.Element {
-  const { label, options, value, setValue, placeholder = 'Szukaj lub wpisz...' } = props
+  const {
+    label,
+    options,
+    value,
+    setValue,
+    placeholder = 'Szukaj lub wpisz...',
+    required = false,
+    submitted = false
+  } = props
 
   const [query, setQuery] = useState<string>(value?.label || '')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleSelect = (option: DropdownOption): void => {
-    setIsOpen(false)
+  const filtered = query.trim()
+    ? options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()))
+    : options
 
-    if (option === value) {
-      setValue(null)
-      setQuery('')
-      return
-    }
+  const handleSelect = (option: DropdownOption): void => {
     setValue(option)
     setQuery(option.label)
+    setIsOpen(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -38,10 +46,9 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     e.preventDefault()
     e.stopPropagation()
 
-    if (query.trim()) {
-      const custom: DropdownOption = { id: crypto.randomUUID(), label: query.trim() }
-      setValue(custom)
-      setIsOpen(false)
+    if (filtered.length > 0) {
+      handleSelect(filtered[0])
+      return
     }
   }
 
@@ -61,12 +68,17 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const showError = required && submitted && value === null
+
   return (
     <div className="formGroup" ref={containerRef}>
-      <label>{label}</label>
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
       <div className="dropdownWrapper">
         <input
-          className={`formInput ${isOpen ? 'dropdownOpen' : ''}`}
+          className={`formInput ${isOpen ? ' dropdownOpen' : ''}${showError ? ' inputError' : ''}`}
           type="search"
           value={query}
           placeholder={placeholder}
@@ -87,6 +99,7 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
             ))}
           </div>
         )}
+        {showError && <span className="inputErrorText">Wybór wymagany</span>}
       </div>
     </div>
   )

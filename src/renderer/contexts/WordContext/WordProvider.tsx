@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
-import { WordToDB, WordWithCountCategories, Word } from '@shared/types'
+import { WordToDB, WordWithCountCategories, Word, Tag } from '@shared/types'
 import { WordContext } from './WordContext'
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
+  const [allTags, setAllTags] = useState<Tag[]>([])
   const [wordsList, setWordsList] = useState<WordWithCountCategories[]>([])
   const [isDescending, setIsDescending] = useState<boolean>(false)
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
@@ -15,6 +16,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   useEffect(() => {
     window.api.word.listWithCount().then(setWordsList)
+    window.api.tag.list().then(setAllTags)
   }, [])
 
   useEffect(() => {
@@ -81,6 +83,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   return (
     <WordContext.Provider
       value={{
+        allTags,
         word,
         allWords,
         toggleSort,

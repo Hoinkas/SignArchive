@@ -8,8 +8,10 @@ import { useWord } from '@contexts/WordContext/useWord'
 import { useSigns } from '@contexts/SignsContext/useSigns'
 import SourcesProvider from '@contexts/SourcesContext/SourcesProvider'
 import TagsProvider from '@contexts/TagsContext/TagsProvider'
+import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
 
 function WordViewer(): React.JSX.Element {
+  const { isAdmin } = usePermissions()
   const { word } = useWord()
   const { initiateSigns } = useSigns()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
@@ -24,16 +26,20 @@ function WordViewer(): React.JSX.Element {
 
   return (
     <div className="wordViewer">
-      <TagsProvider>
+      <TagsProvider wordId={word.id}>
         <WordTitle word={word} />
       </TagsProvider>
       <SourcesProvider>
         <SignList />
       </SourcesProvider>
-      {isFormOpen ? (
-        <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
+      {isAdmin ? (
+        isFormOpen ? (
+          <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
+        ) : (
+          <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
+        )
       ) : (
-        <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
+        <div></div>
       )}
     </div>
   )

@@ -7,7 +7,7 @@ export interface SignContextValue {
   addSign: (data: SignDetailsToDB, closeForm: () => void) => void
   editSign: (signId: string, updatedSign: SignToDB, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void
-  updateSignSource: (signId: string) => void
+  updateSignSource: (signId: string, action?: 'add' | 'delete') => void
 }
 
 export const SignContext = createContext<SignContextValue>({

@@ -4,6 +4,7 @@ import { getDb } from '../db/client'
 import type { Tag, Word, WordToDB, WordWithCount, WordWithCountCategories } from '@shared/types'
 import toSqlParams from '../utils/toSqlParams'
 import { handlerWithErrorLogging } from '../utils/errorHandler'
+import { createTagWord } from './tagWord'
 
 export function findWordById(wordId: string): Word | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
@@ -25,7 +26,7 @@ export function listAllWordsCountCategories(): WordWithCountCategories[] {
     )
     .all() as WordWithCount[]
 
-  if (!rows[0].id) return []
+  if (rows.length === 0) return []
 
   const words: WordWithCountCategories[] = rows.map((w) => {
     return { ...w, categories: allCategoriesByWordId(w.id), regions: allRegionsByWordId(w.id) }
@@ -39,14 +40,17 @@ export function createWord(data: WordToDB): Word {
   const word: Word = {
     id: nanoid(),
     createdAt: new Date().toISOString(),
-    ...data
+    text: data.text
   }
-  db.prepare(
-    `
-    INSERT INTO word (id, createdAt, text)
-    VALUES (@id, @createdAt, @text)
-  `
-  ).run(toSqlParams(word))
+  db.prepare(`INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)`).run(
+    toSqlParams(word)
+  )
+
+  if (data.tagIds && data.tagIds.length > 0) {
+    data.tagIds.forEach((tagId) => {
+      createTagWord({ tagId, wordId: word.id })
+    })
+  }
 
   return word
 }
@@ -67,7 +71,7 @@ export function updateWord(wordId: string, data: Partial<WordToDB>): Word | unde
         WHERE id = @id
       `
     )
-    .run(toSqlParams(data))
+    .run(toSqlParams({ ...data, id: wordId }))
 
   return findWordById(existing.id)
 }

@@ -40,10 +40,8 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
     }
 
     window.api.source.create(sourceWithDetails).then((result) => {
-      setSources((prevSources) => {
-        updateSignSource(sourcesPanelSign.id)
-        return [...prevSources, result]
-      })
+      updateSignSource(sourcesPanelSign.id, 'add')
+      setSources((prevSources) => [...prevSources, result])
       closeForm()
     })
   }
@@ -55,10 +53,10 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   ): void => {
     window.api.source.update(sourceId, updatedSource).then((result) => {
       if (!result || !sourcesPanelSign) return
-      setSources((prevSources) => {
-        updateSignSource(sourcesPanelSign.id)
-        return prevSources.map((s) => (s.id === result.id ? { ...s, ...result } : s))
-      })
+      updateSignSource(sourcesPanelSign.id)
+      setSources((prevSources) =>
+        prevSources.map((s) => (s.id === result.id ? { ...s, ...result } : s))
+      )
       closeForm()
     })
   }
@@ -66,10 +64,8 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   const deleteSource = (deleteId: string): void => {
     if (!sourcesPanelSign) return
     window.api.source.delete(deleteId).then(() => {
-      setSources((prevSources) => {
-        updateSignSource(sourcesPanelSign.id)
-        return prevSources.filter((s) => s.id !== deleteId)
-      })
+      updateSignSource(sourcesPanelSign.id, 'delete')
+      setSources((prevSources) => prevSources.filter((s) => s.id !== deleteId))
     })
   }
 
