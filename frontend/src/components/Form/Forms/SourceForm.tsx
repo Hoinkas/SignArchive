@@ -24,9 +24,9 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [region, setRegion] = useState(source?.region ?? '')
   const [yearStart, setYearStart] = useState(source?.yearStart?.toString() ?? '')
   const [yearEnd, setYearEnd] = useState(source?.yearEnd?.toString() ?? '')
-  const [evidenceUrl, setEvidenceUrl] = useState<string>(source.evidence.url ?? '')
-  const [evidenceName, setEvidenceName] = useState<string>(source.evidence.name ?? '')
-  const [evidenceFullName, setEvidenceFullName] = useState<string>(source.evidence.fullName ?? '')
+  const [evidenceUrl, setEvidenceUrl] = useState<string>(source?.evidence.url ?? '')
+  const [evidenceName, setEvidenceName] = useState<string>(source?.evidence.name ?? '')
+  const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
     source ? { id: source.author.id, label: source.author.name } : null
   )
