@@ -25,7 +25,7 @@ function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   return (
     <div className="sourceBoxContainer">
       <div className="sourceBox">
-        <a href={source.mediaFile.fileUrl}>{source.author.name}</a>
+        <a href={source.evidence.fileUrl}>{source.author.name}</a>
         <PillList textArray={pillText} />
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>

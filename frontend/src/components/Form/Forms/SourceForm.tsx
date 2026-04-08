@@ -8,7 +8,7 @@ import { authorApi } from '@src/services/author.api'
 import type { ISourceDetails, ISourceToCreate, ISourceWithDetailsToDB } from '@src/models/source.model'
 import type { IAuthor, IAuthorAttached } from '@src/models/author.model'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { IMediaFile } from '@src/models/mediaFile.model'
+import type { IEvidence } from '@src/models/evidence.model'
 
 interface SourceFormProps {
   source?: ISourceDetails
@@ -34,7 +34,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     authorApi.list().then(setAuthors)
     if (source) {
       sourceApi.details(source.id).then((s) => {
-        setFileUrl(s.mediaFile.fileUrl)
+        setFileUrl(s.evidence.fileUrl)
         setAuthorOption({ id: s.author.id, label: s.author.name })
       })
     }
@@ -57,7 +57,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setSubmitted(true)
     if (!isValid) return
 
-    const mediaFile: IMediaFile = { fileUrl }
+    const evidence: IEvidence = { fileUrl }
     const author: IAuthor = { name: authorOption.label }
     const sourceToCreate: ISourceToCreate = {
       notes: notes,
@@ -65,7 +65,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
       yearStart: yearStart ? parseInt(yearStart) : null,
       yearEnd: yearEnd ? parseInt(yearEnd) : null
     }
-    const data: ISourceWithDetailsToDB = { source: sourceToCreate, mediaFile, author }
+    const data: ISourceWithDetailsToDB = { source: sourceToCreate, evidence, author }
 
     if (formType === 'add') {
       addSource(data, closeForm)

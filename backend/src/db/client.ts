@@ -43,7 +43,7 @@ function initSchema(db: Database.Database): void {
       name      TEXT NOT NULL UNIQUE
     );
 
-    CREATE TABLE IF NOT EXISTS mediaFile (
+    CREATE TABLE IF NOT EXISTS evidence (
       id        TEXT PRIMARY KEY,
       createdAt INTEGER NOT NULL,
       fileUrl   TEXT NOT NULL
@@ -53,7 +53,7 @@ function initSchema(db: Database.Database): void {
       id          TEXT PRIMARY KEY,
       createdAt   INTEGER NOT NULL,
       authorId    TEXT REFERENCES author(id) ON DELETE SET NULL,
-      mediaFileId TEXT REFERENCES mediaFile(id) ON DELETE SET NULL,
+      evidenceId TEXT REFERENCES evidence(id) ON DELETE SET NULL,
       region      TEXT,
       yearStart   INTEGER,
       yearEnd     INTEGER,

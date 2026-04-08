@@ -21,7 +21,7 @@ declare global {
       }
       source: {
         list: (signId: string, wordId: string) => Promise<ISourceDetails[]>
-        details: (sourceId: string) => Promise<SourceWithSignerAuthorMediaFile>
+        details: (sourceId: string) => Promise<SourceWithSignerAuthorEvidence>
         regions: () => Promise<string[]>
         update: (
           sourceId: string,

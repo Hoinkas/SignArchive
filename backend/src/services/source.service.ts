@@ -8,7 +8,7 @@ import {
   ISourceWithDetailsToDB
 } from '../../../shared/models/source.model'
 import { createAuthor, findAuthorById } from './author.service'
-import { createMediaFile, findMediaFileById } from './mediaFile.service'
+import { createEvidence, findEvidenceById } from './evidence.service'
 import toSqlParams from '../utils/toSqlParams'
 
 function findSourceById(id: string): ISourceAttached | undefined {
@@ -17,10 +17,10 @@ function findSourceById(id: string): ISourceAttached | undefined {
 
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
   const author = findAuthorById(source.authorId)
-  const mediaFile = findMediaFileById(source.mediaFileId)
-  if (!author || !mediaFile) return undefined
-  const { authorId, mediaFileId, ...rest } = source
-  return { ...rest, author, mediaFile }
+  const evidence = findEvidenceById(source.evidenceId)
+  if (!author || !evidence) return undefined
+  const { authorId, evidenceId, ...rest } = source
+  return { ...rest, author, evidence }
 }
 
 export function listSourcesBySignWord(signId: string, wordId: string): ISourceDetails[] {
@@ -41,20 +41,20 @@ export function listSourcesBySignWord(signId: string, wordId: string): ISourceDe
 export function createSourceWithDetails(data: ISourceWithDetailsToCreate): ISourceDetails {
   const transaction = getDb().transaction(() => {
     const author = createAuthor(data.author)
-    const mediaFile = createMediaFile(data.mediaFile)
+    const evidence = createEvidence(data.evidence)
 
     const source: ISourceAttached = {
       id: nanoid(),
       createdAt: Date.now(),
       ...data.source,
       authorId: author.id,
-      mediaFileId: mediaFile.id
+      evidenceId: evidence.id
     }
 
     getDb()
       .prepare(
-        `INSERT INTO source (id, createdAt, authorId, mediaFileId, region, yearStart, yearEnd, notes)
-         VALUES (@id, @createdAt, @authorId, @mediaFileId, @region, @yearStart, @yearEnd, @notes)`
+        `INSERT INTO source (id, createdAt, authorId, evidenceId, region, yearStart, yearEnd, notes)
+         VALUES (@id, @createdAt, @authorId, @evidenceId, @region, @yearStart, @yearEnd, @notes)`
       )
       .run(toSqlParams(source))
 
@@ -65,8 +65,8 @@ export function createSourceWithDetails(data: ISourceWithDetailsToCreate): ISour
       )
       .run(link)
 
-    const { authorId, mediaFileId, ...rest } = source
-    return { ...rest, author, mediaFile } satisfies ISourceDetails
+    const { authorId, evidenceId, ...rest } = source
+    return { ...rest, author, evidence } satisfies ISourceDetails
   })
   return transaction()
 }
@@ -79,19 +79,19 @@ export function updateSource(
   if (!existing) return undefined
 
   const authorId = data.author ? createAuthor(data.author).id : existing.authorId
-  const mediaFileId = data.mediaFile ? createMediaFile(data.mediaFile).id : existing.mediaFileId
+  const evidenceId = data.evidence ? createEvidence(data.evidence).id : existing.evidenceId
 
   const updated: ISourceAttached = {
     ...existing,
     ...data.source,
     authorId,
-    mediaFileId
+    evidenceId
   }
 
   getDb()
     .prepare(
       `UPDATE source
-       SET authorId = @authorId, mediaFileId = @mediaFileId,
+       SET authorId = @authorId, evidenceId = @evidenceId,
            region = @region, yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes
        WHERE id = @id`
     )
