@@ -1,0 +1,15 @@
+{
+  "name": "signarchive",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-models.js",
+    "sync:watch": "node scripts/sync-models.js --watch",
+    "dev:backend": "npm run sync && cd backend && pnpm dev",
+    "dev:frontend": "npm run sync && cd frontend && pnpm dev",
+    "dev": "npm run sync && concurrently \"cd backend && pnpm dev\" \"cd frontend && pnpm dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
