@@ -10,6 +10,10 @@ export interface ISign {
 
 export type ISignAttached = ISign & IBaseModelAttached
 
+export interface ISignDetailsEdit extends Omit<ISign, 'mediaId'> {
+  media: IMediaAttached
+}
+
 export interface ISignDetails extends ISign, IBaseModelAttached, IYearStartEnd {
   sourcesCount: number
   definitions: IDefinitionAttached[]

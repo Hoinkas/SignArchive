@@ -2,7 +2,7 @@ import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput } from '@src/components/Form/Form'
 import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { ISign, ISignDetails } from '@src/models/sign.model'
+import type { ISignDetails, ISignDetailsEdit } from '@src/models/sign.model'
 import type { IMediaAttached } from '@src/models/media.model'
 
 interface EditSignFormProps {
@@ -31,7 +31,7 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
     if (!url) return
 
     const media: IMediaAttached = { ...sign.media ,url, name: mediaName, mediaType: "video/mp4" }
-    const updatedSign: ISign = {
+    const updatedSign: ISignDetailsEdit = {
       notes,
       media
     }

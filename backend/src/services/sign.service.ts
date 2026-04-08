@@ -4,7 +4,8 @@ import {
   ISignAttached,
   ISignDetails,
   ISignDetailsToDB,
-  ISign
+  ISign,
+  ISignDetailsEdit
 } from '../../../shared/models/sign.model'
 import { IYearsRegions, IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
 import { getDefinitions, insertDefinition } from './definition.service'
@@ -148,33 +149,29 @@ export function createSignWithDefinition(data: ISignDetailsToDB): ISignDetails {
 
 export function updateSign(
   signId: string,
-  data: Partial<ISignDetailsToDB>
+  data: Partial<ISignDetailsEdit>
 ): ISignAttached | undefined {
   const existing = findSignById(signId)
-  if (!existing) return
+  if (!data.media || !existing) return
 
-  const media = findMediaBySignId(signId)
-  if (!media) return
-
-  if (data.media) updateMedia(media.id, data.media)
+  if (data.media) updateMedia(data.media.id, data.media)
 
   const updated: ISignAttached = {
     ...existing,
     notes: data.notes ?? existing.notes,
-    mediaId: media.id
+    mediaId: data.media.id
   }
 
   getDb()
     .prepare(
       `UPDATE sign
-       SET notes = @notes, fileUrl = @fileUrl, fileName = @fileName,
-           fileMediaType = @fileMediaType
+       SET notes = @notes, mediaId = @mediaId
        WHERE id = @id`
     )
     .run({
       id: updated.id,
       notes: updated.notes ?? null,
-      media
+      mediaId: updated.mediaId
     })
 
   return updated
