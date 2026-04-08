@@ -3,7 +3,7 @@ import React from 'react'
 import { SignContext } from './SignsContext'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { signApi } from '@src/services/sign.api'
-import type { ISign, ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
+import type { ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
 
 interface Props {
   children?: React.ReactNode
@@ -25,7 +25,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const editSign = (signId: string, updatedSign: Partial<ISign>, closeForm: () => void): void => {
+  const editSign = (signId: string, updatedSign: Partial<ISignDetailsToDB>, closeForm: () => void): void => {
     signApi.update(signId, updatedSign).then((result) => {
       setSigns((prev) => prev.map((s) => (s.id === signId ? { ...s, ...result } : s)))
       closeForm()

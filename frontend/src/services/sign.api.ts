@@ -1,4 +1,4 @@
-import type { ISign, ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
+import type { ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
 import { api } from './client'
 import type { IYearsRegions } from '@src/models/yearStartEnd.model'
 
@@ -9,7 +9,7 @@ export const signApi = {
   create: (data: ISignDetailsToDB): Promise<ISignDetails> =>
     api.post('/signs', data).then((r) => r.data),
 
-  update: (signId: string, data: Partial<ISign>): Promise<ISignDetails> =>
+  update: (signId: string, data: Partial<ISignDetailsToDB>): Promise<ISignDetails> =>
     api.patch(`/signs/${signId}`, data).then((r) => r.data),
 
   delete: (signId: string): Promise<void> => api.delete(`/signs/${signId}`).then(() => undefined),

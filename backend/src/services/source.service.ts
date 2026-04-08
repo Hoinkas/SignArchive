@@ -8,8 +8,8 @@ import {
   ISourceWithDetailsToDB
 } from '../../../shared/models/source.model'
 import { createAuthor, findAuthorById } from './author.service'
-import { createEvidence, findEvidenceById } from './evidence.service'
 import toSqlParams from '../utils/toSqlParams'
+import { createEvidence, findEvidenceById } from './evidence.service'
 
 function findSourceById(id: string): ISourceAttached | undefined {
   return getDb().prepare('SELECT * FROM source WHERE id = ?').get(id) as ISourceAttached | undefined

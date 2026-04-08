@@ -8,3 +8,4 @@ signs.json
 *.db*
 *.zip
 *bkp
+*.sql*

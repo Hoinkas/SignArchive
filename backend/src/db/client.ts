@@ -25,15 +25,21 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS word (
       id        TEXT PRIMARY KEY,
       createdAt INTEGER NOT NULL,
-      text      TEXT NOT NULL
+      text      TEXT NOT NULL UNIQUE
+    );
+
+    CREATE TABLE IF NOT EXISTS media (
+      id            TEXT PRIMARY KEY,
+      createdAt     INTEGER NOT NULL,
+      url           TEXT NOT NULL,
+      mediaType     TEXT NOT NULL,
+      name          TEXT
     );
 
     CREATE TABLE IF NOT EXISTS sign (
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
-      fileUrl       TEXT NOT NULL,
-      fileMediaType TEXT NOT NULL,
-      fileName      TEXT,
+      mediaId       TEXT REFERENCES media(id) ON DELETE CASCADE,
       notes         TEXT
     );
 
@@ -46,14 +52,16 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS evidence (
       id        TEXT PRIMARY KEY,
       createdAt INTEGER NOT NULL,
-      fileUrl   TEXT NOT NULL
+      name      TEXT NOT NULL,
+      fullName  TEXT NOT NULL,
+      url       TEXT
     );
 
     CREATE TABLE IF NOT EXISTS source (
       id          TEXT PRIMARY KEY,
       createdAt   INTEGER NOT NULL,
       authorId    TEXT REFERENCES author(id) ON DELETE SET NULL,
-      evidenceId TEXT REFERENCES evidence(id) ON DELETE SET NULL,
+      evidenceId  TEXT REFERENCES evidence(id) ON DELETE SET NULL,
       region      TEXT,
       yearStart   INTEGER,
       yearEnd     INTEGER,
@@ -99,5 +107,8 @@ function initSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_definitionSignWord_signId ON definitionSignWord(signId);
     CREATE INDEX IF NOT EXISTS idx_definitionSignWord_wordId ON definitionSignWord(wordId);
     CREATE INDEX IF NOT EXISTS idx_tagWord_wordId            ON tagWord(wordId);
+    CREATE INDEX IF NOT EXISTS idx_source_authorId           ON source(authorId);
+    CREATE INDEX IF NOT EXISTS idx_source_evidenceId         ON source(evidenceId);
+    CREATE INDEX IF NOT EXISTS idx_sign_mediaId              ON sign(mediaId);
   `)
 }

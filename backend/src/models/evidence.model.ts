@@ -1,7 +1,9 @@
 import type { IBaseModelAttached } from './base.interface'
 
 export interface IEvidence {
-  fileUrl: string
+  name: string
+  fullName: string
+  url?: string
 }
 
 export type IEvidenceAttached = IEvidence & IBaseModelAttached

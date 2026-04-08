@@ -9,9 +9,11 @@ export function findEvidenceById(id: string): IEvidenceAttached | undefined {
 }
 
 export function createEvidence(data: IEvidence): IEvidenceAttached {
-  const file: IEvidenceAttached = { id: nanoid(), createdAt: Date.now(), fileUrl: data.fileUrl }
+  const file: IEvidenceAttached = { id: nanoid(), createdAt: Date.now(), ...data }
   getDb()
-    .prepare('INSERT INTO evidence (id, createdAt, fileUrl) VALUES (@id, @createdAt, @fileUrl)')
+    .prepare(
+      'INSERT INTO evidence (id, createdAt, url, name, fullName) VALUES (@id, @createdAt, @url, @name, @fullName)'
+    )
     .run(file)
   return file
 }

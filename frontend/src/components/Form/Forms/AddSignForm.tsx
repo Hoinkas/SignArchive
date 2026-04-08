@@ -11,8 +11,9 @@ import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { ISignDetailsToDB, ISignFile } from '@src/models/sign.model'
+import type { ISignDetailsToDB } from '@src/models/sign.model'
 import type { DefinitionsCategories, IDefinition } from '@src/models/definition.model'
+import type { IMedia } from '@src/models/media.model'
 
 interface AddSignFormProps {
   formType: FormType
@@ -24,6 +25,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   const { addSign } = useSigns()
 
   const [url, setUrl] = useState<string>('')
+  const [mediaName, setMediaName] = useState<string>('')
   const [notes, setNotes] = useState<string>('')
   const [text, setText] = useState<string>('')
   const [translation, setTranslation] = useState<string>('')
@@ -46,13 +48,13 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     setSubmitted(true)
     if (!isValid || !word) return
 
-    const signFile: ISignFile = { url, name: undefined, mediaType: "video/mp4" }
+    const media: IMedia = { url, name: mediaName, mediaType: "video/mp4" }
     const definition: IDefinition = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
       translation
     }
-    const data: ISignDetailsToDB = { wordId: word.id, sign: signFile, definition }
+    const data: ISignDetailsToDB = { wordId: word.id, media, definition }
 
     addSign(data, closeForm)
   }
@@ -60,6 +62,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormSingleLineInput label="URL do filmu" value={url} setValue={setUrl} required submitted={submitted} />
+      <FormMultiLineInput label="Opis filmu" value={mediaName} setValue={setMediaName} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
       <FormMultiLineInput label="Definicja" value={text} setValue={setText} required submitted={submitted} />
       <FormTwoInLineWrapper>

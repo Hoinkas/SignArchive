@@ -14,11 +14,13 @@ interface SignBoxProps {
 function SignBox({ sign }: SignBoxProps): React.JSX.Element {
   const { changeSourcesPanelSign } = useSources()
 
+  console.log(sign)
+
   return (
     <div className="signBoxContainer">
       <SignTitle sign={sign} />
       <div className="signBox">
-        <MediaPlayer file={sign.file} />
+        <MediaPlayer media={sign.media} />
         <div className="variantDetails">
           <DefinitionsProvider>
             <DefinitionDetails sign={sign} notes={sign.notes} />

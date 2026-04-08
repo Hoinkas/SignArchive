@@ -8,6 +8,12 @@ import { getDb } from '../db/client'
 import { IDefinitionSignWord } from '../../../shared/models/definitionSignWord'
 import toSqlParams from '../utils/toSqlParams'
 
+export function findDefinitionById(id: string): IDefinitionAttached | undefined {
+  return getDb().prepare('SELECT * FROM definition WHERE id = ?').get(id) as
+    | IDefinitionAttached
+    | undefined
+}
+
 export function getDefinitions(signId: string, wordId: string): IDefinitionAttached[] {
   return getDb()
     .prepare(
@@ -54,9 +60,7 @@ export function updateDefinition(
   definitionId: string,
   data: Partial<IDefinition>
 ): IDefinitionAttached | undefined {
-  const existing = getDb().prepare('SELECT * FROM definition WHERE id = ?').get(definitionId) as
-    | IDefinitionAttached
-    | undefined
+  const existing = findDefinitionById(definitionId)
   if (!existing) return undefined
 
   const updated: IDefinitionAttached = { ...existing, ...data, id: definitionId }

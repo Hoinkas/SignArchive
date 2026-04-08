@@ -1,7 +1,7 @@
 # SignArchive
 Sign Language Dictionary.
 
-Allows user to manage signs (with clips, images or texts), definitions, words ect.
+Allows user to manage signs (with media, images or texts), definitions, words ect.
 
 The sign language sometimes uses the same sign for different words and/or the same word has different signs for it in various regions and times. It was all taken into consideration while creating this app.
 
@@ -54,5 +54,5 @@ pnpm dev
 - [ ] Displaying a Three.js motion model moving based on generated landmarks
 - [ ] Recognizing a sign from a webcam or video
 - [ ] Adding HamNoSys sign transcript
-- [ ] Storing multiple videos for a single sign to share with students who want to teach their ML with many clips of same word
+- [ ] Storing multiple videos for a single sign to share with students who want to teach their ML with many media of same word
 - [ ] User accounts with moderation and voting on new signs and editing old ones
