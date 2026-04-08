@@ -1,7 +1,7 @@
 import type { DefinitionCategoryWithCount } from '@shared/types'
 import './DefinitionTab.css'
-import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
-import { titleCase } from '@src/functions/namesHelpers'
+import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
+import { titleCase } from '@src/utils/namesHelpers'
 
 interface DefinitionTabProps {
   category: DefinitionCategoryWithCount

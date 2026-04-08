@@ -9,8 +9,8 @@ import type {
   SignDetails
 } from '@shared/types'
 import { DefinitionsContext } from './DefinitionsContext'
-import { useWord } from '@contexts/WordContext/useWord'
-import { definitionApi } from '@src/api/definition.api'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { definitionApi } from '@src/services/definition.api'
 
 interface Props {
   children?: React.ReactNode

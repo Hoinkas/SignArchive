@@ -1,5 +1,5 @@
 import type { Tag } from '@shared/types'
-import { useTags } from '@contexts/TagsContext/useTags'
+import { useTags } from '@src/hooks/TagsContext/useTags'
 
 interface TagProps {
   tag: Tag

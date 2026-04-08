@@ -1,9 +1,9 @@
 import './WordListDetails.css'
-import { useSearch } from '@contexts/SearchCotext/useSearch'
-import { wordsCountText } from '@src/functions/namesHelpers'
+import { useSearch } from '@src/hooks/SearchCotext/useSearch'
+import { wordsCountText } from '@src/utils/namesHelpers'
 import SortAZIcon from '@src/assets/icons/SortAzIcon'
 import SortZAIcon from '@src/assets/icons/SortZAIcon'
-import { useWord } from '@contexts/WordContext/useWord'
+import { useWord } from '@src/hooks/WordContext/useWord'
 
 function WordListDetails(): React.JSX.Element {
   const { isDescending, toggleSort } = useWord()

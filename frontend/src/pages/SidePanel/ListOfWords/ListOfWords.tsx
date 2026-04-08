@@ -1,7 +1,7 @@
-import { useSearch } from '@contexts/SearchCotext/useSearch'
+import { useSearch } from '@src/hooks/SearchCotext/useSearch'
 import './ListOfWords.css'
-import { useWord } from '@contexts/WordContext/useWord'
-import { signCountText } from '@src/functions/namesHelpers'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { signCountText } from '@src/utils/namesHelpers'
 import type { WordWithCountCategories } from '@shared/types'
 
 function ListOfWords(): React.JSX.Element {

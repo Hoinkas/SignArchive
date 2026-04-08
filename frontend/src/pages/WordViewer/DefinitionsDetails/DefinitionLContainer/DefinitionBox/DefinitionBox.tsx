@@ -3,8 +3,8 @@ import './DefinitionBox.css'
 import type { Definition } from '@shared/types'
 import { useState } from 'react'
 import DefinitionForm from '@src/components/Form/Forms/DefinitionForm'
-import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 interface DefinitionBoxProps {
   definition: Definition

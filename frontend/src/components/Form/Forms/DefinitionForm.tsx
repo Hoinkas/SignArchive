@@ -5,7 +5,7 @@ import {
   FormModalWrapper,
   FormSingleLineInput
 } from '@src/components/Form/Form'
-import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
+import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import FormDropdown, { type DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'
 

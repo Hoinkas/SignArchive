@@ -2,11 +2,11 @@ import './SignTitle.css'
 import type { SignDetails } from '@shared/types'
 import EditSignForm from '@src/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
-import { mergeYearText } from '@src/functions/namesHelpers'
+import { mergeYearText } from '@src/utils/namesHelpers'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
-import { useSigns } from '@contexts/SignsContext/useSigns'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import PillList from '@src/components/PillList/PillList'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 interface SignTitleProps {
   sign: SignDetails

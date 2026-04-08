@@ -2,9 +2,9 @@ import { useState } from 'react'
 import React from 'react'
 import type { SignDetails, SourceDetails, SourceWithDetailsToCreate, SourceWithDetailsToDB } from '@shared/types'
 import { SourcesContext } from './SourcesContext'
-import { useWord } from '@contexts/WordContext/useWord'
-import { useSigns } from '@contexts/SignsContext/useSigns'
-import { sourceApi } from '@src/api/source.api'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import { sourceApi } from '@src/services/source.api'
 
 interface Props {
   children?: React.ReactNode

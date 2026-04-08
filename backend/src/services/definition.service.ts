@@ -1,8 +1,12 @@
-import { nanoid } from "nanoid"
-import { IDefinition, IDefinitionAttached, IDefinitionToDB } from "../models/definition.model"
-import { getDb } from "../db/client"
-import { IDefinitionSignWord } from "../models/definitionSignWord"
-import toSqlParams from "../utils/toSqlParams"
+import { nanoid } from 'nanoid'
+import {
+  IDefinition,
+  IDefinitionAttached,
+  IDefinitionToDB
+} from '../../../shared/models/definition.model'
+import { getDb } from '../db/client'
+import { IDefinitionSignWord } from '../../../shared/models/definitionSignWord'
+import toSqlParams from '../utils/toSqlParams'
 
 export function getDefinitions(signId: string, wordId: string): IDefinitionAttached[] {
   return getDb()
@@ -50,9 +54,9 @@ export function updateDefinition(
   definitionId: string,
   data: Partial<IDefinition>
 ): IDefinitionAttached | undefined {
-  const existing = getDb()
-    .prepare('SELECT * FROM definition WHERE id = ?')
-    .get(definitionId) as IDefinitionAttached | undefined
+  const existing = getDb().prepare('SELECT * FROM definition WHERE id = ?').get(definitionId) as
+    | IDefinitionAttached
+    | undefined
   if (!existing) return undefined
 
   const updated: IDefinitionAttached = { ...existing, ...data, id: definitionId }

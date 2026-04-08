@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ITag, ITagAttached, ITagWord } from '../models/tag.model'
+import { ITag, ITagAttached, ITagWord } from '../../../shared/models/tag.model'
 
 export function listAllTags(): ITagAttached[] {
   return getDb().prepare('SELECT * FROM tag ORDER BY name').all() as ITagAttached[]
@@ -17,15 +17,13 @@ export function listTagsByWordId(wordId: string): ITagAttached[] {
 }
 
 function findOrCreateTag(data: ITag): ITagAttached {
-  const existing = getDb()
-    .prepare('SELECT * FROM tag WHERE name = ?')
-    .get(data.name) as ITagAttached | undefined
+  const existing = getDb().prepare('SELECT * FROM tag WHERE name = ?').get(data.name) as
+    | ITagAttached
+    | undefined
   if (existing) return existing
 
   const tag: ITagAttached = { id: nanoid(), createdAt: Date.now(), name: data.name }
-  getDb()
-    .prepare('INSERT INTO tag (id, createdAt, name) VALUES (@id, @createdAt, @name)')
-    .run(tag)
+  getDb().prepare('INSERT INTO tag (id, createdAt, name) VALUES (@id, @createdAt, @name)').run(tag)
   return tag
 }
 
@@ -48,9 +46,7 @@ export function addTagToWord(tagId: string, wordId: string): void {
 }
 
 export function removeTagFromWord(tagId: string, wordId: string): void {
-  getDb()
-    .prepare('DELETE FROM tagWord WHERE tagId = ? AND wordId = ?')
-    .run(tagId, wordId)
+  getDb().prepare('DELETE FROM tagWord WHERE tagId = ? AND wordId = ?').run(tagId, wordId)
 }
 
 export function deleteTag(tagId: string): void {

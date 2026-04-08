@@ -5,8 +5,8 @@ import './SourceList.css'
 import SourcesTitle from './SourcesTitle/SourcesTitle'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 import SourceForm from '@src/components/Form/Forms/SourceForm'
-import { useSources } from '@contexts/SourcesContext/useSources'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 interface SourceListProps {
   sign: SignDetails

@@ -6,8 +6,8 @@ import ThemeSwitch from '@src/components/ThemeSwitch/ThemeSwitch'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 import WordForm from '@src/components/Form/Forms/WordForm'
 import WordListDetails from './WordListDetails/WordListDetails'
-import TagsProvider from '@contexts/TagsContext/TagsProvider'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import TagsProvider from '@src/hooks/TagsContext/TagsProvider'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 function SidePanel(): React.JSX.Element {
   const { isAdmin } = usePermissions()

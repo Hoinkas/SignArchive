@@ -1,7 +1,7 @@
 import type { SignDetails } from '@shared/types'
 import './SourcesTitle.css'
-import { mergeYearText, sourcesCountText } from '@src/functions/namesHelpers'
-import { useSources } from '@contexts/SourcesContext/useSources'
+import { mergeYearText, sourcesCountText } from '@src/utils/namesHelpers'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
 
 interface SourcesTitleProps {
   sign: SignDetails

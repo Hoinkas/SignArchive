@@ -1,6 +1,12 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ISourceAttached, ISourceDetails, ISourceSignWord, ISourceWithDetailsToCreate, ISourceWithDetailsToDB } from '../models/source.model'
+import {
+  ISourceAttached,
+  ISourceDetails,
+  ISourceSignWord,
+  ISourceWithDetailsToCreate,
+  ISourceWithDetailsToDB
+} from '../../../shared/models/source.model'
 import { createAuthor, findAuthorById } from './author.service'
 import { createMediaFile, findMediaFileById } from './mediaFile.service'
 import toSqlParams from '../utils/toSqlParams'

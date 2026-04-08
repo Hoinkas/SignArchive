@@ -1,12 +1,12 @@
 import type { SourceDetails } from '@shared/types'
 import './SourceBox.css'
 import { useState } from 'react'
-import { mergeYearText } from '@src/functions/namesHelpers'
+import { mergeYearText } from '@src/utils/namesHelpers'
 import SourceForm from '@src/components/Form/Forms/SourceForm'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
-import { useSources } from '@contexts/SourcesContext/useSources'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
 import PillList from '@src/components/PillList/PillList'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 interface SourceBoxProps {
   source: SourceDetails

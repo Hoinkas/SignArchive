@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import type { Tag, Word, WordToDB, WordWithCountCategories } from '@shared/types'
 import { WordContext } from './WordContext'
-import { wordApi } from '@src/api/word.api'
-import { tagApi } from '@src/api/tag.api'
+import { wordApi } from '@src/services/word.api'
+import { tagApi } from '@src/services/tag.api'
 
 interface Props {
   children?: React.ReactNode

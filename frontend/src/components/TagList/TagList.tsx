@@ -1,6 +1,6 @@
 import './TagList.css'
 import TagBox from './TagBox'
-import { useTags } from '@contexts/TagsContext/useTags'
+import { useTags } from '@src/hooks/TagsContext/useTags'
 
 function TagList(): React.JSX.Element {
   const { tags } = useTags()

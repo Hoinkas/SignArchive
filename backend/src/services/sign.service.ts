@@ -1,14 +1,20 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ISignAttached, ISignDetails, ISignDetailsToDB, ISignFile, ISignToDB } from '../models/sign.model'
-import { IYearStartEnd } from '../models/yearStartEnd.model'
+import {
+  ISignAttached,
+  ISignDetails,
+  ISignDetailsToDB,
+  ISignFile,
+  ISignToDB
+} from '../../../shared/models/sign.model'
+import { IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
 import { getDefinitions, insertDefinition } from './definition.service'
 
 export function rowToSign(row: Record<string, unknown>): ISignAttached {
   const file: ISignFile = {
     url: row.fileUrl as string,
     name: row.fileName as string,
-    mediaType: row.fileMediaType as string,
+    mediaType: row.fileMediaType as string
   }
   return {
     id: row.id as string,
@@ -138,7 +144,7 @@ export function updateSign(signId: string, data: Partial<ISignToDB>): ISignAttac
   const updatedFile: ISignFile = {
     url: data.fileUrl ?? existing.file.url,
     name: existing.file.name,
-    mediaType: existing.file.mediaType,
+    mediaType: existing.file.mediaType
   }
 
   const updated: ISignAttached = {

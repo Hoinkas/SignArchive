@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
 import type { Tag, TagToDB } from '@shared/types'
-import { useWord } from '@contexts/WordContext/useWord'
+import { useWord } from '@src/hooks/WordContext/useWord'
 import { TagsContext } from './TagsContext'
-import { tagApi } from '@src/api/tag.api'
+import { tagApi } from '@src/services/tag.api'
 
 interface Props {
   wordId?: string

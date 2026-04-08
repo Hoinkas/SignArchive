@@ -1,7 +1,7 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
 import type { FormType, SignDetails, SignToDB } from '@shared/types'
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput } from '@src/components/Form/Form'
-import { useSigns } from '@contexts/SignsContext/useSigns'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
 
 interface EditSignFormProps {
   sign: SignDetails

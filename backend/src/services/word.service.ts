@@ -1,7 +1,11 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ITagAttached } from '../models/tag.model'
-import { IWordAttached, IWordToDB, IWordWithCountCategories } from '../models/word.model'
+import { ITagAttached } from '../../../shared/models/tag.model'
+import {
+  IWordAttached,
+  IWordToDB,
+  IWordWithCountCategories
+} from '../../../shared/models/word.model'
 
 function rowToWord(row: Record<string, unknown>): IWordAttached {
   return {
@@ -66,9 +70,7 @@ export function createWord(data: IWordToDB): IWordAttached {
     text: data.text
   }
 
-  db.prepare(
-    'INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)'
-  ).run(word)
+  db.prepare('INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)').run(word)
 
   if (data.tagIds && data.tagIds.length > 0) {
     const insert = db.prepare(

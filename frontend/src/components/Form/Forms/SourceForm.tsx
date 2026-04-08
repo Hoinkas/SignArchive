@@ -1,11 +1,11 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import type { Author, AuthorToDB, FormType, MediaFileToDB, SourceDetails, SourceToCreate, SourceWithDetailsToDB } from '@shared/types'
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput, FormTwoInLineWrapper } from '../Form'
-import { useSources } from '@contexts/SourcesContext/useSources'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
-import { sourceApi } from '@src/api/source.api'
-import { authorApi } from '@src/api/author.api'
+import { sourceApi } from '@src/services/source.api'
+import { authorApi } from '@src/services/author.api'
 
 interface SourceFormProps {
   source?: SourceDetails

@@ -6,8 +6,8 @@ import {
   FormSingleLineInput,
   FormTwoInLineWrapper
 } from '@src/components/Form/Form'
-import { useWord } from '@contexts/WordContext/useWord'
-import { useSigns } from '@contexts/SignsContext/useSigns'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'

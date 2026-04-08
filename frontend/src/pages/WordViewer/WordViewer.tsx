@@ -4,11 +4,11 @@ import WordTitle from './WordTitle/WordTitle'
 import SignList from './SignList/SignList'
 import AddSignForm from '@src/components/Form/Forms/AddSignForm'
 import ActionButton from '@src/components/ActionButton/ActionButton'
-import { useWord } from '@contexts/WordContext/useWord'
-import { useSigns } from '@contexts/SignsContext/useSigns'
-import SourcesProvider from '@contexts/SourcesContext/SourcesProvider'
-import TagsProvider from '@contexts/TagsContext/TagsProvider'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import SourcesProvider from '@src/hooks/SourcesContext/SourcesProvider'
+import TagsProvider from '@src/hooks/TagsContext/TagsProvider'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 function WordViewer(): React.JSX.Element {
   const { isAdmin } = usePermissions()

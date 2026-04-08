@@ -2,8 +2,8 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
 import type { TagToDB } from '@shared/types'
-import { useTags } from '@contexts/TagsContext/useTags'
-import { useWord } from '@contexts/WordContext/useWord'
+import { useTags } from '@src/hooks/TagsContext/useTags'
+import { useWord } from '@src/hooks/WordContext/useWord'
 
 interface AddTagFormProps {
   setIsTagFormOpen: Dispatch<SetStateAction<boolean>>

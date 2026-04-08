@@ -1,8 +1,8 @@
 import SignBox from './SignBox/SignBox'
 import './SignList.css'
 import SourceList from '../SourceList/SourceList'
-import { useSigns } from '@contexts/SignsContext/useSigns'
-import { useSources } from '@contexts/SourcesContext/useSources'
+import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
 
 function SignList(): React.JSX.Element {
   const { signs } = useSigns()

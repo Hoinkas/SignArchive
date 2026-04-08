@@ -1,7 +1,7 @@
 import './DefinitionDetails.css'
 import type { SignDetails } from '@shared/types'
 import { useEffect, useState } from 'react'
-import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
+import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import DefinitionContainer from './DefinitionLContainer/DefinitionContainer'
 import PillList from '@src/components/PillList/PillList'
 import ArrowUpIcon from '@src/assets/icons/ArrowUpIcon'

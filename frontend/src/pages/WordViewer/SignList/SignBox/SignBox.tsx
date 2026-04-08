@@ -1,11 +1,11 @@
 import './SignBox.css'
 import type { SignDetails } from '@shared/types'
 import MediaPlayer from '@src/components/MediaPlayer/MediaPlayer'
-import { sourcesCountText } from '@src/functions/namesHelpers'
+import { sourcesCountText } from '@src/utils/namesHelpers'
 import SignTitle from '../SignTitle/SignTitle'
 import DefinitionDetails from '../../DefinitionsDetails/DefinitionDetails'
-import { useSources } from '@contexts/SourcesContext/useSources'
-import DefinitionsProvider from '@contexts/DefinitonsContext/DefinitionsProvider'
+import { useSources } from '@src/hooks/SourcesContext/useSources'
+import DefinitionsProvider from '@src/hooks/DefinitonsContext/DefinitionsProvider'
 
 interface SignBoxProps {
   sign: SignDetails

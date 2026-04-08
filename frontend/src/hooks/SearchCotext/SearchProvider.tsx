@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
-import { useWord } from '@contexts/WordContext/useWord'
+import { useWord } from '@src/hooks/WordContext/useWord'
 import type { WordWithCountCategories } from '@shared/types'
 import { SearchContext } from './SearchContext'
-import { tagApi } from '@src/api/tag.api'
-import { sourceApi } from '@src/api/source.api'
+import { tagApi } from '@src/services/tag.api'
+import { sourceApi } from '@src/services/source.api'
 
 interface Props {
   children?: React.ReactNode

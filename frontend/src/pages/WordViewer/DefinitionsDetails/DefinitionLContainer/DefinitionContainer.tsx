@@ -1,11 +1,11 @@
 import './DefinitionContainer.css'
-import { useDefinitions } from '@contexts/DefinitonsContext/useDefinitions'
+import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import DefinitionTab from './DefinitionTab/DefinitionTab'
 import DefinitionBox from './DefinitionBox/DefinitionBox'
 import { useState } from 'react'
 import DefinitonForm from '@src/components/Form/Forms/DefinitionForm'
 import ActionButton from '@src/components/ActionButton/ActionButton'
-import { usePermissions } from '@contexts/PermissionsContext/usePermissions'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 function DefinitionContainer(): React.JSX.Element {
   const { isAdmin } = usePermissions()

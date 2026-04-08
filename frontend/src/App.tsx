@@ -1,9 +1,9 @@
 import WordViewer from './pages/WordViewer/WordViewer'
 import SidePanel from './pages/SidePanel/SidePanel'
-import { useWord } from '@contexts/WordContext/useWord'
-import SignsProvider from '@contexts/SignsContext/SignsProvider'
-import SearchProvider from '@contexts/SearchCotext/SearchProvider'
-import PermissionsProvider from '@contexts/PermissionsContext/PermissionsProvider'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import SignsProvider from '@src/hooks/SignsContext/SignsProvider'
+import SearchProvider from '@src/hooks/SearchCotext/SearchProvider'
+import PermissionsProvider from '@src/hooks/PermissionsContext/PermissionsProvider'
 
 function App(): React.JSX.Element {
   const { activeWordId } = useWord()

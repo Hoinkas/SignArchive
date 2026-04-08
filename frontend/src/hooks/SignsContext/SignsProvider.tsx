@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react'
 import React from 'react'
 import type { SignDetails, SignDetailsToDB, SignToDB } from '@shared/types'
 import { SignContext } from './SignsContext'
-import { useWord } from '@contexts/WordContext/useWord'
-import { signApi } from '@src/api/sign.api'
+import { useWord } from '@src/hooks/WordContext/useWord'
+import { signApi } from '@src/services/sign.api'
 
 interface Props {
   children?: React.ReactNode
