@@ -3,17 +3,13 @@ import { getDb } from '../db/client'
 import { ITagAttached } from '../../../shared/models/tag.model'
 import {
   IWordAttached,
+  IWordCategoriesAttached,
   IWordToDB,
-  IWordWithCountCategories
+  IWordWithCountAttached,
+  IWordWithRegionsCategories
 } from '../../../shared/models/word.model'
-
-function rowToWord(row: Record<string, unknown>): IWordAttached {
-  return {
-    id: row.id as string,
-    createdAt: row.createdAt as number,
-    text: row.text as string
-  }
-}
+import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
+import { IWordWithCount } from '../models/word.model'
 
 function tagsByWordId(wordId: string): ITagAttached[] {
   return getDb()
@@ -36,12 +32,19 @@ function regionsByWordId(wordId: string): string[] {
   return rows.map((r) => r.region)
 }
 
-export function findWordById(id: string): IWordAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(id)
-  return row ? rowToWord(row as Record<string, unknown>) : undefined
+export function findWordCategoriesById(wordId: string): IWordCategoriesAttached | undefined {
+  const word = findWordById(wordId)
+  if (!word) return
+  const categories = listTagsByWordId(wordId)
+  return { ...word, categories }
 }
 
-export function listAllWords(): IWordWithCountCategories[] {
+export function findWordById(id: string): IWordAttached | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(id)
+  return row ? (row as IWordAttached) : undefined
+}
+
+export function listAllWords(): IWordWithRegionsCategories[] {
   const rows = getDb()
     .prepare(
       `SELECT word.*, COUNT(DISTINCT dsw.signId) AS signsCount
@@ -50,19 +53,19 @@ export function listAllWords(): IWordWithCountCategories[] {
        GROUP BY word.id
        ORDER BY word.text`
     )
-    .all() as (Record<string, unknown> & { signsCount: number })[]
+    .all() as IWordWithCountAttached[]
 
   if (rows.length === 0) return []
 
   return rows.map((row) => ({
-    ...rowToWord(row),
+    ...row,
     signsCount: row.signsCount,
     categories: tagsByWordId(row.id as string),
     regions: regionsByWordId(row.id as string)
   }))
 }
 
-export function createWord(data: IWordToDB): IWordAttached {
+export function createWord(data: IWordToDB): IWordCategoriesAttached {
   const db = getDb()
   const word: IWordAttached = {
     id: nanoid(),
@@ -70,22 +73,19 @@ export function createWord(data: IWordToDB): IWordAttached {
     text: data.text
   }
 
+  console.log(data)
+
   db.prepare('INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)').run(word)
 
-  if (data.tagIds && data.tagIds.length > 0) {
-    const insert = db.prepare(
-      'INSERT OR IGNORE INTO tagWord (tagId, wordId) VALUES (@tagId, @wordId)'
-    )
-    const insertMany = db.transaction((tagIds: string[]) => {
-      tagIds.forEach((tagId) => insert.run({ tagId, wordId: word.id }))
-    })
-    insertMany(data.tagIds)
-  }
+  const categories = addManyTagsToWord(data.categories, word.id)
 
-  return word
+  return { ...word, categories }
 }
 
-export function updateWord(wordId: string, data: Partial<IWordToDB>): IWordAttached | undefined {
+export function updateWord(
+  wordId: string,
+  data: Partial<IWordToDB>
+): IWordCategoriesAttached | undefined {
   const existing = findWordById(wordId)
   if (!existing) return undefined
 
@@ -95,7 +95,14 @@ export function updateWord(wordId: string, data: Partial<IWordToDB>): IWordAttac
       .run({ text: data.text, id: wordId })
   }
 
-  return findWordById(wordId)
+  const newWord = findWordById(wordId)
+  if (!newWord) return undefined
+
+  const categories = data.categories
+    ? addAndRemoveTagsFromWord(data.categories, wordId)
+    : listTagsByWordId(wordId)
+
+  return { ...newWord, categories }
 }
 
 export function deleteWord(wordId: string): void {

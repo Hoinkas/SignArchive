@@ -1,7 +1,8 @@
 import { type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { FormType, IWordAttached } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@src/hooks/WordContext/useWord'
+import type { IWordAttached } from '@src/models/word.model'
+import type { FormType } from '@src/models/yearStartEnd.model'
 import { useTags } from '@src/hooks/TagsContext/useTags'
 
 interface WordFormProps {
@@ -31,9 +32,9 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     if (!isValid) return
 
     if (formType === 'add') {
-      addWord({ text, tagIds: tags.map((t) => t.id) }, closeForm)
+      addWord({ text }, tags, closeForm)
     } else if (formType === 'edit' && word) {
-      editWord({ text, tagIds: tags.map((t) => t.id) }, closeForm)
+      editWord({ text }, tags,  closeForm)
     }
   }
 

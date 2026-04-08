@@ -1,5 +1,4 @@
 import { type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { IDefinitionAttached, DefinitionsCategories, IDefinitionToDB, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -8,6 +7,8 @@ import {
 import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import FormDropdown, { type DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'
+import type { DefinitionsCategories, IDefinition, IDefinitionAttached } from '@src/models/definition.model'
+import type { FormType } from '@src/models/yearStartEnd.model'
 
 interface DefinitionFormProps {
   definition?: IDefinitionAttached
@@ -42,7 +43,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     if (!isValid) return
 
     if (!categoryOption) return
-    const definitionToCreate: IDefinitionToDB = {
+    const definitionToCreate: IDefinition = {
       category: categoryOption.label as DefinitionsCategories,
       text,
       translation

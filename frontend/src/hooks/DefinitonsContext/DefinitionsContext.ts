@@ -1,9 +1,9 @@
 import type {
   DefinitionsCategories,
+  IDefinition,
   IDefinitionAttached,
   IDefinitionCategoryWithCount,
-  IDefinitionsCategoriesGrouped,
-  IDefinitionToDB
+  IDefinitionsCategoriesGrouped
 } from '@src/models/definition.model'
 import type { ISignDetails } from '@src/models/sign.model'
 import { createContext } from 'react'
@@ -17,8 +17,8 @@ export interface DefinitionsContextValue {
   activeCategory: DefinitionsCategories | null
   changeActiveCategory: (category: DefinitionsCategories) => void
   filteredDefinitions: IDefinitionAttached[]
-  addDefinition: (data: IDefinitionToDB, closeForm: () => void) => void
-  editDefinition: (definitionId: string, data: IDefinitionToDB, closeForm: () => void) => void
+  addDefinition: (data: IDefinition, closeForm: () => void) => void
+  editDefinition: (definitionId: string, data: IDefinition, closeForm: () => void) => void
   deleteDefinition: (definitionId: string) => void
 }
 

@@ -13,6 +13,8 @@ export interface ISign {
   notes?: string
 }
 
+export type ISignAttached = ISign & IBaseModelAttached
+
 export interface ISignToDB extends Omit<ISign, 'file'> {
   fileUrl: string
 }
@@ -29,5 +31,3 @@ export interface ISignDetailsToDB {
   sign: ISignFile
   notes?: string
 }
-
-export type ISignAttached = ISign & IBaseModelAttached

@@ -1,10 +1,10 @@
+import type { ITag, ITagAttached } from '@src/models/tag.model'
 import { createContext } from 'react'
-import type { Tag, ITag } from '@shared/types'
 
 export interface TagsContextValue {
-  tags: ITagAttached[]
+  tags: (ITag | ITagAttached)[]
   addTag: (tag: ITag) => void
-  deleteTag: (tag: Tag) => void
+  deleteTag: (tag: ITag) => void
 }
 
 export const TagsContext = createContext<TagsContextValue>({

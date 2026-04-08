@@ -23,7 +23,9 @@ function findOrCreateTag(data: ITag): ITagAttached {
   if (existing) return existing
 
   const tag: ITagAttached = { id: nanoid(), createdAt: Date.now(), name: data.name }
-  getDb().prepare('INSERT INTO tag (id, createdAt, name) VALUES (@id, @createdAt, @name)').run(tag)
+  getDb()
+    .prepare('INSERT OR IGNORE INTO tag (id, createdAt, name) VALUES (@id, @createdAt, @name)')
+    .run(tag)
   return tag
 }
 
@@ -39,10 +41,27 @@ export function createTagAndLink(wordId: string, data: ITag): ITagAttached {
   return transaction()
 }
 
-export function addTagToWord(tagId: string, wordId: string): void {
-  getDb()
-    .prepare('INSERT OR IGNORE INTO tagWord (tagId, wordId) VALUES (@tagId, @wordId)')
-    .run({ tagId, wordId })
+export function addAndRemoveTagsFromWord(
+  tags: (ITag | ITagAttached)[],
+  wordId: string
+): ITagAttached[] {
+  const existingTags = addManyTagsToWord(tags, wordId)
+  const filteredTags = removeUnusedTagsFromWord(existingTags, wordId)
+
+  return filteredTags
+}
+
+export function addManyTagsToWord(tags: (ITag | ITagAttached)[], wordId: string): ITagAttached[] {
+  return tags.map((t) => createTagAndLink(wordId, t))
+}
+
+function removeUnusedTagsFromWord(tags: ITagAttached[], wordId: string) {
+  const prevTags = listTagsByWordId(wordId)
+  const filteredTags = prevTags.filter((t) => !tags.includes(t))
+
+  filteredTags.forEach((t) => removeTagFromWord(t.id, wordId))
+
+  return filteredTags
 }
 
 export function removeTagFromWord(tagId: string, wordId: string): void {

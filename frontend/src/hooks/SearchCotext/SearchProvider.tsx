@@ -5,7 +5,7 @@ import { useWord } from '@src/hooks/WordContext/useWord'
 import { SearchContext } from './SearchContext'
 import { tagApi } from '@src/services/tag.api'
 import { sourceApi } from '@src/services/source.api'
-import type { IWordWithCountCategories } from '@src/models/word.model'
+import type { IWordWithRegionsCategories } from '@src/models/word.model'
 
 interface Props {
   children?: React.ReactNode
@@ -28,7 +28,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     )
   }, [])
 
-  const filteredWords = useMemo((): IWordWithCountCategories[] => {
+  const filteredWords = useMemo((): IWordWithRegionsCategories[] => {
     const upper = searchWord.toUpperCase()
 
     return allWords.filter((w) => {

@@ -1,5 +1,4 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { DefinitionsCategories, IDefinitionToDB, ISignDetailsToDB, SignFile, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -11,6 +10,9 @@ import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'
+import type { FormType } from '@src/models/yearStartEnd.model'
+import type { ISignDetailsToDB, ISignFile } from '@src/models/sign.model'
+import type { DefinitionsCategories, IDefinition } from '@src/models/definition.model'
 
 interface AddSignFormProps {
   formType: FormType
@@ -44,8 +46,8 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     setSubmitted(true)
     if (!isValid || !word) return
 
-    const signFile: SignFile = { url, name: undefined, mediaType: "video/mp4" }
-    const definition: IDefinitionToDB = {
+    const signFile: ISignFile = { url, name: undefined, mediaType: "video/mp4" }
+    const definition: IDefinition = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
       translation

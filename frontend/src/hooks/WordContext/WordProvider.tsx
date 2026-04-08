@@ -3,8 +3,8 @@ import React from 'react'
 import { WordContext } from './WordContext'
 import { wordApi } from '@src/services/word.api'
 import { tagApi } from '@src/services/tag.api'
-import type { ITagAttached } from '@src/models/tag.model'
-import type { IWord, IWordAttached, IWordWithCountCategories } from '@src/models/word.model'
+import type { ITag, ITagAttached } from '@src/models/tag.model'
+import type { IWord, IWordAttached, IWordWithRegionsCategories } from '@src/models/word.model'
 
 interface Props {
   children?: React.ReactNode
@@ -12,7 +12,7 @@ interface Props {
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
   const [allTags, setAllTags] = useState<ITagAttached[]>([])
-  const [wordsList, setWordsList] = useState<IWordWithCountCategories[]>([])
+  const [wordsList, setWordsList] = useState<IWordWithRegionsCategories[]>([])
   const [isDescending, setIsDescending] = useState<boolean>(false)
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<IWordAttached | null>(null)
@@ -27,16 +27,16 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     wordApi.details(activeWordId).then(setWord)
   }, [activeWordId])
 
-  const addWord = (data: IWord, closeForm: () => void): void => {
-    wordApi.create(data).then((result) => {
-      setWordsList((prev) => [...prev, { ...result, signsCount: 0, categories: [], regions: [] }])
+  const addWord = (data: IWord, tags: (ITag | ITagAttached)[], closeForm: () => void): void => {
+    wordApi.create({...data, categories: tags}).then((result) => {
+      setWordsList((prev) => [...prev, { ...result, signsCount: 0, regions: [] }])
       closeForm()
     })
   }
 
-  const editWord = (data: Partial<IWord>, closeForm: () => void): void => {
+  const editWord = (data: Partial<IWord>, tags: (ITag | ITagAttached)[], closeForm: () => void): void => {
     if (!word) return
-    wordApi.update(word.id, data).then((result) => {
+    wordApi.update(word.id, {...data, categories: tags}).then((result) => {
       setWord(result)
       setWordsList((prev) => prev.map((w) => (w.id === result.id ? { ...w, ...result } : w)))
       closeForm()
@@ -61,7 +61,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
-  const allWords = useMemo((): IWordWithCountCategories[] => {
+  const allWords = useMemo((): IWordWithRegionsCategories[] => {
     return [...wordsList].sort((a, b) => {
       const cmp = a.text.localeCompare(b.text, 'pl')
       return isDescending ? -cmp : cmp

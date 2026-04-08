@@ -1,6 +1,6 @@
-import { IAuthor, IAuthorAttached } from './author.model'
+import type { IAuthor, IAuthorAttached } from './author.model'
 import type { IBaseModelAttached } from './base.interface'
-import { IMediaFile, IMediaFileAttached } from './mediaFile.model'
+import type { IMediaFile, IMediaFileAttached } from './mediaFile.model'
 
 export interface ISource {
   authorId: string

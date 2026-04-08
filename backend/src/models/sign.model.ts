@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
-import { IDefinition, IDefinitionAttached } from './definition.model'
-import { IYearStartEnd } from './yearStartEnd.model'
+import type { IDefinition, IDefinitionAttached } from './definition.model'
+import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISignFile {
   url: string
@@ -12,6 +12,8 @@ export interface ISign {
   file: ISignFile
   notes?: string
 }
+
+export type ISignAttached = ISign & IBaseModelAttached
 
 export interface ISignToDB extends Omit<ISign, 'file'> {
   fileUrl: string
@@ -29,5 +31,3 @@ export interface ISignDetailsToDB {
   sign: ISignFile
   notes?: string
 }
-
-export type ISignAttached = ISign & IBaseModelAttached

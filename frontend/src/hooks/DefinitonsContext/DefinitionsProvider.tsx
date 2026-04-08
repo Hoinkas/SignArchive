@@ -99,7 +99,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
 
   const editDefinition = (
     definitionId: string,
-    data: IDefinitionToDB,
+    data: IDefinition,
     closeForm: () => void
   ): void => {
     definitionApi.update(definitionId, data).then((result) => {

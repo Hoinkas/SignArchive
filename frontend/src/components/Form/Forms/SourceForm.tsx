@@ -1,11 +1,14 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useEffect, useState } from 'react'
-import type { Author, AuthorToDB, FormType, MediaFileToDB, ISourceDetails, SourceToCreate, ISourceWithDetailsToDB } from '@shared/types'
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput, FormTwoInLineWrapper } from '../Form'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import { sourceApi } from '@src/services/source.api'
 import { authorApi } from '@src/services/author.api'
+import type { ISourceDetails, ISourceToCreate, ISourceWithDetailsToDB } from '@src/models/source.model'
+import type { IAuthor, IAuthorAttached } from '@src/models/author.model'
+import type { FormType } from '@src/models/yearStartEnd.model'
+import type { IMediaFile } from '@src/models/mediaFile.model'
 
 interface SourceFormProps {
   source?: ISourceDetails
@@ -25,7 +28,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
     source ? { id: source.author.id, label: source.author.name } : null
   )
-  const [authors, setAuthors] = useState<Author[]>([])
+  const [authors, setAuthors] = useState<IAuthorAttached[]>([])
 
   useEffect(() => {
     authorApi.list().then(setAuthors)
@@ -54,9 +57,9 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setSubmitted(true)
     if (!isValid) return
 
-    const mediaFile: MediaFileToDB = { fileUrl }
-    const author: AuthorToDB = { name: authorOption.label }
-    const sourceToCreate: SourceToCreate = {
+    const mediaFile: IMediaFile = { fileUrl }
+    const author: IAuthor = { name: authorOption.label }
+    const sourceToCreate: ISourceToCreate = {
       notes: notes,
       region: region,
       yearStart: yearStart ? parseInt(yearStart) : null,

@@ -12,7 +12,7 @@ interface Props {
 
 export default function TagsProvider({ wordId, children }: Props): React.JSX.Element {
   const { allTags } = useWord()
-  const [tags, setTags] = useState<ITagAttached[]>([])
+  const [tags, setTags] = useState<(ITagAttached | ITag)[]>([])
 
   useEffect(() => {
     if (!wordId) return
@@ -20,29 +20,14 @@ export default function TagsProvider({ wordId, children }: Props): React.JSX.Ele
   }, [wordId])
 
   const addTag = (tag: ITag): void => {
-    if (!wordId) {
-      const exists = allTags.find((t) => t.name === tag.name)
-      if (exists && !tags.find((t) => t.id === exists.id)) {
-        setTags((prev) => [...prev, exists])
-      }
-      return
-    }
     const exists = allTags.find((t) => t.name === tag.name)
-    if (exists) {
-      tagApi.addToWord(wordId, exists.id).then(() => setTags((prev) => [...prev, exists]))
-      return
-    }
-    tagApi.create(wordId, tag).then((result) => setTags((prev) => [...prev, result]))
+    const isDuplicate = tags.find((t) => t.name === exists.name)
+
+    if (!exists && !isDuplicate) setTags((prev) => [...prev, exists || tag])
   }
 
-  const deleteTag = (tag: ITagAttached): void => {
-    if (!wordId) {
-      setTags((prev) => prev.filter((t) => t.id !== tag.id))
-      return
-    }
-    tagApi.removeFromWord(tag.id, wordId).then(() =>
-      setTags((prev) => prev.filter((t) => t.id !== tag.id))
-    )
+  const deleteTag = (tag: ITag): void => {
+    setTags((prev) => prev.filter((t) => t.name !== tag.name))
   }
 
   return (

@@ -1,7 +1,8 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { FormType, ISignDetails, ISign } from '@shared/types'
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput } from '@src/components/Form/Form'
 import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import type { FormType } from '@src/models/yearStartEnd.model'
+import type { ISign, ISignDetails, ISignFile } from '@src/models/sign.model'
 
 interface EditSignFormProps {
   sign: ISignDetails
@@ -27,9 +28,10 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
     setSubmitted(true)
     if (!url) return
 
+    const signFile: ISignFile = { url, name: undefined, mediaType: "video/mp4" }
     const updatedSign: ISign = {
       notes,
-      fileUrl: url,
+      file: signFile,
     }
 
     editSign(sign.id, updatedSign, closeForm)

@@ -13,7 +13,7 @@ declare global {
         yearsRegions: (signId: string, wordId: string) => Promise<IYearsRegions>
       }
       word: {
-        listWithCount: () => Promise<IWordWithCountCategories[]>
+        listWithCount: () => Promise<IWordWithRegionsCategories[]>
         details: (wordId: string) => Promise<IWordAttached>
         create: (data: IWord) => Promise<IWordAttached>
         update: (wordId: string, data: Partial<IWord>) => Promise<IWordAttached | undefined>
@@ -31,7 +31,7 @@ declare global {
         delete: (sourceId: string) => Promise<void>
       }
       author: {
-        list: () => Promise<Author[]>
+        list: () => Promise<IAuthorAttached[]>
       }
       definition: {
         create: (data: IDefinition) => Promise<IDefinitionAttached>
@@ -45,8 +45,6 @@ declare global {
         list: () => Promise<ITagAttached[]>
         listByWordId: (wordId: string) => Promise<ITagAttached[]>
         create: (wordId: string, data: ITag) => Promise<Tag>
-        addToWord: (tagId: string, wordId: string) => Promise<void>
-        removeFromWord: (tagId: string, wordId: string) => Promise<void>
       }
       getPathForFile: (file: File) => string
     }

@@ -10,11 +10,5 @@ export const tagApi = {
   create: (wordId: string, data: ITag): Promise<ITagAttached> =>
     api.post(`/words/${wordId}/tags`, data).then((r) => r.data),
 
-  addToWord: (wordId: string, tagId: string): Promise<void> =>
-    api.put(`/words/${wordId}/tags/${tagId}`).then(() => undefined),
-
-  removeFromWord: (tagId: string, wordId: string): Promise<void> =>
-    api.delete(`/words/${wordId}/tags/${tagId}`).then(() => undefined),
-
   delete: (tagId: string): Promise<void> => api.delete(`/tags/${tagId}`).then(() => undefined)
 }

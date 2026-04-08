@@ -1,8 +1,8 @@
-import type { Tag } from '@shared/types'
 import { useTags } from '@src/hooks/TagsContext/useTags'
+import type { ITag } from '@src/models/tag.model'
 
 interface TagProps {
-  tag: Tag
+  tag: ITag
 }
 
 function TagBox({ tag }: TagProps): React.JSX.Element {

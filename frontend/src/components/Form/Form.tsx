@@ -2,7 +2,6 @@ import { type SubmitEvent, useRef, useState } from 'react'
 import './Form.css'
 import TagList from '../TagList/TagList'
 import AddTagForm from './Forms/AddTagForm'
-import type { FormType } from '@shared/types'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -158,10 +157,10 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
   )
 }
 
-import type { SignFile } from '@shared/types'
+import type { FormType } from '@src/models/yearStartEnd.model'
 
-interface FormMediaFileProps {
-  existingFile?: SignFile
+interface FormMediaFileProps { //TODO delete or rewrite to iframe urls
+  existingFile?: string
   newFile: File | null
   setNewFile: (file: File | null) => void
   required?: boolean
@@ -172,7 +171,7 @@ export function FormMediaFile(props: FormMediaFileProps): React.JSX.Element {
   const { existingFile, newFile, setNewFile, required = false, submitted = false } = props
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const label = newFile?.name ?? existingFile?.name ?? 'Wybierz plik'
+  const label = newFile?.name ?? existingFile ?? 'Wybierz plik'
   const hasFile = !!(newFile || existingFile)
 
   const showError = submitted && required && !existingFile
