@@ -1,19 +1,19 @@
+import type { IMedia } from '@src/models/media.model'
 import './MediaPlayer.css'
-import type { SignFile } from '@shared/types'
 
 interface MediaPlayerProps {
-  file: SignFile
+  media: IMedia
 }
 
-function MediaPlayer({ file }: MediaPlayerProps): React.JSX.Element {
-  const isImage = file.mediaType.startsWith('image/')
+function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
+  const isImage = media.mediaType.startsWith('image/')
 
   return (
     <div className="mediaWrapper">
       {isImage ? (
-        <img src={file.url} className="imageBox" alt={file.name} />
+        <img src={media.url} className="imageBox" alt={media.name} />
       ) : (
-        <iframe src={file.url} className="videoBox" allowFullScreen/>
+        <iframe src={media.url} className="videoBox" allowFullScreen/>
       )}
     </div>
   )

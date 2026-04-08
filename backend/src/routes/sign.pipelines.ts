@@ -9,3 +9,6 @@ signRouter
   .route('/:signId')
   .patch(asyncHandler(signController.update))
   .delete(asyncHandler(signController.delete))
+signRouter
+  .route('/:signId/words/:wordId/years-regions')
+  .get(asyncHandler(signController.yearsRegions))

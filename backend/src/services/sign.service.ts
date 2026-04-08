@@ -4,25 +4,12 @@ import {
   ISignAttached,
   ISignDetails,
   ISignDetailsToDB,
-  ISignFile,
-  ISignToDB
+  ISign,
+  ISignDetailsEdit
 } from '../../../shared/models/sign.model'
-import { IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
+import { IYearsRegions, IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
 import { getDefinitions, insertDefinition } from './definition.service'
-
-export function rowToSign(row: Record<string, unknown>): ISignAttached {
-  const file: ISignFile = {
-    url: row.fileUrl as string,
-    name: row.fileName as string,
-    mediaType: row.fileMediaType as string
-  }
-  return {
-    id: row.id as string,
-    createdAt: row.createdAt as number,
-    notes: row.notes as string | undefined,
-    file
-  }
-}
+import { createMedia, findMediaById, findMediaBySignId, updateMedia } from './media.service'
 
 function getYearsBySignWord(signId: string, wordId: string): IYearStartEnd {
   const row = getDb()
@@ -61,7 +48,7 @@ function getSourcesCount(signId: string): number {
 
 export function findSignById(id: string): ISignAttached | undefined {
   const row = getDb().prepare('SELECT * FROM sign WHERE id = ?').get(id)
-  return row ? rowToSign(row as Record<string, unknown>) : undefined
+  return row ? (row as ISignAttached) : undefined
 }
 
 function findSignsByWordId(wordId: string): ISignAttached[] {
@@ -72,10 +59,13 @@ function findSignsByWordId(wordId: string): ISignAttached[] {
        WHERE definitionSignWord.wordId = ?`
     )
     .all(wordId)
-    .map((row) => rowToSign(row as Record<string, unknown>))
+    .map((row) => row as ISignAttached)
 }
 
-function buildSignDetails(sign: ISignAttached, wordId: string): ISignDetails {
+function buildSignDetails(sign: ISignAttached, wordId: string): ISignDetails | undefined {
+  const media = findMediaById(sign.mediaId)
+  if (!media) return
+
   const { yearStart, yearEnd } = getYearsBySignWord(sign.id, wordId)
   return {
     ...sign,
@@ -83,34 +73,52 @@ function buildSignDetails(sign: ISignAttached, wordId: string): ISignDetails {
     yearEnd,
     sourcesCount: getSourcesCount(sign.id),
     definitions: getDefinitions(sign.id, wordId),
-    regions: getRegionsBySignWord(sign.id, wordId)
+    regions: getRegionsBySignWord(sign.id, wordId),
+    media
+  }
+}
+
+export function getYearsRegionsBySignId(signId: string, wordId: string): IYearsRegions {
+  const { yearStart, yearEnd } = getYearsBySignWord(signId, wordId)
+
+  return {
+    yearStart,
+    yearEnd,
+    regions: getRegionsBySignWord(signId, wordId)
   }
 }
 
 export function listSignsByWord(wordId: string): ISignDetails[] {
-  return findSignsByWordId(wordId).map((sign) => buildSignDetails(sign, wordId))
+  const signs = findSignsByWordId(wordId)
+  const signsDetails: ISignDetails[] = []
+
+  signs.forEach((sign) => {
+    const details = buildSignDetails(sign, wordId)
+    if (details) signsDetails.push(details)
+  })
+  return signsDetails
 }
 
 function insertSign(data: ISignDetailsToDB): ISignAttached {
+  const media = createMedia(data.media)
+
   const sign: ISignAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    notes: data.notes,
-    file: data.sign
+    ...data,
+    mediaId: media.id
   }
 
   getDb()
     .prepare(
-      `INSERT INTO sign (id, createdAt, notes, fileUrl, fileName, fileMediaType)
-       VALUES (@id, @createdAt, @notes, @fileUrl, @fileName, @fileMediaType)`
+      `INSERT INTO sign (id, createdAt, notes, mediaId)
+       VALUES (@id, @createdAt, @notes, @mediaId)`
     )
     .run({
       id: sign.id,
       createdAt: sign.createdAt,
       notes: sign.notes ?? null,
-      fileUrl: sign.file.url,
-      fileName: sign.file.name ?? null,
-      fileMediaType: sign.file.mediaType
+      mediaId: media.id
     })
 
   return sign
@@ -124,6 +132,7 @@ export function createSignWithDefinition(data: ISignDetailsToDB): ISignDetails {
       signId: sign.id,
       wordId: data.wordId
     })
+    const media = createMedia(data.media)
 
     return {
       ...sign,
@@ -131,41 +140,38 @@ export function createSignWithDefinition(data: ISignDetailsToDB): ISignDetails {
       yearEnd: null,
       sourcesCount: 0,
       definitions: [definition],
-      regions: []
+      regions: [],
+      media
     } satisfies ISignDetails
   })
   return transaction()
 }
 
-export function updateSign(signId: string, data: Partial<ISignToDB>): ISignAttached | undefined {
+export function updateSign(
+  signId: string,
+  data: Partial<ISignDetailsEdit>
+): ISignAttached | undefined {
   const existing = findSignById(signId)
-  if (!existing) return undefined
+  if (!data.media || !existing) return
 
-  const updatedFile: ISignFile = {
-    url: data.fileUrl ?? existing.file.url,
-    name: existing.file.name,
-    mediaType: existing.file.mediaType
-  }
+  if (data.media) updateMedia(data.media.id, data.media)
 
   const updated: ISignAttached = {
     ...existing,
     notes: data.notes ?? existing.notes,
-    file: updatedFile
+    mediaId: data.media.id
   }
 
   getDb()
     .prepare(
       `UPDATE sign
-       SET notes = @notes, fileUrl = @fileUrl, fileName = @fileName,
-           fileMediaType = @fileMediaType
+       SET notes = @notes, mediaId = @mediaId
        WHERE id = @id`
     )
     .run({
       id: updated.id,
       notes: updated.notes ?? null,
-      fileUrl: updated.file.url,
-      fileName: updated.file.name,
-      fileMediaType: updated.file.mediaType
+      mediaId: updated.mediaId
     })
 
   return updated

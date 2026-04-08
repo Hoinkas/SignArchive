@@ -14,9 +14,10 @@ function DefinitionBox({ definition }: DefinitionBoxProps): React.JSX.Element {
   const { deleteDefinition } = useDefinitions()
   const { isAdmin } = usePermissions()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   return (
-    <li>
+    <li onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
       <div className="listContent">
         <div>
           <p>{definition.text}</p>
@@ -26,6 +27,7 @@ function DefinitionBox({ definition }: DefinitionBoxProps): React.JSX.Element {
           <DefinitionForm formType="edit" setIsFormOpen={setIsFormOpen} definition={definition} />
         ) : (
           <KebabMenu
+            isHovering={isHovering}
             setIsFormOpen={setIsFormOpen}
             handleDelete={() => deleteDefinition(definition.id)}
           />

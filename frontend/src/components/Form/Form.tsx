@@ -159,7 +159,7 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
 
 import type { FormType } from '@src/models/yearStartEnd.model'
 
-interface FormMediaFileProps { //TODO delete or rewrite to iframe urls
+interface FormEvidenceProps { //TODO delete or rewrite to iframe urls
   existingFile?: string
   newFile: File | null
   setNewFile: (file: File | null) => void
@@ -167,7 +167,7 @@ interface FormMediaFileProps { //TODO delete or rewrite to iframe urls
   submitted?: boolean
 }
 
-export function FormMediaFile(props: FormMediaFileProps): React.JSX.Element {
+export function FormEvidence(props: FormEvidenceProps): React.JSX.Element {
   const { existingFile, newFile, setNewFile, required = false, submitted = false } = props
   const inputRef = useRef<HTMLInputElement>(null)
 
