@@ -1,0 +1,20 @@
+.mediaWrapper {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 0 40%;
+  max-width: 200px;
+}
+
+.videoBox {
+  height: 100%;
+  width: 200px;
+  max-height: var(--media-max-height);
+}
+
+.imageBox {
+  height: 100%;
+  max-height: var(--media-max-height);
+}

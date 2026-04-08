@@ -5,8 +5,6 @@ Allows user to manage signs (with clips, images or texts), definitions, words ec
 
 The sign language sometimes uses the same sign for different words and/or the same word has different signs for it in various regions and times. It was all taken into consideration while creating this app.
 
-Made for offline use, but will be implemented into webpage.
-
 ### Definitions view
 ![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveDefinitionsView.png?raw=true)
 
@@ -14,7 +12,7 @@ Made for offline use, but will be implemented into webpage.
 ![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveSourcesView.png?raw=true)
 
 ## Dev stack
-Electron + React.js + Typescript + SQLite
+React.js + Typescript + Node.js + Express + axios + SQLite
 
 ### To run
 ```
@@ -37,7 +35,7 @@ pnpm dev
 - [x] Showing form requirements and errors
 - [ ] Add numeral tab in sign view
 - [ ] Reusing sign in new words and creating words based on sign definitions
-- [ ] Exporting to a webpage using Node.js, Express, Axios
+- [x] Exporting to a webpage using Node.js, Express, Axios
 - [ ] Admin account
 
 ###  Version 2.0
