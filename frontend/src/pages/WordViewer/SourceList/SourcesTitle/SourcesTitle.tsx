@@ -1,10 +1,10 @@
-import type { SignDetails } from '@shared/types'
 import './SourcesTitle.css'
 import { mergeYearText, sourcesCountText } from '@src/utils/namesHelpers'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
+import type { ISignDetails } from '@src/models/sign.model'
 
 interface SourcesTitleProps {
-  sign: SignDetails
+  sign: ISignDetails
 }
 
 function SourcesTitle({ sign }: SourcesTitleProps): React.JSX.Element {

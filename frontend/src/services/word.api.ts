@@ -1,19 +1,16 @@
+import type { IWord, IWordAttached, IWordWithCountCategories } from '@src/models/word.model'
 import { api } from './client'
-import type { Word, WordToDB, WordWithCountCategories } from '@shared/types'
 
 export const wordApi = {
-  list: (): Promise<WordWithCountCategories[]> =>
-    api.get('/words').then((r) => r.data),
+  list: (): Promise<IWordWithCountCategories[]> => api.get('/words').then((r) => r.data),
 
-  details: (wordId: string): Promise<Word> =>
+  details: (wordId: string): Promise<IWordAttached> =>
     api.get(`/words/${wordId}`).then((r) => r.data),
 
-  create: (data: WordToDB): Promise<Word> =>
-    api.post('/words', data).then((r) => r.data),
+  create: (data: IWord): Promise<IWordAttached> => api.post('/words', data).then((r) => r.data),
 
-  update: (wordId: string, data: Partial<WordToDB>): Promise<Word> =>
+  update: (wordId: string, data: Partial<IWord>): Promise<IWordAttached> =>
     api.patch(`/words/${wordId}`, data).then((r) => r.data),
 
-  delete: (wordId: string): Promise<void> =>
-    api.delete(`/words/${wordId}`).then(() => undefined)
+  delete: (wordId: string): Promise<void> => api.delete(`/words/${wordId}`).then(() => undefined)
 }

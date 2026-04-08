@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
 import { useWord } from '@src/hooks/WordContext/useWord'
-import type { WordWithCountCategories } from '@shared/types'
 import { SearchContext } from './SearchContext'
 import { tagApi } from '@src/services/tag.api'
 import { sourceApi } from '@src/services/source.api'
+import type { IWordWithCountCategories } from '@src/models/word.model'
 
 interface Props {
   children?: React.ReactNode
@@ -28,7 +28,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     )
   }, [])
 
-  const filteredWords = useMemo((): WordWithCountCategories[] => {
+  const filteredWords = useMemo((): IWordWithCountCategories[] => {
     const upper = searchWord.toUpperCase()
 
     return allWords.filter((w) => {

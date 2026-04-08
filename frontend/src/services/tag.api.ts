@@ -1,14 +1,13 @@
+import type { ITag, ITagAttached } from '@src/models/tag.model'
 import { api } from './client'
-import type { Tag, TagToDB } from '@shared/types'
 
 export const tagApi = {
-  list: (): Promise<Tag[]> =>
-    api.get('/tags').then((r) => r.data),
+  list: (): Promise<ITagAttached[]> => api.get('/tags').then((r) => r.data),
 
-  listByWordId: (wordId: string): Promise<Tag[]> =>
+  listByWordId: (wordId: string): Promise<ITagAttached[]> =>
     api.get(`/words/${wordId}/tags`).then((r) => r.data),
 
-  create: (wordId: string, data: TagToDB): Promise<Tag> =>
+  create: (wordId: string, data: ITag): Promise<ITagAttached> =>
     api.post(`/words/${wordId}/tags`, data).then((r) => r.data),
 
   addToWord: (wordId: string, tagId: string): Promise<void> =>
@@ -17,6 +16,5 @@ export const tagApi = {
   removeFromWord: (tagId: string, wordId: string): Promise<void> =>
     api.delete(`/words/${wordId}/tags/${tagId}`).then(() => undefined),
 
-  delete: (tagId: string): Promise<void> =>
-    api.delete(`/tags/${tagId}`).then(() => undefined)
+  delete: (tagId: string): Promise<void> => api.delete(`/tags/${tagId}`).then(() => undefined)
 }

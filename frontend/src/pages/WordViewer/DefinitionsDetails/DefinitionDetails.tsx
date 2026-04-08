@@ -1,14 +1,14 @@
 import './DefinitionDetails.css'
-import type { SignDetails } from '@shared/types'
 import { useEffect, useState } from 'react'
 import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import DefinitionContainer from './DefinitionLContainer/DefinitionContainer'
 import PillList from '@src/components/PillList/PillList'
 import ArrowUpIcon from '@src/assets/icons/ArrowUpIcon'
 import ArrowDownIcon from '@src/assets/icons/ArrowDownIcon'
+import type { ISignDetails } from '@src/models/sign.model'
 
 interface DefinitionListProps {
-  sign: SignDetails
+  sign: ISignDetails
   notes: string | undefined
 }
 

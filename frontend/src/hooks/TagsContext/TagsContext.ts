@@ -1,9 +1,9 @@
 import { createContext } from 'react'
-import type { Tag, TagToDB } from '@shared/types'
+import type { Tag, ITag } from '@shared/types'
 
 export interface TagsContextValue {
-  tags: Tag[]
-  addTag: (tag: TagToDB) => void
+  tags: ITagAttached[]
+  addTag: (tag: ITag) => void
   deleteTag: (tag: Tag) => void
 }
 

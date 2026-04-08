@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import type { Tag, TagToDB } from '@shared/types'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { TagsContext } from './TagsContext'
 import { tagApi } from '@src/services/tag.api'
+import type { ITag, ITagAttached } from '@src/models/tag.model'
 
 interface Props {
   wordId?: string
@@ -12,14 +12,14 @@ interface Props {
 
 export default function TagsProvider({ wordId, children }: Props): React.JSX.Element {
   const { allTags } = useWord()
-  const [tags, setTags] = useState<Tag[]>([])
+  const [tags, setTags] = useState<ITagAttached[]>([])
 
   useEffect(() => {
     if (!wordId) return
     tagApi.listByWordId(wordId).then(setTags)
   }, [wordId])
 
-  const addTag = (tag: TagToDB): void => {
+  const addTag = (tag: ITag): void => {
     if (!wordId) {
       const exists = allTags.find((t) => t.name === tag.name)
       if (exists && !tags.find((t) => t.id === exists.id)) {
@@ -35,7 +35,7 @@ export default function TagsProvider({ wordId, children }: Props): React.JSX.Ele
     tagApi.create(wordId, tag).then((result) => setTags((prev) => [...prev, result]))
   }
 
-  const deleteTag = (tag: Tag): void => {
+  const deleteTag = (tag: ITagAttached): void => {
     if (!wordId) {
       setTags((prev) => prev.filter((t) => t.id !== tag.id))
       return

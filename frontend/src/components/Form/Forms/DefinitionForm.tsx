@@ -1,5 +1,5 @@
 import { type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { Definition, DefinitionsCategories, DefinitionToCreate, FormType } from '@shared/types'
+import type { IDefinitionAttached, DefinitionsCategories, IDefinitionToDB, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -10,7 +10,7 @@ import FormDropdown, { type DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'
 
 interface DefinitionFormProps {
-  definition?: Definition
+  definition?: IDefinitionAttached
   formType: FormType
   category?: DefinitionsCategories
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
@@ -42,7 +42,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     if (!isValid) return
 
     if (!categoryOption) return
-    const definitionToCreate: DefinitionToCreate = {
+    const definitionToCreate: IDefinitionToDB = {
       category: categoryOption.label as DefinitionsCategories,
       text,
       translation

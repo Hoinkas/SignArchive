@@ -1,4 +1,3 @@
-import type { SignDetails } from '@shared/types'
 import { useEffect, useRef, useState } from 'react'
 import SourceBox from './SourceBox/SourceBox'
 import './SourceList.css'
@@ -7,9 +6,10 @@ import ActionButton from '@src/components/ActionButton/ActionButton'
 import SourceForm from '@src/components/Form/Forms/SourceForm'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
+import type { ISignDetails } from '@src/models/sign.model'
 
 interface SourceListProps {
-  sign: SignDetails
+  sign: ISignDetails
 }
 
 function SourceList({ sign }: SourceListProps): React.JSX.Element {

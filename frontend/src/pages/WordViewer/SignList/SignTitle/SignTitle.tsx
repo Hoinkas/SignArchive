@@ -1,5 +1,4 @@
 import './SignTitle.css'
-import type { SignDetails } from '@shared/types'
 import EditSignForm from '@src/components/Form/Forms/EditSignForm'
 import { useState } from 'react'
 import { mergeYearText } from '@src/utils/namesHelpers'
@@ -7,9 +6,10 @@ import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import PillList from '@src/components/PillList/PillList'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
+import type { ISignDetails } from '@src/models/sign.model'
 
 interface SignTitleProps {
-  sign: SignDetails
+  sign: ISignDetails
 }
 
 function SignTitle({ sign }: SignTitleProps): React.JSX.Element {

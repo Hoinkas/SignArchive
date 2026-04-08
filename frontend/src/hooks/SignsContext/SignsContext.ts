@@ -1,11 +1,11 @@
+import type { ISign, ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
 import { createContext } from 'react'
-import type { SignToDB, SignDetails, SignDetailsToDB } from '@shared/types'
 
 export interface SignContextValue {
-  signs: SignDetails[]
+  signs: ISignDetails[]
   initiateSigns: (wordId: string) => void
-  addSign: (data: SignDetailsToDB, closeForm: () => void) => void
-  editSign: (signId: string, updatedSign: SignToDB, closeForm: () => void) => void
+  addSign: (data: ISignDetailsToDB, closeForm: () => void) => void
+  editSign: (signId: string, updatedSign: ISign, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void
   updateSignSource: (signId: string, action?: 'add' | 'delete') => void
 }

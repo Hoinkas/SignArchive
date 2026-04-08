@@ -1,5 +1,5 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useEffect, useState } from 'react'
-import type { Author, AuthorToDB, FormType, MediaFileToDB, SourceDetails, SourceToCreate, SourceWithDetailsToDB } from '@shared/types'
+import type { Author, AuthorToDB, FormType, MediaFileToDB, ISourceDetails, SourceToCreate, ISourceWithDetailsToDB } from '@shared/types'
 import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput, FormTwoInLineWrapper } from '../Form'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
 import type { DropdownOption } from '../Components/FormDropdown'
@@ -8,7 +8,7 @@ import { sourceApi } from '@src/services/source.api'
 import { authorApi } from '@src/services/author.api'
 
 interface SourceFormProps {
-  source?: SourceDetails
+  source?: ISourceDetails
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -62,7 +62,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
       yearStart: yearStart ? parseInt(yearStart) : null,
       yearEnd: yearEnd ? parseInt(yearEnd) : null
     }
-    const data: SourceWithDetailsToDB = { source: sourceToCreate, mediaFile, author }
+    const data: ISourceWithDetailsToDB = { source: sourceToCreate, mediaFile, author }
 
     if (formType === 'add') {
       addSource(data, closeForm)

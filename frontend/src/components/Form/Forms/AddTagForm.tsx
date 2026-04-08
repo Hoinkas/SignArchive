@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
-import type { TagToDB } from '@shared/types'
+import type { ITag } from '@shared/types'
 import { useTags } from '@src/hooks/TagsContext/useTags'
 import { useWord } from '@src/hooks/WordContext/useWord'
 
@@ -19,7 +19,7 @@ function AddTagForm({ setIsTagFormOpen, required, submitted }: AddTagFormProps):
   const handleAddTagForm = async (): Promise<void> => {
     if (!tag) return
 
-    const tagToDB: TagToDB = { name: tag.label }
+    const tagToDB: ITag = { name: tag.label }
     addTag(tagToDB)
 
     setIsTagFormOpen(false)

@@ -1,11 +1,11 @@
+import type { IDefinition, IDefinitionAttached } from '@src/models/definition.model'
 import { api } from './client'
-import type { Definition, DefinitionToDB, DefinitionToCreate } from '@shared/types'
 
 export const definitionApi = {
-  create: (data: DefinitionToDB): Promise<Definition> =>
+  create: (data: IDefinition): Promise<IDefinitionAttached> =>
     api.post('/definitions', data).then((r) => r.data),
 
-  update: (definitionId: string, data: Partial<DefinitionToCreate>): Promise<Definition> =>
+  update: (definitionId: string, data: Partial<IDefinition>): Promise<IDefinitionAttached> =>
     api.patch(`/definitions/${definitionId}`, data).then((r) => r.data),
 
   delete: (definitionId: string): Promise<void> =>

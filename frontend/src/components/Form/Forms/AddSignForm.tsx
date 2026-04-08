@@ -1,5 +1,5 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { DefinitionsCategories, DefinitionToCreate, SignDetailsToDB, SignFile, FormType } from '@shared/types'
+import type { DefinitionsCategories, IDefinitionToDB, ISignDetailsToDB, SignFile, FormType } from '@shared/types'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -45,12 +45,12 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     if (!isValid || !word) return
 
     const signFile: SignFile = { url, name: undefined, mediaType: "video/mp4" }
-    const definition: DefinitionToCreate = {
+    const definition: IDefinitionToDB = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
       translation
     }
-    const data: SignDetailsToDB = { wordId: word.id, sign: signFile, definition }
+    const data: ISignDetailsToDB = { wordId: word.id, sign: signFile, definition }
 
     addSign(data, closeForm)
   }

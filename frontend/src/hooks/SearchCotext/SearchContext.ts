@@ -1,10 +1,10 @@
 import { createContext } from 'react'
-import type { WordWithCountCategories } from '@shared/types'
 import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
+import type { IWordWithCountCategories } from '@src/models/word.model'
 
 export interface SearchContextValue {
   searchWord: string
-  filteredWords: WordWithCountCategories[]
+  filteredWords: IWordWithCountCategories[]
   categoriesOptions: DropdownOption[]
   categoryOption: DropdownOption | null
   regionsOptions: DropdownOption[]

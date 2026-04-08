@@ -1,4 +1,4 @@
-import { IBaseModelAttached } from './base.interface';
+import type { IBaseModelAttached } from './base.interface'
 
 export interface IAuthor {
   name: string

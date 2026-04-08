@@ -1,11 +1,11 @@
 import { type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
-import type { FormType, Word } from '@shared/types'
+import type { FormType, IWordAttached } from '@shared/types'
 import { FormSingleLineInput, FormTags, FormWrapper } from '../Form'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { useTags } from '@src/hooks/TagsContext/useTags'
 
 interface WordFormProps {
-  word?: Word
+  word?: IWordAttached
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }

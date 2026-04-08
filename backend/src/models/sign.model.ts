@@ -1,6 +1,6 @@
-import { IBaseModelAttached } from './base.interface';
-import { IDefinition, IDefinitionAttached } from './definition.model';
-import { IYearStartEnd } from './yearStartEnd.model';
+import type { IBaseModelAttached } from './base.interface'
+import { IDefinition, IDefinitionAttached } from './definition.model'
+import { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISignFile {
   url: string

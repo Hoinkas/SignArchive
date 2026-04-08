@@ -1,17 +1,18 @@
+import type { ISignDetails } from '@src/models/sign.model'
+import type { ISourceDetails, ISourceWithDetailsToDB } from '@src/models/source.model'
 import { createContext } from 'react'
-import type { SignDetails, SourceDetails, SourceWithDetailsToDB } from '@shared/types'
 
 export interface SourcesContextValue {
-  sources: SourceDetails[]
-  addSource: (data: SourceWithDetailsToDB, closeForm: () => void) => void
+  sources: ISourceDetails[]
+  addSource: (data: ISourceWithDetailsToDB, closeForm: () => void) => void
   editSource: (
     sourceId: string,
-    updatedSource: Partial<SourceWithDetailsToDB>,
+    updatedSource: Partial<ISourceWithDetailsToDB>,
     closeForm: () => void
   ) => void
   deleteSource: (deleteId: string) => void
-  sourcesPanelSign: SignDetails | null
-  changeSourcesPanelSign: (data: SignDetails) => void
+  sourcesPanelSign: ISignDetails | null
+  changeSourcesPanelSign: (data: ISignDetails) => void
   closeSourcesPanelSign: () => void
 }
 

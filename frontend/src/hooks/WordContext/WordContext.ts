@@ -1,14 +1,15 @@
+import type { ITagAttached } from '@src/models/tag.model'
+import type { IWord, IWordAttached, IWordWithCountCategories } from '@src/models/word.model'
 import { createContext } from 'react'
-import type { WordToDB, WordWithCountCategories, Word, Tag } from '@shared/types'
 
 export interface WordContextValue {
-  allTags: Tag[]
-  word: Word | null
-  allWords: WordWithCountCategories[]
+  allTags: ITagAttached[]
+  word: IWordAttached | null
+  allWords: IWordWithCountCategories[]
   toggleSort: () => void
   isDescending: boolean
-  addWord: (word: WordToDB, closeForm: () => void) => void
-  editWord: (word: Partial<WordToDB>, closeForm: () => void) => void
+  addWord: (word: IWord, closeForm: () => void) => void
+  editWord: (word: Partial<IWord>, closeForm: () => void) => void
   deleteWord: () => void
   activeWordId: string | null
   changeActiveWord: (wordId: string) => void

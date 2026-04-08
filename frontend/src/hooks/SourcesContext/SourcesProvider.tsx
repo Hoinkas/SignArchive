@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import React from 'react'
-import type { SignDetails, SourceDetails, SourceWithDetailsToCreate, SourceWithDetailsToDB } from '@shared/types'
 import { SourcesContext } from './SourcesContext'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { useSigns } from '@src/hooks/SignsContext/useSigns'
 import { sourceApi } from '@src/services/source.api'
+import type { ISourceDetails, ISourceWithDetailsToCreate, ISourceWithDetailsToDB } from '@src/models/source.model'
+import type { ISignDetails } from '@src/models/sign.model'
 
 interface Props {
   children?: React.ReactNode
@@ -13,10 +14,10 @@ interface Props {
 export default function SourcesProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
   const { updateSignSource } = useSigns()
-  const [sourcesPanelSign, setSourcesPanelSign] = useState<SignDetails | null>(null)
-  const [sources, setSources] = useState<SourceDetails[]>([])
+  const [sourcesPanelSign, setSourcesPanelSign] = useState<ISignDetails | null>(null)
+  const [sources, setSources] = useState<ISourceDetails[]>([])
 
-  const changeSourcesPanelSign = (data: SignDetails): void => {
+  const changeSourcesPanelSign = (data: ISignDetails): void => {
     if (!word) return
     setSourcesPanelSign(data)
     sourceApi.list(data.id, word.id).then(setSources)
@@ -24,9 +25,9 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
   const closeSourcesPanelSign = (): void => setSourcesPanelSign(null)
 
-  const addSource = (data: SourceWithDetailsToDB, closeForm: () => void): void => {
+  const addSource = (data: ISourceWithDetailsToDB, closeForm: () => void): void => {
     if (!sourcesPanelSign || !word) return
-    const payload: SourceWithDetailsToCreate = { ...data, signId: sourcesPanelSign.id, wordId: word.id }
+    const payload: ISourceWithDetailsToCreate = { ...data, signId: sourcesPanelSign.id, wordId: word.id }
     sourceApi.create(payload).then((result) => {
       updateSignSource(sourcesPanelSign.id, 'add')
       setSources((prev) => [...prev, result])
@@ -36,7 +37,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
   const editSource = (
     sourceId: string,
-    updatedSource: Partial<SourceWithDetailsToDB>,
+    updatedSource: Partial<ISourceWithDetailsToDB>,
     closeForm: () => void
   ): void => {
     sourceApi.update(sourceId, updatedSource).then((result) => {

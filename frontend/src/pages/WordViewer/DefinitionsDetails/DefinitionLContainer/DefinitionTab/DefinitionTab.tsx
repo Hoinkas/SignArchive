@@ -1,10 +1,10 @@
-import type { DefinitionCategoryWithCount } from '@shared/types'
 import './DefinitionTab.css'
 import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
+import type { IDefinitionCategoryWithCount } from '@src/models/definition.model'
 import { titleCase } from '@src/utils/namesHelpers'
 
 interface DefinitionTabProps {
-  category: DefinitionCategoryWithCount
+  category: IDefinitionCategoryWithCount
 }
 
 function DefinitionTab({ category }: DefinitionTabProps): React.JSX.Element {

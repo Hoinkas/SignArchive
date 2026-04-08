@@ -1,13 +1,13 @@
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import './DefinitionBox.css'
-import type { Definition } from '@shared/types'
 import { useState } from 'react'
 import DefinitionForm from '@src/components/Form/Forms/DefinitionForm'
 import { useDefinitions } from '@src/hooks/DefinitonsContext/useDefinitions'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
+import type { IDefinitionAttached } from '@src/models/definition.model'
 
 interface DefinitionBoxProps {
-  definition: Definition
+  definition: IDefinitionAttached
 }
 
 function DefinitionBox({ definition }: DefinitionBoxProps): React.JSX.Element {

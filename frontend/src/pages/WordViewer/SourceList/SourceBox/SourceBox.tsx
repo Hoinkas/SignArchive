@@ -1,4 +1,3 @@
-import type { SourceDetails } from '@shared/types'
 import './SourceBox.css'
 import { useState } from 'react'
 import { mergeYearText } from '@src/utils/namesHelpers'
@@ -7,9 +6,10 @@ import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
 import PillList from '@src/components/PillList/PillList'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
+import type { ISourceDetails } from '@src/models/source.model'
 
 interface SourceBoxProps {
-  source: SourceDetails
+  source: ISourceDetails
 }
 
 function SourceBox({ source }: SourceBoxProps): React.JSX.Element {

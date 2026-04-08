@@ -1,20 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
-import type { Tag, Word, WordToDB, WordWithCountCategories } from '@shared/types'
 import { WordContext } from './WordContext'
 import { wordApi } from '@src/services/word.api'
 import { tagApi } from '@src/services/tag.api'
+import type { ITagAttached } from '@src/models/tag.model'
+import type { IWord, IWordAttached, IWordWithCountCategories } from '@src/models/word.model'
 
 interface Props {
   children?: React.ReactNode
 }
 
 export default function WordProvider({ children }: Props): React.JSX.Element {
-  const [allTags, setAllTags] = useState<Tag[]>([])
-  const [wordsList, setWordsList] = useState<WordWithCountCategories[]>([])
+  const [allTags, setAllTags] = useState<ITagAttached[]>([])
+  const [wordsList, setWordsList] = useState<IWordWithCountCategories[]>([])
   const [isDescending, setIsDescending] = useState<boolean>(false)
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
-  const [word, setWord] = useState<Word | null>(null)
+  const [word, setWord] = useState<IWordAttached | null>(null)
 
   useEffect(() => {
     wordApi.list().then(setWordsList)
@@ -26,14 +27,14 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     wordApi.details(activeWordId).then(setWord)
   }, [activeWordId])
 
-  const addWord = (data: WordToDB, closeForm: () => void): void => {
+  const addWord = (data: IWord, closeForm: () => void): void => {
     wordApi.create(data).then((result) => {
       setWordsList((prev) => [...prev, { ...result, signsCount: 0, categories: [], regions: [] }])
       closeForm()
     })
   }
 
-  const editWord = (data: Partial<WordToDB>, closeForm: () => void): void => {
+  const editWord = (data: Partial<IWord>, closeForm: () => void): void => {
     if (!word) return
     wordApi.update(word.id, data).then((result) => {
       setWord(result)
@@ -60,7 +61,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     )
   }
 
-  const allWords = useMemo((): WordWithCountCategories[] => {
+  const allWords = useMemo((): IWordWithCountCategories[] => {
     return [...wordsList].sort((a, b) => {
       const cmp = a.text.localeCompare(b.text, 'pl')
       return isDescending ? -cmp : cmp

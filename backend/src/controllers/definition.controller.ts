@@ -8,7 +8,10 @@ export const definitionController = {
   },
   update: async (req: Request, res: Response): Promise<void> => {
     const result = definitionService.updateDefinition(param(req, 'definitionId'), req.body)
-    if (!result) { res.status(404).json({ error: 'Definition not found' }); return }
+    if (!result) {
+      res.status(404).json({ error: 'IDefinitionAttached not found' })
+      return
+    }
     res.json(result)
   },
   delete: async (req: Request, res: Response): Promise<void> => {

@@ -1,16 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import type {
-  Definition,
-  DefinitionsCategories,
-  DefinitionsCategoriesGrouped,
-  DefinitionCategoryWithCount,
-  DefinitionToCreate,
-  DefinitionToDB,
-  SignDetails
-} from '@shared/types'
 import { DefinitionsContext } from './DefinitionsContext'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { definitionApi } from '@src/services/definition.api'
+import type { ISignDetails } from '@src/models/sign.model'
+import type { DefinitionsCategories, IDefinition, IDefinitionAttached, IDefinitionCategoryWithCount, IDefinitionsCategoriesGrouped, IDefinitionToDB } from '@src/models/definition.model'
 
 interface Props {
   children?: React.ReactNode
@@ -18,23 +11,23 @@ interface Props {
 
 export default function DefinitionsProvider({ children }: Props): React.JSX.Element {
   const { word } = useWord()
-  const [sign, setSign] = useState<SignDetails | null>(null)
-  const [definitions, setDefinitions] = useState<DefinitionsCategoriesGrouped[]>([])
+  const [sign, setSign] = useState<ISignDetails | null>(null)
+  const [definitions, setDefinitions] = useState<IDefinitionsCategoriesGrouped[]>([])
   const [activeCategory, setActiveCategory] = useState<DefinitionsCategories | null>(null)
 
-  const initiateDefinitions = useCallback((sign: SignDetails): void => {
+  const initiateDefinitions = useCallback((sign: ISignDetails): void => {
     const rawDefinitions = sign.definitions
     if (rawDefinitions.length === 0) return
     setSign(sign)
 
-    const map = new Map<DefinitionsCategories, Definition[]>()
+    const map = new Map<DefinitionsCategories, IDefinitionAttached[]>()
     rawDefinitions.forEach((d) => {
       if (!d.category) return
       if (!map.has(d.category)) map.set(d.category, [])
       map.get(d.category)!.push(d)
     })
 
-    const grouped: DefinitionsCategoriesGrouped[] = Array.from(map.entries()).map(
+    const grouped: IDefinitionsCategoriesGrouped[] = Array.from(map.entries()).map(
       ([category, definitions]) => ({ category, definitions })
     )
     setDefinitions(grouped)
@@ -45,8 +38,8 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
     return [...new Set(definitions.map((g) => g.category))]
   }, [definitions])
 
-  const categories = useMemo((): DefinitionCategoryWithCount[] => {
-    const categoriesWithCounts: DefinitionCategoryWithCount[] = []
+  const categories = useMemo((): IDefinitionCategoryWithCount[] => {
+    const categoriesWithCounts: IDefinitionCategoryWithCount[] = []
 
     categoriesNames.forEach((c) => {
       const count = definitions.filter((d) => d.category === c).length
@@ -67,8 +60,8 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
     ]
   }, [definitions, word?.text])
 
-  const filteredDefinitions: Definition[] = useMemo(() => {
-    const filteredDefinitions: Definition[] = []
+  const filteredDefinitions: IDefinitionAttached[] = useMemo(() => {
+    const filteredDefinitions: IDefinitionAttached[] = []
     definitions.forEach((d) => {
       if (d.category !== activeCategory) return
       d.definitions.forEach((d) => {
@@ -83,10 +76,10 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
     setActiveCategory(category)
   }
 
-  const addDefinition = (data: DefinitionToCreate, closeForm: () => void): void => {
+  const addDefinition = (data: IDefinition, closeForm: () => void): void => {
     if (!sign || !word) return
 
-    const dataToDB: DefinitionToDB = { ...data, signId: sign.id, wordId: word.id }
+    const dataToDB: IDefinitionToDB = { ...data, signId: sign.id, wordId: word.id }
     definitionApi.create(dataToDB).then((result) => {
       setDefinitions((prevState) => {
         const resultCategory = result.category
@@ -106,7 +99,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
 
   const editDefinition = (
     definitionId: string,
-    data: DefinitionToCreate,
+    data: IDefinitionToDB,
     closeForm: () => void
   ): void => {
     definitionApi.update(definitionId, data).then((result) => {

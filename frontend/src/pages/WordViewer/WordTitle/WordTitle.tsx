@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import './WordTitle.css'
-import type { Word } from '@shared/types'
 import WordTitleForm from '../../../components/Form/Forms/WordForm'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import PillList from '@src/components/PillList/PillList'
 import { useTags } from '@src/hooks/TagsContext/useTags'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
+import type { IWordAttached } from '@src/models/word.model'
 
 interface WordTitleProps {
-  word: Word
+  word: IWordAttached
 }
 
 function WordTitle({ word }: WordTitleProps): React.JSX.Element {

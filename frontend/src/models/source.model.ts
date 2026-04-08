@@ -1,6 +1,6 @@
-import { IAuthor, IAuthorAttached } from './author.model';
-import { IBaseModelAttached } from './base.interface';
-import { IMediaFile, IMediaFileAttached } from './mediaFile.model';
+import type { IAuthor, IAuthorAttached } from './author.model'
+import type { IBaseModelAttached } from './base.interface'
+import type { IMediaFile, IMediaFileAttached } from './mediaFile.model'
 
 export interface ISource {
   authorId: string
@@ -24,7 +24,8 @@ export interface ISourceWithDetailsToCreate extends ISourceWithDetailsToDB {
   wordId: string
 }
 
-export interface ISourceDetails extends Omit<ISource, 'authorId' | 'mediaFileId'>, IBaseModelAttached {
+export interface ISourceDetails
+  extends Omit<ISource, 'authorId' | 'mediaFileId'>, IBaseModelAttached {
   author: IAuthorAttached
   mediaFile: IMediaFileAttached
 }

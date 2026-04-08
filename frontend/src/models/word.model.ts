@@ -1,5 +1,5 @@
-import { IBaseModelAttached } from './base.interface';
-import { ITagAttached } from './tag.model';
+import type { IBaseModelAttached } from './base.interface'
+import type { ITagAttached } from './tag.model'
 
 export interface IWord {
   text: string
