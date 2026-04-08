@@ -73,8 +73,6 @@ export function createWord(data: IWordToDB): IWordCategoriesAttached {
     text: data.text
   }
 
-  console.log(data)
-
   db.prepare('INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)').run(word)
 
   const categories = addManyTagsToWord(data.categories, word.id)
