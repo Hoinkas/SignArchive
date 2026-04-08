@@ -184,6 +184,10 @@ ol > li::marker {
   display: block;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* :focus-visible {
   outline: 2px solid var(--color-line-purple);
   outline-offset: 2px;

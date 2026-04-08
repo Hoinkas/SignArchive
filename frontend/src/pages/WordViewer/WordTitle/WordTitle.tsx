@@ -17,16 +17,17 @@ function WordTitle({ word }: WordTitleProps): React.JSX.Element {
   const { deleteWord } = useWord()
   const { tags } = useTags()
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   return (
-    <div className="wordTitle">
+    <div className="wordTitle" onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
       {isFormOpen ? (
         <WordTitleForm word={word} setIsFormOpen={setIsFormOpen} formType="edit" />
       ) : (
         <div>
           <div className="wordTitleWithButtons">
             <h1>{word.text}</h1>
-            {isAdmin && <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} />}
+            {isAdmin && <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteWord()} isHovering={isHovering} />}
           </div>
           <div className="wordTitleDetails">
             <PillList textArray={tags.map((t) => t.name)} />

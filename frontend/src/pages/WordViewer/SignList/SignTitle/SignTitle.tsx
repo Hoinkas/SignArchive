@@ -10,10 +10,12 @@ import type { ISignDetails } from '@src/models/sign.model'
 
 interface SignTitleProps {
   sign: ISignDetails
+  isHovering: boolean
 }
 
-function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
+function SignTitle({ sign, isHovering }: SignTitleProps): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState(false)
+
   const { deleteSign } = useSigns()
   const { isAdmin } = usePermissions()
 
@@ -28,7 +30,7 @@ function SignTitle({ sign }: SignTitleProps): React.JSX.Element {
       {isAdmin ? (isFormOpen ? (
         <EditSignForm sign={sign} formType="edit" setIsFormOpen={setIsFormOpen} />
       ) : (
-        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} />
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} isHovering={isHovering}/>
       )) : <div></div>}
     </div>
   )
