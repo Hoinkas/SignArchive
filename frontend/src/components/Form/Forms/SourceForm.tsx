@@ -45,7 +45,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceUrl
+  const isValid = authorOption && evidenceName && evidenceFullName
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -73,7 +73,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
       <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
-      <FormSingleLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
+      <FormMultiLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
       <FormMultiLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
         <FormCustomInputDropdown

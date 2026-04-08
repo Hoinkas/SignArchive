@@ -6,7 +6,7 @@ import {
   ISignDetailsToDB,
   ISign
 } from '../../../shared/models/sign.model'
-import { IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
+import { IYearsRegions, IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
 import { getDefinitions, insertDefinition } from './definition.service'
 import { createMedia, findMediaById, findMediaBySignId, updateMedia } from './media.service'
 
@@ -74,6 +74,16 @@ function buildSignDetails(sign: ISignAttached, wordId: string): ISignDetails | u
     definitions: getDefinitions(sign.id, wordId),
     regions: getRegionsBySignWord(sign.id, wordId),
     media
+  }
+}
+
+export function getYearsRegionsBySignId(signId: string, wordId: string): IYearsRegions {
+  const { yearStart, yearEnd } = getYearsBySignWord(signId, wordId)
+
+  return {
+    yearStart,
+    yearEnd,
+    regions: getRegionsBySignWord(signId, wordId)
   }
 }
 
