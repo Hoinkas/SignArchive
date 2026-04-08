@@ -21,7 +21,7 @@ export default function TagsProvider({ wordId, children }: Props): React.JSX.Ele
 
   const addTag = (tag: ITag): void => {
     const exists = allTags.find((t) => t.name === tag.name)
-    const isDuplicate = tags.find((t) => t.name === exists.name)
+    const isDuplicate = tags.find((t) => t.name === tag.name)
 
     if (!exists && !isDuplicate) setTags((prev) => [...prev, exists || tag])
   }
