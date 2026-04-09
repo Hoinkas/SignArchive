@@ -4,7 +4,7 @@ import WordDetails from "./WordDetails/WordDetails"
 
 function WordPage(): React.JSX.Element {
   return (
-    <div>
+    <div style={{display: 'flex'}}>
       <SidePanel />
       <SignsProvider>
         <WordDetails />
