@@ -8,13 +8,13 @@ function NavBar(): React.JSX.Element {
 
   return (
     <div className="navBar">
-      <div className="logoTitle">
+      <a className="logoTitle" href='/'>
         <img width={50} src={Logo}/>
         <div className='titleBox'>
           <p className='title'>Archiwu</p>
           <p className='title purple'>Mig</p>
         </div>
-      </div>
+      </a>
       {isAdmin && <ThemeSwitch />}
     </div>
   )
