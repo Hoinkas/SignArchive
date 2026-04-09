@@ -33,12 +33,13 @@ pnpm dev
 - [x] Filtering word list by category and region
 - [x] White theme version
 - [x] Showing form requirements and errors
-- [ ] Add numeral tab in sign view
-- [ ] Reusing sign in new words and creating words based on sign definitions
 - [x] Exporting to a webpage using Node.js, Express, Axios
+- [ ] Default view with links, inspirations and thanks
+- [ ] Reusing sign in new words and creating words based on sign definitions
 - [ ] Admin account
 
 ###  Version 2.0
+- [ ] Add numeral tab in sign view
 - [ ] Add custom names tab in sign view (street, districts, buildings)
 - [ ] Improved screen responsiveness
 - [ ] Font size adjustment

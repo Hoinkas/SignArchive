@@ -12,7 +12,7 @@
   },
   "python-envs.pythonProjects": [
     {
-      "path": "src/renderer/src/components/WordViewer/WordTitle",
+      "path": "src/renderer/src/components/WordDetails/WordTitle",
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
     }

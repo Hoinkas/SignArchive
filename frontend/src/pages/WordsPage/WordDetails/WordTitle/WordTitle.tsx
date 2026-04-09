@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './WordTitle.css'
-import WordTitleForm from '../../../components/Form/Forms/WordForm'
+import WordTitleForm from '@src/components/Form/Forms/WordForm'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import PillList from '@src/components/PillList/PillList'

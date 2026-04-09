@@ -7,8 +7,6 @@
 	-webkit-tap-highlight-color: transparent;
 }
 .switch {
-	margin: auto;
-  margin-top: var(--space-6);
 }
 .switch__input,
 .switch__input:before {
