@@ -3,6 +3,7 @@ import PermissionsProvider from '@src/hooks/PermissionsContext/PermissionsProvid
 import LandingPage from './pages/LandingPage/LandingPage'
 import WordPage from './pages/WordsPage/WordPage'
 import NavBar from './components/NavBar/NavBar'
+import WordProvider from './hooks/WordContext/WordProvider'
 
 function App(): React.JSX.Element {
   const { activeWordId } = useWord()
@@ -10,9 +11,9 @@ function App(): React.JSX.Element {
   return (
     <PermissionsProvider>
       <NavBar/>
-      <div style={{ display: 'flex' }}>
+      <WordProvider>
         {activeWordId ? <WordPage/> : <LandingPage/>}
-      </div>
+      </WordProvider>
     </PermissionsProvider>
   )
 }

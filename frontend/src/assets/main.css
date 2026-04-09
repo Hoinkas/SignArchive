@@ -7,7 +7,6 @@
 
 body {
   display: flex;
-  user-select: none;
 
   transition:
 		background-color var(--trans-dur),
