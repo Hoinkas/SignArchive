@@ -34,7 +34,7 @@ pnpm dev
 - [x] White theme version
 - [x] Showing form requirements and errors
 - [x] Exporting to a webpage using Node.js, Express, Axios
-- [ ] Default view with links, inspirations and thanks
+- [x] Default view with links, inspirations and thanks
 - [ ] Reusing sign in new words and creating words based on sign definitions
 - [ ] Admin account
 

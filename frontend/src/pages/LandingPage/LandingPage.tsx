@@ -61,7 +61,7 @@ function LandingPage(): React.JSX.Element {
           <br/>[x] Wersja ciemnego i jasnego tła strony
           <br/>[x] Wyświetlanie wymaganych pól i błędów w formularzach dodawania, modyfikacji i edycji obiektów
           <br/>[x] Przepisanie kodu z aplikacji komputerowej na stronę internetową (React.js, Typescript, Node.js, Express, Axios)
-          <br/>[ ] Strona startowa z linkami, inspiracjami i podziękowaniami
+          <br/>[x] Strona startowa z linkami, inspiracjami i podziękowaniami
           <br/>[ ] Możliwość dodania starego znaku do nowego słowa i tworzenie nowych słów na podstawie definicji w znakach
           <br/>[ ] Konto admina
           <br/>
