@@ -2,7 +2,6 @@ import { useState } from 'react'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import './SidePanel.css'
 import ListOfWords from './ListOfWords/ListOfWords'
-import ThemeSwitch from '@src/components/ThemeSwitch/ThemeSwitch'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 import WordForm from '@src/components/Form/Forms/WordForm'
 import WordListDetails from './WordListDetails/WordListDetails'
@@ -15,7 +14,6 @@ function SidePanel(): React.JSX.Element {
 
   return (
     <div className="sidepanel">
-      {isAdmin && <ThemeSwitch />}
       <SearchBar />
 
       {isAdmin &&
