@@ -7,13 +7,13 @@ import { useState } from 'react'
 
 function NavBar(): React.JSX.Element {
   const {isAdmin} = usePermissions()
-  const [isDark, setIsDark] = useState(
-    document.documentElement.getAttribute('data-theme') === 'dark'
-  )
+  const [isDark, setIsDark] = useState<boolean>(document.documentElement.getAttribute('data-theme') === 'dark')
 
   function handleSwitch() {
-    setIsDark(!isDark)
-    document.documentElement.setAttribute('data-theme', !isDark ? 'dark' : 'light')
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light')
+    localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
   return (
