@@ -69,10 +69,8 @@
   --color-bg-dark: var(--grey-900);
   --color-bg-dark-transparent: color-mix(in srgb, var(--grey-900) 90%, transparent);
 
-  --color-bg-purple-transparent: color-mix(in srgb, var(--purple-grey-3) 30%, transparent);
-
   /* state bg */
-  --color-bg-active-dark: var(--purple-grey-2);
+  --color-bg-active-dark: var(--purple-grey-3);
   --color-bg-active-transparent-dark: color-mix(in srgb, var(--purple-grey-4) 20%, transparent);
   --color-bg-active-light: var(--purple-grey-3);
   --color-bg-active-transparent-light: color-mix(in srgb, var(--purple-grey-3) 20%, transparent);
@@ -82,7 +80,6 @@
   --color-bg-hover-light: var(--purple-grey-2);
   --color-bg-hover-transparent-light: color-mix(in srgb, var(--purple-grey-2) 70%, transparent);
 
-  --color-bg-active-dark: var(--purple-grey-3);
   --color-bg-active-light: var(--purple-400);
 
   /* other */
