@@ -40,6 +40,7 @@
 
 .dropdownItem:hover {
   background: var(--color-bg-hover-transparent);
+  color: var(--color-text-dark);
 }
 
 .dropdownItem:last-child {

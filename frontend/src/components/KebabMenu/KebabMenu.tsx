@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react'
 import './KebabMenu.css'
+import KebabMenuIcon from '@src/assets/icons/KebabMenuIcon.tsx'
 
 interface KebabMenuProps {
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
@@ -39,9 +40,7 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering }: KebabMenuProps):
         aria-label="Menu"
         aria-expanded={isOpen}
       >
-        <span className="bar" />
-        <span className="bar" />
-        <span className="bar" />
+        <KebabMenuIcon/>
       </button>
 
       <nav className={`navDropdown ${isOpen ? 'open' : ''}`}>

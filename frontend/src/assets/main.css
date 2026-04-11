@@ -70,12 +70,12 @@ button {
   cursor: pointer;
   padding: var(--space-2) var(--space-4);
   height: fit-content;
+}
 
-  &.isAtEnd {
-    margin: auto;
-    margin-bottom: var(--space-6);
-    background-color: transparent;
-  }
+button.isAtEnd {
+  margin: auto;
+  margin-bottom: var(--space-6);
+  background-color: transparent;
 }
 
 button:hover {
@@ -96,21 +96,28 @@ label {
 
 .searchBar {
   overflow: hidden;
+  display: flex;
   align-items: center;
   backdrop-filter: blur(var(--space-6));
   border-radius: var(--radius-lg);
   cursor: text;
   height: var(--space-10);
-  padding: var(--space-4) 0;
   border: var(--button-border);
+  width: 100%;
+}
 
-  & input {
-    color: var(--color-text-active);
-  }
+.searchBar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text-active);
+  flex: 1;
+  padding-right: 0;
+  height: 100%;
+}
 
-  & input::placeholder {
-    color: var(--grey-500);
-  }
+.searchBar input::placeholder {
+  color: var(--grey-500);
 }
 
 .tag {
@@ -124,11 +131,11 @@ label {
   display: inline-flex;
   align-items: center;
   gap: var(--space-4);
+}
 
-  button {
-    border: none !important;
-    padding: 0px !important;
-  }
+.tag button {
+  border: none !important;
+  padding: 0px !important;
 }
 
 .additionalInfo {
@@ -155,11 +162,11 @@ label {
   display: inline-flex;
   justify-content: center;
   cursor: pointer;
+}
 
-  &:hover {
-    background-color: var(--color-bg-active);
-    border: var(--symbol-button-border-active);
-  }
+.clickableSymbolCircle:hover {
+  background-color: var(--color-bg-active);
+  border: var(--symbol-button-border-active);
 }
 
 a {
