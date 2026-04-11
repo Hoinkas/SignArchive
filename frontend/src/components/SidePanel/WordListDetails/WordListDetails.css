@@ -3,13 +3,13 @@
   display: inline-flex;
   align-content: center;
   justify-content: space-between;
+}
 
-  & p {
-    align-content: center;
-    font-weight: bold;
-  }
+.wordListDetails p {
+  align-content: center;
+  font-weight: bold;
+}
 
-  & svg {
-    cursor: pointer;
-  }
+.wordListDetails svg {
+  cursor: pointer;
 }

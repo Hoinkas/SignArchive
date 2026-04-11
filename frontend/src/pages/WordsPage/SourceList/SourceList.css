@@ -16,8 +16,6 @@
   overflow: auto;
 }
 
-.sourceList {
-  & > div {
-    border-bottom: var(--line-border);
-  }
+.sourceList > div {
+  border-bottom: var(--line-border);
 }

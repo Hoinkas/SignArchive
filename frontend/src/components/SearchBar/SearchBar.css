@@ -4,10 +4,10 @@
 
 .searchBar {
   display: inline-flex;
+}
 
-  & input {
-    padding-right: 0;
-  }
+.searchBar input {
+  padding-right: 0;
 }
 
 .searchWrapper {

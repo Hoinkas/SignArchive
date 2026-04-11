@@ -4,9 +4,9 @@
   cursor: pointer;
   border-bottom: var(--button-border);
   border-color: var(--color-border);
+}
 
-   &.active {
-    color: var(--color-bg-active);
-    border-color: var(--color-bg-active);
-  }
+.definitionTab.active {
+  color: var(--color-bg-active);
+  border-color: var(--color-bg-active);
 }
