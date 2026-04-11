@@ -1,0 +1,13 @@
+.thumbnail {
+  height: 100%;
+  width: 100%;
+  max-height: var(--media-max-height);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+
+  background-color: var(--color-bg-player);
+  cursor: pointer;
+}

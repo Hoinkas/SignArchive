@@ -62,10 +62,12 @@ function LandingPage(): React.JSX.Element {
           <br/>[x] Wyświetlanie wymaganych pól i błędów w formularzach dodawania, modyfikacji i edycji obiektów
           <br/>[x] Przepisanie kodu z aplikacji komputerowej na stronę internetową (React.js, Typescript, Node.js, Express, Axios)
           <br/>[x] Strona startowa z linkami, inspiracjami i podziękowaniami
+          <br/>[ ] Dodanie odpowiedników w języku polskim pisanym do danego źródła. Niektóre znaki w dawnych latach oznaczały co innego, a dziś oznaczają co innego.
           <br/>[ ] Możliwość dodania starego znaku do nowego słowa i tworzenie nowych słów na podstawie definicji w znakach
           <br/>[ ] Konto admina
           <br/>
           <br/>
+
           <hr/>
           <br/>
           <h2>Co planujemy?</h2>

@@ -34,7 +34,7 @@ function DefinitionDetails({ sign, notes }: DefinitionListProps): React.JSX.Elem
               <PillList textArray={translations} />
             </div>
           ) : <div/>}
-          <p> {isDefinitionListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </p>
+          <div> {isDefinitionListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </div>
         </div>
         {notes && <div>{notes}</div>}
       </div>

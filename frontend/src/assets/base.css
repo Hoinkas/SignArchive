@@ -4,6 +4,7 @@
   --grey-50:  #F8F8F9;
   --grey-100: #EDEDEF;
   --grey-200: #D4D4D8;
+  --grey-300: #aeaeb1;
   --grey-400: #71717A;
   --grey-500: #52525B;
   --grey-600: #3F3F46;
@@ -149,6 +150,8 @@
   --color-line-purple: var(--color-bg-active);
 
   --color-kebab-menu-icon: var(--color-text);
+
+  --color-bg-player: var(--grey-700);
 }
 
 *,
@@ -234,4 +237,6 @@ h5 {
   --color-text-link: var(--purple-grey-2);
 
   --color-kebab-menu-icon: var(--color-bg-active);
+
+  --color-bg-player: var(--grey-300);
 }
