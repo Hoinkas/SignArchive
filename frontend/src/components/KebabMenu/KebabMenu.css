@@ -88,10 +88,9 @@
   background: var(--color-bg-hover-transparent);
   color: var(--color-text-active);
   border: var(--symbol-button-border-active);
-
   border-bottom: none;
+}
 
-  & :last-child {
-    border-bottom: var(--symbol-button-border);
-  }
+.navDropdown a:last-child:hover {
+  border-bottom: var(--symbol-button-border);
 }

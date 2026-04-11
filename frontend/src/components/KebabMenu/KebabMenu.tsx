@@ -32,7 +32,7 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering }: KebabMenuProps):
   }
 
   return (
-    <div className={`navWrapper ${isHovering ? '' : 'hidden'}`} ref={wrapperRef}>
+    <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef}>
       <button
         className={`menuBtn ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
