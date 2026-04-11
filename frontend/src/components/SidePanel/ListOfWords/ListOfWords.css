@@ -18,17 +18,21 @@
   border-left: 5px solid transparent;
   cursor: pointer;
   transition: background-color 0.3s;
+}
 
-  &:last-child {
-    border-bottom: var(--line-border);
-  }
+.word:last-child {
+  border-bottom: var(--line-border);
+}
 
-  &:hover {
-    background-color: var(--color-bg-hover-transparent);
-    color: var(--color-text-dark);
-  }
+.word:hover {
+  background-color: var(--color-bg-hover-transparent);
+  color: var(--color-text-dark);
+}
 
-  &.active {
-    border-left: 6px solid var(--color-line-purple);
-  }
+.word:hover .additionalInfo {
+  color: inherit;
+}
+
+.word:active {
+  border-left: 6px solid var(--color-line-purple);
 }

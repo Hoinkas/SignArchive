@@ -109,6 +109,8 @@
   --color-border: var(--color-border-dark);
   --color-border-text-area: var(--color-border-text-area-dark);
 
+  --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
+
   --button-border: 3px solid var(--color-border-purple-dark);
   --line-border: 2px solid var(--color-border);
   --text-area-border: 2px solid var(--color-border-text-area);
