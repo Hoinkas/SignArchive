@@ -147,6 +147,8 @@
   --media-max-height: 240px;
 
   --color-line-purple: var(--color-bg-active);
+
+  --color-kebab-menu-icon: var(--color-text);
 }
 
 *,
@@ -230,4 +232,6 @@ h5 {
   --color-button-hover: var(--color-purple-dark);
 
   --color-text-link: var(--purple-grey-2);
+
+  --color-kebab-menu-icon: var(--color-bg-active);
 }

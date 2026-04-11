@@ -20,12 +20,18 @@
   justify-content: center;
   gap: var(--space-1);
   transition: background 0.2s, border-color 0.2s;
+
+  color: var(--color-kebab-menu-icon);
 }
 
 .menuBtn.open, .menuBtn:hover {
   background: var(--color-bg-active);
   border-color: var(--color-bg-active);
-  color: white;
+  color: var(--color-text-dark);
+}
+
+.menuBtn.open.onPurpleBg, .menuBtn:hover.onPurpleBg {
+  border-color: var(--color-text-dark);
 }
 
 .navDropdown {

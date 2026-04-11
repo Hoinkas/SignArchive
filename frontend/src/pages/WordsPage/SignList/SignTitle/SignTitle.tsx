@@ -30,7 +30,7 @@ function SignTitle({ sign, isHovering }: SignTitleProps): React.JSX.Element {
       {isAdmin ? (isFormOpen ? (
         <EditSignForm sign={sign} formType="edit" setIsFormOpen={setIsFormOpen} />
       ) : (
-        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} isHovering={isHovering}/>
+        <KebabMenu setIsFormOpen={setIsFormOpen} handleDelete={() => deleteSign(sign.id)} isHovering={isHovering} isOnPurpleBg={true}/>
       )) : <div></div>}
     </div>
   )

@@ -6,9 +6,10 @@ interface KebabMenuProps {
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
   handleDelete: () => void
   isHovering: boolean
+  isOnPurpleBg?: boolean
 }
 
-function KebabMenu({ setIsFormOpen, handleDelete, isHovering }: KebabMenuProps): React.JSX.Element {
+function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = false }: KebabMenuProps): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -32,10 +33,12 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering }: KebabMenuProps):
     setIsOpen(false)
   }
 
+  console.log(`menuBtn${isOpen ? ' open' : ''}${isOnPurpleBg ? ' onPurpleBg' : ''}`)
+
   return (
     <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef}>
       <button
-        className={`menuBtn ${isOpen ? 'open' : ''}`}
+        className={`menuBtn${isOpen ? ' open' : ''}${isOnPurpleBg ? ' onPurpleBg' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Menu"
         aria-expanded={isOpen}
