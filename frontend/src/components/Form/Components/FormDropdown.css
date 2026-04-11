@@ -1,12 +1,12 @@
 .formInput {
   border-radius: var(--radius-sm);
   transition: border-radius 0.1s, border-color 0.1s;
+}
 
-  &.dropdownOpen {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-color: transparent;
-  }
+.formInput.dropdownOpen {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
 }
 
 .dropdownWrapper {
@@ -36,14 +36,15 @@
   cursor: pointer;
   color: var(--color-text);
   border-radius: 0;
+}
 
-  &:hover {
-    background: var(--color-bg-hover-transparent);
-  }
+.dropdownItem:hover {
+  background: var(--color-bg-hover-transparent);
+  color: var(--color-text-dark);
+}
 
-  &:last-child {
-    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  }
+.dropdownItem:last-child {
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 }
 
 .dropdownHint {
@@ -53,11 +54,11 @@
   font-style: italic;
   background: var(--color-bg);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
 
-  kbd {
-    font-family: var(--font-family);
-    font-size: var(--font-size-xs);
-    padding: 1px 5px;
-    color: var(--color-text);
-  }
+.dropdownHint kbd {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  padding: 1px 5px;
+  color: var(--color-text);
 }

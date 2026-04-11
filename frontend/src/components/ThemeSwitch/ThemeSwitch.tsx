@@ -1,19 +1,14 @@
-import { useState } from 'react'
 import './ThemeSwitch.css'
 
-function ThemeSwitch(): React.JSX.Element {
-  const [isDark, setIsDark] = useState(
-    document.documentElement.getAttribute('data-theme') === 'dark'
-  )
+interface ThemeSwitchProps {
+  isDark: boolean
+  handleSwitch(): void
+}
 
-  const toggle = (): void => {
-    setIsDark(!isDark)
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
-  }
-
+function ThemeSwitch({isDark, handleSwitch}: ThemeSwitchProps): React.JSX.Element {
   return (
     <label className="switch">
-      <input className="switch__input" type="checkbox" checked={!isDark} onChange={toggle} />
+      <input className="switch__input" type="checkbox" checked={!isDark} onChange={handleSwitch} />
       <span className="switch__icon">
         <span className="switch__icon-part switch__icon-part--1"></span>
         <span className="switch__icon-part switch__icon-part--2"></span>

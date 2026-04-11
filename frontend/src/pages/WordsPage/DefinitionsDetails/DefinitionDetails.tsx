@@ -28,12 +28,12 @@ function DefinitionDetails({ sign, notes }: DefinitionListProps): React.JSX.Elem
         onClick={() => setIsDefinitionListOpen(!isDefinitionListOpen)}
       >
         <div className="definitionContent">
-          {translations.length !== 0 && (
+          {translations.length !== 0 ? (
             <div>
               Również:
               <PillList textArray={translations} />
             </div>
-          )}
+          ) : <div/>}
           <p> {isDefinitionListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </p>
         </div>
         {notes && <div>{notes}</div>}

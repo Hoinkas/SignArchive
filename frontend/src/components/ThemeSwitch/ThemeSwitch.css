@@ -6,11 +6,10 @@
 	position: relative;
 	-webkit-tap-highlight-color: transparent;
 }
-.switch {
-}
+/* .switch {} */
 .switch__input,
 .switch__input:before {
-  background-color: var(--switch-bg-off);
+  background-color: var(--switch-bg);
 }
 .switch__input {
 	border-radius: 0.75em;
@@ -43,7 +42,7 @@
 	left: 0;
 }
 .switch__icon {
-  background-color: var(--switch-fg-off);
+  background-color: var(--switch-fg);
 	border-radius: 50%;
 	overflow: hidden;
 	pointer-events: none;
@@ -64,14 +63,14 @@
 	border-radius: 50%;
 }
 .switch__icon-part--1 {
-	background-color: var(--switch-fg-off);
+	background-color: var(--switch-fg);
 	top: calc(50% - 0.375em);
 	left: calc(50% - 0.375em);
 	width: 0.75em;
 	height: 0.75em;
 }
 .switch__icon-part--2 {
-	background-color: var(--switch-bg-off);
+	background-color: var(--switch-bg);
 	top: calc(50% - 0.4375em);
 	left: calc(50% - 0.0625em);
 	width: 0.5em;
@@ -79,13 +78,13 @@
 	transform: translate(-0.1875em,0.1875em) scale(0.2);
 }
 .switch__icon-part--3 {
-	box-shadow: 0 0 0 0.625em var(--switch-bg-off) inset;
+	box-shadow: 0 0 0 0.625em var(--switch-bg) inset;
 	width: 1.25em;
 	height: 1.25em;
 	transform: scale(0.25);
 }
 .switch__icon-part--3 ~ .switch__icon-part {
-	background-color: var(--switch-bg-off);
+	background-color: var(--switch-bg);
 	border-radius: 0.0625em;
 	top: 50%;
 	left: 50%;
@@ -126,7 +125,7 @@
 
 /* `:checked` state */
 .switch__input:checked {
-	background-color: var(--switch-fg-off);
+	background-color: var(--switch-fg);
 }
 .switch__input:checked:before,
 .switch__input:checked ~ .switch__icon {
@@ -136,7 +135,7 @@
 	transform: translate(0,0) scale(1);
 }
 .switch__input:checked ~ .switch__icon .switch__icon-part--3 {
-	box-shadow: 0 0 0 0.25em var(--switch-bg-off) inset;
+	box-shadow: 0 0 0 0.25em var(--switch-bg) inset;
 	transform: scale(1);
 }
 .switch__input:checked ~ .switch__icon .switch__icon-part--4 {

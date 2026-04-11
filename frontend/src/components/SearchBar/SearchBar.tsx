@@ -37,7 +37,7 @@ function SearchBar(): React.JSX.Element {
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
         </div>
-        <div className="searchWrapper">
+        <div className="searchIcon">
           <SearchIcon />
         </div>
       </div>

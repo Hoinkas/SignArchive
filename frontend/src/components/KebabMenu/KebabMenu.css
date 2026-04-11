@@ -7,8 +7,9 @@
 }
 
 .menuBtn {
+  padding: 0;
   width: 32px;
-  height: 40px;
+  height: 36px;
   border-radius: var(--radius-md);
   border: var(--button-border);
   background: var(--color-bg);
@@ -19,25 +20,18 @@
   justify-content: center;
   gap: var(--space-1);
   transition: background 0.2s, border-color 0.2s;
+
+  color: var(--color-kebab-menu-icon);
 }
 
-.menuBtn:hover {
-  color: var(--color-text-active);
-  background: var(--color-bg-hover-transparent);
-}
-
-.menuBtn.open {
+.menuBtn.open, .menuBtn:hover {
   background: var(--color-bg-active);
   border-color: var(--color-bg-active);
+  color: var(--color-text-dark);
 }
 
-.bar {
-  display: block;
-  width: 4px;
-  height: 4px;
-  background: var(--color-text);
-  border-radius: 50%;
-  transition: background 0.2s;
+.menuBtn.open.onPurpleBg, .menuBtn:hover.onPurpleBg {
+  border-color: var(--color-text-dark);
 }
 
 .navDropdown {
@@ -88,10 +82,9 @@
   background: var(--color-bg-hover-transparent);
   color: var(--color-text-active);
   border: var(--symbol-button-border-active);
-
   border-bottom: none;
+}
 
-  & :last-child {
-    border-bottom: var(--symbol-button-border);
-  }
+.navDropdown a:last-child:hover {
+  border-bottom: var(--symbol-button-border);
 }

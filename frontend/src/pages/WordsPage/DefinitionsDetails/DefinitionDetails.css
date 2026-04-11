@@ -10,10 +10,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+}
 
-  & svg {
-    cursor: pointer;
-  }
+.definitionContent svg {
+  color: var(--color-text-light);
 }
 
 .definitionMain {

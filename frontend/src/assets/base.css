@@ -69,24 +69,19 @@
   --color-bg-dark: var(--grey-900);
   --color-bg-dark-transparent: color-mix(in srgb, var(--grey-900) 90%, transparent);
 
-  --color-bg-purple-transparent: color-mix(in srgb, var(--purple-grey-3) 30%, transparent);
-
   /* state bg */
-  --color-bg-active-dark: var(--purple-grey-2);
-  --color-bg-active-transparent-dark: color-mix(in srgb, var(--purple-grey-4) 20%, transparent);
-  --color-bg-active-light: var(--purple-grey-3);
-  --color-bg-active-transparent-light: color-mix(in srgb, var(--purple-grey-3) 20%, transparent);
+  --color-bg-purple-dark: var(--purple-grey-3);
+  --color-bg-purple-light: var(--purple-400);
 
   --color-bg-hover-dark: var(--purple-grey-3);
   --color-bg-hover-transparent-dark: color-mix(in srgb, var(--purple-grey-3) 70%, transparent);
   --color-bg-hover-light: var(--purple-grey-2);
   --color-bg-hover-transparent-light: color-mix(in srgb, var(--purple-grey-2) 70%, transparent);
 
-  --color-bg-active-dark: var(--purple-grey-3);
-  --color-bg-active-light: var(--purple-400);
-
   /* other */
-  --color-line-purple: var(--purple-grey-3);
+  --color-purple: var(--purple-grey-3);
+  --color-purple-dark: var(--purple-400);
+
   --color-line-purple-light: var(--purple-400);
   --color-line-light: var(--grey-200);
 
@@ -97,10 +92,10 @@
   --color-border-text-area-light: var(--grey-400);
 
   --color-border-grey-transparent: color-mix(in srgb, var(--grey-700) 90%, transparent);
-  --color-border-purple: var(--purple-grey-3);
+  --color-border-purple-dark: var(--purple-grey-3);
+  --color-border-purple-light: var(--purple-400);
 
   --color-text-light: var(--grey-500);
-  --color-text-purple: var(--purple-grey-3);
   --color-text-dark: var(--grey-100);
 
   --color-text-info: var(--grey-400);
@@ -108,53 +103,52 @@
 
   --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
   --color-scroll-light: color-mix(in srgb, var(--grey-400) 60%, transparent);
-
-  --color-title-purple-dark: var(--purple-400);
-  --color-title-purple-light: var(--purple-grey-3);
 }
 
 :root {
   --color-border: var(--color-border-dark);
   --color-border-text-area: var(--color-border-text-area-dark);
 
-  --button-border: 3px solid var(--color-border-purple);
+  --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
+
+  --button-border: 3px solid var(--color-border-purple-dark);
   --line-border: 2px solid var(--color-border);
   --text-area-border: 2px solid var(--color-border-text-area);
   --form-border: 1px solid var(--color-border-grey-transparent);
 
   --symbol-button-border: 2px solid var(--color-border);
-  --symbol-button-border-active: 2px solid var(--color-border-purple);
+  --symbol-button-border-active: 2px solid var(--color-border-purple-dark);
 
   --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.4);
 
-  --switch-bg-off: var(--grey-900);
-  --switch-bg-on: var(--grey-100);
-  --switch-fg-off: var(--grey-100);
-  --switch-fg-on: var(--grey-900);
+  --switch-bg: var(--color-bg-purple-light);
+  --switch-fg: var(--grey-100);
   --trans-dur: 0.3s;
 	--trans-timing: ease;
 
   --color-text: var(--color-text-dark);
   --color-text-active: var(--color-text-dark);
 
+  --color-text-link: var(--purple-400);
+
   --color-bg: var(--color-bg-dark);
   --color-bg-transparent: var(--color-bg-dark-transparent);
 
-  --color-bg-active: var(--color-bg-active-dark);
-
   --color-scroll: var(--color-scroll-dark);
 
-  --color-bg-active: var(--color-bg-active-dark);
-  --color-bg-active-transparent: var(--color-bg-active-transparent-dark);
+  --color-bg-active: var(--color-bg-purple-dark);
 
-  --color-bg-hover: var(--color-bg-hover-dark);
-  --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
+  --color-button-hover: var(--color-purple);
 
   --clickable-symbol-font: var(--font-size-xl);
 
-  --color-title-purple: var(--color-title-purple-dark);
+  --color-title-purple: var(--color-purple-dark);
 
   --media-max-height: 240px;
+
+  --color-line-purple: var(--color-bg-active);
+
+  --color-kebab-menu-icon: var(--color-text);
 }
 
 *,
@@ -216,10 +210,7 @@ h5 {
   --color-bg: var(--color-bg-light);
   --color-bg-transparent: var(--color-bg-light-transparent);
 
-  --color-bg-active: var(--color-bg-active-light);
-
-  --color-bg-active: var(--color-bg-active-light);
-  --color-bg-active-transparent: var(--color-bg-active-transparent-light);
+  --color-bg-active: var(--color-bg-purple-light);
 
   --color-bg-hover: var(--color-bg-hover-light);
   --color-bg-hover-transparent: var(--color-bg-hover-transparent-light);
@@ -231,5 +222,16 @@ h5 {
 
   --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.2);
 
-  --color-title-purple: var(--color-title-purple-light);
+  --color-title-purple: var(--color-purple);
+
+  --button-border: 3px solid var(--color-border-purple-light);
+  --symbol-button-border-active: 2px solid var(--color-border-purple-light);
+
+  --switch-bg: var(--color-bg-purple-dark);
+
+  --color-button-hover: var(--color-purple-dark);
+
+  --color-text-link: var(--purple-grey-2);
+
+  --color-kebab-menu-icon: var(--color-bg-active);
 }

@@ -1,5 +1,5 @@
 .navBar {
-  height: 52px;
+  height: 64px;
   width: 100vw;
   background-color: var(--color-bg-active);
   padding: var(--space-2) var(--space-6);
@@ -25,8 +25,8 @@
   font-size: 24px;
   line-height: 24px;
   font-weight: bold;
+}
 
-  &.purple {
-    color: var(--color-title-purple)
-  }
+.title.purple {
+  color: var(--color-title-purple)
 }
