@@ -9,6 +9,7 @@
 }
 
 .word {
+  color: var(--color-text-light);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,6 +25,7 @@
 
   &:hover {
     background-color: var(--color-bg-hover-transparent);
+    color: var(--color-text-dark);
   }
 
   &.active {

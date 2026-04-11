@@ -80,7 +80,7 @@ button {
 
 button:hover {
   color: var(--color-text-active);
-  background: var(--color-bg-hover-transparent);
+  background: var(--color-button-hover);
 }
 
 button:active {
@@ -165,7 +165,7 @@ label {
 a {
   text-decoration: underline;
   cursor: pointer;
-  color: var(--colot-text-link);
+  color: var(--color-text-link);
 }
 
 ol > li::marker {

@@ -1,5 +1,5 @@
 .navBar {
-  height: 52px;
+  height: 64px;
   width: 100vw;
   background-color: var(--color-bg-active);
   padding: var(--space-2) var(--space-6);

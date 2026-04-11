@@ -2,10 +2,11 @@
   padding: var(--space-1) var(--space-2);
   width: fit-content;
   cursor: pointer;
+  border-bottom: var(--button-border);
+  border-color: var(--color-border);
 
    &.active {
-    color: var(--color-text-info);
-    border-bottom: var(--button-border);
-    border-color: var(--color-text-info);
+    color: var(--color-bg-active);
+    border-color: var(--color-bg-active);
   }
 }
