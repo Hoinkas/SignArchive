@@ -8,7 +8,6 @@ import {
   ISourceWithDetailsToDB
 } from '../../../shared/models/source.model'
 import { createAuthor, findAuthorById } from './author.service'
-import toSqlParams from '../utils/toSqlParams'
 import { createEvidence, findEvidenceById } from './evidence.service'
 
 function findSourceById(id: string): ISourceAttached | undefined {
@@ -53,10 +52,17 @@ export function createSourceWithDetails(data: ISourceWithDetailsToCreate): ISour
 
     getDb()
       .prepare(
-        `INSERT INTO source (id, createdAt, authorId, evidenceId, region, yearStart, yearEnd, notes)
-         VALUES (@id, @createdAt, @authorId, @evidenceId, @region, @yearStart, @yearEnd, @notes)`
+        `INSERT INTO source (id, createdAt, authorId, evidenceId, region, yearStart, yearEnd, notes, translations)
+         VALUES (@id, @createdAt, @authorId, @evidenceId, @region, @yearStart, @yearEnd, @notes, @translations)`
       )
-      .run(toSqlParams(source))
+      .run({
+        ...source,
+        notes: source.notes || null,
+        region: source.region || null,
+        translations: source.translations || null,
+        yearStart: source.yearStart || null,
+        yearEnd: source.yearEnd || null
+      })
 
     const link: ISourceSignWord = { sourceId: source.id, signId: data.signId, wordId: data.wordId }
     getDb()
@@ -92,7 +98,7 @@ export function updateSource(
     .prepare(
       `UPDATE source
        SET authorId = @authorId, evidenceId = @evidenceId,
-           region = @region, yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes
+           region = @region, yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes, translations = @translations
        WHERE id = @id`
     )
     .run(updated)

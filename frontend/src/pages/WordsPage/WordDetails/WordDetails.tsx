@@ -32,14 +32,12 @@ function WordDetails(): React.JSX.Element {
       <SourcesProvider>
         <SignList />
       </SourcesProvider>
-      {isAdmin ? (
+      {isAdmin && (
         isFormOpen ? (
           <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
         ) : (
           <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd={true} />
         )
-      ) : (
-        <div></div>
       )}
     </div>
   )

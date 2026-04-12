@@ -33,8 +33,6 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = fal
     setIsOpen(false)
   }
 
-  console.log(`menuBtn${isOpen ? ' open' : ''}${isOnPurpleBg ? ' onPurpleBg' : ''}`)
-
   return (
     <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef}>
       <button

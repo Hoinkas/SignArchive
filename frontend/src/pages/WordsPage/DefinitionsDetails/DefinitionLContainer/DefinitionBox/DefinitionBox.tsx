@@ -21,7 +21,7 @@ function DefinitionBox({ definition }: DefinitionBoxProps): React.JSX.Element {
       <div className="listContent">
         <div>
           <p>{definition.text}</p>
-          <p className="additionalInfoItalic">= {definition.translation}</p>
+          <p className="additionalInfoItalic">= {definition.translations}</p>
         </div>
         {isAdmin ? (isFormOpen ? (
           <DefinitionForm formType="edit" setIsFormOpen={setIsFormOpen} definition={definition} />

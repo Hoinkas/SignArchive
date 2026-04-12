@@ -9,6 +9,7 @@ export interface ISource {
   yearStart?: number
   yearEnd?: number
   notes?: string
+  translations?: string
 }
 
 export type ISourceToCreate = Omit<ISource, 'authorId' | 'evidenceId'>

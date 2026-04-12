@@ -27,6 +27,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [evidenceUrl, setEvidenceUrl] = useState<string>(source?.evidence.url ?? '')
   const [evidenceName, setEvidenceName] = useState<string>(source?.evidence.name ?? '')
   const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
+  const [translations, setTranslations] = useState<string>(source?.translations ?? '')
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
     source ? { id: source.author.id, label: source.author.name } : null
   )
@@ -57,8 +58,9 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     const sourceToCreate: ISourceToCreate = {
       notes: notes,
       region: region,
-      yearStart: yearStart ? parseInt(yearStart) : null,
-      yearEnd: yearEnd ? parseInt(yearEnd) : null
+      yearStart: parseInt(yearStart),
+      yearEnd: parseInt(yearEnd),
+      translations: translations
     }
     const data: ISourceWithDetailsToDB = { source: sourceToCreate, evidence, author }
 
@@ -72,7 +74,10 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
-      <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
+      <FormTwoInLineWrapper>
+        <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
+        <FormSingleLineInput label="Tłumaczenie znaku" value={translations} setValue={setTranslations} required submitted={submitted} />
+      </FormTwoInLineWrapper>
       <FormMultiLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
       <FormMultiLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
