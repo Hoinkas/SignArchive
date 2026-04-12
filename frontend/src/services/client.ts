@@ -1,6 +1,17 @@
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000',
-  headers: { 'Content-Type': 'application/json' }
-})
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+
+export const apiGet = <T>(
+  url: string,
+  settings?: Record<string, unknown>
+): Promise<AxiosResponse<T>> => axios.get<T>(BASE_URL + url, settings)
+
+export const apiPost = <T, K>(url: string, payload: T): Promise<AxiosResponse<K>> =>
+  axios.post<K>(BASE_URL + url, payload)
+
+export const apiPatch = <T, K>(url: string, payload: T): Promise<AxiosResponse<K>> =>
+  axios.patch<K>(BASE_URL + url, payload)
+
+export const apiDelete = <T>(url: string): Promise<AxiosResponse<T>> =>
+  axios.delete<T>(BASE_URL + url)

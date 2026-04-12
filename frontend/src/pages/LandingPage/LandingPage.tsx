@@ -15,7 +15,7 @@ function LandingPage(): React.JSX.Element {
           <br/>
           <br/>Na razie strona internetowa nie umożliwia samodzielnego dodawania słów, znaków, źródeł czy definicji. Będzie to możliwe w przyszłości.
           <br/>
-          <br/>O postępie projektu i planach informujemy na bieżąco na naszym Instagramie: <a href='https://www.instagram.com/archiwumig/' target="_blank">@archiwumig</a>
+          <br/>O postępie projektu i planach informujemy na bieżąco na naszym <a href='https://mastodon.com.pl/@archiwumig' target="_blank">Mastodonie</a>, <a href='https://www.instagram.com/archiwumig/' target="_blank">Instagramie</a>.
           <br/>Wszelkie zapytania, uwagi czy znaki prosimy wysyłać na e-mail <a href='mailto:archiwumig@proton.me'>archiwumig@proton.me</a>
           <br/>
           <br/>Nawet jeśli znak już jest w bazie to możesz wysłać swoją wersję migania. Tworzymy bazę znaków PJM, aby umożliwić osobom studenckim, i innym chętnym, tworzenie własnego oprogramowania na podstawie bazy z wieloma nagraniami znaków.

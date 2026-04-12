@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import isDarkTheme from './utils/isDarkTheme'
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
 import { titleCase } from './utils/namesHelpers'
+import { WORD_FRAGMENT } from './utils/baseUrl.helper'
 
 function Word(): React.JSX.Element {
   const { word } = useParams()
@@ -27,7 +28,7 @@ function App(): React.JSX.Element {
 
         <Routes>
           <Route path="/" element={<LandingPage/>} />
-          <Route path="/words/:word" element={<Word/>} />
+          <Route path={`${WORD_FRAGMENT}/:word`} element={<Word/>} />
         </Routes>
       </PermissionsProvider>
     </BrowserRouter>

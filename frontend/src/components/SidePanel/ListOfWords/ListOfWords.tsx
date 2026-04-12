@@ -4,6 +4,7 @@ import { useWord } from '@src/hooks/WordContext/useWord'
 import { signCountText } from '@src/utils/namesHelpers'
 import type { IWordWithRegionsCategories } from '@src/models/word.model'
 import { useNavigate } from 'react-router-dom'
+import { WORD_FRAGMENT } from '@src/utils/baseUrl.helper'
 
 function ListOfWords(): React.JSX.Element {
   const { filteredWords } = useSearch()
@@ -12,7 +13,7 @@ function ListOfWords(): React.JSX.Element {
 
   function handleWordClick(word: IWordWithRegionsCategories) {
     changeActiveWord(word.id)
-    navigate(`/words/${word.text}`)
+    navigate(`${WORD_FRAGMENT}/${word.text}`)
   }
 
   return (
