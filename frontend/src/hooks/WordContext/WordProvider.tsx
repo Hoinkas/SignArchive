@@ -23,9 +23,18 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   }, [])
 
   useEffect(() => {
-    if (!activeWordId) return
-    wordApi.details(activeWordId).then(setWord)
-  }, [activeWordId])
+  if (!activeWordId) return
+
+  let cancelled = false
+
+  wordApi.details(activeWordId).then((result) => {
+    if (!cancelled) setWord(result)
+  })
+
+  return () => {
+    cancelled = true
+  }
+}, [activeWordId])
 
   const addWord = (data: IWord, tags: (ITag | ITagAttached)[], closeForm: () => void): void => {
     wordApi.create({...data, categories: tags}).then((result) => {
