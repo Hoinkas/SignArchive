@@ -22,6 +22,8 @@ function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
 
   const pillText: string[] = [years]
   if (source.region) pillText.push(source.region)
+  console.log(source.translations)
+  if (source.translations) source.translations.split(', ').forEach((t) => pillText.push(t))
 
   return (
     <div className="sourceBoxContainer" onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
