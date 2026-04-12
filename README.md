@@ -35,7 +35,9 @@ pnpm dev
 - [x] Showing form requirements and errors
 - [x] Exporting to a webpage using Node.js, Express, Axios
 - [x] Default view with links, inspirations and thanks
-- [ ] Add translations to each source - year. In different years sign could mean different things
+- [x] Add translations to each source - year. In different years sign could mean different things
+- [x] Url substring should contain shown word
+- [ ] Add Error Page
 - [ ] Reusing sign in new words and creating words based on sign definitions
 - [ ] Admin account
 

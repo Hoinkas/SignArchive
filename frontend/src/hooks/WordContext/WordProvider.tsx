@@ -51,7 +51,18 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const changeActiveWord = (wordId: string): void => setActiveWordId(wordId)
+  const changeActiveWord = (wordId: string): void => {
+    setActiveWordId(wordId)
+  }
+
+  const setActiveWordByName = (word: string): boolean => {
+    const find = wordsList.find((w) => w.text === word)
+
+    if (!find) return false
+
+    setActiveWordId(find.id)
+    return true
+  }
 
   const changeSignCountInWord = (action: 'add' | 'remove'): void => {
     if (!word) return
@@ -83,6 +94,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         deleteWord,
         activeWordId,
         changeActiveWord,
+        setActiveWordByName,
         changeSignCountInWord
       }}
     >
