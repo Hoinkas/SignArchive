@@ -28,7 +28,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   const [mediaName, setMediaName] = useState<string>('')
   const [notes, setNotes] = useState<string>('')
   const [text, setText] = useState<string>('')
-  const [translation, setTranslation] = useState<string>('')
+  const [translations, setTranslation] = useState<string>('')
   const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(null)
   const [submitted, setSubmitted] = useState<boolean>(false)
 
@@ -52,7 +52,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     const definition: IDefinition = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
-      translation
+      translations
     }
     const data: ISignDetailsToDB = { wordId: word.id, media, definition }
 
@@ -74,7 +74,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
           required
           submitted={submitted}
         />
-        <FormSingleLineInput label="Odpowiednik w pisanym" value={translation} setValue={setTranslation} />
+        <FormSingleLineInput label="Odpowiednik w pisanym" value={translations} setValue={setTranslation} />
       </FormTwoInLineWrapper>
     </FormModalWrapper>
   )

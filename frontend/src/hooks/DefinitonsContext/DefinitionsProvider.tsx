@@ -54,7 +54,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
       ...new Set(
         definitions
           .flatMap((g) => g.definitions)
-          .flatMap((d) => d.translation?.split(',').map((t) => t.trim()) ?? [])
+          .flatMap((d) => d.translations?.split(',').map((t) => t.trim()) ?? [])
           .filter((t): t is string => !!t && t.toUpperCase() !== word?.text.toUpperCase())
       )
     ]

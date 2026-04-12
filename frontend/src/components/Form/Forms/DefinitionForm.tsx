@@ -26,7 +26,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
 
   const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(findOption ?? null)
   const [text, setText] = useState<string>(definition?.text || '')
-  const [translation, setTranslation] = useState<string>(definition?.translation || '')
+  const [translations, setTranslation] = useState<string>(definition?.translations || '')
   const [submitted, setSubmitted] = useState(false)
 
   const closeForm = (): void => {
@@ -46,7 +46,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     const definitionToCreate: IDefinition = {
       category: categoryOption.label as DefinitionsCategories,
       text,
-      translation
+      translations
     }
 
     if (formType === 'add') {
@@ -75,7 +75,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
       />
       <FormSingleLineInput
         label="Odpowiednik w pisanym"
-        value={translation}
+        value={translations}
         setValue={setTranslation}
       />
     </FormModalWrapper>

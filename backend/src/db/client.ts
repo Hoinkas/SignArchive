@@ -65,7 +65,8 @@ function initSchema(db: Database.Database): void {
       region      TEXT,
       yearStart   INTEGER,
       yearEnd     INTEGER,
-      notes       TEXT
+      notes       TEXT,
+      translations TEXT
     );
 
     CREATE TABLE IF NOT EXISTS definition (
@@ -73,7 +74,7 @@ function initSchema(db: Database.Database): void {
       createdAt   INTEGER NOT NULL,
       category    TEXT NOT NULL,
       text        TEXT NOT NULL,
-      translation TEXT
+      translations TEXT
     );
 
     CREATE TABLE IF NOT EXISTS tag (

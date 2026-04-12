@@ -33,7 +33,7 @@ export function insertDefinition(data: IDefinitionToDB): IDefinitionAttached {
 
   getDb()
     .prepare(
-      'INSERT INTO definition (id, createdAt, category, text, translation) VALUES (@id, @createdAt, @category, @text, @translation)'
+      'INSERT INTO definition (id, createdAt, category, text, translations) VALUES (@id, @createdAt, @category, @text, @translations)'
     )
     .run(toSqlParams(definition))
 
@@ -66,7 +66,7 @@ export function updateDefinition(
   const updated: IDefinitionAttached = { ...existing, ...data, id: definitionId }
   getDb()
     .prepare(
-      'UPDATE definition SET category = @category, text = @text, translation = @translation WHERE id = @id'
+      'UPDATE definition SET category = @category, text = @text, translations = @translations WHERE id = @id'
     )
     .run(updated)
   return updated

@@ -17,7 +17,7 @@ export type DefinitionsCategories =
 export interface IDefinition {
   category: DefinitionsCategories
   text: string
-  translation?: string
+  translations?: string
 }
 
 export interface IDefinitionToDB extends IDefinition {
