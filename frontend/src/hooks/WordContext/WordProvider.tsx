@@ -16,10 +16,19 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   const [isDescending, setIsDescending] = useState<boolean>(false)
   const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<IWordAttached | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    wordApi.list().then(setWordsList)
-    tagApi.list().then(setAllTags)
+    setLoading(true)
+    Promise.all([
+      wordApi.list().then(setWordsList),
+      tagApi.list().then(setAllTags)
+    ])
+      .catch((err) => setError(err.message ?? 'Błąd ładowania'))
+      .finally(() => setLoading(false))
+
+    console.log(error)
   }, [])
 
   useEffect(() => {
@@ -64,10 +73,13 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     setActiveWordId(wordId)
   }
 
-  const setActiveWordByName = (word: string): boolean => {
+  const setActiveWordByName = (word: string) => {
     const find = wordsList.find((w) => w.text === word)
 
-    if (!find) return false
+    if (!find) {
+      setError('Brak takiego słowa')
+      return false
+    }
 
     setActiveWordId(find.id)
     return true
@@ -104,7 +116,9 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         activeWordId,
         changeActiveWord,
         setActiveWordByName,
-        changeSignCountInWord
+        changeSignCountInWord,
+        loading,
+        error
       }}
     >
       {children}

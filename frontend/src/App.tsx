@@ -7,19 +7,24 @@ import { useEffect } from 'react'
 import isDarkTheme from './utils/isDarkTheme'
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
 import { titleCase } from './utils/namesHelpers'
-import { WORD_FRAGMENT } from './utils/baseUrl.helper'
+import Loader from './assets/animations/Loader'
 
 function Word(): React.JSX.Element {
   const { word } = useParams()
-  const { setActiveWordByName } = useWord()
+  const { setActiveWordByName, error } = useWord()
 
-  return setActiveWordByName(titleCase(word)) ? <WordPage /> : <div>Error</div>
+  return setActiveWordByName(titleCase(word)) ? <WordPage /> : <div>{error}</div>
 }
 
 function App(): React.JSX.Element {
+  const { loading, error } = useWord()
+
   useEffect(() =>{
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
   })
+
+  if (loading) return <div className="loader"><Loader/></div>
+  if (error) return <div className="error">{error}</div>
 
   return (
     <BrowserRouter>
@@ -28,7 +33,7 @@ function App(): React.JSX.Element {
 
         <Routes>
           <Route path="/" element={<LandingPage/>} />
-          <Route path={`${WORD_FRAGMENT}/:word`} element={<Word/>} />
+          <Route path={`/word/:word`} element={<Word/>} />
         </Routes>
       </PermissionsProvider>
     </BrowserRouter>
