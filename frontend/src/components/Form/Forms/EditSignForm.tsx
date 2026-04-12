@@ -30,9 +30,9 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
     setSubmitted(true)
     if (!url) return
 
-    const media: IMediaAttached = { ...sign.media ,url, name: mediaName, mediaType: "video/mp4" }
+    const media: IMediaAttached = { ...sign.media ,url, name: mediaName !== '' ? mediaName : null, mediaType: "video/mp4" }
     const updatedSign: ISignDetailsEdit = {
-      notes,
+      notes: notes !== '' ? notes : null,
       media
     }
 

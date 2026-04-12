@@ -42,6 +42,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setRegion('')
     setYearStart('')
     setYearEnd('')
+    setTranslations('')
     setAuthorOption(null)
     setIsFormOpen(false)
   }
@@ -56,11 +57,11 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     const evidence: IEvidence = { url: evidenceUrl, name: evidenceName, fullName: evidenceFullName }
     const author: IAuthor = { name: authorOption.label }
     const sourceToCreate: ISourceToCreate = {
-      notes: notes,
-      region: region,
-      yearStart: parseInt(yearStart),
-      yearEnd: parseInt(yearEnd),
-      translations: translations
+      notes: notes !== '' ? notes : null,
+      region: region !== '' ? region : null,
+      yearStart: yearStart !== '' ? parseInt(yearStart) : null,
+      yearEnd: yearEnd !== '' ? parseInt(yearEnd) : null,
+      translations: translations !== '' ? translations : null
     }
     const data: ISourceWithDetailsToDB = { source: sourceToCreate, evidence, author }
 
