@@ -4,7 +4,7 @@ Polish Sign Language Dictionary.
 Allows user to search, view and manage signs (with media, images or texts), definitions, words ect.
 
 ## About me
-I’ve been learning PJM (Polish Sign Language) for years, and I’ve been missing a good sign dictionary.
+|I am deaf born in hearing family. I’ve been learning PJM (Polish Sign Language) for years, and I’ve been missing a good sign dictionary.
 
 The available PJM dictionaries are often outdated projects from several years ago that don’t indicate whether a sign is still in use or which region it comes from (Warsaw? Kraków? Poznań?).
 
