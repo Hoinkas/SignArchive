@@ -8,7 +8,7 @@ If individual or gropups of invidual obtain author's permission to use permissio
 
 Any individual breaking the Natural Law of Non-Aggression and Self-Defense is entirely prohibited to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software. This includes explicitly but is not limited to,
 
-* any officer, contractor, subcontractor, or staff acting on behalf of, or being funded by any government, university, coprporation, bussines or law enforcement agency;
+* any officer, contractor, subcontractor, or staff acting on behalf of coprporation, bussines or law enforcement agency;
 * any individual relying on monopolistic privilege licenses granted by any government or law enforcement agency;
 * any officer, contractor, subcontractor, or staff of any surveillance effort acting in an official and/or commercial capacity or being contracted by any government or law enforcement agency;
 * any individual aggressively enforcing "intellectual property rights".

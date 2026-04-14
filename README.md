@@ -1,9 +1,14 @@
-# SignArchive
-Sign Language Dictionary.
+# SignArchive (pl. ArchiwuMig)
+Polish Sign Language Dictionary.
 
-Allows user to manage signs (with media, images or texts), definitions, words ect.
+Allows user to search, view and manage signs (with media, images or texts), definitions, words ect.
 
-The sign language sometimes uses the same sign for different words and/or the same word has different signs for it in various regions and times. It was all taken into consideration while creating this app.
+## About me
+|I am deaf born in hearing family. I’ve been learning PJM (Polish Sign Language) for years, and I’ve been missing a good sign dictionary.
+
+The available PJM dictionaries are often outdated projects from several years ago that don’t indicate whether a sign is still in use or which region it comes from (Warsaw? Kraków? Poznań?).
+
+So I decided to create my own amateur dictionary, which will be updated regularly and to which anyone will be able to add signs, definitions, and sources.
 
 ### Definitions view
 ![alt text](https://github.com/Hoinkas/SignArchive/blob/main/SignArchiveDefinitionsView.png?raw=true)
