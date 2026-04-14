@@ -27,7 +27,9 @@ function LandingPage(): React.JSX.Element {
           <hr/>
 
           <br/>
-          <h2>Ispiracje i polecane projekty</h2>
+        </p>
+        <h2>Ispiracje i polecane projekty</h2>
+        <p>
           <br/>Zachęcamy do przeglądania innych projektów, które nas zainspirowały:
           <br/>- <a href='https://www.instagram.com/natalia_rudkiewicz/' target="_blank">Natalia Rudkiewicz</a> (instagram z dawnymi znakami i regionalizmami)
           <br/>- <a href='https://www.facebook.com/people/%C5%9Al%C4%85ski-Migowy' target="_blank">Śląski Migowy</a> (facebook ze śląskimi znakami migowego tworzone przez <a href='https://www.facebook.com/boldysrafal' target="_blank">Rafał Bodys</a>)
@@ -43,9 +45,11 @@ function LandingPage(): React.JSX.Element {
           <hr/>
 
           <br/>
-          <h2>Obecny postęp</h2>
-          <br/>
-          <h3>Wersja 1.0</h3>
+        </p>
+        <h2>Obecny postęp</h2>
+        <br/>
+        <h3>Wersja 1.0</h3>
+        <p>
           [x] Wyświetlanie listy słów
           <br/>[x] Wyświetlanie szczegółów słowa. Dodawanie, modyfikacja i usuwanie słowa.
           <br/>[x] Wyświetlanie listy znaków w słowie
@@ -72,9 +76,11 @@ function LandingPage(): React.JSX.Element {
 
           <hr/>
           <br/>
-          <h2>Co planujemy?</h2>
-          <br/>
-          <h3>Wersja 2.0</h3>
+        </p>
+        <h2>Co planujemy?</h2>
+        <br/>
+        <h3>Wersja 2.0</h3>
+        <p>
           [ ] Zakładka liczebników dla danego słowa (godziny, przystanki, dokładki itp.)
           <br/>[ ] Zakładka nazw własnych do słów (ulic, dzielnic, budynków itp.)
           <br/>[ ] Widok na telefony oraz usprawniony widok na wszystkie szerokości ekranu
@@ -86,7 +92,9 @@ function LandingPage(): React.JSX.Element {
           <br/>[ ] Ocena częstotliwości użycia znaku oraz jego poprawności (czy g/Głusi faktycznie używali tego znaku, czy tylko słyszący go wymyślili i nagrali?)
           <br/>
           <br/>
+        </p>
           <h3>Wersja 3.0</h3>
+        <p>
           [ ] Automatyczne tworzenie miniatur wideo, które będą pokazywać półprzeźroczysty ruch
           <br/>[ ] Tworzenie plików punktami orientacyjnymi (mediapipe) z filmów do pobrania
           <br/>[ ] Wyświetlanie modelu 3D która będzie się poruszać bazując na stwirzonych punktach orientacyjnych (Three.js)
