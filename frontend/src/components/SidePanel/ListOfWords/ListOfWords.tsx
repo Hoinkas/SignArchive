@@ -12,7 +12,7 @@ function ListOfWords(): React.JSX.Element {
 
   function handleWordClick(word: IWordWithRegionsCategories) {
     changeActiveWord(word.id)
-    navigate(`/words/${word.text}`)
+    navigate(`/word/${word.text}`)
   }
 
   return (

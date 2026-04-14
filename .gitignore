@@ -10,3 +10,4 @@ signs.json
 *bkp
 *.sql*
 TODO.md
+*.env

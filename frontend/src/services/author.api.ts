@@ -1,6 +1,6 @@
 import type { IAuthorAttached } from '@src/models/author.model'
-import { api } from './client'
+import { apiGet } from './client'
 
 export const authorApi = {
-  list: (): Promise<IAuthorAttached[]> => api.get('/authors').then((r) => r.data)
+  list: (): Promise<IAuthorAttached[]> => apiGet<IAuthorAttached[]>('/authors').then((r) => r.data)
 }

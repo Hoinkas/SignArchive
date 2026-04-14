@@ -52,9 +52,9 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     const definition: IDefinition = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
-      translations
+      translations: translations !== '' ? translations : null
     }
-    const data: ISignDetailsToDB = { wordId: word.id, media, definition }
+    const data: ISignDetailsToDB = { wordId: word.id, media, definition, notes: notes !== '' ? notes : null }
 
     addSign(data, closeForm)
   }
