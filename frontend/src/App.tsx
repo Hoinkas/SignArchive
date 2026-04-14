@@ -13,7 +13,12 @@ function Word(): React.JSX.Element {
   const { word } = useParams()
   const { setActiveWordByName, error } = useWord()
 
-  return setActiveWordByName(titleCase(word)) ? <WordPage /> : <div>{error}</div>
+  useEffect(() => {
+    setActiveWordByName(titleCase(word ?? ''))
+  }, [setActiveWordByName, word])
+
+  if (error) return <div>{error}</div>
+  return <WordPage />
 }
 
 function App(): React.JSX.Element {
@@ -23,7 +28,7 @@ function App(): React.JSX.Element {
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
   })
 
-  if (loading) return <div className="loader"><Loader/></div>
+  if (loading) return <div><Loader/></div>
   if (error) return <div className="error">{error}</div>
 
   return (

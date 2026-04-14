@@ -20,15 +20,12 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    setLoading(true)
     Promise.all([
       wordApi.list().then(setWordsList),
       tagApi.list().then(setAllTags)
     ])
       .catch((err) => setError(err.message ?? 'Błąd ładowania'))
       .finally(() => setLoading(false))
-
-    console.log(error)
   }, [])
 
   useEffect(() => {

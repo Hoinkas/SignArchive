@@ -1,7 +1,9 @@
 import './Loader.css'
 
 function Loader(): React.JSX.Element {
-  return <div className="loader"></div>
+  return <div className='loaderBox'>
+    <div className="loader"></div>
+  </div>
 }
 
 export default Loader

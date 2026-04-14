@@ -32,6 +32,6 @@ export const WordContext = createContext<WordContextValue>({
   changeActiveWord: () => {},
   setActiveWordByName: () => false,
   changeSignCountInWord: () => {},
-  loading: false,
+  loading: true,
   error: ''
 })
