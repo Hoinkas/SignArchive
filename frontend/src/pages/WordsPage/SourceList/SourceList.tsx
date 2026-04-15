@@ -7,13 +7,14 @@ import SourceForm from '@src/components/Form/Forms/SourceForm'
 import { useSources } from '@src/hooks/SourcesContext/useSources'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 import type { ISignDetails } from '@src/models/sign.model'
+import Loader from '@src/components/Loader/Loader'
 
 interface SourceListProps {
   sign: ISignDetails
 }
 
 function SourceList({ sign }: SourceListProps): React.JSX.Element {
-  const { sources, closeSourcesPanelSign } = useSources()
+  const { sources, closeSourcesPanelSign, sourcesListLoading } = useSources()
   const { isAdmin } = usePermissions()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -26,7 +27,10 @@ function SourceList({ sign }: SourceListProps): React.JSX.Element {
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [closeSourcesPanelSign, isFormOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormOpen])
+
+  if (sourcesListLoading) return <Loader/>
 
   return (
     <div className="sourceListContainer" ref={wrapperRef}>

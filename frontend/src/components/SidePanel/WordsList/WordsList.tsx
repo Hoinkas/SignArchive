@@ -7,24 +7,23 @@ import { useNavigate } from 'react-router-dom'
 
 function WordsList(): React.JSX.Element {
   const { filteredWords } = useSearch()
-  const { activeWordId, changeActiveWord } = useWord()
+  const { word } = useWord()
   const navigate = useNavigate()
 
-  function handleWordClick(word: IWordWithRegionsCategories) {
-    changeActiveWord(word.id)
-    navigate(`/word/${word.text}`)
+  function handleWordClick(w: IWordWithRegionsCategories) {
+    navigate(`/word/${w.text}`)
   }
 
   return (
     <ul className="wordsList">
-      {filteredWords.map((word: IWordWithRegionsCategories, key: number) => (
+      {filteredWords.map((w: IWordWithRegionsCategories, key: number) => (
         <li
           key={key}
-          className={word.id === activeWordId ? 'word active' : 'word'}
-          onClick={() => handleWordClick(word)}
+          className={word && w.id === word.id ? 'word active' : 'word'}
+          onClick={() => handleWordClick(w)}
         >
-          <div>{word.text}</div>
-          <div className="additionalInfo">{signCountText(word.signsCount)}</div>
+          <div>{w.text}</div>
+          <div className="additionalInfo">{signCountText(w.signsCount)}</div>
         </li>
       ))}
     </ul>

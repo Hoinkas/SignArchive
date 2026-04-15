@@ -13,16 +13,17 @@ import Loader from '@src/components/Loader/Loader'
 
 function WordDetails(): React.JSX.Element {
   const { isAdmin } = usePermissions()
-  const { word, loading } = useWord()
+  const { word, wordLoading } = useWord()
   const { initiateSigns } = useSigns()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (!word) return
     initiateSigns(word.id)
-  }, [initiateSigns, word, word?.id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word?.id])
 
-  if (loading || !word) return <div className="wordDetails"><Loader/></div>
+  if (wordLoading || !word) return <div className="wordDetails"><Loader/></div>
 
   return (
     <div className="wordDetails">

@@ -14,6 +14,7 @@ export interface SourcesContextValue {
   sourcesPanelSign: ISignDetails | null
   changeSourcesPanelSign: (data: ISignDetails) => void
   closeSourcesPanelSign: () => void
+  sourcesListLoading: boolean
 }
 
 export const SourcesContext = createContext<SourcesContextValue>({
@@ -23,5 +24,6 @@ export const SourcesContext = createContext<SourcesContextValue>({
   deleteSource: () => {},
   sourcesPanelSign: null,
   changeSourcesPanelSign: () => {},
-  closeSourcesPanelSign: () => {}
+  closeSourcesPanelSign: () => {},
+  sourcesListLoading: false
 })

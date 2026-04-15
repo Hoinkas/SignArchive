@@ -10,13 +10,13 @@ import Loader from './components/Loader/Loader'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
 
 function App(): React.JSX.Element {
-  const { loading } = useWord()
+  const { wordListLoading } = useWord()
 
   useEffect(() =>{
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
   })
 
-  if (loading) return <div style={{width: '100vw', height: '100vh'}}><Loader/></div>
+  if (wordListLoading) return <div style={{width: '100vw', height: '100vh'}}><Loader/></div>
 
   return (
     <BrowserRouter>
