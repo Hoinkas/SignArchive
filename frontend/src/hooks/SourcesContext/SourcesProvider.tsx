@@ -16,11 +16,16 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   const { updateSignSource } = useSigns()
   const [sourcesPanelSign, setSourcesPanelSign] = useState<ISignDetails | null>(null)
   const [sources, setSources] = useState<ISourceDetails[]>([])
+  const [sourcesListLoading, setSourcesListLoading] = useState<boolean>(false)
 
   const changeSourcesPanelSign = (data: ISignDetails): void => {
     if (!word) return
     setSourcesPanelSign(data)
-    sourceApi.list(data.id, word.id).then(setSources)
+    setSources([])
+    setSourcesListLoading(true)
+    sourceApi.list(data.id, word.id)
+      .then(setSources)
+      .finally(() => setSourcesListLoading(false))
   }
 
   const closeSourcesPanelSign = (): void => setSourcesPanelSign(null)
@@ -58,7 +63,7 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
 
   return (
     <SourcesContext.Provider
-      value={{ sources, addSource, editSource, deleteSource, sourcesPanelSign, changeSourcesPanelSign, closeSourcesPanelSign }}
+      value={{ sources, addSource, editSource, deleteSource, sourcesPanelSign, changeSourcesPanelSign, closeSourcesPanelSign, sourcesListLoading }}
     >
       {children}
     </SourcesContext.Provider>

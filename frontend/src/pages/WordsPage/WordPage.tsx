@@ -13,7 +13,8 @@ function WordPage(): React.JSX.Element {
 
   useEffect(() => {
     setActiveWordByName(titleCase(word ?? ''))
-  }, [setActiveWordByName, word])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [word])
 
   if (error) return <PageNotFound/>
 

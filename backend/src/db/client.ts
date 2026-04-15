@@ -6,7 +6,6 @@ const DB_DIR = path.join(process.cwd(), 'data')
 const DB_PATH = path.join(DB_DIR, 'signarchive.db')
 
 fs.mkdirSync(DB_DIR, { recursive: true })
-console.log('DB_PATH:', DB_PATH)
 
 let db: Database.Database | null = null
 

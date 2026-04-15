@@ -11,11 +11,10 @@ export interface WordContextValue {
   addWord: (word: IWord, tags: (ITag | ITagAttached)[], closeForm: () => void) => void
   editWord: (word: Partial<IWord>, tags: (ITag | ITagAttached)[], closeForm: () => void) => void
   deleteWord: () => void
-  activeWordId: string | null
-  changeActiveWord: (wordId: string) => void
   setActiveWordByName: (word: string) => boolean
   changeSignCountInWord: (action: 'add' | 'remove') => void
-  loading: boolean
+  wordListLoading: boolean
+  wordLoading: boolean
   error: string | null
 }
 
@@ -28,10 +27,9 @@ export const WordContext = createContext<WordContextValue>({
   addWord: () => {},
   editWord: () => {},
   deleteWord: () => {},
-  activeWordId: null,
-  changeActiveWord: () => {},
   setActiveWordByName: () => false,
   changeSignCountInWord: () => {},
-  loading: true,
+  wordListLoading: true,
+  wordLoading: false,
   error: ''
 })

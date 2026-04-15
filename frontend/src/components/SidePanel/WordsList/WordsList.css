@@ -1,4 +1,4 @@
-.listOfWords {
+.wordsList {
   overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
@@ -33,6 +33,6 @@
   color: inherit;
 }
 
-.word:active {
+.word.active {
   border-left: 6px solid var(--color-line-purple);
 }

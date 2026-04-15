@@ -14,9 +14,9 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
   const [allTags, setAllTags] = useState<ITagAttached[]>([])
   const [wordsList, setWordsList] = useState<IWordWithRegionsCategories[]>([])
   const [isDescending, setIsDescending] = useState<boolean>(false)
-  const [activeWordId, setActiveWordId] = useState<string | null>(null)
   const [word, setWord] = useState<IWordAttached | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [wordListLoading, setWordListLoading] = useState<boolean>(true)
+  const [wordLoading, setWordLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -25,22 +25,8 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
       tagApi.list().then(setAllTags)
     ])
       .catch((err) => setError(err.message ?? 'Błąd ładowania'))
-      .finally(() => setLoading(false))
+      .finally(() => setWordListLoading(false))
   }, [])
-
-  useEffect(() => {
-    if (!activeWordId) return
-
-    let cancelled = false
-
-    wordApi.details(activeWordId).then((result) => {
-      if (!cancelled) setWord(result)
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [activeWordId])
 
   const addWord = (data: IWord, tags: (ITag | ITagAttached)[], closeForm: () => void): void => {
     wordApi.create({...data, categories: tags}).then((result) => {
@@ -51,10 +37,13 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   const editWord = (data: Partial<IWord>, tags: (ITag | ITagAttached)[], closeForm: () => void): void => {
     if (!word) return
+    setWordLoading(true)
+
     wordApi.update(word.id, {...data, categories: tags}).then((result) => {
       setWord(result)
       setWordsList((prev) => prev.map((w) => (w.id === result.id ? { ...w, ...result } : w)))
       closeForm()
+      setWordLoading(false)
     })
   }
 
@@ -66,19 +55,21 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const changeActiveWord = (wordId: string): void => {
-    setActiveWordId(wordId)
-  }
-
-  const setActiveWordByName = (word: string) => {
-    const find = wordsList.find((w) => w.text === word)
-
+  const setActiveWordByName = (wordName: string) => {
+    const find = wordsList.find((w) => w.text === wordName)
     if (!find) {
       setError('Brak takiego słowa')
       return false
     }
 
-    setActiveWordId(find.id)
+    setWord(null)
+    setWordLoading(true)
+
+    wordApi.details(find.id).then((result) => {
+      setWord(result)
+      setWordLoading(false)
+    })
+
     return true
   }
 
@@ -110,12 +101,11 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         addWord,
         editWord,
         deleteWord,
-        activeWordId,
-        changeActiveWord,
         setActiveWordByName,
         changeSignCountInWord,
-        loading,
-        error
+        wordListLoading,
+        error,
+        wordLoading
       }}
     >
       {children}
