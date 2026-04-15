@@ -4,6 +4,7 @@ import { SignContext } from './SignsContext'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { signApi } from '@src/services/sign.api'
 import type { ISignDetails, ISignDetailsEdit, ISignDetailsToDB } from '@src/models/sign.model'
+import type { IYearsRegions } from '@src/models/yearStartEnd.model'
 
 interface Props {
   children?: React.ReactNode
@@ -45,15 +46,14 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const updateSignSource = (signId: string, action?: 'add' | 'delete'): void => {
+  const updateSignSource = (signId: string, years: IYearsRegions, action?: 'add' | 'delete'): void => {
     if (!word) return
-    signApi.yearsRegions(signId, word.id).then((result) => {
-      setSigns((prev) => {
-        const delta = action ? (action === 'add' ? 1 : -1) : 0
-        return prev.map((s) =>
-          s.id === signId ? { ...s, ...result, sourcesCount: s.sourcesCount + delta } : s
-        )
-      })
+
+    setSigns((prev) => {
+      const delta = action ? (action === 'add' ? 1 : -1) : 0
+      return prev.map((s) =>
+        s.id === signId ? { ...s, ...years, sourcesCount: s.sourcesCount + delta } : s
+      )
     })
   }
 
