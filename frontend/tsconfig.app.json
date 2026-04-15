@@ -16,10 +16,10 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
     "paths": {
-      "@shared/*": ["shared/*"],
-      "@src/*": ["src/*"]
+      "@shared/*": ["./shared/*"],
+      "@src/*": ["./src/*"]
     }
   },
   "include": ["src", "src/shared"]
