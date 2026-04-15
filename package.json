@@ -7,7 +7,7 @@
     "sync:watch": "node scripts/sync-models.js --watch",
     "dev:backend": "npm run sync && cd backend && pnpm dev",
     "dev:frontend": "npm run sync && cd frontend && pnpm dev",
-    "dev": "npm run sync && concurrently \"cd backend && pnpm dev\" \"cd frontend && pnpm dev\"",
+    "dev": "npm run sync && concurrently --kill-others \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
     "postinstall": "cd backend/node_modules/better-sqlite3 && npm run build-release"
   },
   "devDependencies": {

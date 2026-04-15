@@ -46,13 +46,13 @@ interface FormSingleLineInputProps {
   label: string
   value: string
   setValue: (value: string) => void
-  isNumber?: boolean
+  type?: 'text' | 'number' | 'password'
   required?: boolean
   submitted?: boolean
 }
 
 export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.Element {
-  const { label, value, setValue, isNumber = false, required = false, submitted = false } = props
+  const { label, value, setValue, type = 'text', required = false, submitted = false } = props
 
   const showError = submitted && required && value === ''
 
@@ -64,7 +64,7 @@ export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.
       </label>
       <input
         className={`formInput${showError ? ' inputError' : ''}`}
-        type={isNumber ? 'number' : 'text'}
+        type={type}
         min={1000}
         max={new Date().getFullYear()}
         value={value}

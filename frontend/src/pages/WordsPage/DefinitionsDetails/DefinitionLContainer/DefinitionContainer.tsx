@@ -28,7 +28,7 @@ function DefinitionContainer(): React.JSX.Element {
         {isAdmin ? (isFormOpen ? (
           <DefinitonForm formType="add" setIsFormOpen={setIsFormOpen} />
         ) : (
-          <ActionButton text="Dodaj definicję" setIsFormOpen={setIsFormOpen} />
+          <ActionButton text="Dodaj definicję" buttonAction={() => setIsFormOpen(true)} />
         )) : <div></div>}
       </div>
     </div>

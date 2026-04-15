@@ -27,7 +27,7 @@ function SidePanel(): React.JSX.Element {
               justifyContent: 'center'
             }} //TODO move to to css
           >
-            <ActionButton text="Dodaj słowo" isPrimary setIsFormOpen={setIsFormOpen} />
+            <ActionButton text="Dodaj słowo" isPrimary buttonAction={() => setIsFormOpen(true)} />
           </div>
         }
         <WordListDetails />

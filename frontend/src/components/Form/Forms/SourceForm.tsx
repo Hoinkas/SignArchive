@@ -47,7 +47,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceName && evidenceFullName
+  const isValid = authorOption && evidenceName && evidenceFullName && translations
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -93,8 +93,8 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
         <FormSingleLineInput label="Region" value={region} setValue={setRegion} />
       </FormTwoInLineWrapper>
       <FormTwoInLineWrapper>
-        <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={setYearStart} isNumber />
-        <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={setYearEnd} isNumber />
+        <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={setYearStart} type='number' />
+        <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={setYearEnd} type='number' />
       </FormTwoInLineWrapper>
     </FormModalWrapper>
   )

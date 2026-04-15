@@ -5,6 +5,7 @@ import { tagRouter, tagWordRouter } from './routes/tag.pipelines'
 import { sourceListRouter, sourceRouter } from './routes/source.pipelines'
 import { definitionRouter } from './routes/definition.pipelines'
 import { authorRouter } from './routes/author.pipelines'
+import authRouter from './routes/auth.pipelines'
 
 export function setupRoutes(app: Express): void {
   app.get('/', (_req, res) => res.json({ message: 'SignArchive API' }))
@@ -20,4 +21,6 @@ export function setupRoutes(app: Express): void {
   app.use('/sources', sourceRouter)
   app.use('/tags', tagRouter)
   app.use('/authors', authorRouter)
+
+  app.use('/auth', authRouter)
 }
