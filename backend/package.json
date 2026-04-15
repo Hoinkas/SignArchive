@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.ts"
+    "start": "node dist/index.ts",
+    "postinstall": "node -e \"try{require('better-sqlite3')}catch(e){require('child_process').execSync('npm rebuild better-sqlite3',{stdio:'inherit'})}\""
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",
