@@ -27,7 +27,7 @@ function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   return (
     <div className="sourceBoxContainer" onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
       <div className="sourceBox">
-        <a href={source.evidence.url}>{source.evidence.name}</a>
+        <a href={source.evidence.url} target="_blank">{source.evidence.name}</a>
         <PillList textArray={pillText} />
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>
