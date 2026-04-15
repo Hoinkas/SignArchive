@@ -1,5 +1,5 @@
 # Nongoverment Nonbussines Open License
-Copyright 2026 `Hoinkas`
+Copyright 2026 `Jueltrae`
 
 To obstain rights to publish, distribute, sublicense person must ask the autor for permissions.
 Code from this repostory cannot be sold to anyone even in modified version regardless of permission granted. The code, and software, must by easily accesible for anyone (subject to the conditions listed below) and free of charge.

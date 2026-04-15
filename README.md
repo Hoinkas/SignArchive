@@ -42,7 +42,7 @@ pnpm dev
 - [x] Default view with links, inspirations and thanks
 - [x] Add translations to each source - year. In different years sign could mean different things
 - [x] Url substring should contain shown word
-- [ ] Add Error Page
+- [x] Add Error Page
 - [ ] Reusing sign in new words and creating words based on sign definitions
 - [ ] Admin account
 

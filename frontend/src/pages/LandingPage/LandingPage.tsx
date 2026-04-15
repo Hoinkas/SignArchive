@@ -68,7 +68,7 @@ function LandingPage(): React.JSX.Element {
           <br/>[x] Strona startowa z linkami, inspiracjami i podziękowaniami
           <br/>[x] Dodanie odpowiedników w języku polskim pisanym do danego źródła. Niektóre znaki w dawnych latach oznaczały co innego, a dziś oznaczają co innego
           <br/>[x] W podlinku do strony można użyć nazwy słowa i je załaduje od razu
-          <br/>[ ] Dodanie strony błędu dla nieistniejących podstron
+          <br/>[x] Dodanie strony błędu dla nieistniejących podstron
           <br/>[ ] Możliwość dodania starego znaku do nowego słowa i tworzenie nowych słów na podstawie definicji w znakach
           <br/>[ ] Konto admina
           <br/>
