@@ -1,0 +1,28 @@
+.thumbnail {
+  height: 100%;
+  width: 100%;
+  max-height: var(--media-max-height);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-bg-player);
+}
+
+.thumbnail svg {
+  position: relative;
+  z-index: 1;
+}

@@ -151,7 +151,7 @@
 
   --color-kebab-menu-icon: var(--color-text);
 
-  --color-bg-player: var(--grey-700);
+  --color-bg-player: color-mix(in srgb, var(--grey-900) 85%, transparent);
 }
 
 *,
