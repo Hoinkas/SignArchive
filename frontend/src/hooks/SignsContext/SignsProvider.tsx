@@ -12,9 +12,15 @@ interface Props {
 export default function SignsProvider({ children }: Props): React.JSX.Element {
   const { changeSignCountInWord, word } = useWord()
   const [signs, setSigns] = useState<ISignDetails[]>([])
+  const [loadSigns, setLoadSigns] = useState<boolean>(false)
 
   const initiateSigns = useCallback((wordId: string): void => {
-    signApi.list(wordId).then(setSigns)
+    setLoadSigns(true)
+    setSigns([])
+    signApi.list(wordId).then((data) => {
+      setSigns(data)
+      setLoadSigns(false)
+    })
   }, [])
 
   const addSign = (data: ISignDetailsToDB, closeForm: () => void): void => {
@@ -52,7 +58,7 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   }
 
   return (
-    <SignContext.Provider value={{ signs, initiateSigns, addSign, editSign, deleteSign, updateSignSource }}>
+    <SignContext.Provider value={{ signs, initiateSigns, addSign, editSign, deleteSign, updateSignSource, loadSigns }}>
       {children}
     </SignContext.Provider>
   )

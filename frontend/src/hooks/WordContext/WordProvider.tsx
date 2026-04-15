@@ -59,7 +59,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
     const find = wordsList.find((w) => w.text === wordName)
     if (!find) {
       setError('Brak takiego słowa')
-      return false
+      return null
     }
 
     setWord(null)
@@ -70,7 +70,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
       setWordLoading(false)
     })
 
-    return true
+    return find.id
   }
 
   const changeSignCountInWord = (action: 'add' | 'remove'): void => {

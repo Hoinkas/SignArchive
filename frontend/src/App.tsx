@@ -8,6 +8,7 @@ import isDarkTheme from './utils/isDarkTheme'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Loader from './components/Loader/Loader'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
+import SignsProvider from './hooks/SignsContext/SignsProvider'
 
 function App(): React.JSX.Element {
   const { wordListLoading } = useWord()
@@ -25,7 +26,7 @@ function App(): React.JSX.Element {
 
         <Routes>
           <Route path="/" element={<LandingPage/>} />
-          <Route path={`/word/:word`} element={<WordPage/>} />
+          <Route path={`/word/:word`} element={<SignsProvider><WordPage/></SignsProvider>} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </PermissionsProvider>

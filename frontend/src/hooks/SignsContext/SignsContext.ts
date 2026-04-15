@@ -8,6 +8,7 @@ export interface SignContextValue {
   editSign: (signId: string, updatedSign: ISignDetailsEdit, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void
   updateSignSource: (signId: string, action?: 'add' | 'delete') => void
+  loadSigns: boolean
 }
 
 export const SignContext = createContext<SignContextValue>({
@@ -16,5 +17,6 @@ export const SignContext = createContext<SignContextValue>({
   addSign: () => {},
   editSign: () => {},
   deleteSign: () => {},
-  updateSignSource: () => {}
+  updateSignSource: () => {},
+  loadSigns: false
 })
