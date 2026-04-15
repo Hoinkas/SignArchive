@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { asyncHandler } from '../middlewares/middleware'
+import { asyncHandler, requireAdmin } from '../middlewares/middleware'
 import { definitionController } from '../controllers/definition.controller'
 
 export const definitionRouter = Router()
-definitionRouter.route('/').post(asyncHandler(definitionController.create))
+definitionRouter.route('/').post(requireAdmin, asyncHandler(definitionController.create))
 definitionRouter
   .route('/:definitionId')
-  .patch(asyncHandler(definitionController.update))
-  .delete(asyncHandler(definitionController.delete))
+  .patch(requireAdmin, asyncHandler(definitionController.update))
+  .delete(requireAdmin, asyncHandler(definitionController.delete))

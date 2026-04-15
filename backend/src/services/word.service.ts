@@ -9,7 +9,6 @@ import {
   IWordWithRegionsCategories
 } from '../../../shared/models/word.model'
 import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
-import { IWordWithCount } from '../models/word.model'
 
 function tagsByWordId(wordId: string): ITagAttached[] {
   return getDb()

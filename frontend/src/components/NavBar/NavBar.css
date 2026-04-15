@@ -30,3 +30,9 @@
 .title.purple {
   color: var(--color-title-purple)
 }
+
+.buttonsBox {
+  display: inline-flex;
+  height: fit-content;
+  gap: var(--space-4);
+}

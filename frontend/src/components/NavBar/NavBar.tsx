@@ -4,10 +4,13 @@ import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
 import LogoLight from '@src/assets/icons/LogoLight.svg'
 import LogoDark from '@src/assets/icons/LogoDark.svg'
 import { useState } from 'react'
+import LoginForm from '../Form/Forms/LoginForm'
+import ActionButton from '../ActionButton/ActionButton'
 
 function NavBar(): React.JSX.Element {
-  const {isAdmin} = usePermissions()
+  const {isAdmin, logout} = usePermissions()
   const [isDark, setIsDark] = useState<boolean>(document.documentElement.getAttribute('data-theme') === 'dark')
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   function handleSwitch() {
     const next = !isDark
@@ -25,7 +28,11 @@ function NavBar(): React.JSX.Element {
           <p className='title purple'>Mig</p>
         </div>
       </a>
-      {isAdmin && <ThemeSwitch isDark={isDark} handleSwitch={handleSwitch}/>}
+      <div className='buttonsBox'>
+        <ThemeSwitch isDark={isDark} handleSwitch={handleSwitch}/>
+        {isAdmin ? <ActionButton text="Wyloguj" buttonAction={() => logout()} /> : <ActionButton text="Zaloguj" buttonAction={() => setIsFormOpen(true)} /> }
+        {isFormOpen && <LoginForm setIsFormOpen={setIsFormOpen} />}
+      </div>
     </div>
   )
 }

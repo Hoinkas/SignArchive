@@ -36,7 +36,7 @@ function WordDetails(): React.JSX.Element {
         isFormOpen ? (
           <AddSignForm formType="add" setIsFormOpen={setIsFormOpen} />
         ) : (
-          <ActionButton setIsFormOpen={setIsFormOpen} text={'Dodaj znak'} isAtEnd />
+          <ActionButton buttonAction={() => setIsFormOpen(true)} text={'Dodaj znak'} isAtEnd />
         )
       )}
     </div>
