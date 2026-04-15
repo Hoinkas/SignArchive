@@ -9,7 +9,13 @@ interface MediaPlayerProps {
 
 function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
   const [isClicked, setIsClicked] = useState<boolean>(false)
+  const [prevMedia, setPrevMedia] = useState(media)
   const isImage = media.mediaType.startsWith('image/')
+
+  if (prevMedia !== media) {
+    setPrevMedia(media)
+    setIsClicked(false)
+  }
 
   return (
     <div className="mediaWrapper">
