@@ -19,7 +19,7 @@ function NavBar(): React.JSX.Element {
   return (
     <div className="navBar">
       <a className="logoTitle" href='/'>
-        <img width={64} src={isDark ? LogoDark : LogoLight}/>
+        <img width={56} src={isDark ? LogoDark : LogoLight}/>
         <div className='titleBox'>
           <p className='title'>Archiwu</p>
           <p className='title purple'>Mig</p>

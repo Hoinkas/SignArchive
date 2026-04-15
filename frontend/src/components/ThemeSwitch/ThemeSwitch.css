@@ -1,12 +1,16 @@
 /* Copied from https://codepen.io/jkantner/pen/KKEgENL */
 
+.switch {
+  height: fit-content;
+}
+
 .switch,
 .switch__input {
   font-size: var(--font-size-xl);
 	position: relative;
 	-webkit-tap-highlight-color: transparent;
 }
-/* .switch {} */
+
 .switch__input,
 .switch__input:before {
   background-color: var(--switch-bg);
