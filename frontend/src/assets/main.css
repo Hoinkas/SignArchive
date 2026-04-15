@@ -98,6 +98,15 @@ button.primary:hover {
   opacity: 0.85;
 }
 
+button[type="submit"] {
+  background: var(--color-bg-active);
+  color: var(--color-text-dark);
+}
+
+button[type="submit"]:hover {
+  opacity: 0.85;
+}
+
 label {
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-2);
