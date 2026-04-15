@@ -41,7 +41,7 @@ function SourceList({ sign }: SourceListProps): React.JSX.Element {
       {isAdmin ? (isFormOpen ? (
         <SourceForm formType={'add'} setIsFormOpen={setIsFormOpen} />
       ) : (
-        <ActionButton text="Dodaj źródło" isAtEnd={true} setIsFormOpen={setIsFormOpen} />
+        <ActionButton text="Dodaj źródło" isAtEnd setIsFormOpen={setIsFormOpen} />
       )) : <div></div>}
     </div>
   )

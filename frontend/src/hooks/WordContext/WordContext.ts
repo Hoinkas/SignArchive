@@ -16,7 +16,7 @@ export interface WordContextValue {
   setActiveWordByName: (word: string) => boolean
   changeSignCountInWord: (action: 'add' | 'remove') => void
   loading: boolean
-  error: string
+  error: string | null
 }
 
 export const WordContext = createContext<WordContextValue>({
