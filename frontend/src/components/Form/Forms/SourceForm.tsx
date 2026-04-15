@@ -29,7 +29,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
   const [translations, setTranslations] = useState<string>(source?.translations ?? '')
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
-    source ? { id: source.author.id, label: source.author.name } : null
+    source ? { id: source.author.id, label: source.author.name } : undefined
   )
 
   useEffect(() => {
@@ -57,11 +57,11 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     const evidence: IEvidence = { url: evidenceUrl, name: evidenceName, fullName: evidenceFullName }
     const author: IAuthor = { name: authorOption.label }
     const sourceToCreate: ISourceToCreate = {
-      notes: notes !== '' ? notes : null,
-      region: region !== '' ? region : null,
-      yearStart: yearStart !== '' ? parseInt(yearStart) : null,
-      yearEnd: yearEnd !== '' ? parseInt(yearEnd) : null,
-      translations: translations !== '' ? translations : null
+      notes: notes !== '' ? notes : undefined,
+      region: region !== '' ? region : undefined,
+      yearStart: yearStart !== '' ? parseInt(yearStart) : undefined,
+      yearEnd: yearEnd !== '' ? parseInt(yearEnd) : undefined,
+      translations: translations !== '' ? translations : undefined
     }
     const data: ISourceWithDetailsToDB = { source: sourceToCreate, evidence, author }
 

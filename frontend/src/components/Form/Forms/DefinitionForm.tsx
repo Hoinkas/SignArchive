@@ -46,7 +46,7 @@ function DefinitonForm(props: DefinitionFormProps): React.JSX.Element {
     const definitionToCreate: IDefinition = {
       category: categoryOption.label as DefinitionsCategories,
       text,
-      translations: translations !== '' ? translations : null
+      translations: translations !== '' ? translations : undefined
     }
 
     if (formType === 'add') {
