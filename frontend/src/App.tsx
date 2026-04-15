@@ -16,7 +16,7 @@ function App(): React.JSX.Element {
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
   })
 
-  if (loading) return <div><Loader/></div>
+  if (loading) return <div style={{width: '100vw', height: '100vh'}}><Loader/></div>
 
   return (
     <BrowserRouter>

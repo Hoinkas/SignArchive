@@ -9,20 +9,20 @@ import SourcesProvider from '@src/hooks/SourcesContext/SourcesProvider'
 import TagsProvider from '@src/hooks/TagsContext/TagsProvider'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 import WordTitle from './WordTitle/WordTitle'
+import Loader from '@src/components/Loader/Loader'
 
 function WordDetails(): React.JSX.Element {
   const { isAdmin } = usePermissions()
-  const { word } = useWord()
+  const { word, loading } = useWord()
   const { initiateSigns } = useSigns()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (!word) return
     initiateSigns(word.id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [word?.id])
+  }, [initiateSigns, word, word?.id])
 
-  if (!word) return <div>Error</div>
+  if (loading || !word) return <div className="wordDetails"><Loader/></div>
 
   return (
     <div className="wordDetails">
