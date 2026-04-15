@@ -47,7 +47,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceName && evidenceFullName
+  const isValid = authorOption && evidenceName && evidenceFullName && translations
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
