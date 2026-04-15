@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import './SidePanel.css'
-import WordsList from './WordsList/WordsList'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 import WordForm from '@src/components/Form/Forms/WordForm'
 import WordListDetails from './WordListDetails/WordListDetails'
 import TagsProvider from '@src/hooks/TagsContext/TagsProvider'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 import SearchProvider from '@src/hooks/SearchCotext/SearchProvider'
+import WordsList from './WordsList/WordsList'
 
 function SidePanel(): React.JSX.Element {
   const { isAdmin } = usePermissions()
