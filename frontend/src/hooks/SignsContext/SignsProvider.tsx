@@ -46,15 +46,12 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
     })
   }
 
-  const updateSignSource = (signId: string, years: IYearsRegions, action?: 'add' | 'delete'): void => {
+  const updateSignSource = (signId: string, years: IYearsRegions, delta: number): void => {
     if (!word) return
 
-    setSigns((prev) => {
-      const delta = action ? (action === 'add' ? 1 : -1) : 0
-      return prev.map((s) =>
+    setSigns((prev) => prev.map((s) =>
         s.id === signId ? { ...s, ...years, sourcesCount: s.sourcesCount + delta } : s
-      )
-    })
+      ))
   }
 
   return (

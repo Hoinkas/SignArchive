@@ -14,6 +14,8 @@ function WordPage(): React.JSX.Element {
 
   useEffect(() => {
     const wordId = setActiveWordByName(titleCase(word ?? ''))
+
+    if (!wordId) return
     initiateSigns(wordId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [word])

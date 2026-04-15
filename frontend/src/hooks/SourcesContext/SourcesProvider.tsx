@@ -32,9 +32,15 @@ export default function SourcesProvider({ children }: Props): React.JSX.Element 
   const closeSourcesPanelSign = (): void => setSourcesPanelSign(null)
 
   const addEditDeleteSource = (signId: string, action?: 'add' | 'delete'): void => {
+    if (!word || !sourcesPanelSign) return
+
+    const delta = action ? (action === 'add' ? 1 : -1) : 0
+
     signApi.yearsRegions(signId, word.id).then((result) => {
-      updateSignSource(signId, result, action)
-      setSourcesPanelSign((prev) => {return {...prev, yearStart: result.yearStart, yearEnd: result.yearEnd}})
+      updateSignSource(signId, result, delta)
+      setSourcesPanelSign((prev) => {
+        if (!prev) return null
+        return {...prev, yearStart: result.yearStart, yearEnd: result.yearEnd, sourcesCount: prev.sourcesCount + delta}})
     })
   }
 

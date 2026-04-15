@@ -8,7 +8,7 @@ export interface SignContextValue {
   addSign: (data: ISignDetailsToDB, closeForm: () => void) => void
   editSign: (signId: string, updatedSign: ISignDetailsEdit, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void
-  updateSignSource: (signId: string, years: IYearsRegions, action?: 'add' | 'delete') => void
+  updateSignSource: (signId: string, years: IYearsRegions, delta: number) => void
   loadSigns: boolean
 }
 
