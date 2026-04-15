@@ -5,7 +5,7 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/backend/src/index.js",
-    "postinstall": "cd node_modules/better-sqlite3 && npm run build-release"
+    "postinstall": "node -e \"const p = require('path'); const dir = p.join(__dirname, 'node_modules/better-sqlite3'); if(require('fs').existsSync(dir)) require('child_process').execSync('npm run build-release', {cwd: dir, stdio: 'inherit'});\""
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",
