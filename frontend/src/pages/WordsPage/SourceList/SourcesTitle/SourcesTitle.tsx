@@ -10,8 +10,8 @@ interface SourcesTitleProps {
 function SourcesTitle({ sign }: SourcesTitleProps): React.JSX.Element {
   const { sources, closeSourcesPanelSign } = useSources()
 
-  const years = sources.flatMap((s) => [s.yearStart, s.yearEnd]).filter((y): y is number => y !== null)
-  const yearText = years.length > 0 ? mergeYearText(Math.min(...years), Math.max(...years)) : 'brak roku'
+  console.log(sign)
+  const yearText = mergeYearText(sign.yearStart, sign.yearEnd)
 
   return (
     <div className="sourcesTitleContainer">

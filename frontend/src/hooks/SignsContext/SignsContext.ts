@@ -1,4 +1,5 @@
 import type { ISignDetailsEdit, ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
+import type { IYearsRegions } from '@src/models/yearStartEnd.model'
 import { createContext } from 'react'
 
 export interface SignContextValue {
@@ -7,7 +8,8 @@ export interface SignContextValue {
   addSign: (data: ISignDetailsToDB, closeForm: () => void) => void
   editSign: (signId: string, updatedSign: ISignDetailsEdit, closeForm: () => void) => void
   deleteSign: (deleteId: string) => void
-  updateSignSource: (signId: string, action?: 'add' | 'delete') => void
+  updateSignSource: (signId: string, years: IYearsRegions, action?: 'add' | 'delete') => void
+  loadSigns: boolean
 }
 
 export const SignContext = createContext<SignContextValue>({
@@ -16,5 +18,6 @@ export const SignContext = createContext<SignContextValue>({
   addSign: () => {},
   editSign: () => {},
   deleteSign: () => {},
-  updateSignSource: () => {}
+  updateSignSource: () => {},
+  loadSigns: false
 })
