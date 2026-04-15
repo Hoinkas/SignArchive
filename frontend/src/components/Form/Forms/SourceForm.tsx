@@ -29,7 +29,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
   const [translations, setTranslations] = useState<string>(source?.translations ?? '')
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
-    source ? { id: source.author.id, label: source.author.name } : undefined
+    source ? { id: source.author.id, label: source.author.name } : null
   )
 
   useEffect(() => {

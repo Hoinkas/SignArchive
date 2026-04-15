@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function PermissionsProvider({ children }: Props): React.JSX.Element {
-  const [isAdmin, setIsAdmin] = useState<boolean>(true)
+  const [isAdmin] = useState<boolean>(true)
 
   return (
     <PermissionsContext.Provider

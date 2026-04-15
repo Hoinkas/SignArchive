@@ -1,4 +1,4 @@
-import type { DefinitionsCategories } from '@shared/types'
+import type { DefinitionsCategories } from '@src/models/definition.model'
 
 export interface DropdownOption {
   id: string
