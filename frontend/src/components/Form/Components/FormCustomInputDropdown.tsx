@@ -97,7 +97,10 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
                   <div
                     key={option.id}
                     className="dropdownItem"
-                    onMouseDown={() => handleSelect(option)}
+                    onMouseDown={(e) => {
+                      e.stopPropagation()
+                      handleSelect(option)
+                    }}
                   >
                     {option.label}
                   </div>
