@@ -13,4 +13,5 @@ TODO.md
 *.env
 uploads/
 backend/uploads/*
-backend/uploads/*
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
