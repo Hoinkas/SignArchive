@@ -13,13 +13,14 @@ interface FormWrapperProps {
 export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
   const { children, handleSubmit, formType, closeForm } = props
 
-  return (
-    <div className="formContainer">
+  return createPortal(
+    <div className="formContainer" onClick={(e) => e.stopPropagation()}>
       <form className="formBox" onSubmit={handleSubmit} noValidate>
         {children}
         <FormButtons formType={formType} closeForm={closeForm} />
       </form>
-    </div>
+    </div>,
+    document.body
   )
 }
 
@@ -158,6 +159,7 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
 }
 
 import type { FormType } from '@src/models/yearStartEnd.model'
+import { createPortal } from 'react-dom'
 
 interface FormMediaProps { //TODO delete or rewrite to iframe urls
   existingFile?: string

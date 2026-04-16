@@ -22,7 +22,7 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     options,
     value,
     setValue,
-    placeholder = 'Szukaj lub wpisz...',
+    placeholder = 'Szukaj...',
     required = false,
     submitted = false
   } = props
@@ -92,7 +92,10 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
               <div
                 key={option.id}
                 className="dropdownItem"
-                onMouseDown={() => handleSelect(option)}
+                onMouseDown={(e) => {
+                  e.stopPropagation()
+                  handleSelect(option)
+                }}
               >
                 {option.label}
               </div>

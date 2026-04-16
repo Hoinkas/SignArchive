@@ -7,6 +7,7 @@ import { useSources } from '@src/hooks/SourcesContext/useSources'
 import PillList from '@src/components/PillList/PillList'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 import type { ISourceDetails } from '@src/models/source.model'
+import EvidenceIconAction from './EvidenceIconAction/EvidenceIconAction'
 
 interface SourceBoxProps {
   source: ISourceDetails
@@ -27,7 +28,10 @@ function SourceBox({ source }: SourceBoxProps): React.JSX.Element {
   return (
     <div className="sourceBoxContainer" onMouseOver={() => setIsHovering(true)} onMouseOut={() => setIsHovering(false)}>
       <div className="sourceBox">
-        <a href={source.evidence.url} target="_blank">{source.evidence.name}</a>
+        <div className='sourceName'>
+          {source.evidence.name}
+          <EvidenceIconAction evidence={source.evidence} />
+        </div>
         <PillList textArray={pillText} />
         <div className="additionalInfoItalic">{source.notes}</div>
       </div>

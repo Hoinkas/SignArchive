@@ -10,7 +10,6 @@ interface SourcesTitleProps {
 function SourcesTitle({ sign }: SourcesTitleProps): React.JSX.Element {
   const { sources, closeSourcesPanelSign } = useSources()
 
-  console.log(sign)
   const yearText = mergeYearText(sign.yearStart, sign.yearEnd)
 
   return (

@@ -7,7 +7,9 @@ import { authorApi } from '@src/services/author.api'
 import type { ISourceDetails, ISourceToCreate, ISourceWithDetailsToDB } from '@src/models/source.model'
 import type { IAuthor, IAuthorAttached } from '@src/models/author.model'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { IEvidence } from '@src/models/evidence.model'
+import type { EvidenceType, IEvidence } from '@src/models/evidence.model'
+import FormDropdown from '../Components/FormDropdown'
+import { evidencesTypes } from '../Components/DropdownOptions'
 
 interface SourceFormProps {
   source?: ISourceDetails
@@ -28,6 +30,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
   const [evidenceName, setEvidenceName] = useState<string>(source?.evidence.name ?? '')
   const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
   const [translations, setTranslations] = useState<string>(source?.translations ?? '')
+  const [typeOption, setTypeOption] = useState<DropdownOption | null>(source ? {id: source?.evidence.type, label: source?.evidence.type} : null)
   const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
     source ? { id: source.author.id, label: source.author.name } : null
   )
@@ -47,14 +50,14 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceName && evidenceFullName && translations
+  const isValid = authorOption && evidenceName && evidenceFullName && translations && typeOption
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
     setSubmitted(true)
     if (!isValid) return
 
-    const evidence: IEvidence = { url: evidenceUrl, name: evidenceName, fullName: evidenceFullName }
+    const evidence: IEvidence = { url: evidenceUrl, name: evidenceName, fullName: evidenceFullName, type: typeOption.label as EvidenceType}
     const author: IAuthor = { name: authorOption.label }
     const sourceToCreate: ISourceToCreate = {
       notes: notes !== '' ? notes : undefined,
@@ -74,13 +77,6 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
-      <FormTwoInLineWrapper>
-        <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
-        <FormSingleLineInput label="Tłumaczenie znaku" value={translations} setValue={setTranslations} required submitted={submitted} />
-      </FormTwoInLineWrapper>
-      <FormMultiLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
-      <FormMultiLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
       <FormTwoInLineWrapper>
         <FormCustomInputDropdown
           label="Autor / publikacja"
@@ -95,7 +91,15 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
       <FormTwoInLineWrapper>
         <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={setYearStart} type='number' />
         <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={setYearEnd} type='number' />
+        <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption} required submitted={submitted}/>
       </FormTwoInLineWrapper>
+      <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
+      <FormTwoInLineWrapper>
+        <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
+        <FormSingleLineInput label="Tłumaczenie znaku" value={translations} setValue={setTranslations} required submitted={submitted} />
+      </FormTwoInLineWrapper>
+      <FormMultiLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
+      <FormMultiLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
     </FormModalWrapper>
   )
 }

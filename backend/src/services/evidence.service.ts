@@ -12,8 +12,11 @@ export function createEvidence(data: IEvidence): IEvidenceAttached {
   const file: IEvidenceAttached = { id: nanoid(), createdAt: Date.now(), ...data }
   getDb()
     .prepare(
-      'INSERT INTO evidence (id, createdAt, url, name, fullName) VALUES (@id, @createdAt, @url, @name, @fullName)'
+      'INSERT INTO evidence (id, createdAt, url, name, fullName, type) VALUES (@id, @createdAt, @url, @name, @fullName, @type)'
     )
-    .run(file)
+    .run({
+      ...file,
+      url: file.url ?? null
+    })
   return file
 }
