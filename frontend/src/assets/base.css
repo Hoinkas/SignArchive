@@ -238,5 +238,5 @@ h5 {
 
   --color-kebab-menu-icon: var(--color-bg-active);
 
-  --color-bg-player: var(--grey-300);
+  --color-bg-player: color-mix(in srgb, var(--grey-300) 85%, transparent);
 }
