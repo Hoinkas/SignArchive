@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
 
-export type EvidenceType = 'book' | 'url' | 'personal'
+export type EvidenceType = 'książka' | 'url' | 'osobiste'
 
 export interface IEvidence {
   name: string
