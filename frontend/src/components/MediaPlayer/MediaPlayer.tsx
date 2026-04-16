@@ -1,23 +1,29 @@
 import type { IMedia } from '@src/models/media.model'
 import './MediaPlayer.css'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Thumbnail from './Thumbnail'
+import { BASE_URL } from '@src/utils/urlHelper'
 
 interface MediaPlayerProps {
   media: IMedia
 }
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
-
 function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const [prevMedia, setPrevMedia] = useState(media)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const isImage = media.mediaType.startsWith('image/')
 
   if (prevMedia !== media) {
     setPrevMedia(media)
     setIsClicked(false)
   }
+
+  useEffect(() => {
+    if (isClicked && videoRef.current) {
+      videoRef.current.play()
+    }
+  }, [isClicked])
 
   const fullUrl = media.url.startsWith('http') ? media.url : `${BASE_URL}${media.url}`
 
@@ -27,9 +33,7 @@ function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
         <img src={fullUrl} className="imageBox" alt={media.name} />
       ) : (
         <div className="videoContainer">
-          <video key={fullUrl} className="videoBox" controls muted controlsList="novolume" ref={(el) => {
-            if (el && isClicked) el.play()
-          }}>
+          <video key={fullUrl} ref={videoRef} className="videoBox" controls muted controlsList="novolume">
             <source src={fullUrl} type={media.mediaType} />
           </video>
           {!isClicked && (
