@@ -39,13 +39,15 @@ function WordForm(props: WordFormProps): React.JSX.Element {
     }
   }
 
+  const fixedText = text !== '' ? titleCase(text) : ''
+
   return (
     <div>
-      {formType === 'edit' && <h2>{titleCase(text)}</h2>}
+      {formType === 'edit' && <h2>{fixedText}</h2>}
       <FormWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
         <FormSingleLineInput
           label="Słowo"
-          value={titleCase(text)}
+          value={fixedText}
           setValue={setText}
           required
           submitted={submitted}

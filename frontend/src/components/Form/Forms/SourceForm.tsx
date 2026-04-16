@@ -50,7 +50,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceName && evidenceFullName && translations
+  const isValid = authorOption && evidenceName && evidenceFullName && translations && typeOption
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -91,7 +91,7 @@ function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React
       <FormTwoInLineWrapper>
         <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={setYearStart} type='number' />
         <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={setYearEnd} type='number' />
-        <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption}/>
+        <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption} required submitted={submitted}/>
       </FormTwoInLineWrapper>
       <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
       <FormTwoInLineWrapper>
