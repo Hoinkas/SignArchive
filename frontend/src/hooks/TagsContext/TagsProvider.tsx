@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
-import { useWord } from '@src/hooks/WordContext/useWord'
 import { TagsContext } from './TagsContext'
 import { tagApi } from '@src/services/tag.api'
 import type { ITag, ITagAttached } from '@src/models/tag.model'
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export default function TagsProvider({ wordId, children }: Props): React.JSX.Element {
-  const { allTags } = useWord()
   const [tags, setTags] = useState<(ITagAttached | ITag)[]>([])
 
   useEffect(() => {
@@ -20,10 +18,8 @@ export default function TagsProvider({ wordId, children }: Props): React.JSX.Ele
   }, [wordId])
 
   const addTag = (tag: ITag): void => {
-    const exists = allTags.find((t) => t.name === tag.name)
-    const isDuplicate = tags.find((t) => t.name === tag.name)
-
-    if (!exists && !isDuplicate) setTags((prev) => [...prev, exists || tag])
+    const duplicate = tags.find((t) => t.name === tag.name)
+    if (!duplicate) setTags((prev) => [...prev, tag])
   }
 
   const deleteTag = (tag: ITag): void => {
