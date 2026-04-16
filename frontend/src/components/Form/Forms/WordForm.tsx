@@ -4,6 +4,7 @@ import { useWord } from '@src/hooks/WordContext/useWord'
 import type { IWordAttached } from '@src/models/word.model'
 import type { FormType } from '@src/models/yearStartEnd.model'
 import { useTags } from '@src/hooks/TagsContext/useTags'
+import { titleCase } from '@src/utils/namesHelpers'
 
 interface WordFormProps {
   word?: IWordAttached
@@ -40,11 +41,11 @@ function WordForm(props: WordFormProps): React.JSX.Element {
 
   return (
     <div>
-      {formType === 'edit' && <h2>{text}</h2>}
+      {formType === 'edit' && <h2>{titleCase(text)}</h2>}
       <FormWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
         <FormSingleLineInput
           label="Słowo"
-          value={text}
+          value={titleCase(text)}
           setValue={setText}
           required
           submitted={submitted}
