@@ -15,7 +15,7 @@ function App(): React.JSX.Element {
 
   useEffect(() =>{
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
-  })
+  },[])
 
   if (wordListLoading) return <div style={{width: '100vw', height: '100vh'}}><Loader/></div>
 

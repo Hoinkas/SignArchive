@@ -22,7 +22,7 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
     options,
     value,
     setValue,
-    placeholder = 'Szukaj lub wpisz...',
+    placeholder = 'Szukaj...',
     required = false,
     submitted = false
   } = props

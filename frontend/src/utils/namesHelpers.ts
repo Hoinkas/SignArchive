@@ -27,6 +27,7 @@ export function signCountText(count: number): string {
   return `${count} znaków`
 }
 
-export function titleCase(str: string): string {
+export function titleCase(str: string | undefined): string {
+  if (!str) return str
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }

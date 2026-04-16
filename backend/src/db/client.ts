@@ -54,6 +54,7 @@ function initSchema(db: Database.Database): void {
       createdAt INTEGER NOT NULL,
       name      TEXT NOT NULL,
       fullName  TEXT NOT NULL,
+      type      TEXT NOT NULL,
       url       TEXT
     );
 
