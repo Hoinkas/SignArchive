@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import path from 'path'
 import fs from 'fs'
+import { runMigrations } from './migrations'
 
 const DB_DIR = path.join(process.cwd(), 'data')
 const DB_PATH = path.join(DB_DIR, 'signarchive.db')
@@ -13,6 +14,7 @@ export function getDb(): Database.Database {
   if (!db) {
     db = new Database(DB_PATH)
     initSchema(db)
+    runMigrations(db)
   }
   return db
 }
