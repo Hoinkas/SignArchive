@@ -21,14 +21,15 @@ function SourceList({ sign }: SourceListProps): React.JSX.Element {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent): void => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node) && !isFormOpen) {
+      const clickedInsideForm = (e.target as Node).parentElement?.closest('.formContainer')
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node) && !clickedInsideForm) {
         closeSourcesPanelSign()
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFormOpen])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (sourcesListLoading) return <Loader/>
 

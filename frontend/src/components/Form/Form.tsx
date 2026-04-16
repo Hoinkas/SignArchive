@@ -14,7 +14,7 @@ export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
   const { children, handleSubmit, formType, closeForm } = props
 
   return createPortal(
-    <div className="formContainer">
+    <div className="formContainer" onClick={(e) => e.stopPropagation()}>
       <form className="formBox" onSubmit={handleSubmit} noValidate>
         {children}
         <FormButtons formType={formType} closeForm={closeForm} />

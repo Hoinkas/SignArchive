@@ -92,7 +92,10 @@ function FormDropdown(props: FormDropdownProps): React.JSX.Element {
               <div
                 key={option.id}
                 className="dropdownItem"
-                onMouseDown={() => handleSelect(option)}
+                onMouseDown={(e) => {
+                  e.stopPropagation()
+                  handleSelect(option)
+                }}
               >
                 {option.label}
               </div>
