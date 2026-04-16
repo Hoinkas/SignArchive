@@ -1,8 +1,10 @@
 import multer from 'multer'
 import path from 'path'
 import { nanoid } from 'nanoid'
+import fs from 'fs'
+import { UPLOADS_DIR } from './config'
 
-const UPLOADS_DIR = path.resolve(process.cwd(), 'uploads')
+fs.mkdirSync(UPLOADS_DIR, { recursive: true })
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

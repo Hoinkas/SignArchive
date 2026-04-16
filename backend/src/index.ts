@@ -5,7 +5,7 @@ import express from 'express'
 import cors from 'cors'
 import { setupRoutes } from './routing'
 import { errorMiddleware, notFoundMiddleware } from './middlewares/middleware'
-import path from 'path'
+import { UPLOADS_DIR } from './config'
 
 const app = express()
 
@@ -16,7 +16,7 @@ app.use(express.json({ limit: '50mb' }))
 
 setupRoutes(app)
 
-app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')))
+app.use('/uploads', express.static(UPLOADS_DIR))
 
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)
