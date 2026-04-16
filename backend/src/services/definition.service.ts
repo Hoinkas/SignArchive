@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid'
 import {
+  DefinitionsCategories,
   IDefinition,
   IDefinitionAttached,
   IDefinitionToDB
@@ -7,6 +8,7 @@ import {
 import { getDb } from '../db/client'
 import { IDefinitionSignWord } from '../../../shared/models/definitionSignWord'
 import toSqlParams from '../utils/toSqlParams'
+import { createWord, findWordByName } from './word.service'
 
 export function findDefinitionById(id: string): IDefinitionAttached | undefined {
   return getDb().prepare('SELECT * FROM definition WHERE id = ?').get(id) as
@@ -43,17 +45,47 @@ export function insertDefinition(data: IDefinitionToDB): IDefinitionAttached {
     wordId: data.wordId
   }
 
-  getDb()
-    .prepare(
-      'INSERT INTO definitionSignWord (definitionId, signId, wordId) VALUES (@definitionId, @signId, @wordId)'
-    )
-    .run(link)
+  createDefinitionSignWordLink(link)
+  createLinksForEachTranslation(data.category.split(', '), link)
 
   return definition
 }
 
+function createLinksForEachTranslation(translations: string[], link: IDefinitionSignWord) {
+  translations.forEach((c) => {
+    let word = findWordByName(c)
+    if (!word) word = createWord({ text: c, categories: [] })
+
+    createDefinitionSignWordLink({ ...link, wordId: word.id })
+  })
+}
+
+function deleteLinksForEachTranslation(toRemove: string[], definitionId: string) {
+  toRemove.forEach((translation) => {
+    const word = findWordByName(translation)
+    if (!word) return
+    getDb()
+      .prepare('DELETE FROM definitionSignWord WHERE definitionId = ? AND wordId = ?')
+      .run(definitionId, word.id)
+  })
+}
+
+function createDefinitionSignWordLink(link: IDefinitionSignWord) {
+  getDb()
+    .prepare(
+      'INSERT OR IGNORE INTO definitionSignWord (definitionId, signId, wordId) VALUES (@definitionId, @signId, @wordId)'
+    )
+    .run(link)
+}
+
 export function createDefinition(data: IDefinitionToDB): IDefinitionAttached {
   return insertDefinition(data)
+}
+
+function findWordSignIdsByDefinitionId(definitionId: string): IDefinitionSignWord | undefined {
+  return getDb()
+    .prepare('SELECT * FROM definitionSignWord WHERE definitionId = ?')
+    .get(definitionId) as IDefinitionSignWord | undefined
 }
 
 export function updateDefinition(
@@ -69,6 +101,25 @@ export function updateDefinition(
       'UPDATE definition SET category = @category, text = @text, translations = @translations WHERE id = @id'
     )
     .run(updated)
+
+  const definitionSignWordIds = findWordSignIdsByDefinitionId(definitionId)
+  if (!definitionSignWordIds) return updated
+
+  const link: IDefinitionSignWord = {
+    definitionId,
+    signId: definitionSignWordIds.signId,
+    wordId: definitionSignWordIds.wordId
+  }
+
+  const oldTranslations = existing.translations?.split(', ') ?? []
+  const newTranslations = data.translations?.split(', ') ?? []
+
+  const toAdd = newTranslations.filter((t) => !oldTranslations.includes(t))
+  if (toAdd.length > 0) createLinksForEachTranslation(toAdd, link)
+
+  const toRemove = oldTranslations.filter((t) => !newTranslations.includes(t))
+  deleteLinksForEachTranslation(toRemove, definitionId)
+
   return updated
 }
 

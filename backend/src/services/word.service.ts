@@ -43,6 +43,11 @@ export function findWordById(id: string): IWordAttached | undefined {
   return row ? (row as IWordAttached) : undefined
 }
 
+export function findWordByName(name: string): IWordAttached | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE text = ?').get(name)
+  return row ? (row as IWordAttached) : undefined
+}
+
 export function listAllWords(): IWordWithRegionsCategories[] {
   const rows = getDb()
     .prepare(
