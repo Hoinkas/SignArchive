@@ -31,15 +31,15 @@ function LandingPage(): React.JSX.Element {
         <h2>Ispiracje i polecane projekty</h2>
         <p>
           <br/>Zachęcamy do przeglądania innych projektów, które nas zainspirowały:
-          <br/>- <a href='https://www.instagram.com/natalia_rudkiewicz/' target="_blank">Natalia Rudkiewicz</a> (instagram z dawnymi znakami i regionalizmami)
-          <br/>- <a href='https://www.facebook.com/people/%C5%9Al%C4%85ski-Migowy' target="_blank">Śląski Migowy</a> (facebook ze śląskimi znakami migowego tworzone przez <a href='https://www.facebook.com/boldysrafal' target="_blank">Rafał Bodys</a>)
-          <br/>- <a href='https://www.slownikpjm.uw.edu.pl/en' target="_blank">Korpusowy Słownik PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
-          <br/>- <a href='https://www.prawopjm.uw.edu.pl/' target="_blank">Słownik Terminów Prawnych PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
-          <br/>- <a href='https://www.medycynapjm.uw.edu.pl/' target="_blank">Słownik Terminów Medycznych PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
-          <br/>- <a href='https://jawor.wzks.uj.edu.pl/20_palonek/znajdz_znak/search?q=ciekawo%C5%9B%C4%87' target="_blank">Znajdź Znak</a> (wyszukiwarka znaków z istniejących słowników stworzone przez Polę Palonek z UJ)
-          <br/>- <a href='http://www.gag.art.pl/leksykon-lexicon/' target="_blank">Leksykon sztuki w PJM</a> (strona autorstwa GAG - Grupy Artystów Głuchych)
-          <br/>- <a href='https://www.spreadthesign.com/pl' target="_blank">SpreadTheSign</a> (strona ze znakami języków migowych różnych krajów)
           <br/>- <a href='https://www.youtube.com/@akademiagluchych' target="_blank">Akademia Głuchych</a> (youtube z nowymi znakami migowymi na słowa, które ich nie miały, wraz z ich wyjaśnieniem)
+          <br/>- <a href='https://www.slownikpjm.uw.edu.pl/en' target="_blank">Korpusowy Słownik PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
+          <br/>- <a href='http://www.gag.art.pl/leksykon-lexicon/' target="_blank">Leksykon sztuki w PJM</a> (strona autorstwa GAG - Grupy Artystów Głuchych)
+          <br/>- <a href='https://www.instagram.com/natalia_rudkiewicz/' target="_blank">Natalia Rudkiewicz</a> (instagram z dawnymi znakami i regionalizmami)
+          <br/>- <a href='https://www.medycynapjm.uw.edu.pl/' target="_blank">Słownik Terminów Medycznych PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
+          <br/>- <a href='https://www.prawopjm.uw.edu.pl/' target="_blank">Słownik Terminów Prawnych PJM</a> (strona autorstwa <a href='https://www.plm.uw.edu.pl' target="_blank">Pracowni Lingwistyki Migowej</a> na UW)
+          <br/>- <a href='https://www.spreadthesign.com/pl' target="_blank">SpreadTheSign</a> (strona ze znakami języków migowych różnych krajów)
+          <br/>- <a href='https://www.facebook.com/people/%C5%9Al%C4%85ski-Migowy' target="_blank">Śląski Migowy</a> (facebook ze śląskimi znakami migowego tworzone przez <a href='https://www.facebook.com/boldysrafal' target="_blank">Rafał Bodys</a>)
+          <br/>- <a href='https://jawor.wzks.uj.edu.pl/20_palonek/znajdz_znak/search?q=ciekawo%C5%9B%C4%87' target="_blank">Znajdź Znak</a> (wyszukiwarka znaków z istniejących słowników stworzone przez Polę Palonek z UJ)
           <br/>
           <br/>
           <hr/>
