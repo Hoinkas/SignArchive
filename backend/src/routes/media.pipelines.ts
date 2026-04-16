@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { upload } from '../upload'
 import { asyncHandler, requireAdmin } from '../middlewares/middleware'
-import { createMedia } from '../services/media.service'
+import { createMedia, deleteMedia } from '../services/media.service'
 
 export const mediaRouter = Router()
 mediaRouter.post(
@@ -22,5 +22,14 @@ mediaRouter.post(
     })
 
     res.status(201).json(result)
+  })
+)
+
+mediaRouter.delete(
+  '/:mediaId',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    deleteMedia(req.params.mediaId)
+    res.status(204).send()
   })
 )

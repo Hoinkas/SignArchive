@@ -16,7 +16,7 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
   const { editSign } = useSigns()
 
   const [newFile, setNewFile] = useState<File | null>(null)
-  const [mediaName, setMediaName] = useState<string>(sign.media.name ?? '')
+  const [mediaAltText, setMediaAltText] = useState<string>(sign.media.name ?? '')
   const [notes, setNotes] = useState<string>(sign.notes ?? '')
   const [submitted, setSubmitted] = useState<boolean>(false)
 
@@ -32,11 +32,11 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
 
     let media: IMediaAttached = {
       ...sign.media,
-      name: mediaName !== '' ? mediaName : undefined
+      name: mediaAltText !== '' ? mediaAltText : undefined
     }
 
     if (newFile) {
-      media = await mediaApi.upload(newFile, mediaName !== '' ? mediaName : undefined)
+      media = await mediaApi.upload(newFile, mediaAltText !== '' ? mediaAltText : undefined)
     }
 
     const updatedSign: ISignDetailsEdit = {
@@ -55,7 +55,7 @@ function EditSignForm({ sign, formType, setIsFormOpen }: EditSignFormProps): Rea
         existingFile={sign.media.url.split('/').pop() ?? sign.media.url}
         submitted={submitted}
       />
-      <FormSingleLineInput label="Opis filmu" value={mediaName} setValue={setMediaName} />
+      <FormSingleLineInput label="Opis filmu" value={mediaAltText} setValue={setMediaAltText} />
       <FormMultiLineInput label="Notatka" value={notes} setValue={setNotes} />
     </FormModalWrapper>
   )

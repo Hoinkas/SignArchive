@@ -105,27 +105,23 @@ export function listSignsByWord(wordId: string): ISignDetails[] {
   return signsDetails
 }
 
-function insertSign(data: ISignDetailsToDB): ISignAttached {
-  const media = createMedia(data.media)
+export function insertSign(data: ISignDetailsToDB): ISignAttached {
+  const existing = findMediaById(data.media.id)
+
+  const media = existing ?? createMedia(data.media)
 
   const sign: ISignAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    ...data,
-    mediaId: media.id
+    mediaId: media.id,
+    notes: data.notes
   }
 
   getDb()
     .prepare(
-      `INSERT INTO sign (id, createdAt, notes, mediaId)
-       VALUES (@id, @createdAt, @notes, @mediaId)`
+      'INSERT INTO sign (id, createdAt, mediaId, notes) VALUES (@id, @createdAt, @mediaId, @notes)'
     )
-    .run({
-      id: sign.id,
-      createdAt: sign.createdAt,
-      notes: sign.notes ?? null,
-      mediaId: media.id
-    })
+    .run(sign)
 
   return sign
 }
@@ -138,7 +134,7 @@ export function createSignWithDefinition(data: ISignDetailsToDB): ISignDetails {
       signId: sign.id,
       wordId: data.wordId
     })
-    const media = createMedia(data.media)
+    const media = findMediaById(data.media.id) ?? createMedia(data.media)
 
     return {
       ...sign,

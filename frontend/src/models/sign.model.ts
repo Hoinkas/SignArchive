@@ -24,6 +24,6 @@ export interface ISignDetails extends ISign, IBaseModelAttached, IYearStartEnd {
 export interface ISignDetailsToDB {
   wordId: string
   definition: IDefinition
-  media: IMedia
+  media: IMediaAttached
   notes?: string
 }

@@ -174,7 +174,7 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
   const label = newFile?.name ?? existingFile ?? 'Wybierz plik'
   const hasFile = !!(newFile || existingFile)
 
-  const showError = submitted && required && !existingFile
+  const showError = submitted && required && !(newFile || existingFile)
 
   return (
     <div className="formGroup">

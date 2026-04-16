@@ -3,6 +3,7 @@ import { getDb } from '../db/client'
 import { IMedia, IMediaAttached } from '../../../shared/models/media.model'
 import fs from 'fs'
 import path from 'path'
+import { UPLOADS_DIR } from '../config'
 
 export function findMediaById(id: string): IMediaAttached | undefined {
   return getDb().prepare('SELECT * FROM media WHERE id = ?').get(id) as IMediaAttached | undefined
@@ -43,7 +44,6 @@ export function updateMedia(mediaId: string, data: Partial<IMedia>): IMediaAttac
 
 export function deleteUnusedMedia(mediaId: string): void {
   const db = getDb()
-
   const inUse = db.prepare('SELECT id FROM sign WHERE mediaId = ?').get(mediaId)
   if (inUse) return
 
@@ -53,7 +53,19 @@ export function deleteUnusedMedia(mediaId: string): void {
   db.prepare('DELETE FROM media WHERE id = ?').run(mediaId)
 
   if (media.url.startsWith('/uploads/')) {
-    const filePath = path.resolve(process.cwd(), media.url.slice(1))
+    const filePath = path.resolve(UPLOADS_DIR, path.basename(media.url))
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath)
+  }
+}
+
+export function deleteMedia(mediaId: string): void {
+  const media = findMediaById(mediaId)
+  if (!media) return
+
+  getDb().prepare('DELETE FROM media WHERE id = ?').run(mediaId)
+
+  if (media.url.startsWith('/uploads/')) {
+    const filePath = path.resolve(UPLOADS_DIR, path.basename(media.url))
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath)
   }
 }

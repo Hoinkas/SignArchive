@@ -26,7 +26,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   const { addSign } = useSigns()
 
   const [newFile, setNewFile] = useState<File | null>(null)
-  const [mediaName, setMediaName] = useState<string>('')
+  const [mediaAltText, setMediaAltText] = useState<string>('')
   const [notes, setNotes] = useState<string>('')
   const [text, setText] = useState<string>('')
   const [translations, setTranslation] = useState<string>('')
@@ -42,34 +42,38 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     setIsFormOpen(false)
   }
 
-  const isValid = newFile !== null && text !== '' && categoryOption !== null
+  const isValid = newFile && text !== '' && categoryOption && translations !== ''
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setSubmitted(true)
     if (!isValid || !word || !newFile) return
 
-    const uploaded = await mediaApi.upload(newFile, mediaName !== '' ? mediaName : undefined)
+    const uploaded = await mediaApi.upload(newFile, mediaAltText !== '' ? mediaAltText : undefined)
 
-    const definition: IDefinition = {
-      category: categoryOption!.label as DefinitionsCategories,
-      text,
-      translations: translations !== '' ? translations : undefined
-    }
-    const data: ISignDetailsToDB = {
-      wordId: word.id,
-      media: uploaded,
-      definition,
-      notes: notes !== '' ? notes : undefined
-    }
+    try {
+        const definition: IDefinition = {
+        category: categoryOption!.label as DefinitionsCategories,
+        text,
+        translations: translations !== '' ? translations : undefined
+      }
+      const data: ISignDetailsToDB = {
+        wordId: word.id,
+        media: uploaded,
+        definition,
+        notes: notes !== '' ? notes : undefined
+      }
 
-    addSign(data, closeForm)
+      addSign(data, closeForm)
+    } catch {
+      await mediaApi.delete(uploaded.id)
+    }
   }
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormMedia newFile={newFile} setNewFile={setNewFile} required submitted={submitted} />
-      <FormMultiLineInput label="Opis filmu" value={mediaName} setValue={setMediaName} />
+      <FormMultiLineInput label="Opis filmu" value={mediaAltText} setValue={setMediaAltText} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
       <FormMultiLineInput label="Definicja" value={text} setValue={setText} required submitted={submitted} />
       <FormTwoInLineWrapper>
@@ -81,7 +85,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
           required
           submitted={submitted}
         />
-        <FormSingleLineInput label="Odpowiednik w pisanym" value={translations} setValue={setTranslation} />
+        <FormSingleLineInput label="Odpowiednik w pisanym" value={translations} setValue={setTranslation} required submitted={submitted}/>
       </FormTwoInLineWrapper>
     </FormModalWrapper>
   )
