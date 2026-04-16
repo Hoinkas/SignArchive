@@ -9,7 +9,13 @@ import {
 } from '../../../shared/models/sign.model'
 import { IYearsRegions, IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
 import { getDefinitions, insertDefinition } from './definition.service'
-import { createMedia, findMediaById, findMediaBySignId, updateMedia } from './media.service'
+import {
+  createMedia,
+  deleteUnusedMedia,
+  findMediaById,
+  findMediaBySignId,
+  updateMedia
+} from './media.service'
 
 function getYearsBySignWord(signId: string, wordId: string): IYearStartEnd {
   const row = getDb()
@@ -154,6 +160,8 @@ export function updateSign(
   const existing = findSignById(signId)
   if (!data.media || !existing) return
 
+  const oldMediaId = existing.mediaId
+
   if (data.media) updateMedia(data.media.id, data.media)
 
   const updated: ISignAttached = {
@@ -174,9 +182,23 @@ export function updateSign(
       mediaId: updated.mediaId
     })
 
+  if (oldMediaId && oldMediaId !== data.media.id) {
+    deleteUnusedMedia(oldMediaId)
+  }
+
   return updated
 }
 
 export function deleteSign(signId: string): void {
-  getDb().prepare('DELETE FROM sign WHERE id = ?').run(signId)
+  const db = getDb()
+  const sign = db.prepare('SELECT * FROM sign WHERE id = ?').get(signId) as
+    | ISignAttached
+    | undefined
+  if (!sign) return
+
+  db.prepare('DELETE FROM sign WHERE id = ?').run(signId)
+
+  if (sign.mediaId) {
+    deleteUnusedMedia(sign.mediaId)
+  }
 }

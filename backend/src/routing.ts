@@ -6,6 +6,7 @@ import { sourceListRouter, sourceRouter } from './routes/source.pipelines'
 import { definitionRouter } from './routes/definition.pipelines'
 import { authorRouter } from './routes/author.pipelines'
 import authRouter from './routes/auth.pipelines'
+import { mediaRouter } from './routes/media.pipelines'
 
 export function setupRoutes(app: Express): void {
   app.get('/', (_req, res) => res.json({ message: 'SignArchive API' }))
@@ -23,4 +24,6 @@ export function setupRoutes(app: Express): void {
   app.use('/authors', authorRouter)
 
   app.use('/auth', authRouter)
+
+  app.use('/media', mediaRouter)
 }

@@ -34,7 +34,11 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
 
   const editSign = (signId: string, updatedSign: Partial<ISignDetailsEdit>, closeForm: () => void): void => {
     signApi.update(signId, updatedSign).then((result) => {
-      setSigns((prev) => prev.map((s) => (s.id === signId ? { ...s, ...result } : s)))
+      setSigns((prev) => prev.map((s) => (
+        s.id === signId
+          ? { ...s, ...result, media: updatedSign.media ?? s.media }
+          : s
+      )))
       closeForm()
     })
   }

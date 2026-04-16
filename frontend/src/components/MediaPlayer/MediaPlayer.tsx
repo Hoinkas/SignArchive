@@ -7,6 +7,8 @@ interface MediaPlayerProps {
   media: IMedia
 }
 
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+
 function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const [prevMedia, setPrevMedia] = useState(media)
@@ -17,12 +19,25 @@ function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
     setIsClicked(false)
   }
 
+  const fullUrl = media.url.startsWith('http') ? media.url : `${BASE_URL}${media.url}`
+
   return (
     <div className="mediaWrapper">
       {isImage ? (
-        <img src={media.url} className="imageBox" alt={media.name} />
+        <img src={fullUrl} className="imageBox" alt={media.name} />
       ) : (
-        isClicked ? <iframe src={`${media.url}`} className="videoBox" allowFullScreen/> : <Thumbnail setIsClicked={setIsClicked} media={media}/>
+        <div className="videoContainer">
+          <video key={fullUrl} className="videoBox" controls muted controlsList="novolume" ref={(el) => {
+            if (el && isClicked) el.play()
+          }}>
+            <source src={fullUrl} type={media.mediaType} />
+          </video>
+          {!isClicked && (
+            <div className="thumbnailOverlay">
+              <Thumbnail setIsClicked={setIsClicked} media={{ ...media, url: fullUrl }} />
+            </div>
+          )}
+        </div>
       )}
     </div>
   )
