@@ -11,3 +11,6 @@ signs.json
 *.sql*
 TODO.md
 *.env
+uploads/
+backend/uploads/*
+backend/uploads/*

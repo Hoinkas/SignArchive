@@ -3,7 +3,8 @@ import {
   FormMultiLineInput,
   FormModalWrapper,
   FormSingleLineInput,
-  FormTwoInLineWrapper
+  FormTwoInLineWrapper,
+  FormMedia
 } from '@src/components/Form/Form'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { useSigns } from '@src/hooks/SignsContext/useSigns'
@@ -13,7 +14,7 @@ import { categoriesOptions } from '../Components/DropdownOptions'
 import type { FormType } from '@src/models/yearStartEnd.model'
 import type { ISignDetailsToDB } from '@src/models/sign.model'
 import type { DefinitionsCategories, IDefinition } from '@src/models/definition.model'
-import type { IMedia } from '@src/models/media.model'
+import { mediaApi } from '@src/services/media.api'
 
 interface AddSignFormProps {
   formType: FormType
@@ -24,7 +25,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   const { word } = useWord()
   const { addSign } = useSigns()
 
-  const [url, setUrl] = useState<string>('')
+  const [newFile, setNewFile] = useState<File | null>(null)
   const [mediaName, setMediaName] = useState<string>('')
   const [notes, setNotes] = useState<string>('')
   const [text, setText] = useState<string>('')
@@ -33,7 +34,7 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   const [submitted, setSubmitted] = useState<boolean>(false)
 
   const closeForm = (): void => {
-    setUrl('')
+    setNewFile(null)
     setNotes('')
     setText('')
     setTranslation('')
@@ -41,27 +42,33 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     setIsFormOpen(false)
   }
 
-  const isValid = url !== '' && text !== '' && categoryOption !== null
+  const isValid = newFile !== null && text !== '' && categoryOption !== null
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setSubmitted(true)
-    if (!isValid || !word) return
+    if (!isValid || !word || !newFile) return
 
-    const media: IMedia = { url, name: mediaName, mediaType: "video/mp4" }
+    const uploaded = await mediaApi.upload(newFile, mediaName !== '' ? mediaName : undefined)
+
     const definition: IDefinition = {
       category: categoryOption!.label as DefinitionsCategories,
       text,
       translations: translations !== '' ? translations : undefined
     }
-    const data: ISignDetailsToDB = { wordId: word.id, media, definition, notes: notes !== '' ? notes : undefined }
+    const data: ISignDetailsToDB = {
+      wordId: word.id,
+      media: uploaded,
+      definition,
+      notes: notes !== '' ? notes : undefined
+    }
 
     addSign(data, closeForm)
   }
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormSingleLineInput label="URL do filmu" value={url} setValue={setUrl} required submitted={submitted} />
+      <FormMedia newFile={newFile} setNewFile={setNewFile} required submitted={submitted} />
       <FormMultiLineInput label="Opis filmu" value={mediaName} setValue={setMediaName} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
       <FormMultiLineInput label="Definicja" value={text} setValue={setText} required submitted={submitted} />

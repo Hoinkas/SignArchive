@@ -1,6 +1,8 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import { IMedia, IMediaAttached } from '../../../shared/models/media.model'
+import fs from 'fs'
+import path from 'path'
 
 export function findMediaById(id: string): IMediaAttached | undefined {
   return getDb().prepare('SELECT * FROM media WHERE id = ?').get(id) as IMediaAttached | undefined
@@ -37,4 +39,21 @@ export function updateMedia(mediaId: string, data: Partial<IMedia>): IMediaAttac
     .prepare('UPDATE media SET url = @url, name = @name, mediaType = @mediaType WHERE id = @id')
     .run(updated)
   return updated
+}
+
+export function deleteUnusedMedia(mediaId: string): void {
+  const db = getDb()
+
+  const inUse = db.prepare('SELECT id FROM sign WHERE mediaId = ?').get(mediaId)
+  if (inUse) return
+
+  const media = findMediaById(mediaId)
+  if (!media) return
+
+  db.prepare('DELETE FROM media WHERE id = ?').run(mediaId)
+
+  if (media.url.startsWith('/uploads/')) {
+    const filePath = path.resolve(process.cwd(), media.url.slice(1))
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath)
+  }
 }
