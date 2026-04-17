@@ -114,8 +114,8 @@ interface FormTagsProps {
 
 export function FormTags(props: FormTagsProps): React.JSX.Element {
   const { label, required = false, submitted = false } = props
-
   const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
+
   return (
     <div className="formGroup">
       <label>

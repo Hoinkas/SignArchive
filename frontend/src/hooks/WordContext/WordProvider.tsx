@@ -90,6 +90,14 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   const toggleSort = (): void => setIsDescending((prev) => !prev)
 
+  const updateWordList = (): void => {
+    setWordListLoading(true)
+
+    wordApi.list().then(setWordsList)
+      .catch((err) => setError(err.message ?? 'Błąd ładowania'))
+      .finally(() => setWordListLoading(false))
+  }
+
   return (
     <WordContext.Provider
       value={{
@@ -105,7 +113,8 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         changeSignCountInWord,
         wordListLoading,
         error,
-        wordLoading
+        wordLoading,
+        updateWordList
       }}
     >
       {children}

@@ -33,6 +33,7 @@ export function createTagAndLink(wordId: string, data: ITag): ITagAttached {
   const transaction = getDb().transaction(() => {
     const tag = findOrCreateTag(data)
     const link: ITagWord = { tagId: tag.id, wordId }
+
     getDb()
       .prepare('INSERT OR IGNORE INTO tagWord (tagId, wordId) VALUES (@tagId, @wordId)')
       .run(link)
@@ -45,23 +46,20 @@ export function addAndRemoveTagsFromWord(
   tags: (ITag | ITagAttached)[],
   wordId: string
 ): ITagAttached[] {
-  const existingTags = addManyTagsToWord(tags, wordId)
-  const filteredTags = removeUnusedTagsFromWord(existingTags, wordId)
+  const newTags = addManyTagsToWord(tags, wordId)
+  removeUnusedTagsFromWord(newTags, wordId)
 
-  return filteredTags
+  return newTags
 }
 
 export function addManyTagsToWord(tags: (ITag | ITagAttached)[], wordId: string): ITagAttached[] {
   return tags.map((t) => createTagAndLink(wordId, t))
 }
 
-function removeUnusedTagsFromWord(tags: ITagAttached[], wordId: string) {
+function removeUnusedTagsFromWord(tags: ITagAttached[], wordId: string): void {
   const prevTags = listTagsByWordId(wordId)
-  const filteredTags = prevTags.filter((t) => !tags.includes(t))
-
-  filteredTags.forEach((t) => removeTagFromWord(t.id, wordId))
-
-  return filteredTags
+  const tagsToRemove = prevTags.filter((t) => !tags.some((nt) => nt.id === t.id))
+  tagsToRemove.forEach((t) => removeTagFromWord(t.id, wordId))
 }
 
 export function removeTagFromWord(tagId: string, wordId: string): void {

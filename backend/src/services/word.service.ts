@@ -9,6 +9,7 @@ import {
   IWordWithRegionsCategories
 } from '../../../shared/models/word.model'
 import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
+import { IDefinitionSignWord } from '../models/definitionSignWord'
 
 function tagsByWordId(wordId: string): ITagAttached[] {
   return getDb()
@@ -31,37 +32,44 @@ function regionsByWordId(wordId: string): string[] {
   return rows.map((r) => r.region)
 }
 
-export function findWordCategoriesById(wordId: string): IWordCategoriesAttached | undefined {
-  const word = findWordById(wordId)
-  if (!word) return
-  const categories = listTagsByWordId(wordId)
-  return { ...word, categories }
-}
-
-export function findWordById(id: string): IWordAttached | undefined {
+export function findWordById(id: string): IWordCategoriesAttached | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(id)
-  return row ? (row as IWordAttached) : undefined
+  return row ? (row as IWordCategoriesAttached) : undefined
 }
 
-export function listAllWords(): IWordWithRegionsCategories[] {
-  const rows = getDb()
-    .prepare(
-      `SELECT word.*, COUNT(DISTINCT dsw.signId) AS signsCount
-       FROM word
-       LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
-       GROUP BY word.id
-       ORDER BY word.text`
-    )
-    .all() as IWordWithCountAttached[]
+function buildWordsQuery(whereClause?: string): string {
+  return `
+    SELECT word.*, COUNT(DISTINCT dsw.signId) AS signsCount
+    FROM word
+    LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
+    ${whereClause ? `WHERE ${whereClause}` : ''}
+    GROUP BY word.id
+    ORDER BY word.text
+  `
+}
 
-  if (rows.length === 0) return []
-
-  return rows.map((row) => ({
+function mapWordRow(row: IWordWithCountAttached): IWordWithRegionsCategories {
+  return {
     ...row,
     signsCount: row.signsCount,
     categories: tagsByWordId(row.id as string),
     regions: regionsByWordId(row.id as string)
-  }))
+  }
+}
+
+export function findWordByName(name: string): IWordWithRegionsCategories | undefined {
+  const result = getDb().prepare(buildWordsQuery('word.text = ?')).get(name) as
+    | IWordWithCountAttached
+    | undefined
+
+  if (!result) return undefined
+  return mapWordRow(result)
+}
+
+export function listAllWords(): IWordWithRegionsCategories[] {
+  const rows = getDb().prepare(buildWordsQuery()).all() as IWordWithCountAttached[]
+
+  return rows.map(mapWordRow)
 }
 
 export function createWord(data: IWordToDB): IWordCategoriesAttached {
@@ -104,4 +112,14 @@ export function updateWord(
 
 export function deleteWord(wordId: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(wordId)
+}
+
+export function removeWordIfEmpty(wordId: string): void {
+  const result = getDb()
+    .prepare('SELECT * FROM definitionSignWord WHERE wordId = ?')
+    .get(wordId) as IDefinitionSignWord | undefined
+
+  console.log(result)
+
+  if (!result) deleteWord(wordId)
 }

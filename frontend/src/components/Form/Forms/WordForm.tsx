@@ -30,6 +30,7 @@ function WordForm(props: WordFormProps): React.JSX.Element {
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
     setSubmitted(true)
+
     if (!isValid) return
 
     if (formType === 'add') {
