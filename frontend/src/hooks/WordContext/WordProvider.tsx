@@ -90,6 +90,19 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   const toggleSort = (): void => setIsDescending((prev) => !prev)
 
+  const addWordToList = (wordName: string): void => {
+    setWordListLoading(true)
+
+    wordApi.findByName(wordName).then((result) => {
+      const find = wordsList.find((w) => w.id === result.id)
+
+      if (find) setWordsList((prev) => prev.map((w) => (w.id === result.id ? { ...w, ...result } : w)))
+      else setWordsList((prev) => [...prev, result])
+
+      setWordListLoading(false)
+    })
+  }
+
   return (
     <WordContext.Provider
       value={{
@@ -105,7 +118,8 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         changeSignCountInWord,
         wordListLoading,
         error,
-        wordLoading
+        wordLoading,
+        addWordToList
       }}
     >
       {children}

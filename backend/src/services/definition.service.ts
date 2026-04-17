@@ -9,6 +9,7 @@ import { getDb } from '../db/client'
 import { IDefinitionSignWord } from '../../../shared/models/definitionSignWord'
 import toSqlParams from '../utils/toSqlParams'
 import { createWord, findWordByName } from './word.service'
+import { IWordAttached, IWordWithRegionsCategories } from '../models/word.model'
 
 export function findDefinitionById(id: string): IDefinitionAttached | undefined {
   return getDb().prepare('SELECT * FROM definition WHERE id = ?').get(id) as
@@ -53,9 +54,8 @@ export function insertDefinition(data: IDefinitionToDB): IDefinitionAttached {
 
 function createLinksForEachTranslation(translations: string[], link: IDefinitionSignWord) {
   translations.forEach((c) => {
-    let word = findWordByName(c)
-    if (!word) word = createWord({ text: c, categories: [] })
-
+    const word: IWordAttached | IWordWithRegionsCategories =
+      findWordByName(c) ?? createWord({ text: c, categories: [] })
     createDefinitionSignWordLink({ ...link, wordId: word.id })
   })
 }

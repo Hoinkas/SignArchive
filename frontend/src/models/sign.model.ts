@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
 import type { IDefinition, IDefinitionAttached } from './definition.model'
-import type { IMediaAttached } from './media.model'
+import type { IMedia, IMediaAttached } from './media.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {

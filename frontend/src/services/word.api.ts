@@ -9,6 +9,9 @@ export const wordApi = {
   list: (): Promise<IWordWithRegionsCategories[]> =>
     apiGet<IWordWithRegionsCategories[]>('/words').then((r) => r.data),
 
+  findByName: (name: string): Promise<IWordWithRegionsCategories> =>
+    apiGet<IWordWithRegionsCategories>(`/words/name/${name}`).then((r) => r.data),
+
   details: (wordId: string): Promise<IWordCategoriesAttached> =>
     apiGet<IWordCategoriesAttached>(`/words/${wordId}`).then((r) => r.data),
 
