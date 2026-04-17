@@ -48,38 +48,8 @@ function LandingPage(): React.JSX.Element {
         </p>
         <h2>Obecny postęp</h2>
         <br/>
-        <h3>Wersja 1.0</h3>
-        <p>
-          [x] Wyświetlanie listy słów
-          <br/>[x] Wyświetlanie szczegółów słowa. Dodawanie, modyfikacja i usuwanie słowa.
-          <br/>[x] Wyświetlanie listy znaków w słowie
-          <br/>[x] Wyświetlanie szczegółów znaku. Dodawanie, modyfikacja i usuwanie znaku.
-          <br/>[x] Wyświetlanie listy źródeł w znaku
-          <br/>[x] Wyświetlanie szczegółów źródła. Dodawanie, modyfikacja i usuwanie źródła.
-          <br/>[x] Wyświetlanie listy definicji w znaku
-          <br/>[x] Wyświetlanie szczegółów definicji. Dodawanie, modyfikacja i usuwanie definicji.
-          <br/>[x] Wyświeltanie listy kategorii w definicji. Dodawanie i usuwanie kategorii
-          <br/>[x] Wyświeltanie listy tagów w znaku. Dodawanie i usuwanie tagów
-          <br/>[x] Sortowanie listy słów alfabetycznie rosnąco i malejąco
-          <br/>[x] Sortowanie listy słów przez kategorie i regiony użycia
-          <br/>[x] Wersja ciemnego i jasnego tła strony
-          <br/>[x] Wyświetlanie wymaganych pól i błędów w formularzach dodawania, modyfikacji i edycji obiektów
-          <br/>[x] Przepisanie kodu z aplikacji komputerowej na stronę internetową (React.js, Typescript, Node.js, Express, Axios)
-          <br/>[x] Strona startowa z linkami, inspiracjami i podziękowaniami
-          <br/>[x] Dodanie odpowiedników w języku polskim pisanym do danego źródła. Niektóre znaki w dawnych latach oznaczały co innego, a dziś oznaczają co innego
-          <br/>[x] W podlinku do strony można użyć nazwy słowa i je załaduje od razu
-          <br/>[x] Dodanie strony błędu dla nieistniejących podstron
-          <br/>[x] Konto admina
-          <br/>[x] Różne rodzaje wyświatlania źródeł do znaków w zależności czy to link, książka czy doświadczenie osobiste
-          <br/>[ ] Możliwość dodania starego znaku do nowego słowa i tworzenie nowych słów na podstawie definicji w znakach
-          <br/>
-          <br/>
+        <h3>Wersja 1.0 wydana z dniem 17.04.2026</h3>
 
-          <hr/>
-          <br/>
-        </p>
-        <h2>Co planujemy?</h2>
-        <br/>
         <h3>Wersja 2.0</h3>
         <p>
           [ ] Zakładka liczebników dla danego słowa (godziny, przystanki, dokładki itp.)
@@ -91,9 +61,12 @@ function LandingPage(): React.JSX.Element {
           <br/>[ ] Dostosowanie strony pod czytniki ekranu dla osób niewidomych i niedowidzących. Dodanie tekstów alternatywnych
           <br/>[ ] Pobieranie surowych danych (plik .json) z zawartością słowa, jego znaków, definicji i źródeł
           <br/>[ ] Ocena częstotliwości użycia znaku oraz jego poprawności (czy g/Głusi faktycznie używali tego znaku, czy tylko słyszący go wymyślili i nagrali?)
-          <br/>
+          <br/>[ ] Możliwość dodania starego znaku do nowego słowa
           <br/>
         </p>
+        <hr/>
+        <h2>Co planujemy?</h2>
+        <br/>
           <h3>Wersja 3.0</h3>
         <p>
           [ ] Automatyczne tworzenie miniatur wideo, które będą pokazywać półprzeźroczysty ruch
