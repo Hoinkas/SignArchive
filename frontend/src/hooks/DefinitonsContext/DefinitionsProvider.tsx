@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function DefinitionsProvider({ children }: Props): React.JSX.Element {
-  const { word, addWordToList } = useWord()
+  const { word, updateWordList } = useWord()
   const [sign, setSign] = useState<ISignDetails | null>(null)
   const [definitions, setDefinitions] = useState<IDefinitionsCategoriesGrouped[]>([])
   const [activeCategory, setActiveCategory] = useState<DefinitionsCategories | null>(null)
@@ -104,7 +104,7 @@ export default function DefinitionsProvider({ children }: Props): React.JSX.Elem
   ): void => {
     definitionApi.update(definitionId, data).then((result) => {
       if (!result) return
-      if (result.translations) result.translations.split(', ').forEach((t) => addWordToList(t))
+      if (result.translations) updateWordList()
 
       setDefinitions((prevState) => {
         const withRemoved = prevState

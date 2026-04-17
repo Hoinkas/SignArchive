@@ -16,7 +16,7 @@ export interface WordContextValue {
   wordListLoading: boolean
   wordLoading: boolean
   error: string | null
-  addWordToList: (wordName: string) => void
+  updateWordList: () => void
 }
 
 export const WordContext = createContext<WordContextValue>({
@@ -33,5 +33,5 @@ export const WordContext = createContext<WordContextValue>({
   wordListLoading: true,
   wordLoading: false,
   error: '',
-  addWordToList: () => {}
+  updateWordList: () => {}
 })

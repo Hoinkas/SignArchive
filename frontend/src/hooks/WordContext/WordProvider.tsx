@@ -90,17 +90,12 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
 
   const toggleSort = (): void => setIsDescending((prev) => !prev)
 
-  const addWordToList = (wordName: string): void => {
+  const updateWordList = (): void => {
     setWordListLoading(true)
 
-    wordApi.findByName(wordName).then((result) => {
-      const find = wordsList.find((w) => w.id === result.id)
-
-      if (find) setWordsList((prev) => prev.map((w) => (w.id === result.id ? { ...w, ...result } : w)))
-      else setWordsList((prev) => [...prev, result])
-
-      setWordListLoading(false)
-    })
+    wordApi.list().then(setWordsList)
+      .catch((err) => setError(err.message ?? 'Błąd ładowania'))
+      .finally(() => setWordListLoading(false))
   }
 
   return (
@@ -119,7 +114,7 @@ export default function WordProvider({ children }: Props): React.JSX.Element {
         wordListLoading,
         error,
         wordLoading,
-        addWordToList
+        updateWordList
       }}
     >
       {children}

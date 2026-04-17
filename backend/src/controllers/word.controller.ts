@@ -11,14 +11,6 @@ export const wordController = {
     }
     res.json(result)
   },
-  findByName: async (req: Request, res: Response): Promise<void> => {
-    const result = wordService.findWordByName(req.params.name)
-    if (!result) {
-      res.status(404).json({ error: 'IWordAttached not found' })
-      return
-    }
-    res.json(result)
-  },
   list: async (_req: Request, res: Response): Promise<void> => {
     res.json(wordService.listAllWords())
   },

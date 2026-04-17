@@ -8,7 +8,7 @@ import {
 import { getDb } from '../db/client'
 import { IDefinitionSignWord } from '../../../shared/models/definitionSignWord'
 import toSqlParams from '../utils/toSqlParams'
-import { createWord, findWordByName } from './word.service'
+import { createWord, findWordByName, removeWordIfEmpty } from './word.service'
 import { IWordAttached, IWordWithRegionsCategories } from '../models/word.model'
 
 export function findDefinitionById(id: string): IDefinitionAttached | undefined {
@@ -67,6 +67,8 @@ function deleteLinksForEachTranslation(toRemove: string[], definitionId: string)
     getDb()
       .prepare('DELETE FROM definitionSignWord WHERE definitionId = ? AND wordId = ?')
       .run(definitionId, word.id)
+
+    removeWordIfEmpty(word.id)
   })
 }
 

@@ -9,6 +9,7 @@ import {
   IWordWithRegionsCategories
 } from '../../../shared/models/word.model'
 import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
+import { IDefinitionSignWord } from '../models/definitionSignWord'
 
 function tagsByWordId(wordId: string): ITagAttached[] {
   return getDb()
@@ -111,4 +112,14 @@ export function updateWord(
 
 export function deleteWord(wordId: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(wordId)
+}
+
+export function removeWordIfEmpty(wordId: string): void {
+  const result = getDb()
+    .prepare('SELECT * FROM definitionSignWord WHERE wordId = ?')
+    .get(wordId) as IDefinitionSignWord | undefined
+
+  console.log(result)
+
+  if (!result) deleteWord(wordId)
 }

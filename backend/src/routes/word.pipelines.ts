@@ -12,4 +12,3 @@ wordRouter
   .get(asyncHandler(wordController.details))
   .patch(requireAdmin, asyncHandler(wordController.update))
   .delete(requireAdmin, asyncHandler(wordController.delete))
-wordRouter.route('/name/:name').get(asyncHandler(wordController.findByName))
