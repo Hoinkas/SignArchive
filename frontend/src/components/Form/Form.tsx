@@ -125,27 +125,28 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
 import type { FormType } from '@src/models/yearStartEnd.model'
 import { createPortal } from 'react-dom'
 
-interface FormMediaProps { //TODO delete or rewrite to iframe urls
+interface FormMediaProps {
+  label: string
   existingFile?: string
-  newFile: File | null
+  file: File | null
   setNewFile: (file: File | null) => void
   required?: boolean
   submitted?: boolean
 }
 
 export function FormMedia(props: FormMediaProps): React.JSX.Element {
-  const { existingFile, newFile, setNewFile, required = false, submitted = false } = props
+  const { label, existingFile, file, setNewFile, required = false, submitted = false } = props
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const label = newFile?.name ?? existingFile ?? 'Wybierz plik'
-  const hasFile = !!(newFile || existingFile)
+  const fileName = file?.name ?? existingFile ?? 'Wybierz plik'
+  const hasFile = !!(file || existingFile)
 
-  const showError = submitted && required && !(newFile || existingFile)
+  const showError = submitted && required && !(file || existingFile)
 
   return (
     <div className="formGroup">
       <label>
-        Plik ze znakiem
+        {label}
         {required && <span> *</span>}
       </label>
       <button
@@ -153,8 +154,8 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
         className={`fileInput${showError ? ' inputError' : ''}`}
         onClick={() => inputRef.current?.click()}
       >
-        <span style={{ color: hasFile ? 'inherit' : 'var(--text-muted)' }}>{label}</span>
-        {newFile && (
+        <span style={{ color: hasFile ? 'inherit' : 'var(--text-muted)' }}>{fileName}</span>
+        {file && (
           <span
             onClick={(e) => {
               e.stopPropagation()

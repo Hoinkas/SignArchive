@@ -6,7 +6,7 @@ import isDarkTheme from './utils/isDarkTheme'
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
 import SignsPage from './pages/SignsPage/SignsPage'
-import SignListProvider from './hooks/SignsContext/SignListProvider'
+import SignListProvider from './hooks/SignListContext/SignListProvider'
 
 function PageLayout() {
   return (

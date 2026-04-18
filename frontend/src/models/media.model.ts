@@ -7,6 +7,13 @@ export interface IMedia {
   description?: string
 }
 
+// TO BACKEND
+export interface IMediaToDB extends Omit<IMedia, 'videoUrl' | 'mediaType' | 'thumbnailUrl'> {
+  videoFile: File
+  thumbnailFile?: File
+}
+
+// TO FRONT
 export type IMediaAttached = IMedia & IBaseModelAttached
 
 // TEMPLATES

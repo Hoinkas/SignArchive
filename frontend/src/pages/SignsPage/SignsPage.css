@@ -1,3 +1,9 @@
+.signPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
 .signListContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

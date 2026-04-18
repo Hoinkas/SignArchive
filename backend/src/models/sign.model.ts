@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
 import type { IMeaningDetails } from './meaning.model'
-import type { IMediaAttached } from './media.model'
+import type { IMediaAttached, IMediaToDB } from './media.model'
 import type { IRegionAttached } from './region.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
@@ -12,9 +12,8 @@ export interface ISign {
 export type ISignAttached = ISign & IBaseModelAttached
 
 // TO BACKEND
-export interface ISignDetailsToDB {
-  media: IMediaAttached
-  notes?: string
+export interface ISignDetailsToDB extends Omit<ISign, 'mediaId'> {
+  media: IMediaToDB
 }
 
 // TO FRONTEND

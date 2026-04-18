@@ -1,9 +1,11 @@
-type YearType = number | null | undefined
+import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
-export function mergeYearText(yearStart: YearType, yearEnd: YearType): string {
+export function mergeYearText(years: IYearStartEnd): string {
+  const { yearStart, yearEnd } = years
+
   if (yearStart && yearStart === yearEnd) return yearStart?.toString()
   if (yearStart && yearEnd) return yearStart + '-' + yearEnd
-  return yearStart?.toString() || yearEnd?.toString() || 'brak roku'
+  return yearStart?.toString() || yearEnd?.toString() || 'Brak roku'
 }
 
 export const wordsCountText = (count: number): string => {
