@@ -1,9 +1,10 @@
 import type { IBaseModelAttached } from './base.interface'
 
 export interface IMedia {
-  name?: string
-  url: string
+  videoUrl: string
   mediaType: string
+  thumbnailUrl?: string
+  description?: string
 }
 
 export type IMediaAttached = IMedia & IBaseModelAttached

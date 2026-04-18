@@ -1,12 +1,12 @@
 import type { IBaseModelAttached } from './base.interface'
 
-export type EvidenceType = 'książka' | 'url' | 'osobiste'
+export type ReferenceType = 'książka' | 'url' | 'osobiste'
 
-export interface IEvidence {
+export interface IReference {
   name: string
   fullName: string
-  type: EvidenceType
+  type: ReferenceType
   url?: string
 }
 
-export type IEvidenceAttached = IEvidence & IBaseModelAttached
+export type IReferenceAttached = IReference & IBaseModelAttached

@@ -5,13 +5,13 @@ export interface IWord {
   text: string
 }
 
-export interface IWordToDB extends IWord {
+export interface IWord extends IWord {
   categories: (ITag | ITagAttached)[]
 }
 
 export type IWordAttached = IWord & IBaseModelAttached
 
-export interface IWordCategoriesAttached extends IWord, IBaseModelAttached {
+export interface IWordAttached extends IWord, IBaseModelAttached {
   categories: ITagAttached[]
 }
 export interface IWordWithCount extends IWord {
@@ -20,7 +20,7 @@ export interface IWordWithCount extends IWord {
 
 export type IWordWithCountAttached = IWordWithCount & IBaseModelAttached
 
-export interface IWordWithRegionsCategories extends IWordWithCount, IBaseModelAttached {
+export interface IWordWithRegions extends IWordWithCount, IBaseModelAttached {
   categories: ITagAttached[]
   regions: string[]
 }

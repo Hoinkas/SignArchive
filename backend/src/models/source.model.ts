@@ -1,6 +1,6 @@
 import type { IAuthor, IAuthorAttached } from './author.model'
 import type { IBaseModelAttached } from './base.interface'
-import type { IEvidence, IEvidenceAttached } from './evidence.model'
+import type { IReference, IReferenceAttached } from './evidence.model'
 
 export interface ISource {
   authorId: string
@@ -12,11 +12,11 @@ export interface ISource {
   translations?: string
 }
 
-export type ISourceToCreate = Omit<ISource, 'authorId' | 'evidenceId'>
+export type ISourceToDB = Omit<ISource, 'authorId' | 'evidenceId'>
 
 export interface ISourceWithDetailsToDB {
-  source: ISourceToCreate
-  evidence: IEvidence
+  source: ISourceToDB
+  evidence: IReference
   author: IAuthor
 }
 
@@ -28,7 +28,7 @@ export interface ISourceWithDetailsToCreate extends ISourceWithDetailsToDB {
 export interface ISourceDetails
   extends Omit<ISource, 'authorId' | 'evidenceId'>, IBaseModelAttached {
   author: IAuthorAttached
-  evidence: IEvidenceAttached
+  evidence: IReferenceAttached
 }
 
 export type ISourceAttached = ISource & IBaseModelAttached
