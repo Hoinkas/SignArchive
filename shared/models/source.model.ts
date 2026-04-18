@@ -33,9 +33,3 @@ export const sourceTemplate: Record<keyof ISource, null> = {
   yearStart: null,
   yearEnd: null
 }
-
-export const sourceToDBTemplate: Record<keyof ISourceToDB, null> = {
-  context: null,
-  yearStart: null,
-  yearEnd: null
-}
