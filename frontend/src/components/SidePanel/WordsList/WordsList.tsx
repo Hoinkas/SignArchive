@@ -1,4 +1,4 @@
-import { useSearch } from '@src/hooks/SearchCotext/useSearch'
+import { useSearch } from '@src/hooks/SearchContext/useSearch'
 import './WordsList.css'
 import { useWord } from '@src/hooks/WordContext/useWord'
 import { signCountText } from '@src/utils/namesHelpers'

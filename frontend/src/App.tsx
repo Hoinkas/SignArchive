@@ -6,6 +6,7 @@ import isDarkTheme from './utils/isDarkTheme'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
 import SignsPage from './pages/SignsPage/SignsPage'
+import SignsProvider from './hooks/SignsContext/SignsProvider'
 
 function App(): React.JSX.Element {
   useEffect(() =>{
@@ -19,7 +20,7 @@ function App(): React.JSX.Element {
 
         <Routes>
           <Route path="/" element={<LandingPage/>} />
-          <Route path="/search/signs/" element={<SignsPage/>} />
+          <Route path="/signs/" element={<SignsProvider><SignsPage/></SignsProvider>} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </PermissionsProvider>

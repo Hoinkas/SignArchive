@@ -1,7 +1,5 @@
-import { type SubmitEvent, useRef, useState } from 'react'
+import { type SubmitEvent, useRef } from 'react'
 import './Form.css'
-import TagList from '../TagList/TagList'
-import AddTagForm from './Forms/AddTagForm'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -102,40 +100,6 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
         required={required}
       />
       {showError && <span className="inputErrorText">Tekst wymagany</span>}
-    </div>
-  )
-}
-
-interface FormTagsProps {
-  label: string
-  required?: boolean
-  submitted?: boolean
-}
-
-export function FormTags(props: FormTagsProps): React.JSX.Element {
-  const { label, required = false, submitted = false } = props
-  const [isTagFormOpen, setIsTagFormOpen] = useState<boolean>(false)
-
-  return (
-    <div className="formGroup">
-      <label>
-        {label}
-        {required && <span> *</span>}
-      </label>
-      <div className="tagsGroup">
-        <TagList />
-        {isTagFormOpen ? (
-          <AddTagForm
-            setIsTagFormOpen={setIsTagFormOpen}
-            required={required}
-            submitted={submitted}
-          />
-        ) : (
-          <button type="button" onClick={() => setIsTagFormOpen(true)}>
-            +dodaj tag
-          </button>
-        )}
-      </div>
     </div>
   )
 }

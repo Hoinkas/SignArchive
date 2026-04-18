@@ -3,7 +3,7 @@ import './SearchBar.css'
 import SearchIcon from '@src/assets/icons/SearchIcon'
 import FilterIcon from '@src/assets/icons/FilterIcon'
 import FormDropdown, { type DropdownOption } from '../Form/Components/FormDropdown'
-import { useSearch } from '@src/hooks/SearchCotext/useSearch'
+import { useSearch } from '@src/hooks/SearchContext/useSearch'
 
 function SearchBar(): React.JSX.Element {
   const {

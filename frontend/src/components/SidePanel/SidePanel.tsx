@@ -6,7 +6,7 @@ import WordForm from '@src/components/Form/Forms/WordForm'
 import WordListDetails from './WordListDetails/WordListDetails'
 import TagsProvider from '@src/hooks/TagsContext/TagsProvider'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
-import SearchProvider from '@src/hooks/SearchCotext/SearchProvider'
+import SearchProvider from '@src/hooks/SearchContext/SearchProvider'
 import WordsList from './WordsList/WordsList'
 
 function SidePanel(): React.JSX.Element {

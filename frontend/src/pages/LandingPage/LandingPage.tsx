@@ -1,14 +1,11 @@
-import { useWord } from '@src/hooks/WordContext/useWord'
 import './LandingPage.css'
 import { signCountText } from '@src/utils/namesHelpers'
 
 function LandingPage(): React.JSX.Element {
-  const {allWords} = useWord()
-
   return (
     <div className='landingPage'>
       <p>
-        <br/>Obecnie w bazie mamy: {signCountText(allWords.length)}
+        <br/>Obecnie w bazie mamy: {signCountText(15)}
         <br/>
         <br/>Na razie strona internetowa nie umożliwia samodzielnego dodawania słów, znaków, źródeł czy definicji. Będzie to możliwe w przyszłości.
         <br/>

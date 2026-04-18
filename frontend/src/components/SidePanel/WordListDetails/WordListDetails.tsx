@@ -1,5 +1,5 @@
 import './WordListDetails.css'
-import { useSearch } from '@src/hooks/SearchCotext/useSearch'
+import { useSearch } from '@src/hooks/SearchContext/useSearch'
 import { wordsCountText } from '@src/utils/namesHelpers'
 import SortAZIcon from '@src/assets/icons/SortAzIcon'
 import SortZAIcon from '@src/assets/icons/SortZAIcon'
