@@ -1,7 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
-import { IMeaningAttached } from './meaning.model'
+import { IMeaningDetails } from './meaning.model'
 import type { IMediaAttached } from './media.model'
-import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
   mediaId: string
@@ -22,7 +21,7 @@ export interface ISignWithMedia extends Omit<ISign, 'mediaId'>, IBaseModelAttach
 }
 
 export interface ISignDetails extends ISignWithMedia {
-  meanings: IMeaningAttached[]
+  meanings: IMeaningDetails[]
 }
 
 // TEMPLATES
