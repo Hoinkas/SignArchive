@@ -6,7 +6,7 @@ export interface SignContextValue {
   sign: ISignDetails | null
   simpleSign: ISignSimple | null
   signLoading: boolean
-  initiateSign: (signId: string) => void
+  openCloseSidePanel: (signId: string) => void
   addSignAndMedia: (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void) => void
   editSignAndMedia: (signId: string, signChanges: Partial<ISignDetailsToDB>, mediaChanges: Partial<IMediaToDB>, closeForm: () => void) => void
   deleteSignAndMedia: (deleteId: string) => void
@@ -16,7 +16,7 @@ export const SignContext = createContext<SignContextValue>({
   sign: null,
   simpleSign: null,
   signLoading: false,
-  initiateSign: () => {},
+  openCloseSidePanel: () => {},
   addSignAndMedia: () => {},
   editSignAndMedia: () => {},
   deleteSignAndMedia: () => {}

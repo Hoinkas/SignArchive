@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import React from 'react'
 import { SignContext } from './SignContext'
 import { signApi } from '@src/services/sign.api'
@@ -17,6 +17,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
 
   const [sign, setSign] = useState<ISignDetails | null>(null)
   const [signLoading, setSignLoading] = useState<boolean>(false)
+  const currentSignId = useRef<string | null>(null)
 
   const initiateSign = useCallback((signId: string): void => {
     setSignLoading(true)
@@ -28,7 +29,15 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
     })
   }, [])
 
-    console.log(sign)
+  const openCloseSidePanel = useCallback((signId: string): void => {
+    if (currentSignId.current === signId) {
+      setSign(null)
+      currentSignId.current = null
+      return
+    }
+    currentSignId.current = signId
+    initiateSign(signId)
+  }, [initiateSign])
 
   const simpleSign = useMemo(() => {
     if (!sign) return null
@@ -80,7 +89,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   }
 
   return (
-    <SignContext.Provider value={{ sign, simpleSign, signLoading, initiateSign, addSignAndMedia, editSignAndMedia, deleteSignAndMedia }}>
+    <SignContext.Provider value={{ sign, simpleSign, signLoading, openCloseSidePanel, addSignAndMedia, editSignAndMedia, deleteSignAndMedia }}>
       {children}
     </SignContext.Provider>
   )

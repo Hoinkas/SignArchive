@@ -9,12 +9,12 @@ interface SignItemProps {
 }
 
 function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
-  const {initiateSign} = useSign()
+  const {openCloseSidePanel} = useSign()
 
   return (
     <div className="signContainer">
       <MediaPlayer media={signSimple.media} />
-      <div className='signContent' onClick={() => initiateSign(signSimple.id)}>
+      <div className='signContent' onClick={() => openCloseSidePanel(signSimple.id)}>
         <SignInfo signSimple={signSimple}/>
         <div className='additionalInfo flexEnd timelineInfo'>Zobacz oś czasu {'>'}</div>
       </div>

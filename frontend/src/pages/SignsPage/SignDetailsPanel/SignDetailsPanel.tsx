@@ -1,9 +1,13 @@
+import Loader from '@src/components/Loader/Loader'
 import SignInfo from '../SignInfo/SignInfo'
 import './SignDetailsPanel.css'
 import { useSign } from '@src/hooks/SignContext/useSign'
 
-function SignDetails(): React.JSX.Element {
-  const { sign, simpleSign } = useSign()
+function SignDetailsPanel(): React.JSX.Element {
+  const { sign, simpleSign, signLoading } = useSign()
+
+  if (!sign) return <></>
+  if (signLoading) return <Loader/>
 
   return (
     <div className="signDetails">
@@ -11,12 +15,6 @@ function SignDetails(): React.JSX.Element {
       <SignInfo signSimple={simpleSign}/>
     </div>
   )
-}
-
-function SignDetailsPanel(): React.JSX.Element {
-  const { sign } = useSign()
-
-  return sign ? <SignDetails/> : <></>
 }
 
 export default SignDetailsPanel
