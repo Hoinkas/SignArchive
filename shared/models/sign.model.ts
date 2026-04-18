@@ -17,8 +17,11 @@ export interface ISignDetailsToDB {
 }
 
 // TO FRONTEND
-export interface ISignDetails extends ISign, IBaseModelAttached, IYearStartEnd {
+export interface ISignWithMedia extends Omit<ISign, 'mediaId'>, IBaseModelAttached {
   media: IMediaAttached
+}
+
+export interface ISignDetails extends ISignWithMedia {
   meanings: IMeaningAttached[]
 }
 

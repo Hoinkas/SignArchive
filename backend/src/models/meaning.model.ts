@@ -1,9 +1,10 @@
 import type { IBaseModelAttached } from './base.interface'
-import { ISourceAttached } from './source.model'
+import { ISourceDetails } from './source.model'
+import { IWordAttached } from './word.model'
 
 export interface IMeaning {
   explaination: string
-  signId: number
+  signId: string
 }
 
 export type IMeaningAttached = IMeaning & IBaseModelAttached
@@ -12,8 +13,9 @@ export type IMeaningAttached = IMeaning & IBaseModelAttached
 export type IMeaningToDB = Omit<IMeaning, 'signId'>
 
 // TO FRONTEND
-export interface IMeaningDetails extends IMeaningAttached {
-  sources: ISourceAttached[]
+export interface IMeaningDetails extends Omit<IMeaning, 'signId'>, IBaseModelAttached {
+  sources: ISourceDetails[]
+  words: IWordAttached[]
 }
 
 // TEMPLATES
