@@ -10,12 +10,25 @@ export interface ISign {
 
 export type ISignAttached = ISign & IBaseModelAttached
 
+// TO BACKEND
+export interface ISignDetailsToDB {
+  media: IMediaAttached
+  notes?: string
+}
+
+// TO FRONTEND
 export interface ISignDetails extends ISign, IBaseModelAttached, IYearStartEnd {
   media: IMediaAttached
   meanings: IMeaningAttached[]
 }
 
-export interface ISignDetailsToDB {
-  media: IMediaAttached
-  notes?: string
+// TEMPLATES
+export const signTemplate: Record<keyof ISign, null> = {
+  mediaId: null,
+  notes: null
+}
+
+export const signDetailsToDBTemplate: Record<keyof ISignDetailsToDB, null> = {
+  media: null,
+  notes: null
 }

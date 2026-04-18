@@ -5,3 +5,8 @@ export interface IWord {
 }
 
 export type IWordAttached = IWord & IBaseModelAttached
+
+// TEMPLATES
+export const wordTemplate: Record<keyof IWord, null> = {
+  name: null
+}

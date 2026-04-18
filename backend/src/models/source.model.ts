@@ -1,5 +1,5 @@
 import type { IBaseModelAttached } from './base.interface'
-import { IReference, IReferenceAttached } from './reference'
+import { IReference, IReferenceAttached } from './reference.model'
 import { IRegion, IRegionAttached } from './region.model'
 
 export interface ISource {
@@ -10,6 +10,8 @@ export interface ISource {
 }
 
 export type ISourceAttached = ISource & IBaseModelAttached
+
+// TO BACKEND
 export type ISourceToDB = Omit<ISource, 'referenceId'>
 
 export interface ISourceWithDetailsToDB {
@@ -18,8 +20,23 @@ export interface ISourceWithDetailsToDB {
   regions: IRegion[]
 }
 
+// TO FRONTEND
 export interface ISourceDetails
   extends Omit<ISource, 'authorId' | 'evidenceId'>, IBaseModelAttached {
   reference: IReferenceAttached
   regions: IRegionAttached[]
+}
+
+// TEMPLATES
+export const sourceTemplate: Record<keyof ISource, null> = {
+  referenceId: null,
+  context: null,
+  yearStart: null,
+  yearEnd: null
+}
+
+export const sourceToDBTemplate: Record<keyof ISourceToDB, null> = {
+  context: null,
+  yearStart: null,
+  yearEnd: null
 }

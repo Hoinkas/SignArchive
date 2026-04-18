@@ -11,3 +11,12 @@ export interface IReference {
 }
 
 export type IReferenceAttached = IReference & IBaseModelAttached
+
+// TEMPLATES
+export const referenceTemplate: Record<keyof IReference, null> = {
+  name: null,
+  fullName: null,
+  type: null,
+  url: null,
+  notes: null
+}

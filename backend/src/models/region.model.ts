@@ -5,3 +5,8 @@ export interface IRegion {
 }
 
 export type IRegionAttached = IRegion & IBaseModelAttached
+
+// TEMPLATES
+export const regionTemplate: Record<keyof IRegion, null> = {
+  name: null
+}

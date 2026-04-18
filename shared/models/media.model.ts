@@ -8,3 +8,11 @@ export interface IMedia {
 }
 
 export type IMediaAttached = IMedia & IBaseModelAttached
+
+// TEMPLATES
+export const mediaTemplate: Record<keyof IMedia, null> = {
+  videoUrl: null,
+  mediaType: null,
+  thumbnailUrl: null,
+  description: null
+}
