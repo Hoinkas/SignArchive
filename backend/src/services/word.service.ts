@@ -1,125 +1,69 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ITagAttached } from '../../../shared/models/tag.model'
-import {
-  IWordAttached,
-  IWordCategoriesAttached,
-  IWordToDB,
-  IWordWithCountAttached,
-  IWordWithRegionsCategories
-} from '../../../shared/models/word.model'
-import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
-import { IDefinitionSignWord } from '../models/definitionSignWord'
+import { IWordAttached, IWord } from '../../../shared/models/word.model'
+import { fillMissingValues } from '../utils/helpers.functions'
+import { wordTemplate } from '../models/word.model'
 
-function tagsByWordId(wordId: string): ITagAttached[] {
-  return getDb()
-    .prepare(
-      `SELECT tag.* FROM tag
-       INNER JOIN tagWord ON tag.id = tagWord.tagId
-       WHERE tagWord.wordId = ? ORDER BY tag.name`
-    )
-    .all(wordId) as ITagAttached[]
+// FIND
+export function findWordById(wordId: string): IWordAttached | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
+  return row ? (row as IWordAttached) : undefined
 }
 
-function regionsByWordId(wordId: string): string[] {
-  const rows = getDb()
-    .prepare(
-      `SELECT DISTINCT source.region FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.wordId = ? AND source.region IS NOT NULL`
-    )
-    .all(wordId) as { region: string }[]
-  return rows.map((r) => r.region)
+export function findWordByName(name: string): IWordAttached | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE name = ?').get(name)
+  return row ? (row as IWordAttached) : undefined
 }
 
-export function findWordById(id: string): IWordCategoriesAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(id)
-  return row ? (row as IWordCategoriesAttached) : undefined
+export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
+  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(meaningId)
+  return row as IWordAttached[]
 }
 
-function buildWordsQuery(whereClause?: string): string {
-  return `
-    SELECT word.*, COUNT(DISTINCT dsw.signId) AS signsCount
-    FROM word
-    LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
-    ${whereClause ? `WHERE ${whereClause}` : ''}
-    GROUP BY word.id
-    ORDER BY word.text
-  `
-}
-
-function mapWordRow(row: IWordWithCountAttached): IWordWithRegionsCategories {
-  return {
-    ...row,
-    signsCount: row.signsCount,
-    categories: tagsByWordId(row.id as string),
-    regions: regionsByWordId(row.id as string)
-  }
-}
-
-export function findWordByName(name: string): IWordWithRegionsCategories | undefined {
-  const result = getDb().prepare(buildWordsQuery('word.text = ?')).get(name) as
-    | IWordWithCountAttached
-    | undefined
-
-  if (!result) return undefined
-  return mapWordRow(result)
-}
-
-export function listAllWords(): IWordWithRegionsCategories[] {
-  const rows = getDb().prepare(buildWordsQuery()).all() as IWordWithCountAttached[]
-
-  return rows.map(mapWordRow)
-}
-
-export function createWord(data: IWordToDB): IWordCategoriesAttached {
+// CREATE
+function createWord(data: IWord): IWordAttached {
   const db = getDb()
+
+  const existing = findWordByName(data.name)
+  if (existing) return existing
+
   const word: IWordAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    text: data.text
+    name: data.name
   }
 
-  db.prepare('INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)').run(word)
+  db.prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @text)').run(
+    fillMissingValues<IWord>(word, wordTemplate)
+  )
 
-  const categories = addManyTagsToWord(data.categories, word.id)
-
-  return { ...word, categories }
+  return { ...word }
 }
 
-export function updateWord(
-  wordId: string,
-  data: Partial<IWordToDB>
-): IWordCategoriesAttached | undefined {
-  const existing = findWordById(wordId)
-  if (!existing) return undefined
+export function createWords(regions: IWord[]): IWordAttached[] {
+  const transaction = getDb().transaction(() => {
+    return regions.map((r) => createWord(r))
+  })
 
-  if (data.text) {
-    getDb()
-      .prepare('UPDATE word SET text = @text WHERE id = @id')
-      .run({ text: data.text, id: wordId })
-  }
-
-  const newWord = findWordById(wordId)
-  if (!newWord) return undefined
-
-  const categories = data.categories
-    ? addAndRemoveTagsFromWord(data.categories, wordId)
-    : listTagsByWordId(wordId)
-
-  return { ...newWord, categories }
+  return transaction()
 }
 
-export function deleteWord(wordId: string): void {
+// DELETE
+function deleteWord(wordId: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(wordId)
 }
 
-export function removeWordIfEmpty(wordId: string): void {
-  const result = getDb()
-    .prepare('SELECT * FROM definitionSignWord WHERE wordId = ?')
-    .get(wordId) as IDefinitionSignWord | undefined
+export function deleteUnusedWords(): void {
+  const rows = getDb()
+    .prepare(
+      `SELECT * FROM word
+    LEFT JOIN wordMeaning ON region.id = wordMeaning.wordId
+    WHERE regionSource.wordId IS NULL
+    `
+    )
+    .get() as IWordAttached[]
 
-  console.log(result)
+  if (rows.length > 0) return
 
-  if (!result) deleteWord(wordId)
+  rows.forEach((r) => deleteWord(r.id))
 }

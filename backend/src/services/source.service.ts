@@ -1,35 +1,41 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
+import { createReference, findReferenceById } from './reference.service'
+import { createRegions, findRegionsBySourceId } from './region.service'
 import {
+  ISource,
   ISourceAttached,
   ISourceDetails,
-  ISourceSignWord,
-  ISourceWithDetailsToCreate,
-  ISourceWithDetailsToDB
-} from '../../../shared/models/source.model'
-import { createAuthor, findAuthorById } from './author.service'
-import { createEvidence, findEvidenceById } from './evidence.service'
+  ISourceToDB,
+  ISourceWithDetailsToDB,
+  sourceTemplate,
+  sourceToDBTemplate
+} from '../models/source.model'
+import { fillMissingValues } from '../utils/helpers.functions'
+import { mapRegionsSourceIdLinks } from './regionSource.service'
 
+// FIND
 function findSourceById(id: string): ISourceAttached | undefined {
   return getDb().prepare('SELECT * FROM source WHERE id = ?').get(id) as ISourceAttached | undefined
 }
 
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
-  const author = findAuthorById(source.authorId)
-  const evidence = findEvidenceById(source.evidenceId)
-  if (!author || !evidence) return undefined
-  const { authorId, evidenceId, ...rest } = source
-  return { ...rest, author, evidence }
+  const regions = findRegionsBySourceId(source.id)
+  const reference = findReferenceById(source.referenceId)
+  if (!reference) return undefined
+
+  const { referenceId, ...rest } = source
+  return { ...rest, reference, regions }
 }
 
-export function listSourcesBySignWord(signId: string, wordId: string): ISourceDetails[] {
+export function listSourcesByMeaningId(meaningId: string): ISourceDetails[] {
   const sources = getDb()
     .prepare(
       `SELECT source.* FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.signId = ? AND sourceSignWord.wordId = ?`
+       INNER JOIN meaningSource ON source.id = meaningSource.sourceId
+       WHERE meaningSource.meaningId = ?`
     )
-    .all(signId, wordId) as ISourceAttached[]
+    .all(meaningId) as ISourceAttached[]
 
   return sources.flatMap((s) => {
     const details = buildSourceDetails(s)
@@ -37,46 +43,35 @@ export function listSourcesBySignWord(signId: string, wordId: string): ISourceDe
   })
 }
 
-export function createSourceWithDetails(data: ISourceWithDetailsToCreate): ISourceDetails {
+// CREATE
+export function createSourceWithDetails(data: ISourceWithDetailsToDB): ISourceDetails {
   const transaction = getDb().transaction(() => {
-    const author = createAuthor(data.author)
-    const evidence = createEvidence(data.evidence)
+    const reference = createReference(data.reference)
 
     const source: ISourceAttached = {
       id: nanoid(),
       createdAt: Date.now(),
       ...data.source,
-      authorId: author.id,
-      evidenceId: evidence.id
+      referenceId: reference.id
     }
 
     getDb()
       .prepare(
-        `INSERT INTO source (id, createdAt, authorId, evidenceId, region, yearStart, yearEnd, notes, translations)
-         VALUES (@id, @createdAt, @authorId, @evidenceId, @region, @yearStart, @yearEnd, @notes, @translations)`
+        `INSERT INTO source (id, createdAt, referenceId, yearStart, yearEnd, context)
+         VALUES (@id, @createdAt, @referenceId, @yearStart, @yearEnd, @context)`
       )
-      .run({
-        ...source,
-        notes: source.notes || null,
-        region: source.region || null,
-        translations: source.translations || null,
-        yearStart: source.yearStart || null,
-        yearEnd: source.yearEnd || null
-      })
+      .run(fillMissingValues<ISourceToDB>(source, sourceToDBTemplate))
 
-    const link: ISourceSignWord = { sourceId: source.id, signId: data.signId, wordId: data.wordId }
-    getDb()
-      .prepare(
-        'INSERT INTO sourceSignWord (sourceId, signId, wordId) VALUES (@sourceId, @signId, @wordId)'
-      )
-      .run(link)
+    const regions = createRegions(data.regions)
+    mapRegionsSourceIdLinks(regions, source.id)
 
-    const { authorId, evidenceId, ...rest } = source
-    return { ...rest, author, evidence } satisfies ISourceDetails
+    const { referenceId, ...rest } = source
+    return { ...rest, reference, regions } satisfies ISourceDetails
   })
   return transaction()
 }
 
+// UPDATE
 export function updateSource(
   sourceId: string,
   data: ISourceWithDetailsToDB
@@ -84,38 +79,29 @@ export function updateSource(
   const existing = findSourceById(sourceId)
   if (!existing) return undefined
 
-  const authorId = data.author ? createAuthor(data.author).id : existing.authorId
-  const evidenceId = data.evidence ? createEvidence(data.evidence).id : existing.evidenceId
+  const referenceId = data.reference ? createReference(data.reference).id : existing.referenceId
 
-  const updated: ISourceAttached = {
+  const updatedSource: ISourceAttached = {
     ...existing,
     ...data.source,
-    authorId,
-    evidenceId
+    referenceId
   }
 
   getDb()
     .prepare(
       `UPDATE source
-       SET authorId = @authorId, evidenceId = @evidenceId,
-           region = @region, yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes, translations = @translations
+       SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
        WHERE id = @id`
     )
-    .run(updated)
+    .run(fillMissingValues<ISource>(updatedSource, sourceTemplate))
 
-  return buildSourceDetails(updated)
+  const regions = createRegions(data.regions)
+  mapRegionsSourceIdLinks(regions, updatedSource.id)
+
+  return buildSourceDetails(updatedSource)
 }
 
+// DELETE
 export function deleteSource(sourceId: string): void {
   getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
-}
-
-export function listAllRegions(): string[] {
-  const rows = getDb()
-    .prepare(
-      `SELECT DISTINCT source.region FROM source
-       WHERE source.region IS NOT NULL ORDER BY source.region`
-    )
-    .all() as { region: string }[]
-  return rows.map((r) => r.region)
 }
