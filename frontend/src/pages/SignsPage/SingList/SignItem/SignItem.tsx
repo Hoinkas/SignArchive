@@ -11,7 +11,10 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
   return (
     <div className="signContainer">
       <MediaPlayer media={signSimple.media} />
-      <SignInfo signSimple={signSimple}/>
+      <div className='signContent'>
+        <SignInfo signSimple={signSimple}/>
+        <div className='additionalInfo flexEnd timelineInfo'>Zobacz oś czasu {'>'}</div>
+      </div>
     </div>
   )
 }

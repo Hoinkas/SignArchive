@@ -6,3 +6,20 @@
   flex-shrink: 0;
   overflow: hidden;
 }
+
+.signContainer:hover {
+  border-color: var(--color-border-pruple);
+  cursor: pointer;
+}
+
+.signContainer:hover .timelineInfo{
+  color: var(--color-text-link);
+}
+
+.signContent {
+  padding: var(--space-6) var(--space-4);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

@@ -55,6 +55,11 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-tag: 9999px;
+
+  /* BREAKPOINTS */
+  --bp-lg: 1279px;
+  --bp-md: 768px;
+  --bp-sm: 480px;
 }
 
 :root {
@@ -99,7 +104,7 @@
   --color-text-light: var(--grey-500);
   --color-text-dark: var(--grey-100);
 
-  --color-text-info: var(--grey-400);
+  --color-text-info: var(--grey-300);
   --colot-text-link: var(--grey-400);
 
   --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
@@ -111,6 +116,8 @@
   --color-border-text-area: var(--color-border-text-area-dark);
 
   --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
+
+  --color-border-pruple: var(--color-border-purple-dark);
 
   --button-border: 3px solid var(--color-border-purple-dark);
   --line-border: 2px solid var(--color-border);
@@ -234,6 +241,10 @@ h5 {
   --switch-bg: var(--color-bg-purple-dark);
 
   --color-button-hover: var(--color-purple-dark);
+
+  --color-border-pruple: var(--color-border-purple-light);
+
+  --color-text-info: var(--grey-400);
 
   --color-text-link: var(--purple-grey-2);
 

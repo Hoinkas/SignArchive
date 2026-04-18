@@ -9,7 +9,7 @@
 }
 
 .formBox {
-  width: 50%;
+  width: 60%;
   max-width: 480px;
   min-width: 280px;
 
@@ -22,6 +22,10 @@
 
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
 }
 
 .formGroup {
