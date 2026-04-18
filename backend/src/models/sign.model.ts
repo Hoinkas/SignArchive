@@ -28,7 +28,6 @@ export interface ISignSimple extends Omit<ISign, 'mediaId'>, IBaseModelAttached 
 
 export interface ISignDetails extends Omit<ISign, 'mediaId'>, IBaseModelAttached {
   meanings: IMeaningDetails[]
-  regions: IRegionAttached[]
   media: IMediaAttached
 }
 
