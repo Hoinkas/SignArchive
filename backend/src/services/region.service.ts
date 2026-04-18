@@ -20,7 +20,8 @@ export function findRegionsBySourceId(sourceId: string): IRegionAttached[] {
   return rows as IRegionAttached[]
 }
 
-export function listRegionsNamesBySignId(singId: string): string[] {
+// RETURN NAMES
+export function listRegionsNamesBySignId(signId: string): string[] {
   const rows = getDb()
     .prepare(
       `SELECT region.name FROM region
@@ -30,7 +31,7 @@ export function listRegionsNamesBySignId(singId: string): string[] {
     INNER JOIN meaning ON meaning.id = meaningSource.meaningId
     WHERE meaning.signId = ?`
     )
-    .all(singId) as { name: string }[]
+    .all(signId) as { name: string }[]
 
   return rows.flatMap((r) => r.name)
 }

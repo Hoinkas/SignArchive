@@ -3,12 +3,12 @@ import { asyncHandler, requireAdmin } from '../middlewares/middleware'
 import { signController } from '../controllers/sign.controller'
 
 export const signRouter = Router()
-signRouter.route('/:wordId/signs').get(asyncHandler(signController.list))
-signRouter.route('/').post(requireAdmin, asyncHandler(signController.create))
-signRouter
-  .route('/:signId')
-  .patch(requireAdmin, asyncHandler(signController.update))
-  .delete(requireAdmin, asyncHandler(signController.delete))
-signRouter
-  .route('/:signId/words/:wordId/years-regions')
-  .get(asyncHandler(signController.yearsRegions))
+signRouter.route('/signs').get(asyncHandler(signController.list))
+// signRouter.route('/').post(requireAdmin, asyncHandler(signController.create))
+// signRouter
+//   .route('/:signId')
+//   .patch(requireAdmin, asyncHandler(signController.update))
+//   .delete(requireAdmin, asyncHandler(signController.delete))
+// signRouter
+//   .route('/:signId/words/:wordId/years-regions')
+//   .get(asyncHandler(signController.yearsRegions))

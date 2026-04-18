@@ -20,21 +20,27 @@ function buildMeaningDetails(meaning: IMeaningAttached): IMeaningDetails | undef
   return { ...rest, sources, words }
 }
 
+// COUNT
+export function countMeaningsBySingId(signId: string): number {
+  const result = getDb()
+    .prepare('SELECT COUNT(*) as count FROM meaning WHERE signId = ?')
+    .get(signId) as { count: number }
+
+  return result.count
+}
+
 // FIND
-function allSourcesBySignId(signId: string): IMeaningAttached[] {
-  const sources = getDb()
-    .prepare(
-      `SELECT source.* FROM source
-       WHERE signId = ?`
-    )
+function allMeaningsBySignId(signId: string): IMeaningAttached[] {
+  const meanings = getDb()
+    .prepare('SELECT * FROM meaning WHERE signId = ?')
     .all(signId) as IMeaningAttached[]
 
-  return sources
+  return meanings
 }
 
 export function allMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
-  return allSourcesBySignId(signId).flatMap((s) => {
-    const details = buildMeaningDetails(s)
+  return allMeaningsBySignId(signId).flatMap((m) => {
+    const details = buildMeaningDetails(m)
     return details ? [details] : []
   })
 }
@@ -62,14 +68,14 @@ export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttac
 export function updateMeaning(mediaId: string, data: Partial<IMeaning>): void {
   getDb()
     .prepare(
-      `UPDATE source
-       SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
+      `UPDATE meaning
+       SET explaination = @explaination, signId = @signId
        WHERE id = @id`
     )
     .run({ id: mediaId, ...data })
 }
 
 // DELETE
-export function deleteMeaning(sourceId: string): void {
-  getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
+export function deleteMeaning(meaningId: string): void {
+  getDb().prepare('DELETE FROM meaning WHERE id = ?').run(meaningId)
 }

@@ -15,6 +15,20 @@ export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
   return row as IWordAttached[]
 }
 
+// RETURN NAMES
+export function listWordsNamesBySignId(signId: string): string[] {
+  const rows = getDb()
+    .prepare(
+      `SELECT word.name FROM word
+    INNER JOIN wordMeaning ON wordMeaning.wordId = word.id
+    INNER JOIN meaning ON meaning.id = regionSource.meaningId
+    WHERE meaning.signId = ?`
+    )
+    .all(signId) as { name: string }[]
+
+  return rows.flatMap((r) => r.name)
+}
+
 // CREATE
 function createWord(data: IWord): IWordAttached {
   const existing = findWordByName(data.name)
