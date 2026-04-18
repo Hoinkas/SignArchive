@@ -225,6 +225,13 @@ ol > li::marker {
   display: none !important;
 }
 
+.defaultInline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 /* :focus-visible {
   outline: 2px solid var(--color-line-purple);
   outline-offset: 2px;

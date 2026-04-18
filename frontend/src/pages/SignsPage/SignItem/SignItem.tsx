@@ -1,11 +1,11 @@
 import './SignItem.css'
-import MediaPlayer from '@src/components/MediaPlayer/MediaPlayer'
 import { meaningCountText, mergeYearText } from '@src/utils/namesHelpers'
 import type { ISignSimple } from '@src/models/sign.model'
 import { useState } from 'react'
 import PinIcon from '@src/assets/icons/PinIcon'
 import CalendarIcon from '@src/assets/icons/CalendarIcon'
 import PillList from '@src/components/PillList/PillList'
+import MediaPlayer from './MediaPlayer/MediaPlayer'
 
 interface SignItemProps {
   signSimple: ISignSimple

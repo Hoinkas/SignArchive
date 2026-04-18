@@ -4,7 +4,7 @@ import { useSignList } from '@src/hooks/SignListContext/useSignList'
 import { useEffect } from 'react'
 import SignItem from './SignItem/SignItem'
 import type { ISignSimple } from '@src/models/sign.model'
-import { signCountText } from '@src/utils/namesHelpers'
+import SignListTitle from './SignListTitle/SignListTitle'
 
 const signs: ISignSimple[] = [
   {
@@ -54,7 +54,7 @@ const signs: ISignSimple[] = [
   }
 ]
 
-function SignList(): React.JSX.Element {
+function SignsPage(): React.JSX.Element {
   const { signList, signListLoading, initiateSigns } = useSignList()
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function SignList(): React.JSX.Element {
 
   return (
     <div className="signPage">
-      <>{signCountText(signs.length)} znaleziono</>
+      <SignListTitle signsCount={signs.length}/>
       <div className="signListContainer">
         {signs.map((sign, key) => (
           <SignItem key={key} signSimple={sign}/>
@@ -75,4 +75,4 @@ function SignList(): React.JSX.Element {
   )
 }
 
-export default SignList
+export default SignsPage
