@@ -1,23 +1,21 @@
 import './SignsPage.css'
 import Loader from '@src/components/Loader/Loader'
 import { useSignList } from '@src/hooks/SignListContext/useSignList'
-import SignItem from './SignItem/SignItem'
 import SignListTitle from './SignListTitle/SignListTitle'
 import SignProvider from '@src/hooks/SignContext/SignProvider'
+import SignList from './SingList/SignList'
 
 function SignsPage(): React.JSX.Element {
-  const { signList, signListLoading } = useSignList()
+  const { signListLoading } = useSignList()
 
   if (signListLoading) return <Loader/>
 
   return (
       <div className="signPage">
-        <SignProvider><SignListTitle signsCount={signList.length}/></SignProvider>
-        <div className="signListContainer">
-          {signList.map((sign, key) => (
-            <SignItem key={key} signSimple={sign}/>
-          ))}
-        </div>
+        <SignProvider>
+          <SignListTitle/>
+        </SignProvider>
+        <SignList/>
       </div>
   )
 }

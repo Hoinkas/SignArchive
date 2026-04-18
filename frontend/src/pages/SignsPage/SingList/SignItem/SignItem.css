@@ -1,0 +1,8 @@
+.signContainer {
+  display: inline-flex;
+  border: var(--line-border);
+  border-radius: var(--radius-lg);
+  min-height: var(--media-max-height);
+  flex-shrink: 0;
+  overflow: hidden;
+}
