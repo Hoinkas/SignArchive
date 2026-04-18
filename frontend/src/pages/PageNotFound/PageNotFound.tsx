@@ -6,7 +6,7 @@ function PageNotFound(): React.JSX.Element {
   const error = ''
 
   return (
-    <div className="errorPage">
+    <div className="errorPage page">
       <div className="errorCode">
         <span className="errorAccent">4</span>0<span className="errorAccent">4</span>
       </div>

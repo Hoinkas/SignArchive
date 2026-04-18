@@ -13,9 +13,7 @@ function PageLayout() {
     <>
       <NavBar />
       <div className="pageContainer">
-        <div className='page'>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </>
   )

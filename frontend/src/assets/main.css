@@ -14,14 +14,15 @@ body {
 }
 
 .pageContainer {
-  height: calc(100vh - 64px);
+  height: calc(100vh - var(--navBar-height));
   width: 100vw;
   overflow: auto;
 }
 
 .page {
   width: 80vw;
-  margin: 64px auto;
+  padding: 64px 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 

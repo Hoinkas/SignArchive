@@ -1,0 +1,17 @@
+.signDetails {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  background-color: var(--color-bg);
+  height: calc(100vh - var(--navBar-height));
+  border-left: var(--line-border);
+
+  padding: 48px 64px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    position: fixed;
+    border: none;
+  }
+}

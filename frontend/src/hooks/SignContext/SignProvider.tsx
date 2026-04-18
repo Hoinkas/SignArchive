@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import React from 'react'
 import { SignContext } from './SignContext'
 import { signApi } from '@src/services/sign.api'
@@ -27,6 +27,13 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       console.error(err)
     })
   }, [])
+
+    console.log(sign)
+
+  const simpleSign = useMemo(() => {
+    if (!sign) return null
+    return mapDetailedSignToSimple(sign)
+  },[sign])
 
   const addSignAndMedia = (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void): void => {
     mediaApi.create(media)
@@ -73,7 +80,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   }
 
   return (
-    <SignContext.Provider value={{ sign, signLoading, initiateSign, addSignAndMedia, editSignAndMedia, deleteSignAndMedia }}>
+    <SignContext.Provider value={{ sign, simpleSign, signLoading, initiateSign, addSignAndMedia, editSignAndMedia, deleteSignAndMedia }}>
       {children}
     </SignContext.Provider>
   )

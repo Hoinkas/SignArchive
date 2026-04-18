@@ -11,12 +11,16 @@ function getWordsFromMeanings(meanings: IMeaningDetails[]): string[] {
   return meanings.flatMap((m) => m.words.flatMap((w) => w.name))
 }
 
+function getRegionsNamesFromMeanings(meanings: IMeaningDetails[]): string[] {
+  return meanings.flatMap((m) => m.sources.flatMap((s) => s.regions.flatMap((r) => r.name)))
+}
+
 export function mapDetailedSignToSimple(detailed: ISignDetails): ISignSimple {
-  const { meanings, regions, media, ...rest } = detailed
+  const { meanings, media, ...rest } = detailed
 
   return {
     meaningsCount: meanings.length,
-    regions: regions.map((r) => r.name),
+    regions: getRegionsNamesFromMeanings(meanings),
     years: getYearStartEndFromMeanings(meanings),
     words: getWordsFromMeanings(meanings),
     media,

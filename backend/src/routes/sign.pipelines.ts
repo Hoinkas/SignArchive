@@ -5,10 +5,11 @@ import { signController } from '../controllers/sign.controller'
 export const signRouter = Router()
 signRouter.route('/').get(asyncHandler(signController.list))
 signRouter.route('/').post(requireAdmin, asyncHandler(signController.create))
-// signRouter
-//   .route('/:signId')
-//   .patch(requireAdmin, asyncHandler(signController.update))
-//   .delete(requireAdmin, asyncHandler(signController.delete))
+signRouter
+  .route('/:signId')
+  .get(asyncHandler(signController.details))
+  .patch(requireAdmin, asyncHandler(signController.update))
+  .delete(requireAdmin, asyncHandler(signController.delete))
 // signRouter
 //   .route('/:signId/words/:wordId/years-regions')
 //   .get(asyncHandler(signController.yearsRegions))
