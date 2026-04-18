@@ -3,7 +3,7 @@ import { ISourceDetails } from './source.model'
 import { IWordAttached } from './word.model'
 
 export interface IMeaning {
-  explaination: string
+  explanation: string
   signId: string
 }
 
@@ -20,10 +20,10 @@ export interface IMeaningDetails extends Omit<IMeaning, 'signId'>, IBaseModelAtt
 
 // TEMPLATES
 export const meaningTemplate: Record<keyof IMeaning, null> = {
-  explaination: null,
+  explanation: null,
   signId: null
 }
 
 export const meaningToDbTemplate: Record<keyof IMeaningToDB, null> = {
-  explaination: null
+  explanation: null
 }

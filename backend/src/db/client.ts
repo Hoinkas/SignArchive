@@ -49,8 +49,8 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS meaning (
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
-      explaination  TEXT NOT NULL,
-      signId        TEXT REFERENCES sign(id) ON DELETE SET NULL,
+      explanation   TEXT NOT NULL,
+      signId        TEXT REFERENCES sign(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS region (
@@ -62,10 +62,10 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS reference (
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
-      url           TEXT NOT NULL,
       name          TEXT NOT NULL,
       fullName      TEXT NOT NULL,
       type          TEXT NOT NULL,
+      url           TEXT,
       notes         TEXT
     );
 
@@ -100,7 +100,7 @@ function initSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_meaning_signId            ON meaning(signId);
     CREATE INDEX IF NOT EXISTS idx_source_referenceId        ON source(referenceId);
     CREATE INDEX IF NOT EXISTS idx_regionSource_sourceId     ON regionSource(sourceId);
-    CREATE INDEX IF NOT EXISTS idx_regionSource_reigionId    ON regionSource(regionId);
+    CREATE INDEX IF NOT EXISTS idx_regionSource_regionId     ON regionSource(regionId);
     CREATE INDEX IF NOT EXISTS idx_meaningSource_meaningId   ON meaningSource(meaningId);
     CREATE INDEX IF NOT EXISTS idx_meaningSource_sourceId    ON meaningSource(sourceId);
     CREATE INDEX IF NOT EXISTS idx_wordMeaning_meaningId     ON wordMeaning(meaningId);

@@ -56,8 +56,8 @@ export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttac
 
   getDb()
     .prepare(
-      `INSERT INTO source (id, createdAt, explaination, signId)
-         VALUES (@id, @createdAt, @explaination, @signId)`
+      `INSERT INTO source (id, createdAt, explanation, signId)
+         VALUES (@id, @createdAt, @explanation, @signId)`
     )
     .run(fillMissingValues<IMeaningToDB>(meaning, meaningToDbTemplate))
 
@@ -69,7 +69,7 @@ export function updateMeaning(mediaId: string, data: Partial<IMeaning>): void {
   getDb()
     .prepare(
       `UPDATE meaning
-       SET explaination = @explaination, signId = @signId
+       SET explanation = @explanation, signId = @signId
        WHERE id = @id`
     )
     .run({ id: mediaId, ...data })

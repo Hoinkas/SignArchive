@@ -29,34 +29,37 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
 }
 
 // MAP DETAILS
-function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
-  const media = findMediaById(sign.mediaId)
-  if (!media) return
+// function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
+//   const media = findMediaById(sign.mediaId)
+//   if (!media) return
 
-  const meanings = allMeaningsDetailsBySignId(sign.id)
+//   const meanings = allMeaningsDetailsBySignId(sign.id)
 
-  return { ...sign, media, meanings }
-}
+//   return { ...sign, media, meanings }
+// }
 
 // FIND
 function findSignById(signId: string): ISignAttached | undefined {
   return getDb().prepare('SELECT * FROM sign WHERE id = ?').get(signId) as ISignAttached | undefined
 }
 
-function listAllSigns(): ISignAttached[] {
-  return getDb().prepare('SELECT * FROM sign').get() as ISignAttached[]
+function listAllSigns(): ISignAttached[] | undefined {
+  return getDb().prepare('SELECT * FROM sign').get() as ISignAttached[] | undefined
 }
 
 // LIST MAPPED
-export function getSignDetails(signId: string): ISignDetails | undefined {
-  const sign = findSignById(signId)
-  if (!sign) return
-  return buildSignDetails(sign)
-}
+// export function getSignDetails(signId: string): ISignDetails | undefined {
+//   const sign = findSignById(signId)
+//   if (!sign) return
+//   return buildSignDetails(sign)
+// }
 
 export function listAllSignsSimple(): ISignSimple[] {
   const transaction = getDb().transaction(() => {
-    return listAllSigns().flatMap((s) => {
+    const signs = listAllSigns()
+    if (!signs) return []
+
+    return signs.flatMap((s) => {
       const details = buildSignSimple(s)
       return details ? [details] : []
     })
