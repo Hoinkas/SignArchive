@@ -25,12 +25,12 @@ export const signController = {
     res.status(201).json(simple)
   },
   update: async (req: Request, res: Response): Promise<void> => {
-    const result = signService.updateSign(param(req, 'signId'), req.body)
-    if (!result) {
+    try {
+      signService.updateSign(param(req, 'signId'), req.body)
+      res.status(204).send()
+    } catch {
       res.status(404).json({ error: 'Sign not found' })
-      return
     }
-    res.status(204).send()
   },
   delete: async (req: Request, res: Response): Promise<void> => {
     signService.deleteSign(param(req, 'signId'))
