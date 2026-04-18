@@ -13,6 +13,7 @@ import {
 import { fillMissingValues } from '../utils/helpers.functions'
 import { mapRegionsSourceIdLinks } from './regionSource.service'
 import { IYearStartEnd } from '../models/yearStartEnd.model'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
 // MAP DETAILS
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
@@ -94,13 +95,7 @@ export function createSourceWithDetails(data: ISourceWithDetailsToDB): ISourceDe
 
 // UPDATE
 export function updateSource(sourceId: string, data: Partial<ISource>): void {
-  getDb()
-    .prepare(
-      `UPDATE source
-       SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
-       WHERE id = @id`
-    )
-    .run({ id: sourceId, ...data })
+  buildUpdateQuery('source', sourceId, data as Record<string, unknown>)
 }
 
 // DELETE

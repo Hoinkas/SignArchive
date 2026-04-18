@@ -10,6 +10,7 @@ import {
 import { fillMissingValues } from '../utils/helpers.functions'
 import { listSourcesByMeaningId } from './source.service'
 import { findWordsByMeaningId } from './word.service'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
 // MAP DETAILS
 function buildMeaningDetails(meaning: IMeaningAttached): IMeaningDetails | undefined {
@@ -65,14 +66,8 @@ export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttac
 }
 
 // UPDATE
-export function updateMeaning(mediaId: string, data: Partial<IMeaning>): void {
-  getDb()
-    .prepare(
-      `UPDATE meaning
-       SET explanation = @explanation, signId = @signId
-       WHERE id = @id`
-    )
-    .run({ id: mediaId, ...data })
+export function updateMeaning(meaningId: string, data: Partial<IMeaning>): void {
+  buildUpdateQuery('meaning', meaningId, data as Record<string, unknown>)
 }
 
 // DELETE

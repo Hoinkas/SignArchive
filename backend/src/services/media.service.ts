@@ -44,15 +44,12 @@ export function createMedia(data: IMedia): IMediaAttached {
 
 // UPDATE
 export function updateMedia(mediaId: string, data: Partial<IMedia>): void {
-  getDb()
-    .prepare(
-      'UPDATE media SET description = @description, videoUrl = @videoUrl, thumbnailUrl = @thumbnailUrl, mediaType = @mediaType WHERE id = @id'
-    )
-    .run({ id: mediaId, ...data })
+  buildUpdateQuery('media', mediaId, data as Record<string, unknown>)
 }
 
 // DELETE
 import { VIDEOS_DIR, THUMBNAILS_DIR } from '../config'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
 export function deleteMedia(mediaId: string): void {
   const media = findMediaById(mediaId)

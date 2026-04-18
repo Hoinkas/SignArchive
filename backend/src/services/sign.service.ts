@@ -14,6 +14,7 @@ import { allMeaningsDetailsBySignId, countMeaningsBySingId } from './meaning.ser
 import { listRegionsNamesBySignId } from './region.service'
 import { getStartEndYearBySignId } from './source.service'
 import { listWordsNamesBySignId } from './word.service'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
 // MAP SIMPLE
 function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
@@ -102,15 +103,8 @@ export function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttach
 // }
 
 // UPDATE
-export function updateSign(signId: string, data: Partial<ISign>): boolean {
-  const existing = findSignById(signId)
-  if (!existing) return false
-
-  getDb()
-    .prepare(`UPDATE sign SET notes = @notes, mediaId = @mediaId WHERE id = @id`)
-    .run({ id: signId, ...data })
-
-  return true
+export function updateSign(signId: string, data: Partial<ISign>): void {
+  buildUpdateQuery('sign', signId, data as Record<string, unknown>)
 }
 
 // DELETE
