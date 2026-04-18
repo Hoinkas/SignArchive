@@ -32,7 +32,7 @@ export function getStartEndYearBySignId(signId: string): IYearStartEnd {
               MIN(source.yearEnd)   AS c, MAX(source.yearEnd)   AS d
        FROM source
        INNER JOIN meaningSource ON source.id = meaningSource.sourceId
-       INNER JOIN meaning.id = meaningSource.meaningId
+       INNER JOIN meaning ON meaning.id = meaningSource.meaningId
        WHERE meaning.signId = ?
        `
     )
@@ -100,7 +100,7 @@ export function updateSource(sourceId: string, data: Partial<ISource>): void {
        SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
        WHERE id = @id`
     )
-    .run({ id: sourceId, data })
+    .run({ id: sourceId, ...data })
 }
 
 // DELETE

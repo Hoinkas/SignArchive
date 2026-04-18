@@ -28,8 +28,8 @@ function initSchema(db: Database.Database): void {
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
       videoUrl      TEXT NOT NULL,
-      thumbnailUrl  TEXT NOT NULL,
       mediaType     TEXT NOT NULL,
+      thumbnailUrl  TEXT,
       description   TEXT
     );
 

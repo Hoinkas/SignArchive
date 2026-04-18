@@ -1,4 +1,4 @@
-import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
+import {  type SubmitEvent, useState } from 'react'
 import {
   FormMultiLineInput,
   FormModalWrapper,
@@ -12,26 +12,26 @@ import type { IMediaToDB } from '@src/models/media.model'
 
 interface SignFormProps {
   formType: FormType
-  setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  closeForm: () => void
 }
 
-function SignForm({ formType, setIsFormOpen }: SignFormProps): React.JSX.Element {
+function SignForm({ formType, closeForm }: SignFormProps): React.JSX.Element {
   const { sign, addSignAndMedia, editSignAndMedia } = useSign()
 
   const [submitted, setSubmitted] = useState<boolean>(false)
 
-  const [notes, setNotes] = useState<string>(sign.notes ?? '')
+  const [notes, setNotes] = useState<string>(sign ? sign.notes : '')
   const [file, setFile] = useState<File | null>(null)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [description, setDescription] = useState<string>(sign.media.description ?? '')
+  const [description, setDescription] = useState<string>(sign ? sign.media.description : '')
 
-  const closeForm = (): void => {
+  const handleFormClose = (): void => {
     setNotes('')
     setFile(null)
     setThumbnail(null)
     setDescription('')
 
-    setIsFormOpen(false)
+    closeForm()
   }
 
   const isValid = file
@@ -60,12 +60,12 @@ function SignForm({ formType, setIsFormOpen }: SignFormProps): React.JSX.Element
         if (Object.keys(signChanges).length === 0 && Object.keys(mediaChanges).length === 0) { closeForm(); return }
         editSignAndMedia(sign.id, signChanges, mediaChanges, closeForm)
       }
-    } catch { /* empty */ }
+    } catch { console.log('Some SignForm error') }
   }
 
   return (
-    <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMedia label="Film ze znakiem" file={file} setNewFile={setFile} existingFile={sign.media.videoUrl.split('/').pop() ?? sign.media.videoUrl} required submitted={submitted} />
+    <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={handleFormClose}>
+      <FormMedia label="Film ze znakiem" file={file} setNewFile={setFile} existingFile={sign?.media.videoUrl.split('/').pop() ?? sign?.media.videoUrl} required submitted={submitted} />
       <FormMedia label="Miniatura filmu" file={thumbnail} setNewFile={setThumbnail} />
       <FormMultiLineInput label="Opis filmu dla niewidomych" value={description} setValue={setDescription} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />

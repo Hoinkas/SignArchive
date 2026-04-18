@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { findMediaById } from './media.service'
+import { deleteMedia, findMediaById } from './media.service'
 import { fillMissingValues } from '../utils/helpers.functions'
 import {
   ISign,
@@ -47,6 +47,12 @@ function listAllSigns(): ISignAttached[] {
   return getDb().prepare('SELECT * FROM sign').all() as ISignAttached[]
 }
 
+export function getSignSimple(signId: string): ISignSimple | undefined {
+  const sign = findSignById(signId)
+  if (!sign) return
+  return buildSignSimple(sign)
+}
+
 // LIST MAPPED
 export function getSignDetails(signId: string): ISignDetails | undefined {
   const sign = findSignById(signId)
@@ -56,12 +62,9 @@ export function getSignDetails(signId: string): ISignDetails | undefined {
 
 export function listAllSignsSimple(): ISignSimple[] {
   const transaction = getDb().transaction(() => {
-    const signs = listAllSigns()
-    if (!signs) return []
-
-    return signs.flatMap((s) => {
-      const details = buildSignSimple(s)
-      return details ? [details] : []
+    return listAllSigns().flatMap((s) => {
+      const simple = buildSignSimple(s)
+      return simple ? [simple] : []
     })
   })
   return transaction()
@@ -112,5 +115,8 @@ export function updateSign(signId: string, data: Partial<ISign>): boolean {
 
 // DELETE
 export function deleteSign(signId: string): void {
+  const sign = findSignById(signId)
+  if (!sign) return
   getDb().prepare('DELETE FROM sign WHERE id = ?').run(signId)
+  deleteMedia(sign.mediaId)
 }

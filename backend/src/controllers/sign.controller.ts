@@ -16,7 +16,13 @@ export const signController = {
   },
   create: async (req: Request, res: Response): Promise<void> => {
     const { mediaId, ...rest } = req.body
-    res.status(201).json(signService.createSign(rest, mediaId))
+    const sign = signService.createSign(rest, mediaId)
+    const simple = signService.getSignSimple(sign.id)
+    if (!simple) {
+      res.status(500).json({ error: 'Sign created but could not be retrieved' })
+      return
+    }
+    res.status(201).json(simple)
   },
   update: async (req: Request, res: Response): Promise<void> => {
     const result = signService.updateSign(param(req, 'signId'), req.body)

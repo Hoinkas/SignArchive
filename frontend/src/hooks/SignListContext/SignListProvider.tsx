@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import React from 'react'
 import { SignListContext } from './SignListContext'
 import { signApi } from '@src/services/sign.api'
@@ -10,10 +10,9 @@ interface Props {
 
 export default function SignListProvider({ children }: Props): React.JSX.Element {
   const [signList, setSignList] = useState<ISignSimple[]>([])
-  const [signListLoading, setSignListLoading] = useState<boolean>(false)
+  const [signListLoading, setSignListLoading] = useState<boolean>(true)
 
-  const initiateSigns = useCallback((): void => {
-    setSignListLoading(true)
+  useEffect(() => {
     signApi.list().then((data) => {
       setSignList(data)
       setSignListLoading(false)
@@ -37,7 +36,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
   }
 
   return (
-    <SignListContext.Provider value={{ signList, signListLoading, initiateSigns, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>
+    <SignListContext.Provider value={{ signList, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>
       {children}
     </SignListContext.Provider>
   )

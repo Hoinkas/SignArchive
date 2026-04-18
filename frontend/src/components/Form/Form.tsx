@@ -97,7 +97,6 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
         className={`formInput${showError ? ' inputError' : ''}`}
         onChange={(event) => setValue(event.target.value)}
         value={value}
-        required={required}
       />
       {showError && <span className="inputErrorText">Tekst wymagany</span>}
     </div>
@@ -140,8 +139,13 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
 
   const fileName = file?.name ?? existingFile ?? 'Wybierz plik'
   const hasFile = !!(file || existingFile)
+  const showError = submitted && required && !hasFile
 
-  const showError = submitted && required && !(file || existingFile)
+  const handleClear = (e: React.MouseEvent): void => {
+    e.stopPropagation()
+    setNewFile(null)
+    if (inputRef.current) inputRef.current.value = ''
+  }
 
   return (
     <div className="formGroup">
@@ -156,24 +160,15 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
       >
         <span style={{ color: hasFile ? 'inherit' : 'var(--text-muted)' }}>{fileName}</span>
         {file && (
-          <span
-            onClick={(e) => {
-              e.stopPropagation()
-              setNewFile(null)
-            }}
-            style={{ marginLeft: 8 }}
-          >
-            ✕
-          </span>
+          <span onClick={handleClear} style={{ marginLeft: 8 }}>✕</span>
         )}
       </button>
       <input
         ref={inputRef}
         type="file"
-        accept="video/*,image/*,text/*"
+        accept="video/*,image/*"
         style={{ display: 'none' }}
         onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
-        required={required}
       />
       {showError && <span className="inputErrorText">Plik wymagany</span>}
     </div>
