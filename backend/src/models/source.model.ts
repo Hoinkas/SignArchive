@@ -1,40 +1,25 @@
-import type { IAuthor, IAuthorAttached } from './author.model'
 import type { IBaseModelAttached } from './base.interface'
-import type { IReference, IReferenceAttached } from './evidence.model'
+import { IReference, IReferenceAttached } from './reference'
+import { IRegion, IRegionAttached } from './region.model'
 
 export interface ISource {
-  authorId: string
-  evidenceId: string
-  region?: string
-  yearStart?: number
+  referenceId: string
+  context: string
+  yearStart: number
   yearEnd?: number
-  notes?: string
-  translations?: string
 }
 
-export type ISourceToDB = Omit<ISource, 'authorId' | 'evidenceId'>
+export type ISourceAttached = ISource & IBaseModelAttached
+export type ISourceToDB = Omit<ISource, 'referenceId'>
 
 export interface ISourceWithDetailsToDB {
   source: ISourceToDB
-  evidence: IReference
-  author: IAuthor
-}
-
-export interface ISourceWithDetailsToCreate extends ISourceWithDetailsToDB {
-  signId: string
-  wordId: string
+  reference: IReference
+  regions: IRegion[]
 }
 
 export interface ISourceDetails
   extends Omit<ISource, 'authorId' | 'evidenceId'>, IBaseModelAttached {
-  author: IAuthorAttached
-  evidence: IReferenceAttached
-}
-
-export type ISourceAttached = ISource & IBaseModelAttached
-
-export interface ISourceSignWord {
-  sourceId: string
-  signId: string
-  wordId: string
+  reference: IReferenceAttached
+  regions: IRegionAttached[]
 }
