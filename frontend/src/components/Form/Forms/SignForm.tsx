@@ -5,25 +5,25 @@ import {
   FormMedia
 } from '@src/components/Form/Form'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
-import type { IMediaToDB } from '@src/models/media.model'
+import type { ISignDetailsToDB } from '@src/models/sign.model'
 import { useSign } from '@src/hooks/SignContext/useSign'
+import { getChanges } from '@src/utils/getChangesFromForm'
+import type { IMediaToDB } from '@src/models/media.model'
 
-interface AddSignFormProps {
-  sign?: ISignDetails
+interface SignFormProps {
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
-function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.Element {
-  const { sign, addSign, editSign } = useSign()
+function SignForm({ formType, setIsFormOpen }: SignFormProps): React.JSX.Element {
+  const { sign, addSignAndMedia, editSignAndMedia } = useSign()
 
   const [submitted, setSubmitted] = useState<boolean>(false)
 
-  const [notes, setNotes] = useState<string>('')
+  const [notes, setNotes] = useState<string>(sign.notes ?? '')
   const [file, setFile] = useState<File | null>(null)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [description, setDescription] = useState<string>('')
+  const [description, setDescription] = useState<string>(sign.media.description ?? '')
 
   const closeForm = (): void => {
     setNotes('')
@@ -41,24 +41,31 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
     setSubmitted(true)
     if (!isValid) return
 
-    const media: IMediaToDB = {
-      videoFile: file,
-      thumbnailFile: thumbnail ?? undefined,
-      description: description != '' ? description : undefined
-    }
-
     const data: ISignDetailsToDB = {
-      media,
       notes: notes !== '' ? notes : undefined
     }
 
-    if (formType === 'add') addSign(data, closeForm)
-    else if (formType === 'edit' && sign) editSign(sign.id, data, closeForm)
+    const media: IMediaToDB = {
+      videoFile: file,
+      thumbnailFile: thumbnail ?? undefined,
+      description: description !== '' ? description : undefined
+    }
+
+    try {
+      if (formType === 'add') {
+        addSignAndMedia(data, media, closeForm)
+      } else if (formType === 'edit' && sign) {
+        const signChanges = getChanges(sign, data)
+        const mediaChanges = getChanges(sign.media, media)
+        if (Object.keys(signChanges).length === 0 && Object.keys(mediaChanges).length === 0) { closeForm(); return }
+        editSignAndMedia(sign.id, signChanges, mediaChanges, closeForm)
+      }
+    } catch { /* empty */ }
   }
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMedia label="Film ze znakiem" file={file} setNewFile={setFile} required submitted={submitted} />
+      <FormMedia label="Film ze znakiem" file={file} setNewFile={setFile} existingFile={sign.media.videoUrl.split('/').pop() ?? sign.media.videoUrl} required submitted={submitted} />
       <FormMedia label="Miniatura filmu" file={thumbnail} setNewFile={setThumbnail} />
       <FormMultiLineInput label="Opis filmu dla niewidomych" value={description} setValue={setDescription} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
@@ -66,4 +73,4 @@ function AddSignForm({ formType, setIsFormOpen }: AddSignFormProps): React.JSX.E
   )
 }
 
-export default AddSignForm
+export default SignForm

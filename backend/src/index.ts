@@ -16,7 +16,7 @@ app.use(express.json({ limit: '50mb' }))
 
 setupRoutes(app)
 
-app.use('/uploads', express.static(UPLOADS_DIR))
+app.use('/data/uploads', express.static(UPLOADS_DIR))
 
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)

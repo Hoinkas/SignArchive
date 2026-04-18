@@ -8,7 +8,7 @@ export interface IMedia {
 }
 
 // TO BACKEND
-export interface IMediaToDB extends Omit<IMedia, 'videoUrl, mediaType, thumbnailUrl'> {
+export interface IMediaToDB extends Omit<IMedia, 'videoUrl' | 'mediaType' | 'thumbnailUrl'> {
   videoFile: File
   thumbnailFile?: File
 }

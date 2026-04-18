@@ -29,30 +29,30 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
 }
 
 // MAP DETAILS
-// function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
-//   const media = findMediaById(sign.mediaId)
-//   if (!media) return
+function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
+  const media = findMediaById(sign.mediaId)
+  if (!media) return
 
-//   const meanings = allMeaningsDetailsBySignId(sign.id)
+  const meanings = allMeaningsDetailsBySignId(sign.id)
 
-//   return { ...sign, media, meanings }
-// }
+  return { ...sign, media, meanings }
+}
 
 // FIND
 function findSignById(signId: string): ISignAttached | undefined {
   return getDb().prepare('SELECT * FROM sign WHERE id = ?').get(signId) as ISignAttached | undefined
 }
 
-function listAllSigns(): ISignAttached[] | undefined {
-  return getDb().prepare('SELECT * FROM sign').get() as ISignAttached[] | undefined
+function listAllSigns(): ISignAttached[] {
+  return getDb().prepare('SELECT * FROM sign').all() as ISignAttached[]
 }
 
 // LIST MAPPED
-// export function getSignDetails(signId: string): ISignDetails | undefined {
-//   const sign = findSignById(signId)
-//   if (!sign) return
-//   return buildSignDetails(sign)
-// }
+export function getSignDetails(signId: string): ISignDetails | undefined {
+  const sign = findSignById(signId)
+  if (!sign) return
+  return buildSignDetails(sign)
+}
 
 export function listAllSignsSimple(): ISignSimple[] {
   const transaction = getDb().transaction(() => {
@@ -68,7 +68,7 @@ export function listAllSignsSimple(): ISignSimple[] {
 }
 
 // CREATE
-function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
+export function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
   const sign: ISignAttached = {
     id: nanoid(),
     createdAt: Date.now(),
@@ -99,14 +99,15 @@ function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
 // }
 
 // UPDATE
-export function updateSign(signId: string, data: Partial<ISign>): void {
+export function updateSign(signId: string, data: Partial<ISign>): boolean {
+  const existing = findSignById(signId)
+  if (!existing) return false
+
   getDb()
-    .prepare(
-      `UPDATE sign
-       SET notes = @notes, mediaId = @mediaId
-       WHERE id = @id`
-    )
+    .prepare(`UPDATE sign SET notes = @notes, mediaId = @mediaId WHERE id = @id`)
     .run({ id: signId, ...data })
+
+  return true
 }
 
 // DELETE
