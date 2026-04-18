@@ -10,23 +10,19 @@ import {
   ISignWithMedia,
   signTemplate
 } from '../models/sign.model'
-import { listMeaningsDetailsBySignId } from './meaning.service'
+import { allMeaningsDetailsBySignId } from './meaning.service'
 
-// FIND
-export function findSignById(id: string): ISignAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM sign WHERE id = ?').get(id)
-  return row ? (row as ISignAttached) : undefined
-}
-
+// MAP DETAILS
 function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
   const media = findMediaById(sign.mediaId)
   if (!media) return
 
-  const meanings = listMeaningsDetailsBySignId(sign.id)
+  const meanings = allMeaningsDetailsBySignId(sign.id)
 
   return { ...sign, media, meanings }
 }
 
+// FIND
 export function listAllSignsDetailed(): ISignDetails[] {
   const transaction = getDb().transaction(() => {
     const rows = getDb().prepare('SELECT * FROM sign').get() as ISignAttached[]
@@ -40,7 +36,7 @@ export function listAllSignsDetailed(): ISignDetails[] {
 }
 
 // CREATE
-export function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
+function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
   const sign: ISignAttached = {
     id: nanoid(),
     createdAt: Date.now(),
@@ -71,27 +67,14 @@ export function createSignWithMedia(data: ISignDetailsToDB): ISignWithMedia {
 }
 
 // UPDATE
-export function updateSign(signId: string, data: ISignDetails): ISignDetails | undefined {
-  const existing = findSignById(signId)
-  if (!existing) return
-
-  const media = updateMedia(data.media.id, data.media) || createMedia(data.media)
-
-  const updatedSign: ISignAttached = {
-    ...existing,
-    ...data,
-    mediaId: media.id
-  }
-
+export function updateSign(signId: string, data: Partial<ISign>): void {
   getDb()
     .prepare(
       `UPDATE sign
        SET notes = @notes, mediaId = @mediaId
        WHERE id = @id`
     )
-    .run(updatedSign)
-
-  return buildSignDetails(updatedSign)
+    .run({ id: signId, ...data })
 }
 
 // DELETE

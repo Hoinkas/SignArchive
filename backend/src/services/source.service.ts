@@ -8,17 +8,12 @@ import {
   ISourceDetails,
   ISourceToDB,
   ISourceWithDetailsToDB,
-  sourceTemplate,
-  sourceToDBTemplate
+  sourceTemplate
 } from '../models/source.model'
 import { fillMissingValues } from '../utils/helpers.functions'
 import { mapRegionsSourceIdLinks } from './regionSource.service'
 
-// FIND
-function findSourceById(id: string): ISourceAttached | undefined {
-  return getDb().prepare('SELECT * FROM source WHERE id = ?').get(id) as ISourceAttached | undefined
-}
-
+// MAP DETAILS
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
   const regions = findRegionsBySourceId(source.id)
   const reference = findReferenceById(source.referenceId)
@@ -28,6 +23,7 @@ function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined
   return { ...rest, reference, regions }
 }
 
+// FIND
 export function listSourcesByMeaningId(meaningId: string): ISourceDetails[] {
   const sources = getDb()
     .prepare(
@@ -44,23 +40,27 @@ export function listSourcesByMeaningId(meaningId: string): ISourceDetails[] {
 }
 
 // CREATE
+function createSource(data: ISource): ISourceAttached {
+  const source: ISourceAttached = {
+    id: nanoid(),
+    createdAt: Date.now(),
+    ...data
+  }
+
+  getDb()
+    .prepare(
+      `INSERT INTO source (id, createdAt, referenceId, yearStart, yearEnd, context)
+        VALUES (@id, @createdAt, @referenceId, @yearStart, @yearEnd, @context)`
+    )
+    .run(fillMissingValues<ISourceToDB>(source, sourceTemplate))
+
+  return source
+}
+
 export function createSourceWithDetails(data: ISourceWithDetailsToDB): ISourceDetails {
   const transaction = getDb().transaction(() => {
     const reference = createReference(data.reference)
-
-    const source: ISourceAttached = {
-      id: nanoid(),
-      createdAt: Date.now(),
-      ...data.source,
-      referenceId: reference.id
-    }
-
-    getDb()
-      .prepare(
-        `INSERT INTO source (id, createdAt, referenceId, yearStart, yearEnd, context)
-         VALUES (@id, @createdAt, @referenceId, @yearStart, @yearEnd, @context)`
-      )
-      .run(fillMissingValues<ISourceToDB>(source, sourceToDBTemplate))
+    const source = createSource({ ...data.source, referenceId: reference.id })
 
     const regions = createRegions(data.regions)
     mapRegionsSourceIdLinks(regions, source.id)
@@ -72,33 +72,14 @@ export function createSourceWithDetails(data: ISourceWithDetailsToDB): ISourceDe
 }
 
 // UPDATE
-export function updateSource(
-  sourceId: string,
-  data: ISourceWithDetailsToDB
-): ISourceDetails | undefined {
-  const existing = findSourceById(sourceId)
-  if (!existing) return undefined
-
-  const referenceId = data.reference ? createReference(data.reference).id : existing.referenceId
-
-  const updatedSource: ISourceAttached = {
-    ...existing,
-    ...data.source,
-    referenceId
-  }
-
+export function updateSource(sourceId: string, data: Partial<ISource>): void {
   getDb()
     .prepare(
       `UPDATE source
        SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
        WHERE id = @id`
     )
-    .run(fillMissingValues<ISource>(updatedSource, sourceTemplate))
-
-  const regions = createRegions(data.regions)
-  mapRegionsSourceIdLinks(regions, updatedSource.id)
-
-  return buildSourceDetails(updatedSource)
+    .run({ id: sourceId, data })
 }
 
 // DELETE

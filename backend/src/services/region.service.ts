@@ -2,15 +2,9 @@ import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
 import { IRegion, IRegionAttached, regionTemplate } from '../models/region.model'
 import { fillMissingValues } from '../utils/helpers.functions'
-import e from 'express'
 
 // FIND
-export function findRegionById(regionId: string): IRegionAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM region WHERE id = ?').get(regionId)
-  return row ? (row as IRegionAttached) : undefined
-}
-
-export function findRegionByName(name: string): IRegionAttached | undefined {
+function findRegionByName(name: string): IRegionAttached | undefined {
   const row = getDb().prepare('SELECT * FROM region WHERE name = ?').get(name)
   return row ? (row as IRegionAttached) : undefined
 }

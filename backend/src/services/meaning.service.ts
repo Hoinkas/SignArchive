@@ -11,13 +11,7 @@ import { fillMissingValues } from '../utils/helpers.functions'
 import { listSourcesByMeaningId } from './source.service'
 import { findWordsByMeaningId } from './word.service'
 
-// FIND
-function findMeaningById(id: string): IMeaningAttached | undefined {
-  return getDb().prepare('SELECT * FROM source WHERE id = ?').get(id) as
-    | IMeaningAttached
-    | undefined
-}
-
+// MAP DETAILS
 function buildMeaningDetails(meaning: IMeaningAttached): IMeaningDetails | undefined {
   const sources = listSourcesByMeaningId(meaning.id)
   const words = findWordsByMeaningId(meaning.id)
@@ -26,7 +20,8 @@ function buildMeaningDetails(meaning: IMeaningAttached): IMeaningDetails | undef
   return { ...rest, sources, words }
 }
 
-export function listMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
+// FIND
+function allSourcesBySignId(signId: string): IMeaningAttached[] {
   const sources = getDb()
     .prepare(
       `SELECT source.* FROM source
@@ -34,7 +29,11 @@ export function listMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
     )
     .all(signId) as IMeaningAttached[]
 
-  return sources.flatMap((s) => {
+  return sources
+}
+
+export function allMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
+  return allSourcesBySignId(signId).flatMap((s) => {
     const details = buildMeaningDetails(s)
     return details ? [details] : []
   })
@@ -42,45 +41,32 @@ export function listMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
 
 // CREATE
 export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttached {
-  const transaction = getDb().transaction(() => {
-    const meaning: IMeaningAttached = {
-      id: nanoid(),
-      createdAt: Date.now(),
-      ...data,
-      signId
-    }
+  const meaning: IMeaningAttached = {
+    id: nanoid(),
+    createdAt: Date.now(),
+    ...data,
+    signId
+  }
 
-    getDb()
-      .prepare(
-        `INSERT INTO source (id, createdAt, explaination, signId)
+  getDb()
+    .prepare(
+      `INSERT INTO source (id, createdAt, explaination, signId)
          VALUES (@id, @createdAt, @explaination, @signId)`
-      )
-      .run(fillMissingValues<IMeaningToDB>(meaning, meaningToDbTemplate))
+    )
+    .run(fillMissingValues<IMeaningToDB>(meaning, meaningToDbTemplate))
 
-    return meaning
-  })
-  return transaction()
+  return meaning
 }
 
 // UPDATE
-export function updateMeaning(sourceId: string, data: IMeaning): IMeaningDetails | undefined {
-  const existing = findMeaningById(sourceId)
-  if (!existing) return undefined
-
-  const updatedMeaning: IMeaningAttached = {
-    ...existing,
-    ...data
-  }
-
+export function updateMeaning(mediaId: string, data: Partial<IMeaning>): void {
   getDb()
     .prepare(
       `UPDATE source
        SET referenceId = @referenceId, yearStart = @yearStart, yearEnd = @yearEnd, context = @context
        WHERE id = @id`
     )
-    .run(updatedMeaning)
-
-  return buildMeaningDetails(updatedMeaning)
+    .run({ id: mediaId, ...data })
 }
 
 // DELETE

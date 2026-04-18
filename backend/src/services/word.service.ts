@@ -5,12 +5,7 @@ import { fillMissingValues } from '../utils/helpers.functions'
 import { wordTemplate } from '../models/word.model'
 
 // FIND
-export function findWordById(wordId: string): IWordAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(wordId)
-  return row ? (row as IWordAttached) : undefined
-}
-
-export function findWordByName(name: string): IWordAttached | undefined {
+function findWordByName(name: string): IWordAttached | undefined {
   const row = getDb().prepare('SELECT * FROM word WHERE name = ?').get(name)
   return row ? (row as IWordAttached) : undefined
 }
@@ -22,22 +17,20 @@ export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
 
 // CREATE
 function createWord(data: IWord): IWordAttached {
-  const db = getDb()
-
   const existing = findWordByName(data.name)
   if (existing) return existing
 
   const word: IWordAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    name: data.name
+    ...data
   }
 
-  db.prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @text)').run(
-    fillMissingValues<IWord>(word, wordTemplate)
-  )
+  getDb()
+    .prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @text)')
+    .run(fillMissingValues<IWord>(word, wordTemplate))
 
-  return { ...word }
+  return word
 }
 
 export function createWords(regions: IWord[]): IWordAttached[] {
@@ -63,7 +56,5 @@ export function deleteUnusedWords(): void {
     )
     .get() as IWordAttached[]
 
-  if (rows.length > 0) return
-
-  rows.forEach((r) => deleteWord(r.id))
+  if (rows.length > 0) rows.forEach((r) => deleteWord(r.id))
 }

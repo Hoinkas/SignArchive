@@ -35,25 +35,20 @@ export function createMedia(data: IMedia): IMediaAttached {
   const media: IMediaAttached = { id: nanoid(), createdAt: Date.now(), ...data }
   getDb()
     .prepare(
-      'INSERT INTO media (id, createdAt, description, videoUrl, thumbnailUrl, mediaType) VALUES (@id, @createdAt, @description, @videoUrl, @thumbnailUrl, @mediaType)'
+      `INSERT INTO media (id, createdAt, description, videoUrl, thumbnailUrl, mediaType)
+      VALUES (@id, @createdAt, @description, @videoUrl, @thumbnailUrl, @mediaType)`
     )
     .run(fillMissingValues<IMedia>(media, mediaTemplate))
   return media
 }
 
 // UPDATE
-export function updateMedia(mediaId: string, data: IMedia): IMediaAttached | undefined {
-  const existing = findMediaById(mediaId)
-  if (!existing) return undefined
-
-  const updatedMedia: IMediaAttached = { ...existing, ...data, id: mediaId }
+export function updateMedia(mediaId: string, data: Partial<IMedia>): void {
   getDb()
     .prepare(
       'UPDATE media SET description = @description, videoUrl = @videoUrl, thumbnailUrl = @thumbnailUrl, mediaType = @mediaType WHERE id = @id'
     )
-    .run(fillMissingValues<IMedia>(updatedMedia, mediaTemplate))
-
-  return updatedMedia
+    .run({ id: mediaId, data })
 }
 
 // DELETE
