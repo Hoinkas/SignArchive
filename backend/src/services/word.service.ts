@@ -11,7 +11,7 @@ function findWordByName(name: string): IWordAttached | undefined {
 }
 
 export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(meaningId)
+  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').all(meaningId)
   return row as IWordAttached[]
 }
 
@@ -54,7 +54,7 @@ export function deleteUnusedWords(): void {
     WHERE regionSource.wordId IS NULL
     `
     )
-    .get() as IWordAttached[]
+    .all() as IWordAttached[]
 
   if (rows.length > 0) rows.forEach((r) => deleteWord(r.id))
 }

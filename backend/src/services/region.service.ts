@@ -16,8 +16,23 @@ export function findRegionsBySourceId(sourceId: string): IRegionAttached[] {
     INNER JOIN regionSource ON region.id = regionSource.regionId
     WHERE regionSource.sourceId = ?`
     )
-    .get(sourceId)
+    .all(sourceId)
   return rows as IRegionAttached[]
+}
+
+export function listRegionsNamesBySignId(singId: string): string[] {
+  const rows = getDb()
+    .prepare(
+      `SELECT region.name FROM region
+    INNER JOIN regionSource ON regionSource.regionId = region.id
+    INNER JOIN source ON source.id = regionSource.sourceId
+    INNER JOIN meaningSource ON meaningSource.sourceId = source.id
+    INNER JOIN meaning ON meaning.id = meaningSource.meaningId
+    WHERE meaning.signId = ?`
+    )
+    .all(singId) as { name: string }[]
+
+  return rows.flatMap((r) => r.name)
 }
 
 // CREATE
@@ -61,9 +76,7 @@ export function deleteUnusedRegions(): void {
     WHERE regionSource.regionId IS NULL
     `
     )
-    .get() as IRegionAttached[]
+    .all() as IRegionAttached[]
 
-  if (rows.length > 0) return
-
-  rows.forEach((r) => deleteRegion(r.id))
+  if (rows.length > 0) rows.forEach((r) => deleteRegion(r.id))
 }
