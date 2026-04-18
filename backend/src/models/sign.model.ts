@@ -1,8 +1,8 @@
 import type { IBaseModelAttached } from './base.interface'
-import { IMeaningDetails } from './meaning.model'
+import type { IMeaningDetails } from './meaning.model'
 import type { IMediaAttached } from './media.model'
-import { IRegionAttached } from './region.model'
-import { IYearStartEnd } from './yearStartEnd.model'
+import type { IRegionAttached } from './region.model'
+import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
   mediaId: string

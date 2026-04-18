@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
-import { ISourceDetails } from './source.model'
-import { IWordAttached } from './word.model'
+import type { ISourceDetails } from './source.model'
+import type { IWordAttached } from './word.model'
 
 export interface IMeaning {
   explanation: string
