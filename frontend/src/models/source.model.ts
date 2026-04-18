@@ -21,8 +21,7 @@ export interface ISourceWithDetailsToDB {
 }
 
 // TO FRONTEND
-export interface ISourceDetails
-  extends Omit<ISource, 'authorId' | 'evidenceId'>, IBaseModelAttached {
+export interface ISourceDetails extends Omit<ISource, 'referenceId'>, IBaseModelAttached {
   reference: IReferenceAttached
   regions: IRegionAttached[]
 }

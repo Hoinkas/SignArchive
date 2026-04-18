@@ -3,14 +3,13 @@ import { ISourceAttached } from './source.model'
 
 export interface IMeaning {
   explaination: string
-  wordId: string
   signId: number
 }
 
 export type IMeaningAttached = IMeaning & IBaseModelAttached
 
 // TO BACKEND
-export type IMeaningToDB = Omit<IMeaning, 'wordId' | 'signId'>
+export type IMeaningToDB = Omit<IMeaning, 'signId'>
 
 // TO FRONTEND
 export interface IMeaningDetails extends IMeaningAttached {
@@ -20,7 +19,6 @@ export interface IMeaningDetails extends IMeaningAttached {
 // TEMPLATES
 export const meaningTemplate: Record<keyof IMeaning, null> = {
   explaination: null,
-  wordId: null,
   signId: null
 }
 

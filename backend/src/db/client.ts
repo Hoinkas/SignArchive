@@ -50,7 +50,6 @@ function initSchema(db: Database.Database): void {
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
       explaination  TEXT NOT NULL,
-      wordId        TEXT REFERENCES word(id) ON DELETE SET NULL,
       signId        TEXT REFERENCES sign(id) ON DELETE SET NULL,
     );
 
@@ -91,13 +90,20 @@ function initSchema(db: Database.Database): void {
       PRIMARY KEY (meaningId, sourceId)
     );
 
+    CREATE TABLE IF NOT EXISTS wordMeaning (
+      meaningId     TEXT NOT NULL REFERENCES meaning(id) ON DELETE CASCADE,
+      wordId        TEXT NOT NULL REFERENCES word(id) ON DELETE CASCADE,
+      PRIMARY KEY (meaningId, wordId)
+    );
+
     CREATE INDEX IF NOT EXISTS idx_sign_mediaId              ON sign(mediaId);
-    CREATE INDEX IF NOT EXISTS idx_meaning_wordId            ON meaning(wordId);
     CREATE INDEX IF NOT EXISTS idx_meaning_signId            ON meaning(signId);
     CREATE INDEX IF NOT EXISTS idx_source_referenceId        ON source(referenceId);
     CREATE INDEX IF NOT EXISTS idx_regionSource_sourceId     ON regionSource(sourceId);
     CREATE INDEX IF NOT EXISTS idx_regionSource_reigionId    ON regionSource(regionId);
     CREATE INDEX IF NOT EXISTS idx_meaningSource_meaningId   ON meaningSource(meaningId);
     CREATE INDEX IF NOT EXISTS idx_meaningSource_sourceId    ON meaningSource(sourceId);
+    CREATE INDEX IF NOT EXISTS idx_wordMeaning_meaningId     ON wordMeaning(meaningId);
+    CREATE INDEX IF NOT EXISTS idx_wordMeaning_wordId        ON wordMeaning(wordId);
   `)
 }
