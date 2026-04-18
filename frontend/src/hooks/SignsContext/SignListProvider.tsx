@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import React from 'react'
-import { SignContext } from './SignsContext'
+import { SignListContext } from './SignListContext'
 import { signApi } from '@src/services/sign.api'
 import type { ISignSimple } from '@src/models/sign.model'
 
@@ -8,13 +8,12 @@ interface Props {
   children?: React.ReactNode
 }
 
-export default function SignsProvider({ children }: Props): React.JSX.Element {
+export default function SignListProvider({ children }: Props): React.JSX.Element {
   const [signList, setSignList] = useState<ISignSimple[]>([])
   const [signListLoading, setSignListLoading] = useState<boolean>(false)
 
   const initiateSigns = useCallback((): void => {
     setSignListLoading(true)
-    setSignList([])
     signApi.list().then((data) => {
       setSignList(data)
       setSignListLoading(false)
@@ -56,8 +55,8 @@ export default function SignsProvider({ children }: Props): React.JSX.Element {
   // }
 
   return (
-    <SignContext.Provider value={{ signList, signListLoading, initiateSigns }}>
+    <SignListContext.Provider value={{ signList, signListLoading, initiateSigns }}>
       {children}
-    </SignContext.Provider>
+    </SignListContext.Provider>
   )
 }

@@ -25,12 +25,12 @@ function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
     }
   }, [isClicked])
 
-  const fullUrl = media.url.startsWith('http') ? media.url : `${BASE_URL}${media.url}`
+  const fullUrl = media.videoUrl.startsWith('http') ? media.videoUrl : `${BASE_URL}${media.videoUrl}`
 
   return (
     <div className="mediaWrapper">
       {isImage ? (
-        <img src={fullUrl} className="imageBox" alt={media.name} />
+        <img src={fullUrl} className="imageBox" alt={media.description} />
       ) : (
         <div className="videoContainer">
           <video key={fullUrl} ref={videoRef} className="videoBox" controls muted controlsList="novolume">
@@ -38,7 +38,7 @@ function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
           </video>
           {!isClicked && (
             <div className="thumbnailOverlay">
-              <Thumbnail setIsClicked={setIsClicked} media={{ ...media, url: fullUrl }} />
+              <Thumbnail setIsClicked={setIsClicked} media={{ ...media, videoUrl: fullUrl }} />
             </div>
           )}
         </div>

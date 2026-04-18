@@ -1,9 +1,8 @@
-import './LandingPage.css'
 import { signCountText } from '@src/utils/namesHelpers'
 
 function LandingPage(): React.JSX.Element {
   return (
-    <div className='landingPage'>
+    <>
       <p>
         <br/>Obecnie w bazie mamy: {signCountText(15)}
         <br/>
@@ -71,7 +70,7 @@ function LandingPage(): React.JSX.Element {
         <br/>[ ] Przechowywanie wielu filmów dla tego samego znaku aby udostępnić osobom do ich technicznych projektów (np. MachineLearning)
         <br/>[ ] Konta dla użytkowników z możliwością propozycji, modyfikacji słów, znaków, definicji, źródeł, komentowania zmian itp.
       </p>
-    </div>
+    </>
   )
 }
 

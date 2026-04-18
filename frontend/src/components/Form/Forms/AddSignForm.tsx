@@ -7,7 +7,7 @@ import {
   FormMedia
 } from '@src/components/Form/Form'
 import { useWord } from '@src/hooks/WordContext/useWord'
-import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import { useSigns } from '@src/hooks/SignListContext/useSignList'
 import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
 import type { DropdownOption } from '../Components/FormDropdown'
 import { categoriesOptions } from '../Components/DropdownOptions'

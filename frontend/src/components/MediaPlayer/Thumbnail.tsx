@@ -8,10 +8,9 @@ interface ThumbnailProps {
 }
 
 function Thumbnail({setIsClicked, media}: ThumbnailProps): React.JSX.Element {
-  const imageUrl = media.url.replace('.720p.mp4', '.jpg')
-
+  const image = media.thumbnailUrl ?? media.videoUrl
   return (
-    <div className="thumbnail" onClick={() => setIsClicked(true)} style={{backgroundImage: `url("${imageUrl}")`}}>
+    <div className="thumbnail" onClick={() => setIsClicked(true)} style={{backgroundImage: `url("${image}")`}}>
       <PlayIcon/>
     </div>
   )

@@ -1,6 +1,6 @@
 import {  type SubmitEvent, type Dispatch, type SetStateAction, useState } from 'react'
 import { FormMedia, FormModalWrapper, FormMultiLineInput, FormSingleLineInput } from '@src/components/Form/Form'
-import { useSigns } from '@src/hooks/SignsContext/useSigns'
+import { useSigns } from '@src/hooks/SignListContext/useSignList'
 import type { FormType } from '@src/models/yearStartEnd.model'
 import type { ISignDetails, ISignDetailsEdit } from '@src/models/sign.model'
 import type { IMediaAttached } from '@src/models/media.model'

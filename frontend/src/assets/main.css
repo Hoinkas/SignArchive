@@ -13,6 +13,19 @@ body {
 		color var(--trans-dur);
 }
 
+.pageContainer {
+  height: calc(100vh - 64px);
+  width: 100vw;
+  overflow: auto;
+}
+
+.page {
+  width: 80vw;
+  margin: 64px auto;
+  display: flex;
+  flex-direction: column;
+}
+
 input {
   background-color: transparent;
   font-family: var(--font-family);

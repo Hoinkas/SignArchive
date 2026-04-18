@@ -3,10 +3,24 @@ import LandingPage from './pages/LandingPage/LandingPage'
 import NavBar from './components/NavBar/NavBar'
 import { useEffect } from 'react'
 import isDarkTheme from './utils/isDarkTheme'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
 import SignsPage from './pages/SignsPage/SignsPage'
-import SignsProvider from './hooks/SignsContext/SignsProvider'
+import SignListProvider from './hooks/SignsContext/SignListProvider'
+
+function PageLayout() {
+  return (
+    <>
+      <NavBar />
+      <div className="pageContainer">
+        <div className='page'>
+          <Outlet />
+        </div>
+      </div>
+    </>
+  )
+}
+
 
 function App(): React.JSX.Element {
   useEffect(() =>{
@@ -16,12 +30,12 @@ function App(): React.JSX.Element {
   return (
     <BrowserRouter>
       <PermissionsProvider>
-        <NavBar/>
-
         <Routes>
-          <Route path="/" element={<LandingPage/>} />
-          <Route path="/signs/" element={<SignsProvider><SignsPage/></SignsProvider>} />
-          <Route path="*" element={<PageNotFound />} />
+          <Route element={<PageLayout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signs/" element={<SignListProvider><SignsPage /></SignListProvider>} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
         </Routes>
       </PermissionsProvider>
     </BrowserRouter>

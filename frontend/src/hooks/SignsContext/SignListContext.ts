@@ -1,13 +1,13 @@
 import type { ISignSimple } from '@src/models/sign.model'
 import { createContext } from 'react'
 
-export interface SignContextValue {
+export interface SignListContextValue {
   signList: ISignSimple[]
   signListLoading: boolean
   initiateSigns: () => void
 }
 
-export const SignContext = createContext<SignContextValue>({
+export const SignListContext = createContext<SignListContextValue>({
   signList: [],
   signListLoading: false,
   initiateSigns: () => {}
