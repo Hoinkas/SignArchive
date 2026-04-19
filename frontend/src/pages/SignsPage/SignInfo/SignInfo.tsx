@@ -17,7 +17,7 @@ function SignInfo({ signSimple }: SignInfoProps): React.JSX.Element {
       <div className='additionalInfo'>{meaningCountText(meaningsCount)}</div>
       <div className='additionalInfo details'><PinIcon/> {regions.length > 0 ? regions.join(', ') : 'Brak regionów'}</div>
       <div className='additionalInfo details'><CalendarIcon/> {mergeYearText(years)}</div>
-      <PillList textArray={words}/>
+      {words.length > 0 ? <PillList textArray={words}/> : <div className='additionalInfo'>Brak słów</div>}
     </div>
   )
 }

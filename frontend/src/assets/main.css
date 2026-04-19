@@ -21,8 +21,7 @@ body {
 
 .page {
   width: 80vw;
-  padding: 64px 0;
-  margin: 0 auto;
+  margin: 64px auto;
   display: flex;
   flex-direction: column;
 

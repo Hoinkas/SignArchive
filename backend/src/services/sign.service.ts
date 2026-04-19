@@ -89,19 +89,6 @@ export function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttach
   return sign
 }
 
-// export function createSignWithMedia(data: ISignDetailsToDB): ISignWithMedia {
-//   const transaction = getDb().transaction(() => {
-//     const media = findMediaByVideoUrl(data.media.videoUrl) ?? createMedia(data.media)
-//     const sign = createSign(data, media.id)
-
-//     return {
-//       ...sign,
-//       media
-//     } satisfies ISignWithMedia
-//   })
-//   return transaction()
-// }
-
 // UPDATE
 export function updateSign(signId: string, data: Partial<ISign>): void {
   buildUpdateQuery('sign', signId, data as Record<string, unknown>)

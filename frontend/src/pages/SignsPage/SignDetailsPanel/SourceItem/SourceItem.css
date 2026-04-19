@@ -1,0 +1,14 @@
+.sourceItem {
+  padding: var(--space-4) var(--space-6);
+  border: var(--line-border);
+  border-radius: var(--radius-md);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.yearsRegions {
+  display: inline-flex;
+  gap: var(--space-3);
+}

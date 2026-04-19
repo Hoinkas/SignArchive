@@ -1,17 +1,39 @@
 .signDetails {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: var(--navBar-height);
   right: 0;
-  width: 60%;
+  width: 50%;
+  min-width: 640px;
   background-color: var(--color-bg);
   height: calc(100vh - var(--navBar-height));
   border-left: var(--line-border);
+  z-index: 100;
 
-  padding: 48px 64px;
+  padding: 48px 36px;
+
+  display:flex;
+  flex-direction: column;
+  gap: var(--space-6);
 
   @media (max-width: 768px) {
     width: 100%;
     position: fixed;
     border: none;
   }
+}
+
+.stickyBar {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.generalAndMedia {
+  display: inline-flex;
+  gap: var(--space-6);
+}
+
+.signTitle {
+  font-size: var(--font-size-xxl);
+  line-height: var(--font-size-xxl);
 }
