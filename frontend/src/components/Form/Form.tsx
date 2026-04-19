@@ -1,5 +1,7 @@
 import { type SubmitEvent, useRef } from 'react'
 import './Form.css'
+import { createPortal } from 'react-dom'
+import type { FormType } from '@src/models/yearStartEnd.model'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -77,7 +79,7 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
   const showError = submitted && required && value === ''
 
   return (
-    <div className="formGroup ">
+    <div className="formGroup">
       <label>
         {label}
         {required && <span> *</span>}
@@ -109,9 +111,6 @@ export function FormButtons(props: FormButtonsProps): React.JSX.Element {
     </div>
   )
 }
-
-import type { FormType } from '@src/models/yearStartEnd.model'
-import { createPortal } from 'react-dom'
 
 interface FormMediaProps {
   label: string
