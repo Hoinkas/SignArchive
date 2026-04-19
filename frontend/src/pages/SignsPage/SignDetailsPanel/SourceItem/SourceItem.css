@@ -12,3 +12,9 @@
   display: inline-flex;
   gap: var(--space-3);
 }
+
+.referencesBox {
+  display: inline-flex;
+  align-content: center;
+  gap: var(--space-1);
+}

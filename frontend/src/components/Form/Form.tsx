@@ -22,17 +22,6 @@ export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
   )
 }
 
-export function FormWrapper(props: FormWrapperProps): React.JSX.Element {
-  const { children, handleSubmit, formType, closeForm } = props
-
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      {children}
-      <FormButtons formType={formType} closeForm={closeForm} />
-    </form>
-  )
-}
-
 interface FormTwoInLineWrapperProps {
   children: React.JSX.Element[]
 }

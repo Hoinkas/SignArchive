@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: end;
 
-  gap: var(--space-6);
+  gap: var(--space-3);
 }
 
 .meaningItem {
@@ -24,6 +24,14 @@
   line-height: var(--font-size-lg);
 }
 
+.wordsContainer {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
 .sourcesList {
-  width: 90%;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }

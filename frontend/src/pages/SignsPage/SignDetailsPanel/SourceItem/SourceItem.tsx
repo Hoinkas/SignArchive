@@ -11,7 +11,7 @@ interface SourceItemProps {
 function SourceItem({sourceDetails}: SourceItemProps): React.JSX.Element {
   const {reference, regions, ...source} = sourceDetails
   const regionsNames = regions.map((r) => r.name)
-  const {yearStart, yearEnd} = source
+  const {yearStart, yearEnd, context} = source
   const yearStartEnd = {yearStart, yearEnd}
 
   return (
@@ -20,10 +20,11 @@ function SourceItem({sourceDetails}: SourceItemProps): React.JSX.Element {
         <PillList textArray={[mergeYearText(yearStartEnd)]}/>
         <div className='additionalInfo details'><PinIcon/> {regionsNames.length > 0 ? regionsNames.join(', ') : 'Brak regionów'}</div>
       </div>
-      <div>{source.context}</div>
-      <div className='additionalInfo'>Źródło: {reference.name}</div>
+      <div>{context}</div>
+      <div className='additionalInfo'> Źródło: {reference.name} </div>
     </div>
   )
 }
 
 export default SourceItem
+

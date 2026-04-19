@@ -25,9 +25,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
 
   const editSignInSignList = (data: ISignSimple): void => {
     setSignList((prev) => prev.map((s) => (
-      s.id === data.id
-        ? { ...s, ...data }
-        : s
+      s.id === data.id ? { ...s, ...data } : s
     )))
   }
 
