@@ -8,4 +8,5 @@ referenceRouter.route('/').post(requireAdmin, asyncHandler(referenceController.c
 
 referenceRouter
   .route('/:referenceId')
+  .patch(requireAdmin, asyncHandler(referenceController.update))
   .delete(requireAdmin, asyncHandler(referenceController.delete))

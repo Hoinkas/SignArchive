@@ -1,19 +1,18 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { createReference, findReferenceById } from './reference.service'
-import { createRegions, findRegionsBySourceId } from './region.service'
+import { findReferenceById } from './reference.service'
+import { findRegionsBySourceId } from './region.service'
 import {
   ISource,
   ISourceAttached,
   ISourceDetails,
   ISourceToDB,
-  ISourceWithDetailsToDB,
   sourceTemplate
 } from '../models/source.model'
 import { fillMissingValues } from '../utils/helpers.functions'
-import { mapRegionsSourceIdLinks } from './regionSource.service'
 import { IYearStartEnd } from '../models/yearStartEnd.model'
 import { buildUpdateQuery } from '../utils/buildUpdateQuery'
+import { createMeaningSourceLink } from './meaningSource.service'
 
 // MAP DETAILS
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
@@ -39,7 +38,9 @@ export function getStartEndYearBySignId(signId: string): IYearStartEnd {
     )
     .get(signId) as Record<string, number | null>
 
-  const all = [row.a, row.b, row.c, row.d].filter((v): v is number => v !== null)
+  const all = [row.a, row.b, row.c, row.d].filter((v): v is number => v !== null && v !== undefined)
+
+  console.log(all)
 
   if (all.length === 0) return { yearStart: null, yearEnd: null }
   return { yearStart: Math.min(...all), yearEnd: Math.max(...all) }
@@ -79,16 +80,13 @@ function createSource(data: ISource): ISourceAttached {
   return source
 }
 
-export function createSourceWithDetails(data: ISourceWithDetailsToDB): ISourceDetails {
+export function createSourceWithMeaningLink(data: ISource, meaningId: string): ISourceDetails {
   const transaction = getDb().transaction(() => {
-    const reference = createReference(data.reference)
-    const source = createSource({ ...data.source, referenceId: reference.id })
-
-    const regions = createRegions(data.regions)
-    mapRegionsSourceIdLinks(regions, source.id)
-
-    const { referenceId, ...rest } = source
-    return { ...rest, reference, regions } satisfies ISourceDetails
+    const source = createSource(data)
+    createMeaningSourceLink({ meaningId, sourceId: source.id })
+    const reference = findReferenceById(source.referenceId)
+    if (!reference) throw new Error('Reference not found')
+    return { ...source, reference, regions: [] } satisfies ISourceDetails
   })
   return transaction()
 }

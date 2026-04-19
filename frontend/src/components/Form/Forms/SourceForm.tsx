@@ -101,7 +101,7 @@ function SourceForm({ source, meaningId, formType, setIsFormOpen }: SourceFormPr
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
       <FormSingleLineInput label="Online URL" value={referenceUrl} setValue={setReferenceUrl} />
       <FormTwoInLineWrapper>
-        <FormTags label="Regiony użycia" dropdownOptions={regionsOptions} tagList={regions} setTagList={setRegions} required submitted={submitted} />
+        <FormTags label="Regiony użycia" dropdownOptions={regionsOptions} tagList={regions} setTagList={setRegions} />
         <FormSingleLineInput label="Krótka nazwa źródła" value={referenceName} setValue={setReferenceName} required submitted={submitted} />
       </FormTwoInLineWrapper>
       <FormMultiLineInput label="Długa nazwa źródła" value={referenceFullName} setValue={setReferenceFullName} required submitted={submitted} />

@@ -16,6 +16,7 @@ import type { IRegionAttached } from '@src/models/region.model'
 import type { ISourceWithDetailsToDB, ISourceDetails } from '@src/models/source.model'
 import { sourceApi } from '@src/services/source.api'
 import { addRegionsToSource, getRegionChanges, deleteRegionsFromSource, applyRegionChangesToState } from './sourceToMeaningActions'
+import { referenceApi } from '@src/services/reference.api'
 
 interface Props {
   children?: React.ReactNode
@@ -152,7 +153,8 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   }
 
   const addSource = (meaningId: string, data: ISourceWithDetailsToDB, regions: DropdownOption[], closeForm: () => void): void => {
-    sourceApi.create(meaningId, data)
+    referenceApi.create(data.reference)
+      .then((reference) => sourceApi.create(meaningId, { ...data.source, referenceId: reference.id }))
       .then((result) =>
         addRegionsToSource(result.id, regions)
           .then((createdRegions) => {
@@ -179,12 +181,19 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   ): void => {
     const { toAdd, toDelete } = getRegionChanges(oldRegions, newRegions)
 
+    const referenceId = sign?.meanings
+      .flatMap((m) => m.sources)
+      .find((s) => s.id === sourceId)?.reference.id
+
     Promise.all([
       Object.keys(sourceChanges).length > 0 ? sourceApi.update(sourceId, sourceChanges) : Promise.resolve(),
+      sourceChanges.reference && referenceId
+        ? referenceApi.update(referenceId, sourceChanges.reference)
+        : Promise.resolve(),
       addRegionsToSource(sourceId, toAdd),
       deleteRegionsFromSource(sourceId, toDelete)
     ])
-      .then(([, addedRegions]) => {
+      .then(([,, addedRegions]) => {
         setSign((prev) => prev ? {
           ...prev,
           meanings: prev.meanings.map((m) => m.id === meaningId ? {
@@ -200,7 +209,14 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   }
 
   const deleteSource = (meaningId: string, sourceId: string): void => {
+    const source = sign?.meanings
+      .flatMap((m) => m.sources)
+      .find((s) => s.id === sourceId)
+
+    const referenceId = source?.reference.id
+
     sourceApi.delete(sourceId)
+      .then(() => referenceId ? referenceApi.delete(referenceId) : Promise.resolve())
       .then(() => setSign((prev) => prev ? {
         ...prev,
         meanings: prev.meanings.map((m) => m.id === meaningId ? {

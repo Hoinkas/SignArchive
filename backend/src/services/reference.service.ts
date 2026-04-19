@@ -3,6 +3,7 @@ import { getDb } from '../db/client'
 import { IReference, IReferenceAttached } from '../../../shared/models/reference.model'
 import { fillMissingValues } from '../utils/helpers.functions'
 import { referenceTemplate } from '../models/reference.model'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
 // FIND
 export function findReferenceById(referenceId: string): IReferenceAttached | undefined {
@@ -20,6 +21,11 @@ export function createReference(data: IReference): IReferenceAttached {
     )
     .run(fillMissingValues<IReference>(reference, referenceTemplate))
   return reference
+}
+
+// UPDATE
+export function updateReference(referenceId: string, data: Partial<IReference>): void {
+  buildUpdateQuery('reference', referenceId, data as Record<string, unknown>)
 }
 
 // DELETE

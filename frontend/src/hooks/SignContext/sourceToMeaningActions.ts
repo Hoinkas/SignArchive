@@ -1,7 +1,7 @@
+import { regionApi } from '@src/services/region.api'
 import type { DropdownOption } from '@src/components/Form/Components/DropdownOptions'
 import type { IRegionAttached } from '@src/models/region.model'
 import type { ISourceDetails } from '@src/models/source.model'
-import { regionApi } from '@src/services/region.api'
 
 export function getRegionChanges(oldRegions: DropdownOption[], newRegions: DropdownOption[]) {
   return {

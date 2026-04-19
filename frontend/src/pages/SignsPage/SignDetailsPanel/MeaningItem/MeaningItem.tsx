@@ -7,44 +7,6 @@ import { useState } from 'react'
 import SourceForm from '@src/components/Form/Forms/SourceForm'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 
-// const sources: ISourceDetails[] =
-//   [
-//       {
-//         id: '',
-//         createdAt: 0,
-//         context: 'No oznacza kraj',
-//         yearStart: 1985,
-//         yearEnd: 2026,
-//         reference: {
-//           id: '',
-//           createdAt: 0,
-//           name: 'Świat Głuchych',
-//           fullName: 'Magazyn Świat Głuchych wydawany przez PZG',
-//           type: 'book',
-//           url: '',
-//           notes: 'To magazyn słyszaków. Nie wiadomo czy g/Głusi używali tych znaków'
-//         },
-//         regions: [{id: '', createdAt: 0, name: 'Kraków'}, {id: '', createdAt: 0, name: 'Warszawa'}]
-//         },
-//         {
-//         id: '',
-//         createdAt: 0,
-//         context: 'No oznacza kraj',
-//         yearStart: 1985,
-//         yearEnd: 2026,
-//         reference: {
-//           id: '',
-//           createdAt: 0,
-//           name: 'Świat Głuchych',
-//           fullName: 'Magazyn Świat Głuchych wydawany przez PZG',
-//           type: 'book',
-//           url: '',
-//           notes: 'To magazyn słyszaków. Nie wiadomo czy g/Głusi używali tych znaków'
-//         },
-//         regions: [{id: '', createdAt: 0, name: 'Kraków'}, {id: '', createdAt: 0, name: 'Warszawa'}]
-//         }
-//     ]
-
 interface MeaningItemProps {
   meaningDetails: IMeaningDetails
 }

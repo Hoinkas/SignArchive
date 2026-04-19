@@ -8,7 +8,9 @@ export const sourceController = {
   },
 
   create: async (req: Request, res: Response): Promise<void> => {
-    res.status(201).json(sourceService.createSourceWithDetails(req.body))
+    res
+      .status(201)
+      .json(sourceService.createSourceWithMeaningLink(req.body, param(req, 'meaningId')))
   },
 
   update: async (req: Request, res: Response): Promise<void> => {

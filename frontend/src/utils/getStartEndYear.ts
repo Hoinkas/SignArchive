@@ -6,12 +6,15 @@ export function getYearsFromMeanings(meanings: IMeaningDetails[]): IYearStartEnd
   const years = meanings
     .flatMap((m) => m.sources)
     .flatMap((s) => [s.yearStart, s.yearEnd])
-    .filter((v): v is number => v !== null)
+    .filter((v): v is number => v !== null && v !== undefined)
+
+  if (years.length === 0) return { yearStart: null, yearEnd: null }
 
   return { yearStart: Math.min(...years), yearEnd: Math.max(...years) }
 }
 
-export function getYearsFromSources(sources: ISourceDetails[]): IYearStartEnd {
+export function getYearsFromSources(sources: ISourceDetails[]): IYearStartEnd | undefined {
+  if (sources.length === 0) return undefined
   const years = sources
     .flatMap((s) => [s.yearStart, s.yearEnd])
     .filter((v): v is number => v !== null)

@@ -7,6 +7,11 @@ export const referenceController = {
     res.status(201).json(referenceService.createReference(req.body))
   },
 
+  update: async (req: Request, res: Response): Promise<void> => {
+    referenceService.updateReference(param(req, 'referenceId'), req.body)
+    res.status(204).send()
+  },
+
   delete: async (req: Request, res: Response): Promise<void> => {
     referenceService.deleteReference(param(req, 'referenceId'))
     res.status(204).send()
