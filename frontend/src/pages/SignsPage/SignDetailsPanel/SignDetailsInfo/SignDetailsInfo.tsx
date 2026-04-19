@@ -15,8 +15,9 @@ function SignDetailsInfo(): React.JSX.Element {
       <MediaPlayer media={sign.media}/>
       <SignInfo signSimple={simpleSign}/>
       {isFormOpen ?
-      <MeaningForm formType='add' setIsFormOpen={setIsFormOpen}/> :
-      <ActionButton text="Dodaj znaczenie" buttonAction={() => setIsFormOpen(true)}/>}
+        <MeaningForm formType='add' setIsFormOpen={setIsFormOpen}/> :
+        <ActionButton text="Dodaj znaczenie" buttonAction={() => setIsFormOpen(true)}/>
+      }
     </div>
   )
 }

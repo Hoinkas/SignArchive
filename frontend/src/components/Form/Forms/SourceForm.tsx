@@ -1,105 +1,117 @@
-import {  type SubmitEvent, type Dispatch, type SetStateAction, useEffect, useState } from 'react'
-import { FormModalWrapper, FormMultiLineInput, FormSingleLineInput, FormTwoInLineWrapper } from '../Form'
-import { useSources } from '@src/hooks/SourcesContext/useSources'
-import type { DropdownOption } from '../Components/FormDropdown'
-import { FormCustomInputDropdown } from '../Components/FormCustomInputDropdown'
-import { authorApi } from '@src/services/author.api'
-import type { ISourceDetails, ISourceToCreate, ISourceWithDetailsToDB } from '@src/models/source.model'
-import type { IAuthor, IAuthorAttached } from '@src/models/author.model'
-import type { FormType } from '@src/models/yearStartEnd.model'
-import type { EvidenceType, IEvidence } from '@src/models/evidence.model'
-import FormDropdown from '../Components/FormDropdown'
-import { evidencesTypes } from '../Components/DropdownOptions'
+import { useSign } from "@src/hooks/SignContext/useSign"
+import type { IReference, ReferenceType } from "@src/models/reference.model"
+import type { ISourceDetails, ISourceToDB, ISourceWithDetailsToDB } from "@src/models/source.model"
+import type { FormType } from "@src/models/yearStartEnd.model"
+import { regionApi } from "@src/services/region.api"
+import { type Dispatch, type SetStateAction, useState, useEffect } from "react"
+import { evidencesTypes, type DropdownOption } from "../Components/DropdownOptions"
+import FormDropdown from "../Components/FormDropdown"
+import FormTags from "../Components/FormTags"
+import { FormModalWrapper, FormSingleLineInput, FormMultiLineInput, FormTwoInLineWrapper } from "../Form"
+
 
 interface SourceFormProps {
   source?: ISourceDetails
+  meaningId: string
   formType: FormType
   setIsFormOpen: Dispatch<SetStateAction<boolean>>
 }
 
-function SourceForm({ source, formType, setIsFormOpen }: SourceFormProps): React.JSX.Element {
-  const { addSource, editSource } = useSources()
+function SourceForm({ source, meaningId, formType, setIsFormOpen }: SourceFormProps): React.JSX.Element {
+  const { addSource, editSource } = useSign()
   const [submitted, setSubmitted] = useState(false)
 
-  const [authors, setAuthors] = useState<IAuthorAttached[]>([])
-  const [notes, setNotes] = useState(source?.notes ?? '')
-  const [region, setRegion] = useState(source?.region ?? '')
   const [yearStart, setYearStart] = useState(source?.yearStart?.toString() ?? '')
   const [yearEnd, setYearEnd] = useState(source?.yearEnd?.toString() ?? '')
-  const [evidenceUrl, setEvidenceUrl] = useState<string>(source?.evidence.url ?? '')
-  const [evidenceName, setEvidenceName] = useState<string>(source?.evidence.name ?? '')
-  const [evidenceFullName, setEvidenceFullName] = useState<string>(source?.evidence.fullName ?? '')
-  const [translations, setTranslations] = useState<string>(source?.translations ?? '')
-  const [typeOption, setTypeOption] = useState<DropdownOption | null>(source ? {id: source?.evidence.type, label: source?.evidence.type} : null)
-  const [authorOption, setAuthorOption] = useState<DropdownOption | null>(
-    source ? { id: source.author.id, label: source.author.name } : null
+  const [context, setContext] = useState(source?.context ?? '')
+
+  const [regions, setRegions] = useState<DropdownOption[]>(
+    source ? source.regions.map((r) => ({ id: r.id, label: r.name })) : []
   )
+  const [regionsOptions, setRegionsOptions] = useState<DropdownOption[]>([])
+
+  const [referenceUrl, setReferenceUrl] = useState<string>(source?.reference.url ?? '')
+  const [referenceName, setReferenceName] = useState<string>(source?.reference.name ?? '')
+  const [referenceFullName, setReferenceFullName] = useState<string>(source?.reference.fullName ?? '')
+  const [typeOption, setTypeOption] = useState<DropdownOption | null>(
+    source ? { id: source.reference.type, label: source.reference.type } : null
+  )
+  const [notes, setNotes] = useState(source?.reference.notes ?? '')
 
   useEffect(() => {
-    authorApi.list().then(setAuthors)
+    regionApi.list().then((result) =>
+      setRegionsOptions(result.map((r) => ({ id: r.id, label: r.name })))
+    )
   }, [])
 
   const closeForm = (): void => {
     setNotes('')
-    setEvidenceUrl('')
-    setRegion('')
+    setReferenceUrl('')
+    setContext('')
     setYearStart('')
     setYearEnd('')
-    setTranslations('')
-    setAuthorOption(null)
+    setRegions([])
+    setReferenceName('')
+    setReferenceFullName('')
+    setTypeOption(null)
     setIsFormOpen(false)
   }
 
-  const isValid = authorOption && evidenceName && evidenceFullName && translations && typeOption
+  const isValid = referenceName && referenceFullName && typeOption && regions.length > 0 && context
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
     event.preventDefault()
     setSubmitted(true)
     if (!isValid) return
 
-    const evidence: IEvidence = { url: evidenceUrl, name: evidenceName, fullName: evidenceFullName, type: typeOption.label as EvidenceType}
-    const author: IAuthor = { name: authorOption.label }
-    const sourceToCreate: ISourceToCreate = {
-      notes: notes !== '' ? notes : undefined,
-      region: region !== '' ? region : undefined,
+    const referenceToCreate: IReference = {
+      url: referenceUrl !== '' ? referenceUrl : undefined,
+      name: referenceName,
+      fullName: referenceFullName,
+      type: typeOption.label as ReferenceType,
+      notes: notes !== '' ? notes : undefined
+    }
+
+    const sourceToCreate: ISourceToDB = {
       yearStart: yearStart !== '' ? parseInt(yearStart) : undefined,
       yearEnd: yearEnd !== '' ? parseInt(yearEnd) : undefined,
-      translations: translations !== '' ? translations : undefined
+      context: context !== '' ? context : undefined
     }
-    const data: ISourceWithDetailsToDB = { source: sourceToCreate, evidence, author }
 
     if (formType === 'add') {
-      addSource(data, closeForm)
+      const data: ISourceWithDetailsToDB = {
+        source: sourceToCreate,
+        reference: referenceToCreate,
+        regions: []
+      }
+      addSource(meaningId, data, regions, closeForm)
     } else if (formType === 'edit' && source) {
-      editSource(source.id, data, closeForm)
+      const oldRegions = source.regions.map((r): DropdownOption => ({ id: r.id, label: r.name }))
+      const sourceChanges: Partial<ISourceDetails> = {
+        context: sourceToCreate.context,
+        yearStart: sourceToCreate.yearStart,
+        yearEnd: sourceToCreate.yearEnd,
+        reference: { ...source.reference, ...referenceToCreate }
+      }
+      editSource(meaningId, source.id, sourceChanges, oldRegions, regions, closeForm)
     }
   }
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
+      <FormSingleLineInput label="Online URL" value={referenceUrl} setValue={setReferenceUrl} />
       <FormTwoInLineWrapper>
-        <FormCustomInputDropdown
-          label="Autor / publikacja"
-          options={authors.map((a) => ({ id: a.id, label: a.name }))}
-          value={authorOption}
-          setValue={setAuthorOption}
-          required
-          submitted={submitted}
-        />
-        <FormSingleLineInput label="Region" value={region} setValue={setRegion} />
+        <FormTags label="Regiony użycia" dropdownOptions={regionsOptions} tagList={regions} setTagList={setRegions} required submitted={submitted} />
+        <FormSingleLineInput label="Krótka nazwa źródła" value={referenceName} setValue={setReferenceName} required submitted={submitted} />
       </FormTwoInLineWrapper>
+      <FormMultiLineInput label="Długa nazwa źródła" value={referenceFullName} setValue={setReferenceFullName} required submitted={submitted} />
       <FormTwoInLineWrapper>
         <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={setYearStart} type='number' />
         <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={setYearEnd} type='number' />
-        <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption} required submitted={submitted}/>
+        <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption} required submitted={submitted} />
       </FormTwoInLineWrapper>
-      <FormSingleLineInput label="Online URL" value={evidenceUrl} setValue={setEvidenceUrl} />
-      <FormTwoInLineWrapper>
-        <FormSingleLineInput label="Krótka nazwa źródła" value={evidenceName} setValue={setEvidenceName} required submitted={submitted} />
-        <FormSingleLineInput label="Tłumaczenie znaku" value={translations} setValue={setTranslations} required submitted={submitted} />
-      </FormTwoInLineWrapper>
-      <FormMultiLineInput label="Długa nazwa źródła" value={evidenceFullName} setValue={setEvidenceFullName} required submitted={submitted} />
-      <FormMultiLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
+      <FormSingleLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
+      <FormMultiLineInput label="Wyjaśnienie użycia" value={context} setValue={setContext} required submitted={submitted} />
     </FormModalWrapper>
   )
 }

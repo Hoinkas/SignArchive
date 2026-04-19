@@ -12,6 +12,10 @@ import type { DropdownOption } from '@src/components/Form/Components/DropdownOpt
 import { addWordsToMeaning, applyWordChangesToState, deleteWordsFromMeaning, getWordChanges } from './wordToMeaningActions'
 import { meaningApi } from '@src/services/meaning.api'
 import type { IWordAttached } from '@src/models/word.model'
+import type { IRegionAttached } from '@src/models/region.model'
+import type { ISourceWithDetailsToDB, ISourceDetails } from '@src/models/source.model'
+import { sourceApi } from '@src/services/source.api'
+import { addRegionsToSource, getRegionChanges, deleteRegionsFromSource, applyRegionChangesToState } from './sourceToMeaningActions'
 
 interface Props {
   children?: React.ReactNode
@@ -147,6 +151,66 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       .catch((err) => { console.error(err); throw err })
   }
 
+  const addSource = (meaningId: string, data: ISourceWithDetailsToDB, regions: DropdownOption[], closeForm: () => void): void => {
+    sourceApi.create(meaningId, data)
+      .then((result) =>
+        addRegionsToSource(result.id, regions)
+          .then((createdRegions) => {
+            setSign((prev) => prev ? {
+              ...prev,
+              meanings: prev.meanings.map((m) => m.id === meaningId
+                ? { ...m, sources: [...m.sources, { ...result, regions: createdRegions }] }
+                : m
+              )
+            } : prev)
+          })
+      )
+      .catch((err) => { console.error(err); throw err })
+      .finally(() => closeForm())
+  }
+
+  const editSource = (
+    meaningId: string,
+    sourceId: string,
+    sourceChanges: Partial<ISourceDetails>,
+    oldRegions: DropdownOption[],
+    newRegions: DropdownOption[],
+    closeForm: () => void
+  ): void => {
+    const { toAdd, toDelete } = getRegionChanges(oldRegions, newRegions)
+
+    Promise.all([
+      Object.keys(sourceChanges).length > 0 ? sourceApi.update(sourceId, sourceChanges) : Promise.resolve(),
+      addRegionsToSource(sourceId, toAdd),
+      deleteRegionsFromSource(sourceId, toDelete)
+    ])
+      .then(([, addedRegions]) => {
+        setSign((prev) => prev ? {
+          ...prev,
+          meanings: prev.meanings.map((m) => m.id === meaningId ? {
+            ...m,
+            sources: applyRegionChangesToState(
+              m.sources, sourceId, sourceChanges, addedRegions as IRegionAttached[], toDelete.map((r) => r.id)
+            )
+          } : m)
+        } : prev)
+      })
+      .catch((err) => { console.error(err); throw err })
+      .finally(() => closeForm())
+  }
+
+  const deleteSource = (meaningId: string, sourceId: string): void => {
+    sourceApi.delete(sourceId)
+      .then(() => setSign((prev) => prev ? {
+        ...prev,
+        meanings: prev.meanings.map((m) => m.id === meaningId ? {
+          ...m,
+          sources: m.sources.filter((s) => s.id !== sourceId)
+        } : m)
+      } : prev))
+      .catch((err) => { console.error(err); throw err })
+  }
+
   return (
     <SignContext.Provider value={{
       sign,
@@ -158,7 +222,10 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       deleteSignAndMedia,
       addMeaning,
       editMeaning,
-      deleteMeaning
+      deleteMeaning,
+      addSource,
+      editSource,
+      deleteSource
     }}>
       {children}
     </SignContext.Provider>
