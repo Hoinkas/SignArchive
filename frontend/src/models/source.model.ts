@@ -22,7 +22,7 @@ export interface ISourceWithDetailsToDB {
 
 // TO FRONTEND
 export interface ISourceDetails extends Omit<ISource, 'referenceId'>, IBaseModelAttached {
-  reference: IReferenceAttached | null
+  reference: IReferenceAttached
   regions: IRegionAttached[]
 }
 

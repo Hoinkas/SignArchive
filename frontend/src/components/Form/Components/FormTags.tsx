@@ -8,10 +8,11 @@ interface AddTagFormProps {
   addValue: (tag: DropdownOption) => void
   required?: boolean
   submitted?: boolean
+  customValidator: boolean
 }
 
 function AddTagForm(props: AddTagFormProps): React.JSX.Element {
-  const { label, required, submitted, dropdownOptions, addValue } = props
+  const { label, required, submitted, dropdownOptions, addValue, customValidator } = props
   const [tag, setTag] = useState<DropdownOption | null>(null)
   const [resetKey, setResetKey] = useState(0)
 
@@ -31,6 +32,7 @@ function AddTagForm(props: AddTagFormProps): React.JSX.Element {
         setValue={setTag}
         required={required}
         submitted={submitted}
+        customValidator={customValidator}
       />
       {tag && <button type="button" onClick={() => handleTagAdd(tag)}>
         Dodaj
@@ -77,6 +79,7 @@ function FormTags(props: TagFormProps): React.JSX.Element {
         dropdownOptions={dropdownOptions}
         required={required}
         submitted={submitted}
+        customValidator={tagList.length === 0}
       />
     </div>
   )

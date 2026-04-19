@@ -7,6 +7,11 @@ import { useSignList } from '../SignListContext/useSignList'
 import { mapDetailedSignToSimple } from '@src/utils/signsTypesHelpers'
 import type { IMediaToDB } from '@src/models/media.model'
 import { mediaApi } from '@src/services/media.api'
+import type { IMeaningAttached, IMeaningToDB } from '@src/models/meaning.model'
+import type { DropdownOption } from '@src/components/Form/Components/DropdownOptions'
+import { addWordsToMeaning, applyWordChangesToState, deleteWordsFromMeaning, getWordChanges } from './wordToMeaningActions'
+import { meaningApi } from '@src/services/meaning.api'
+import type { IWordAttached } from '@src/models/word.model'
 
 interface Props {
   children?: React.ReactNode
@@ -88,8 +93,73 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       })
   }
 
+  const addMeaning = (data: IMeaningToDB, words: DropdownOption[], closeForm: () => void): void => {
+    if (!sign) return
+    meaningApi.create(sign.id, data)
+      .then((result) =>
+        addWordsToMeaning(result.id, words)
+          .then((createdWords) => {
+            setSign((prev) => prev ? {
+              ...prev,
+              meanings: [...prev.meanings, { ...result, words: createdWords }]
+            } : prev)
+          })
+      )
+      .catch((err) => { console.error(err); throw err })
+      .finally(() => closeForm())
+  }
+
+  const editMeaning = (
+    meaningId: string,
+    meaningChanges: Partial<IMeaningAttached>,
+    oldWords: DropdownOption[],
+    newWords: DropdownOption[],
+    closeForm: () => void
+  ): void => {
+    const { toAdd, toDelete } = getWordChanges(oldWords, newWords)
+
+    Promise.all([
+      Object.keys(meaningChanges).length > 0 ? meaningApi.update(meaningId, meaningChanges) : Promise.resolve(),
+      addWordsToMeaning(meaningId, toAdd),
+      deleteWordsFromMeaning(meaningId, toDelete)
+    ])
+      .then(([, addedWords]) => {
+        setSign((prev) => {
+          if (!prev) return prev
+          return {
+            ...prev,
+            meanings: applyWordChangesToState(
+              prev.meanings, meaningId, meaningChanges, addedWords as IWordAttached[], toDelete.map((w) => w.id)
+            )
+          }
+        })
+      })
+      .catch((err) => { console.error(err); throw err })
+      .finally(() => closeForm())
+  }
+
+  const deleteMeaning = (deleteId: string): void => {
+    meaningApi.delete(deleteId)
+      .then(() => setSign((prev) => prev ? {
+        ...prev,
+        meanings: prev.meanings.filter((m) => m.id !== deleteId)
+      } : prev))
+      .catch((err) => { console.error(err); throw err })
+  }
+
   return (
-    <SignContext.Provider value={{ sign, simpleSign, signLoading, openCloseSidePanel, addSignAndMedia, editSignAndMedia, deleteSignAndMedia }}>
+    <SignContext.Provider value={{
+      sign,
+      simpleSign,
+      signLoading,
+      openCloseSidePanel,
+      addSignAndMedia,
+      editSignAndMedia,
+      deleteSignAndMedia,
+      addMeaning,
+      editMeaning,
+      deleteMeaning
+    }}>
       {children}
     </SignContext.Provider>
   )

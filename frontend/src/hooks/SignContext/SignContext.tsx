@@ -1,3 +1,5 @@
+import type { DropdownOption } from '@src/components/Form/Components/DropdownOptions'
+import type { IMeaningAttached, IMeaningToDB } from '@src/models/meaning.model'
 import type { IMediaToDB } from '@src/models/media.model'
 import type { ISignDetails, ISignDetailsToDB, ISignSimple } from '@src/models/sign.model'
 import { createContext } from 'react'
@@ -10,6 +12,9 @@ export interface SignContextValue {
   addSignAndMedia: (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void) => void
   editSignAndMedia: (signId: string, signChanges: Partial<ISignDetailsToDB>, mediaChanges: Partial<IMediaToDB>, closeForm: () => void) => void
   deleteSignAndMedia: (deleteId: string) => void
+  addMeaning: (data: IMeaningToDB, words: DropdownOption[], closeForm: () => void) => void
+  editMeaning: (meaningId: string, meaningChanges: Partial<IMeaningAttached>, oldWords: DropdownOption[], newWords: DropdownOption[], closeForm: () => void) => void
+  deleteMeaning: (deleteId: string) => void
 }
 
 export const SignContext = createContext<SignContextValue>({
@@ -19,5 +24,8 @@ export const SignContext = createContext<SignContextValue>({
   openCloseSidePanel: () => {},
   addSignAndMedia: () => {},
   editSignAndMedia: () => {},
-  deleteSignAndMedia: () => {}
+  deleteSignAndMedia: () => {},
+  addMeaning: () => {},
+  editMeaning: () => {},
+  deleteMeaning: () => {}
 })

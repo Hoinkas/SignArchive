@@ -8,11 +8,14 @@ function getYearStartEndFromMeanings(meanings: IMeaningDetails[]): IYearStartEnd
 }
 
 function getWordsFromMeanings(meanings: IMeaningDetails[]): string[] {
+  console.log(meanings)
   return meanings.flatMap((m) => m.words.flatMap((w) => w.name))
 }
 
 function getRegionsNamesFromMeanings(meanings: IMeaningDetails[]): string[] {
-  return meanings.flatMap((m) => m.sources.flatMap((s) => s.regions.flatMap((r) => r.name)))
+  return meanings.flatMap((m) => {
+    return m.sources ? m.sources.flatMap((s) => s.regions.flatMap((r) => r.name)) : []
+  })
 }
 
 export function mapDetailedSignToSimple(detailed: ISignDetails): ISignSimple {

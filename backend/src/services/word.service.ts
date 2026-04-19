@@ -11,7 +11,17 @@ function findWordByName(name: string): IWordAttached | undefined {
 }
 
 export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').all(meaningId)
+  return getDb()
+    .prepare(
+      `SELECT word.* FROM word
+       INNER JOIN wordMeaning ON wordMeaning.wordId = word.id
+       WHERE wordMeaning.meaningId = ?`
+    )
+    .all(meaningId) as IWordAttached[]
+}
+
+export function listAllWords(): IWordAttached[] {
+  const row = getDb().prepare('SELECT * FROM word').all()
   return row as IWordAttached[]
 }
 
@@ -41,17 +51,20 @@ function createWord(data: IWord): IWordAttached {
   }
 
   getDb()
-    .prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @text)')
+    .prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @name)')
     .run(fillMissingValues<IWord>(word, wordTemplate))
 
   return word
 }
 
-export function createWords(regions: IWord[]): IWordAttached[] {
+export function createWordAndLink(meaningId: string, data: IWord): IWordAttached {
   const transaction = getDb().transaction(() => {
-    return regions.map((r) => createWord(r))
+    const word = createWord(data)
+    getDb()
+      .prepare('INSERT OR IGNORE INTO wordMeaning (meaningId, wordId) VALUES (?, ?)')
+      .run(meaningId, word.id)
+    return word
   })
-
   return transaction()
 }
 
@@ -60,15 +73,21 @@ function deleteWord(wordId: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(wordId)
 }
 
-export function deleteUnusedWords(): void {
+function deleteUnusedWords(): void {
   const rows = getDb()
     .prepare(
-      `SELECT * FROM word
-    LEFT JOIN wordMeaning ON region.id = wordMeaning.wordId
-    WHERE regionSource.wordId IS NULL
-    `
+      `SELECT word.* FROM word
+       LEFT JOIN wordMeaning ON word.id = wordMeaning.wordId
+       WHERE wordMeaning.wordId IS NULL`
     )
     .all() as IWordAttached[]
 
-  if (rows.length > 0) rows.forEach((r) => deleteWord(r.id))
+  rows.forEach((r) => deleteWord(r.id))
+}
+
+export function deleteWordFromMeaning(meaningId: string, wordId: string): void {
+  getDb()
+    .prepare('DELETE FROM wordMeaning WHERE meaningId = ? AND wordId = ?')
+    .run(meaningId, wordId)
+  deleteUnusedWords()
 }

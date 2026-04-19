@@ -57,7 +57,7 @@ export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttac
 
   getDb()
     .prepare(
-      `INSERT INTO source (id, createdAt, explanation, signId)
+      `INSERT INTO meaning (id, createdAt, explanation, signId)
          VALUES (@id, @createdAt, @explanation, @signId)`
     )
     .run(fillMissingValues<IMeaningToDB>(meaning, meaningToDbTemplate))

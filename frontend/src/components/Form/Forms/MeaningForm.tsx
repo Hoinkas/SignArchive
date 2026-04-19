@@ -5,10 +5,10 @@ import {
 } from '@src/components/Form/Form'
 import type { IMeaningDetails, IMeaningToDB } from '@src/models/meaning.model'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import { useMeaningList } from '@src/hooks/MeaningListContext/useMeaningList'
 import type { DropdownOption } from '../Components/DropdownOptions'
 import FormTags from '../Components/FormTags'
 import { wordApi } from '@src/services/word.api'
+import { useSign } from '@src/hooks/SignContext/useSign'
 
 interface MeaningFormProps {
   meaning?: IMeaningDetails
@@ -18,7 +18,7 @@ interface MeaningFormProps {
 
 function MeaningForm(props: MeaningFormProps): React.JSX.Element {
   const { meaning, formType, setIsFormOpen } = props
-  const { addMeaning, editMeaning } = useMeaningList()
+  const { addMeaning, editMeaning } = useSign()
   const [submitted, setSubmitted] = useState<boolean>(false)
 
   const [explanation, setExplanation] = useState<string>(meaning?.explanation ?? '')
@@ -36,7 +36,7 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
     setIsFormOpen(false)
   }
 
-  const isValid = explanation
+  const isValid = explanation && words.length > 0
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault()
