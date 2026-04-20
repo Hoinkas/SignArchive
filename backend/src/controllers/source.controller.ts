@@ -17,7 +17,8 @@ export const sourceController = {
     try {
       sourceService.updateSource(param(req, 'sourceId'), req.body)
       res.status(204).send()
-    } catch {
+    } catch (err) {
+      console.error('updateSource error:', err)
       res.status(404).json({ error: 'Source not found' })
     }
   },

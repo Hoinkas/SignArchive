@@ -10,7 +10,7 @@ interface SignInfoProps {
 }
 
 function SignInfo({ signSimple }: SignInfoProps): React.JSX.Element {
-  const {meaningsCount, regions, years, words} = signSimple
+  const {meaningsCount, regions, years, words, notes} = signSimple
 
   return (
     <div className="signInfo">
@@ -18,6 +18,7 @@ function SignInfo({ signSimple }: SignInfoProps): React.JSX.Element {
       <div className='additionalInfo details'><PinIcon/> {regions.length > 0 ? regions.join(', ') : 'Brak regionów'}</div>
       <div className='additionalInfo details'><CalendarIcon/> {mergeYearText(years)}</div>
       {words.length > 0 ? <PillList textArray={words}/> : <div className='additionalInfo'>Brak słów</div>}
+      <div>{notes}</div>
     </div>
   )
 }

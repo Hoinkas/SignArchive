@@ -20,11 +20,11 @@ function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
 }
 
 interface MeaningItemProps {
-  meaningDetails: IMeaningDetails
+  meaning: IMeaningDetails
 }
 
-function MeaningItem({meaningDetails}: MeaningItemProps): React.JSX.Element {
-  const {words, sources} = meaningDetails
+function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
+  const {words, sources} = meaning
   const [isSourcesListOpen, setIsSourcesListOpen] = useState<boolean>(false)
 
   function handleClick(): void {
@@ -41,10 +41,10 @@ function MeaningItem({meaningDetails}: MeaningItemProps): React.JSX.Element {
             <div className='additionalInfo'> {isSourcesListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </div>
           </div>
         </div>
-        <MeaningDetails meaning={meaningDetails}/>
+        <MeaningDetails meaning={meaning}/>
       </div>
       <div className={`sourcesList ${isSourcesListOpen ? 'open' : ''}`}>
-        {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} sourceDetails={source}/>)}
+        {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} meaningId={meaning.id} sourceDetails={source}/>)}
       </div>
     </div>
   )

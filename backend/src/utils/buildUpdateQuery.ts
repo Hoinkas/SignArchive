@@ -1,8 +1,10 @@
 import { getDb } from '../db/client'
 
 export function buildUpdateQuery(table: string, id: string, data: Record<string, unknown>): void {
+  const SKIP = new Set(['id', 'createdAt'])
+
   const fields = Object.entries(data)
-    .filter(([_, v]) => v !== undefined)
+    .filter(([k, v]) => !SKIP.has(k) && v !== undefined)
     .map(([k]) => `${k} = @${k}`)
     .join(', ')
 

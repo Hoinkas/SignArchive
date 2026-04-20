@@ -35,9 +35,6 @@
 }
 
 .navDropdown {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
   background: var(--color-bg);
   border-radius: var(--radius-md);
   overflow: hidden;

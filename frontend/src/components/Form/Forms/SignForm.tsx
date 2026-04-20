@@ -12,10 +12,10 @@ import type { IMediaToDB } from '@src/models/media.model'
 
 interface SignFormProps {
   formType: FormType
-  closeForm: () => void
+  closeAction: () => void
 }
 
-function SignForm({ formType, closeForm }: SignFormProps): React.JSX.Element {
+function SignForm({ formType, closeAction }: SignFormProps): React.JSX.Element {
   const { sign, addSignAndMedia, editSignAndMedia } = useSign()
 
   const [submitted, setSubmitted] = useState<boolean>(false)
@@ -31,10 +31,10 @@ function SignForm({ formType, closeForm }: SignFormProps): React.JSX.Element {
     setThumbnail(null)
     setDescription('')
 
-    closeForm()
+    closeAction()
   }
 
-  const isValid = file
+  const isValid = file || sign.media
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
@@ -53,12 +53,21 @@ function SignForm({ formType, closeForm }: SignFormProps): React.JSX.Element {
 
     try {
       if (formType === 'add') {
-        addSignAndMedia(data, media, closeForm)
+        addSignAndMedia(data, media, closeAction)
       } else if (formType === 'edit' && sign) {
         const signChanges = getChanges(sign, data)
-        const mediaChanges = getChanges(sign.media, media)
-        if (Object.keys(signChanges).length === 0 && Object.keys(mediaChanges).length === 0) { closeForm(); return }
-        editSignAndMedia(sign.id, signChanges, mediaChanges, closeForm)
+
+        const mediaChanges: Partial<IMediaToDB> = {}
+        if (file) mediaChanges.videoFile = file
+        if (thumbnail) mediaChanges.thumbnailFile = thumbnail
+        if (description !== (sign.media.description ?? '')) mediaChanges.description = description
+
+        if (Object.keys(signChanges).length === 0 && Object.keys(mediaChanges).length === 0) {
+          closeAction()
+          return
+        }
+
+        editSignAndMedia(sign.id, signChanges, mediaChanges, closeAction)
       }
     } catch { console.log('Some SignForm error') }
   }
@@ -66,7 +75,7 @@ function SignForm({ formType, closeForm }: SignFormProps): React.JSX.Element {
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={handleFormClose}>
       <FormMedia label="Film ze znakiem" file={file} setNewFile={setFile} existingFile={sign?.media.videoUrl.split('/').pop() ?? sign?.media.videoUrl} required submitted={submitted} />
-      <FormMedia label="Miniatura filmu" file={thumbnail} setNewFile={setThumbnail} />
+      <FormMedia label="Miniatura filmu" file={thumbnail} setNewFile={setThumbnail} existingFile={sign?.media.thumbnailUrl?.split('/').pop() ?? sign?.media.thumbnailUrl ?? undefined}/>
       <FormMultiLineInput label="Opis filmu dla niewidomych" value={description} setValue={setDescription} />
       <FormMultiLineInput label="Notatka do znaku" value={notes} setValue={setNotes} />
     </FormModalWrapper>

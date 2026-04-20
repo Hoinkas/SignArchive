@@ -1,23 +1,24 @@
-import './SignDetailsInfo.css'
 import { useSign } from '@src/hooks/SignContext/useSign'
-import ActionButton from '@src/components/ActionButton/ActionButton'
 import MediaPlayer from '../../SingList/SignItem/MediaPlayer/MediaPlayer'
 import SignInfo from '../../SignInfo/SignInfo'
 import { useState } from 'react'
-import MeaningForm from '@src/components/Form/Forms/MeaningForm'
+import SignFormsActions from './SignFormsActions'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, simpleSign } = useSign()
-  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false)
 
   return (
-    <div className='signDetailsInfo'>
-      <MediaPlayer media={sign.media}/>
-      <SignInfo signSimple={simpleSign}/>
-      {isFormOpen ?
-        <MeaningForm formType='add' setIsFormOpen={setIsFormOpen}/> :
-        <ActionButton text="Dodaj znaczenie" buttonAction={() => setIsFormOpen(true)}/>
-      }
+    <div
+      style={{display: 'inline-flex', justifyContent: 'space-between'}}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <div style={{display: 'inline-flex', gap: 'var(--space-6)'}}>
+        <MediaPlayer media={sign.media}/>
+        <SignInfo signSimple={simpleSign}/>
+      </div>
+      <SignFormsActions sign={sign} isHovering={isHovering}/>
     </div>
   )
 }

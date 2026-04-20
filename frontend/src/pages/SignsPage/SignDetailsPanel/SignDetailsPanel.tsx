@@ -21,7 +21,7 @@ function SignDetailsPanel(): React.JSX.Element {
         <SignDetailsInfo/>
         <>
           {sign.meanings.map((meaning, key) =>
-            <MeaningItem key={key} meaningDetails={meaning}/>
+            <MeaningItem key={key} meaning={meaning}/>
           )}
         </>
       </div>

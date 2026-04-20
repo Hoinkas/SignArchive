@@ -1,11 +1,17 @@
-.sourceItem {
+.sourceContainer {
+  display: inline-flex;
+  justify-content: space-between;
   padding: var(--space-4) var(--space-6);
   border: var(--line-border);
   border-radius: var(--radius-md);
+}
 
+.sourceItem {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+
+  width: 100%;
 }
 
 .yearsRegions {
