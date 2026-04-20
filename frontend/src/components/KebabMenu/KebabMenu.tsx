@@ -1,15 +1,19 @@
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './KebabMenu.css'
 import KebabMenuIcon from '@src/assets/icons/KebabMenuIcon.tsx'
 
 interface KebabMenuProps {
-  setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  handleAdd: () => void
+  handleEdit: () => void
   handleDelete: () => void
   isHovering: boolean
-  isOnPurpleBg?: boolean
+  addLabel: string
+  editLabel: string
+  deleteLabel: string
 }
 
-function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = false }: KebabMenuProps): React.JSX.Element {
+function KebabMenu(props: KebabMenuProps): React.JSX.Element {
+  const {handleAdd, handleEdit, handleDelete, isHovering, addLabel, editLabel, deleteLabel} = props
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -23,8 +27,13 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = fal
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  function handleAddClick(): void {
+    handleAdd()
+    setIsOpen(false)
+  }
+
   function handleEditClick(): void {
-    setIsFormOpen(true)
+    handleEdit()
     setIsOpen(false)
   }
 
@@ -36,7 +45,7 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = fal
   return (
     <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef}>
       <button
-        className={`menuBtn${isOpen ? ' open' : ''}${isOnPurpleBg ? ' onPurpleBg' : ''}`}
+        className={`menuBtn${isOpen ? ' open' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Menu"
         aria-expanded={isOpen}
@@ -45,8 +54,9 @@ function KebabMenu({ setIsFormOpen, handleDelete, isHovering, isOnPurpleBg = fal
       </button>
 
       <nav className={`navDropdown ${isOpen ? 'open' : ''}`}>
-        <a onClick={() => handleEditClick()}>edytuj</a>
-        <a onClick={() => handleDeleteClick()}>usuń</a>
+        <a onClick={() => handleAddClick()}>Dodaj {addLabel}</a>
+        <a onClick={() => handleEditClick()}>Edytuj {editLabel}</a>
+        <a onClick={() => handleDeleteClick()}>Usuń {deleteLabel}</a>
       </nav>
     </div>
   )

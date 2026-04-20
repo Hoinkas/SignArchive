@@ -72,7 +72,7 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS source (
       id            TEXT PRIMARY KEY,
       createdAt     INTEGER NOT NULL,
-      referenceId   TEXT REFERENCES reference(id) ON DELETE SET NULL,
+      referenceId   TEXT REFERENCES reference(id) ON DELETE CASCADE,
       yearStart     INTEGER,
       yearEnd       INTEGER,
       context       TEXT

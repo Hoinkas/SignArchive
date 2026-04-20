@@ -24,11 +24,6 @@
   line-height: var(--font-size-lg);
 }
 
-.wordsContainer {
-  display: inline-flex;
-  justify-content: space-between;
-}
-
 .sourcesList {
   width: 95%;
   display: flex;

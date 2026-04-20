@@ -16,6 +16,7 @@ export function setupRoutes(app: Express): void {
   app.use('/signs', signRouter)
   app.use('/media', mediaRouter)
   app.use('/signs/:signId/meanings', meaningRouter)
+  app.use('/meanings/', meaningRouter)
   app.use('/meanings/:meaningId/words', wordRouter)
   app.use('/meanings/:meaningId/sources', sourceRouter)
   app.use('/regions', regionRouter)

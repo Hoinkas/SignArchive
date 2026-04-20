@@ -3,10 +3,8 @@ import './MeaningItem.css'
 import SourceItem from './SourceItem/SourceItem'
 import { currencyOfSources } from '@src/utils/currencyOfSources'
 import PillList from '@src/components/PillList/PillList'
-import { useState } from 'react'
-import SourceForm from '@src/components/Form/Forms/SourceForm'
-import ActionButton from '@src/components/ActionButton/ActionButton'
 import type { ISourceDetails } from '@src/models/source.model'
+import MeaningDetails from './MeaningDetails/MeadningDetails'
 
 function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
   const newerYearA =  a.yearEnd ?? a.yearStart
@@ -23,23 +21,16 @@ interface MeaningItemProps {
 }
 
 function MeaningItem({meaningDetails}: MeaningItemProps): React.JSX.Element {
-  const {words, sources, ...meaning} = meaningDetails
-  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const {words, sources} = meaningDetails
 
   return (
     <div className="meaningContainer">
       <div className="meaningItem">
-        <div className='wordsContainer'>
+        <div style={{display: 'inline-flex', justifyContent: 'space-between'}}>
           <div className='words'>{words.flatMap((w) => `"${w.name}"`).join(' ')}</div>
           <PillList textArray={[currencyOfSources(sources)]}/>
         </div>
-        <div>
-          {meaning.explanation}
-          {isFormOpen ?
-            <SourceForm meaningId={meaning.id} formType='add' setIsFormOpen={setIsFormOpen}/> :
-            <ActionButton text="Dodaj źródło" buttonAction={() => setIsFormOpen(true)}/>
-          }
-        </div>
+        <MeaningDetails meaning={meaningDetails}/>
       </div>
       <div className='sourcesList'>
         {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} sourceDetails={source}/>)}
