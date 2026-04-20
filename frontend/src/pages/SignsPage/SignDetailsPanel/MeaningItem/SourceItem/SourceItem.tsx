@@ -3,6 +3,7 @@ import './SourceItem.css'
 import type { ISourceDetails } from '@src/models/source.model'
 import PinIcon from '@src/assets/icons/PinIcon'
 import { mergeYearText } from '@src/utils/namesHelpers'
+import ReferenceIconAction from './ReferenceIconAction/ReferenceIconAction'
 
 interface SourceItemProps {
   sourceDetails: ISourceDetails
@@ -21,7 +22,10 @@ function SourceItem({sourceDetails}: SourceItemProps): React.JSX.Element {
         <div className='additionalInfo details'><PinIcon/> {regionsNames.length > 0 ? regionsNames.join(', ') : 'Brak regionów'}</div>
       </div>
       <div>{context}</div>
-      <div className='additionalInfo'> Źródło: {reference.name} </div>
+      <div className='additionalInfo referencesBox'>
+        <p style={{height: 'fit-content'}}>Źródło: {reference.name}</p>
+        <ReferenceIconAction reference={reference} />
+      </div>
     </div>
   )
 }

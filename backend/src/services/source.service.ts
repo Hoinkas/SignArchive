@@ -40,8 +40,6 @@ export function getStartEndYearBySignId(signId: string): IYearStartEnd {
 
   const all = [row.a, row.b, row.c, row.d].filter((v): v is number => v !== null && v !== undefined)
 
-  console.log(all)
-
   if (all.length === 0) return { yearStart: null, yearEnd: null }
   return { yearStart: Math.min(...all), yearEnd: Math.max(...all) }
 }

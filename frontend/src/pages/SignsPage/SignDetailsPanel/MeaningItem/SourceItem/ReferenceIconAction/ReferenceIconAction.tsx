@@ -9,11 +9,11 @@ interface ReferenceIconActionProps {
 }
 
 function ReferenceIconAction({reference}: ReferenceIconActionProps): React.JSX.Element {
-  const {type, name, url} = reference
+  const {type, fullName, url} = reference
 
-  if (type === 'book') return <span className="referenceIcon" title={name}><BookIcon/></span>
-  if (type === 'personal') return <span className="referenceIcon" title={name}><PersonIcon/></span>
-  if (type === 'url') return <a className="referenceIcon" href={url} target="_blank" title={name}><LinkIcon/></a>
+  if (type === 'book') return <span className="referenceIcon" title={fullName}><BookIcon/></span>
+  if (type === 'personal') return <span className="referenceIcon" title={fullName}><PersonIcon/></span>
+  if (type === 'url') return <a className="referenceIcon" href={url} target="_blank" title={fullName}><LinkIcon/></a>
 
   return <LinkIcon/>
 }

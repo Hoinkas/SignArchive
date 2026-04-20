@@ -15,6 +15,11 @@
 
 .referencesBox {
   display: inline-flex;
-  align-content: center;
+  align-items: center;
   gap: var(--space-1);
+}
+
+.referencesBox svg {
+  color: var(--color-text-info) !important;
+  cursor: pointer;
 }

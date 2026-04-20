@@ -6,6 +6,17 @@ import PillList from '@src/components/PillList/PillList'
 import { useState } from 'react'
 import SourceForm from '@src/components/Form/Forms/SourceForm'
 import ActionButton from '@src/components/ActionButton/ActionButton'
+import type { ISourceDetails } from '@src/models/source.model'
+
+function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
+  const newerYearA =  a.yearEnd ?? a.yearStart
+  const newerYearB =  b.yearEnd ?? b.yearStart
+
+  if (!newerYearA && !newerYearB) return 0
+  if (!newerYearA) return 1
+  if (!newerYearB) return -1
+  return newerYearA < newerYearB ? 1 : -1
+}
 
 interface MeaningItemProps {
   meaningDetails: IMeaningDetails
@@ -31,7 +42,7 @@ function MeaningItem({meaningDetails}: MeaningItemProps): React.JSX.Element {
         </div>
       </div>
       <div className='sourcesList'>
-        {sources.map((source, key)=><SourceItem key={key} sourceDetails={source}/>)}
+        {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} sourceDetails={source}/>)}
       </div>
     </div>
   )

@@ -57,7 +57,7 @@ function SourceForm({ source, meaningId, formType, setIsFormOpen }: SourceFormPr
     setIsFormOpen(false)
   }
 
-  const isValid = referenceName && referenceFullName && typeOption && regions.length > 0 && context
+  const isValid = referenceName && referenceFullName && typeOption && context
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
     event.preventDefault()
