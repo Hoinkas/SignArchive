@@ -9,6 +9,8 @@
   --grey-500: #52525B;
   --grey-600: #3F3F46;
   --grey-700: #323236;
+  --grey-800: #272729;
+  --grey-850: #212123;
   --grey-900: #1b1b1f;
 
   /* --purple-h: 245;
@@ -78,6 +80,8 @@
   /* state bg */
   --color-bg-purple-dark: var(--purple-grey-3);
   --color-bg-purple-light: var(--purple-400);
+  --color-bg-grey-dark: var(--grey-850);
+  --color-bg-grey-light: var(--grey-200);
 
   --color-bg-hover-dark: var(--purple-grey-3);
   --color-bg-hover-transparent-dark: color-mix(in srgb, var(--purple-grey-3) 70%, transparent);
@@ -105,7 +109,6 @@
   --color-text-dark: var(--grey-100);
 
   --color-text-info: var(--grey-300);
-  --colot-text-link: var(--grey-400);
 
   --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
   --color-scroll-light: color-mix(in srgb, var(--grey-400) 60%, transparent);
@@ -114,10 +117,13 @@
 :root {
   --color-border: var(--color-border-dark);
   --color-border-text-area: var(--color-border-text-area-dark);
+  --color-border-pruple: var(--color-border-purple-dark);
 
   --color-bg-hover-transparent: var(--color-bg-hover-transparent-dark);
-
-  --color-border-pruple: var(--color-border-purple-dark);
+  --color-bg: var(--color-bg-dark);
+  --color-bg-grey: var(--color-bg-grey-dark);
+  --color-bg-transparent: var(--color-bg-dark-transparent);
+  --color-bg-active: var(--color-bg-purple-dark);
 
   --button-border: 3px solid var(--color-border-purple-dark);
   --line-border: 2px solid var(--color-border);
@@ -139,12 +145,7 @@
 
   --color-text-link: var(--purple-400);
 
-  --color-bg: var(--color-bg-dark);
-  --color-bg-transparent: var(--color-bg-dark-transparent);
-
   --color-scroll: var(--color-scroll-dark);
-
-  --color-bg-active: var(--color-bg-purple-dark);
 
   --color-button-hover: var(--color-purple);
 
@@ -217,23 +218,24 @@ h5 {
 
 [data-theme="light"] {
   --color-text: var(--color-text-light);
+  --color-title-purple: var(--color-purple);
+  --color-text-info: var(--grey-400);
+  --color-text-link: var(--purple-grey-2);
 
   --color-bg: var(--color-bg-light);
   --color-bg-transparent: var(--color-bg-light-transparent);
-
   --color-bg-active: var(--color-bg-purple-light);
-
   --color-bg-hover: var(--color-bg-hover-light);
   --color-bg-hover-transparent: var(--color-bg-hover-transparent-light);
+  --color-bg-grey: var(--color-bg-grey-light);
 
   --color-border: var(--color-border-light);
+  --color-border-pruple: var(--color-border-purple-light);
   --color-border-text-area: var(--color-border-text-area-light);
 
   --color-scroll: var(--color-scroll-light);
 
   --form-box-shadow: 0 8px var(--space-8) rgba(0, 0, 0, 0.2);
-
-  --color-title-purple: var(--color-purple);
 
   --button-border: 3px solid var(--color-border-purple-light);
   --symbol-button-border-active: 2px solid var(--color-border-purple-light);
@@ -241,12 +243,6 @@ h5 {
   --switch-bg: var(--color-bg-purple-dark);
 
   --color-button-hover: var(--color-purple-dark);
-
-  --color-border-pruple: var(--color-border-purple-light);
-
-  --color-text-info: var(--grey-400);
-
-  --color-text-link: var(--purple-grey-2);
 
   --color-kebab-menu-icon: var(--color-bg-active);
 

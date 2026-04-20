@@ -11,9 +11,11 @@ interface SourceItemProps {
 
 function SourceItem({sourceDetails}: SourceItemProps): React.JSX.Element {
   const {reference, regions, ...source} = sourceDetails
-  const regionsNames = regions.map((r) => r.name)
+
   const {yearStart, yearEnd, context} = source
   const yearStartEnd = {yearStart, yearEnd}
+
+  const regionsNames = regions.map((r) => r.name)
 
   return (
     <div className="sourceItem">

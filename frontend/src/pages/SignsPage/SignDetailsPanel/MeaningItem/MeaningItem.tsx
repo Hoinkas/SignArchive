@@ -5,6 +5,9 @@ import { currencyOfSources } from '@src/utils/currencyOfSources'
 import PillList from '@src/components/PillList/PillList'
 import type { ISourceDetails } from '@src/models/source.model'
 import MeaningDetails from './MeaningDetails/MeaningDetails'
+import ArrowUpIcon from '@src/assets/icons/ArrowUpIcon'
+import ArrowDownIcon from '@src/assets/icons/ArrowDownIcon'
+import { useState } from 'react'
 
 function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
   const newerYearA =  a.yearEnd ?? a.yearStart
@@ -22,17 +25,25 @@ interface MeaningItemProps {
 
 function MeaningItem({meaningDetails}: MeaningItemProps): React.JSX.Element {
   const {words, sources} = meaningDetails
+  const [isSourcesListOpen, setIsSourcesListOpen] = useState<boolean>(false)
+
+  function handleClick(): void {
+    setIsSourcesListOpen((prevState) => !prevState)
+  }
 
   return (
     <div className="meaningContainer">
-      <div className="meaningItem">
+      <div className="meaningItem" onClick={() => handleClick()}>
         <div style={{display: 'inline-flex', justifyContent: 'space-between'}}>
           <div className='words'>{words.flatMap((w) => `"${w.name}"`).join(' ')}</div>
-          <PillList textArray={[currencyOfSources(sources)]}/>
+          <div style={{display: 'inline-flex', gap: 'var(--space-4)'}}>
+            <PillList textArray={[currencyOfSources(sources)]}/>
+            <div className='additionalInfo'> {isSourcesListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </div>
+          </div>
         </div>
         <MeaningDetails meaning={meaningDetails}/>
       </div>
-      <div className='sourcesList'>
+      <div className={`sourcesList ${isSourcesListOpen ? 'open' : ''}`}>
         {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} sourceDetails={source}/>)}
       </div>
     </div>
