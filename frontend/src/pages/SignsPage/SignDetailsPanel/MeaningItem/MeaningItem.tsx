@@ -4,7 +4,7 @@ import SourceItem from './SourceItem/SourceItem'
 import { currencyOfSources } from '@src/utils/currencyOfSources'
 import PillList from '@src/components/PillList/PillList'
 import type { ISourceDetails } from '@src/models/source.model'
-import MeaningDetails from './MeaningDetails/MeadningDetails'
+import MeaningDetails from './MeaningDetails/MeaningDetails'
 
 function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
   const newerYearA =  a.yearEnd ?? a.yearStart

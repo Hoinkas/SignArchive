@@ -1,4 +1,4 @@
-import { type SubmitEvent, type Dispatch, type SetStateAction, useState, useEffect } from 'react'
+import { type SubmitEvent, useState, useEffect } from 'react'
 import {
   FormMultiLineInput,
   FormModalWrapper
@@ -13,11 +13,11 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 interface MeaningFormProps {
   meaning?: IMeaningDetails
   formType: FormType
-  setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  closeAction: () => void
 }
 
 function MeaningForm(props: MeaningFormProps): React.JSX.Element {
-  const { meaning, formType, setIsFormOpen } = props
+  const { meaning, formType, closeAction } = props
   const { addMeaning, editMeaning } = useSign()
   const [submitted, setSubmitted] = useState<boolean>(false)
 
@@ -33,7 +33,7 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
 
   const closeForm = (): void => {
     setExplanation('')
-    setIsFormOpen(false)
+    closeAction()
   }
 
   const isValid = explanation && words.length > 0

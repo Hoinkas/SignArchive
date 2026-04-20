@@ -3,7 +3,7 @@ import type { IReference, ReferenceType } from "@src/models/reference.model"
 import type { ISourceDetails, ISourceToDB, ISourceWithDetailsToDB } from "@src/models/source.model"
 import type { FormType } from "@src/models/yearStartEnd.model"
 import { regionApi } from "@src/services/region.api"
-import { type Dispatch, type SetStateAction, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { evidencesTypes, type DropdownOption } from "../Components/DropdownOptions"
 import FormDropdown from "../Components/FormDropdown"
 import FormTags from "../Components/FormTags"
@@ -14,10 +14,10 @@ interface SourceFormProps {
   source?: ISourceDetails
   meaningId: string
   formType: FormType
-  setIsFormOpen: Dispatch<SetStateAction<boolean>>
+  closeAction: () => void
 }
 
-function SourceForm({ source, meaningId, formType, setIsFormOpen }: SourceFormProps): React.JSX.Element {
+function SourceForm({ source, meaningId, formType, closeAction }: SourceFormProps): React.JSX.Element {
   const { addSource, editSource } = useSign()
   const [submitted, setSubmitted] = useState(false)
 
@@ -54,7 +54,7 @@ function SourceForm({ source, meaningId, formType, setIsFormOpen }: SourceFormPr
     setReferenceName('')
     setReferenceFullName('')
     setTypeOption(null)
-    setIsFormOpen(false)
+    closeAction()
   }
 
   const isValid = referenceName && referenceFullName && typeOption && context

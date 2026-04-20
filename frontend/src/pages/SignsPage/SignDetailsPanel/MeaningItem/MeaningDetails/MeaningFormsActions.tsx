@@ -6,27 +6,30 @@ import type { FormType } from '@src/models/yearStartEnd.model'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import MeaningForm from '@src/components/Form/Forms/MeaningForm'
 
-interface MeaningDetailsProps {
+interface MeaningFormsActionsProps {
   meaning: IMeaningDetails
+  isHovering: boolean
 }
 
-function MeaningDetails({meaning}: MeaningDetailsProps): React.JSX.Element {
+function MeaningFormsActions({meaning, isHovering}: MeaningFormsActionsProps): React.JSX.Element {
   const {deleteMeaning} = useSign()
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
   const [formType, setFormType] = useState<FormType | null>(null)
-  const [isHovering, setIsHovering] = useState<boolean>(false)
 
   function handleAction(newType: FormType): void {
     setFormType(newType)
     setIsFormOpen(true)
   }
 
+  function handleClose(): void {
+    setFormType(null)
+    setIsFormOpen(false)
+  }
+
   return (
-    <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center'}}
-    onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-      {meaning.explanation}
-      {isFormOpen && formType === 'add' && <SourceForm meaningId={meaning.id} formType={'add'} setIsFormOpen={setIsFormOpen}/>}
-      {isFormOpen && formType === 'edit' && <MeaningForm meaning={meaning} formType={'edit'} setIsFormOpen={setIsFormOpen}/>}
+    <>
+      {isFormOpen && formType === 'add' && <SourceForm meaningId={meaning.id} formType={'add'} closeAction={() => handleClose()}/>}
+      {isFormOpen && formType === 'edit' && <MeaningForm meaning={meaning} formType={'edit'} closeAction={() => handleClose()}/>}
       <KebabMenu
         addLabel='źródło'
         editLabel='znaczenie'
@@ -36,8 +39,8 @@ function MeaningDetails({meaning}: MeaningDetailsProps): React.JSX.Element {
         handleDelete={() => deleteMeaning(meaning.id)}
         isHovering={isHovering}
       />
-    </div>
+    </>
   )
 }
 
-export default MeaningDetails
+export default MeaningFormsActions
