@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
-import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
 import { SearchContext } from './SearchContext'
 import { regionApi } from '@src/services/region.api'
 import { wordApi } from '@src/services/word.api'
@@ -12,59 +11,75 @@ interface Props {
   children?: React.ReactNode
 }
 
+import { useSearchParams } from 'react-router-dom'
+
 export default function SearchProvider({ children }: Props): React.JSX.Element {
-  const [searchWord, setSearchWord] = useState('')
+  const [searchParams, setSearchParams] = useSearchParams()
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
+  const [regionList, setRegionList] = useState<string[]>([])
 
-  const [regionsOptions, setRegionsOptions] = useState<DropdownOption[]>([])
-  const [regionOption, setRegionOption] = useState<DropdownOption | null>(null)
-
-  const [yearStart, setYearStart] = useState('')
-  const [yearEnd, setYearEnd] = useState('')
+  const searchWord = searchParams.get('word') ?? ''
+  const yearStart = searchParams.get('yearStart') ?? ''
+  const yearEnd = searchParams.get('yearEnd') ?? ''
+  const region = searchParams.get('region') ?? ''
 
   useEffect(() => {
     regionApi.list().then((result) =>
-      setRegionsOptions(result.map((r) => ({ id: r.id, label: r.name })))
+      setRegionList(result.map((r) => r.name))
     )
     wordApi.list().then(setAllWords)
   }, [])
 
   const filteredWords = useMemo((): string[] => {
     if (searchWord === '') return []
-
     const upper = searchWord.toUpperCase()
     return allWords
       .filter((w) => w.name.toUpperCase().includes(upper))
       .map((w) => w.name)
   }, [allWords, searchWord])
 
-  const handleOptionChange = (type: SearchOption, value: DropdownOption | null): void => {
-    if (type === 'region') setRegionOption(value)
+  function updateParam(key: string, value: string | null): void {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (value === null || value === '') next.delete(key)
+      else next.set(key, value)
+      return next
+    })
+  }
+
+  const handleOptionChange = (type: SearchOption, value: string): void => {
+    if (type === 'region') updateParam('region', value ?? null)
   }
 
   const handleYearChange = (yearType: 'yearStart' | 'yearEnd', year: string): void => {
-    if(yearType === 'yearStart') setYearStart(year)
-    if(yearType === 'yearEnd') setYearEnd(year)
+    updateParam(yearType, year)
   }
 
   const handleNameChange = (value: string): void => {
-    setSearchWord(value.replaceAll('\u00A0', '').trimEnd())
+    updateParam('word', value.replaceAll('\u00A0', '').trimEnd())
+  }
+
+  const handleClear = (): void => {
+    handleNameChange('')
+    handleOptionChange('region', '')
+    handleYearChange('yearStart', '')
+    handleYearChange('yearEnd', '')
+    setSearchParams(new URLSearchParams())
   }
 
   return (
-    <SearchContext.Provider
-      value={{
-        searchWord,
-        filteredWords,
-        regionsOptions,
-        regionOption,
-        handleOptionChange,
-        handleNameChange,
-        yearStart,
-        yearEnd,
-        handleYearChange
-      }}
-    >
+    <SearchContext.Provider value={{
+      searchWord,
+      filteredWords,
+      regionList,
+      region,
+      handleOptionChange,
+      handleNameChange,
+      yearStart,
+      yearEnd,
+      handleYearChange,
+      handleClear
+    }}>
       {children}
     </SearchContext.Provider>
   )

@@ -11,11 +11,12 @@ function SearchBar(): React.JSX.Element {
     handleOptionChange,
     handleNameChange,
     searchWord,
-    regionsOptions,
-    regionOption,
+    regionList,
     yearStart,
     yearEnd,
-    handleYearChange
+    region,
+    handleYearChange,
+    handleClear
   } = useSearch()
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
 
@@ -23,6 +24,8 @@ function SearchBar(): React.JSX.Element {
     setIsFilterOpen(!isFilterOpen)
     if (!isFilterOpen) return
   }
+
+  const regionsOptions = regionList.map((r, key) => {return {id: key.toString(), label: r}}) as DropdownOption[]
 
   return ( //TODO Search as form for accesibility
     <div className="searchContainer">
@@ -36,7 +39,7 @@ function SearchBar(): React.JSX.Element {
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
         </div>
-        <div className="clickableSymbolX" onClick={() => handleNameChange('')}>×</div>
+        <div className="clickableSymbolX" onClick={() => handleClear()}>×</div>
         <div className="searchIcon">
           <SearchIcon />
         </div>
@@ -44,10 +47,11 @@ function SearchBar(): React.JSX.Element {
       {isFilterOpen && (
         <>
           <FormDropdown
+            key={region}
             label="Regiony"
             options={regionsOptions}
-            value={regionOption}
-            setValue={(value: DropdownOption | null) => handleOptionChange('region', value)}
+            value={regionsOptions.find((r) => r.label === region) ?? null}
+            setValue={(value: DropdownOption | null) => handleOptionChange('region', value?.label ?? '')}
           />
           <FormTwoInLineWrapper>
             <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />

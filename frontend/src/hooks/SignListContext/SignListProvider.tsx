@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function SignListProvider({ children }: Props): React.JSX.Element {
-  const {filteredWords, searchWord, regionOption, yearStart, yearEnd} = useSearch()
+  const {filteredWords, searchWord, region, yearStart, yearEnd} = useSearch()
   const [signList, setSignList] = useState<ISignSimple[]>([])
   const [signListLoading, setSignListLoading] = useState<boolean>(true)
 
@@ -40,13 +40,13 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
 
     return signList.filter((s) => {
       const hasWord = !isWordFilterActive || s.words.some((w) => filteredWords.includes(w))
-      const hasRegion = !regionOption || s.regions.includes(regionOption.label)
+      const hasRegion = !region || s.regions.includes(region)
       const isAboveYearStart = yearStart === '' || (s.years.yearStart !== null && s.years.yearStart >= parseInt(yearStart))
       const isBelowYearEnd = yearEnd === '' || (s.years.yearEnd !== null && s.years.yearEnd <= parseInt(yearEnd))
 
       return hasWord && hasRegion && isAboveYearStart && isBelowYearEnd
     })
-  }, [signList, regionOption, filteredWords, yearStart, yearEnd, searchWord])
+  }, [signList, region, filteredWords, yearStart, yearEnd, searchWord])
 
   return (
     <SignListContext.Provider value={{ filteredSigns, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>

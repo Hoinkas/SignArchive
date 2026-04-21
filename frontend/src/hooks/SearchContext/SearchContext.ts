@@ -1,27 +1,28 @@
 import { createContext } from 'react'
-import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
 import type { SearchOption } from './SearchProvider'
 
 export interface SearchContextValue {
   searchWord: string
   filteredWords: string[]
-  regionsOptions: DropdownOption[]
-  regionOption: DropdownOption | null
-  handleOptionChange: (type: SearchOption, value: DropdownOption | null) => void
+  regionList: string[]
+  region: string
+  handleOptionChange: (type: SearchOption, value: string) => void
   handleNameChange: (value: string) => void
   yearStart: string
   yearEnd: string
   handleYearChange: (yearType: 'yearStart' | 'yearEnd', year: string) => void
+  handleClear: () => void
 }
 
 export const SearchContext = createContext<SearchContextValue>({
   searchWord: '',
   filteredWords: [],
-  regionsOptions: [],
-  regionOption: null,
+  regionList: [],
+  region: '',
   handleOptionChange: () => {},
   handleNameChange: () => {},
   yearStart: '',
   yearEnd: '',
-  handleYearChange: () => {}
+  handleYearChange: () => {},
+  handleClear: () => {}
 })
