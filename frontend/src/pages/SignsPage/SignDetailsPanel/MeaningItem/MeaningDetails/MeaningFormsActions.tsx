@@ -1,10 +1,10 @@
 import type { IMeaningDetails } from '@src/models/meaning.model'
 import { useState } from 'react'
-import SourceForm from '@src/components/Form/Forms/SourceForm'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import type { FormType } from '@src/models/yearStartEnd.model'
 import { useSign } from '@src/hooks/SignContext/useSign'
-import MeaningForm from '@src/components/Form/Forms/MeaningForm'
+import SourceForm from '@src/pages/SignsPage/Forms/SourceForm'
+import MeaningForm from '@src/pages/SignsPage/Forms/MeaningForm'
 
 interface MeaningFormsActionsProps {
   meaning: IMeaningDetails

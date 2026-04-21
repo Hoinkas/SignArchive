@@ -4,8 +4,8 @@ import ThemeSwitch from '../ThemeSwitch/ThemeSwitch'
 import LogoLight from '@src/assets/icons/LogoLight.svg'
 import LogoDark from '@src/assets/icons/LogoDark.svg'
 import { useState } from 'react'
-import LoginForm from '../Form/Forms/LoginForm'
 import ActionButton from '../ActionButton/ActionButton'
+import LoginForm from '@src/pages/SignsPage/Forms/LoginForm'
 
 function NavBar(): React.JSX.Element {
   const {isAdmin, logout} = usePermissions()

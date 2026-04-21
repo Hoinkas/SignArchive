@@ -5,10 +5,10 @@ import {
 } from '@src/components/Form/Form'
 import type { IMeaningDetails, IMeaningToDB } from '@src/models/meaning.model'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { DropdownOption } from '../Components/DropdownOptions'
-import FormTags from '../Components/FormTags'
 import { wordApi } from '@src/services/word.api'
 import { useSign } from '@src/hooks/SignContext/useSign'
+import type { DropdownOption } from '@src/components/Form/Components/DropdownOptions'
+import FormTags from '@src/components/Form/Components/FormTags'
 
 interface MeaningFormProps {
   meaning?: IMeaningDetails

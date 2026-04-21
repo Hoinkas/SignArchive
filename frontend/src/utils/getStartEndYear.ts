@@ -6,7 +6,7 @@ export function getYearsFromMeanings(meanings: IMeaningDetails[]): IYearStartEnd
   if (meanings.length === 0) return undefined
   const sources = meanings.flatMap((m) => m.sources)
 
-  if (meanings.length === 0) return undefined
+  if (sources.length === 0) return undefined
   const years = sources
     .flatMap((s) => [s.yearStart, s.yearEnd])
     .filter((v): v is number => v !== null && v !== undefined)

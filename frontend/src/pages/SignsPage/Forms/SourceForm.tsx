@@ -1,13 +1,13 @@
+import { type DropdownOption, evidencesTypes } from "@src/components/Form/Components/DropdownOptions"
+import FormDropdown from "@src/components/Form/Components/FormDropdown"
+import FormTags from "@src/components/Form/Components/FormTags"
+import { FormModalWrapper, FormSingleLineInput, FormTwoInLineWrapper, FormMultiLineInput } from "@src/components/Form/Form"
 import { useSign } from "@src/hooks/SignContext/useSign"
 import type { IReference, ReferenceType } from "@src/models/reference.model"
 import type { ISourceDetails, ISourceToDB, ISourceWithDetailsToDB } from "@src/models/source.model"
 import type { FormType } from "@src/models/yearStartEnd.model"
 import { regionApi } from "@src/services/region.api"
 import { useState, useEffect } from "react"
-import { evidencesTypes, type DropdownOption } from "../Components/DropdownOptions"
-import FormDropdown from "../Components/FormDropdown"
-import FormTags from "../Components/FormTags"
-import { FormModalWrapper, FormSingleLineInput, FormMultiLineInput, FormTwoInLineWrapper } from "../Form"
 
 interface SourceFormProps {
   source?: ISourceDetails
@@ -56,7 +56,7 @@ function SourceForm({ source, meaningId, formType, closeAction }: SourceFormProp
     closeAction()
   }
 
-  const isValid = referenceName && referenceFullName && typeOption && context
+  const isValid = referenceName && referenceFullName && typeOption
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -110,7 +110,7 @@ function SourceForm({ source, meaningId, formType, closeAction }: SourceFormProp
         <FormDropdown label="Kategoria źródła" options={evidencesTypes} value={typeOption} setValue={setTypeOption} required submitted={submitted} />
       </FormTwoInLineWrapper>
       <FormSingleLineInput label="Notatka do źródła" value={notes} setValue={setNotes} />
-      <FormMultiLineInput label="Wyjaśnienie użycia" value={context} setValue={setContext} required submitted={submitted} />
+      <FormMultiLineInput label="Wyjaśnienie użycia" value={context} setValue={setContext} />
     </FormModalWrapper>
   )
 }

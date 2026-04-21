@@ -2,9 +2,9 @@ import { useState } from 'react'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import type { FormType } from '@src/models/yearStartEnd.model'
 import { useSign } from '@src/hooks/SignContext/useSign'
-import MeaningForm from '@src/components/Form/Forms/MeaningForm'
 import type { ISignDetails } from '@src/models/sign.model'
-import SignForm from '@src/components/Form/Forms/SignForm'
+import MeaningForm from '../../Forms/MeaningForm'
+import SignForm from '../../Forms/SignForm'
 
 interface SignFormsActionsProps {
   sign: ISignDetails

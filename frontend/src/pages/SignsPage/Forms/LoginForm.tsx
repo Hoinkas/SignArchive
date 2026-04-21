@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, type SubmitEvent, useState } from 'react'
-import { FormModalWrapper, FormSingleLineInput } from '../Form'
 import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 import type { ILogin } from '@src/models/login.model'
+import { FormModalWrapper, FormSingleLineInput } from '@src/components/Form/Form'
 
 interface LoginFormProps {
   setIsFormOpen: Dispatch<SetStateAction<boolean>>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import KebabMenu from '@src/components/KebabMenu/KebabMenu'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import type { ISourceDetails } from '@src/models/source.model'
-import SourceForm from '@src/components/Form/Forms/SourceForm'
+import SourceForm from '@src/pages/SignsPage/Forms/SourceForm'
 
 interface SourceFormsActionsProps {
   meaningId: string

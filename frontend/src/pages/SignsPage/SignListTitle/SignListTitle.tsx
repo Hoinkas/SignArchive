@@ -1,8 +1,8 @@
 import { signCountText } from '@src/utils/namesHelpers'
 import ActionButton from '@src/components/ActionButton/ActionButton'
 import { useState } from 'react'
-import SignForm from '@src/components/Form/Forms/SignForm'
 import { useSignList } from '@src/hooks/SignListContext/useSignList'
+import SignForm from '../Forms/SignForm'
 
 function SignListTitle(): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
