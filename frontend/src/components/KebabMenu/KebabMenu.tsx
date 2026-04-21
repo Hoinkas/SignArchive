@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import './KebabMenu.css'
 import KebabMenuIcon from '@src/assets/icons/KebabMenuIcon.tsx'
 import { createPortal } from 'react-dom'
+import { usePermissions } from '@src/hooks/PermissionsContext/usePermissions'
 
 interface KebabMenuProps {
   handleAdd?: () => void
@@ -15,6 +16,7 @@ interface KebabMenuProps {
 
 function KebabMenu(props: KebabMenuProps): React.JSX.Element {
   const { handleAdd, handleEdit, handleDelete, isHovering, addLabel, editLabel, deleteLabel } = props
+  const {isAdmin} = usePermissions()
   const [isOpen, setIsOpen] = useState(false)
   const [pos, setPos] = useState({ top: 0, right: 0 })
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -43,7 +45,7 @@ function KebabMenu(props: KebabMenuProps): React.JSX.Element {
   const isDelete = deleteLabel && handleDelete !== undefined
 
   return (
-    <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef}>
+    <div className={`navWrapper ${isHovering || isOpen ? '' : 'hidden'}`} ref={wrapperRef} style={{display: isAdmin ? 'inline-block' : 'none'}}>
       <button
         ref={btnRef}
         className={`menuBtn${isOpen ? ' open' : ''}`}
