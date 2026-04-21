@@ -4,8 +4,10 @@ import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
 export function getYearsFromMeanings(meanings: IMeaningDetails[]): IYearStartEnd {
   if (meanings.length === 0) return undefined
-  const years = meanings
-    .flatMap((m) => m.sources)
+  const sources = meanings.flatMap((m) => m.sources)
+
+  if (meanings.length === 0) return undefined
+  const years = sources
     .flatMap((s) => [s.yearStart, s.yearEnd])
     .filter((v): v is number => v !== null && v !== undefined)
 
@@ -18,7 +20,7 @@ export function getYearsFromSources(sources: ISourceDetails[]): IYearStartEnd | 
   if (sources.length === 0) return undefined
   const years = sources
     .flatMap((s) => [s.yearStart, s.yearEnd])
-    .filter((v): v is number => v !== null)
+    .filter((v): v is number => v !== null && v !== undefined)
 
   return { yearStart: Math.min(...years), yearEnd: Math.max(...years) }
 }

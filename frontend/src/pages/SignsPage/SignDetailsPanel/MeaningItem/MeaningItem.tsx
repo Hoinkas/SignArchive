@@ -31,6 +31,8 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
     setIsSourcesListOpen((prevState) => !prevState)
   }
 
+  console.log(sources)
+
   return (
     <div className="meaningContainer">
       <div className="meaningItem" onClick={() => handleClick()}>
@@ -38,13 +40,13 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
           <div className='words'>{words.flatMap((w) => `"${w.name}"`).join(' ')}</div>
           <div style={{display: 'inline-flex', gap: 'var(--space-4)'}}>
             <PillList textArray={[currencyOfSources(sources)]}/>
-            <div className='additionalInfo'> {isSourcesListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </div>
+            <div className='additionalInfo openSourcesDropdown'> {isSourcesListOpen ? <ArrowUpIcon /> : <ArrowDownIcon />} </div>
           </div>
         </div>
         <MeaningDetails meaning={meaning}/>
       </div>
       <div className={`sourcesList ${isSourcesListOpen ? 'open' : ''}`}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
           {sources.sort(sortByYears).map((source, key) => (
             <SourceItem key={key} meaningId={meaning.id} sourceDetails={source} />
           ))}

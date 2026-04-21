@@ -15,7 +15,7 @@ function SignDetailsInfo(): React.JSX.Element {
       onMouseLeave={() => setIsHovering(false)}
     >
       <MediaPlayer media={sign.media} isDetails/>
-      <div style={{display: 'inline-flex', gap: 'var(--space-6)'}}>
+      <div style={{display: 'inline-flex', gap: 'var(--space-6)', justifyContent: 'space-between'}}>
         <DetailsSignInfo simpleSign={simpleSign} showRegions showYears showNotes/>
         <SignFormsActions sign={sign} isHovering={isHovering}/>
       </div>

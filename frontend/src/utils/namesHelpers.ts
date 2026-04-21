@@ -1,6 +1,7 @@
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
-export function mergeYearText(years: IYearStartEnd): string {
+export function mergeYearText(years: IYearStartEnd | null): string {
+  if (!years) return 'Brak roku'
   const { yearStart, yearEnd } = years
 
   if (!yearStart && !yearEnd) return 'Brak roku'

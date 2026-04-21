@@ -43,3 +43,7 @@
   grid-template-rows: 1fr;
   opacity: 1;
 }
+
+.openSourcesDropdown {
+  cursor: pointer;
+}
