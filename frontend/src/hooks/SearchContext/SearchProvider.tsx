@@ -4,14 +4,14 @@ import { SearchContext } from './SearchContext'
 import { regionApi } from '@src/services/region.api'
 import { wordApi } from '@src/services/word.api'
 import type { IWordAttached } from '@src/models/word.model'
+import { useSearchParams } from 'react-router-dom'
+import updateParam from '@src/utils/updateParam'
 
 export type SearchOption = 'region' | 'startYear' | 'endYear'
 
 interface Props {
   children?: React.ReactNode
 }
-
-import { useSearchParams } from 'react-router-dom'
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -38,25 +38,16 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
       .map((w) => w.name)
   }, [allWords, searchWord])
 
-  function updateParam(key: string, value: string | null): void {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      if (value === null || value === '') next.delete(key)
-      else next.set(key, value)
-      return next
-    })
-  }
-
   const handleOptionChange = (type: SearchOption, value: string): void => {
-    if (type === 'region') updateParam('region', value ?? null)
+    if (type === 'region') updateParam('region', value ?? null, setSearchParams)
   }
 
   const handleYearChange = (yearType: 'yearStart' | 'yearEnd', year: string): void => {
-    updateParam(yearType, year)
+    updateParam(yearType, year, setSearchParams)
   }
 
   const handleNameChange = (value: string): void => {
-    updateParam('word', value.replaceAll('\u00A0', '').trimEnd())
+    updateParam('word', value.replaceAll('\u00A0', '').trimEnd(), setSearchParams)
   }
 
   const handleClear = (): void => {

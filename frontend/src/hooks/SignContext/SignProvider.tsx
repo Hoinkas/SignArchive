@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import { SignContext } from './SignContext'
 import { signApi } from '@src/services/sign.api'
@@ -17,6 +17,8 @@ import type { ISourceWithDetailsToDB, ISourceDetails } from '@src/models/source.
 import { sourceApi } from '@src/services/source.api'
 import { addRegionsToSource, getRegionChanges, deleteRegionsFromSource, applyRegionChangesToState } from './sourceToMeaningActions'
 import { referenceApi } from '@src/services/reference.api'
+import { useSearchParams } from 'react-router-dom'
+import updateParam from '@src/utils/updateParam'
 
 interface Props {
   children?: React.ReactNode
@@ -26,28 +28,38 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   const { addSignToSignList, editSignInSignList, deleteSignFromSignList } = useSignList()
 
   const [sign, setSign] = useState<ISignDetails | null>(null)
-  const [signLoading, setSignLoading] = useState<boolean>(false)
-  const currentSignId = useRef<string | null>(null)
+  const [signLoading, setSignLoading] = useState<boolean>(true)
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const initiateSign = useCallback((signId: string): void => {
-    setSignLoading(true)
-    signApi.details(signId).then((data) => {
-      setSign(data)
-      setSignLoading(false)
-    }).catch((err) => {
-      console.error(err)
-    })
-  }, [])
+  const paramsSignId = searchParams.get('signId') ?? ''
+
+  useEffect(() => {
+    if (!paramsSignId) return
+
+    signApi.details(paramsSignId)
+      .then((data) => setSign(data))
+      .catch(console.error)
+      .finally(() => setSignLoading(false))
+  }, [paramsSignId])
 
   const openCloseSidePanel = useCallback((signId: string): void => {
-    if (currentSignId.current === signId) {
+    if (paramsSignId === signId) {
       setSign(null)
-      currentSignId.current = null
+      updateParam('signId', null, setSearchParams)
       return
     }
-    currentSignId.current = signId
-    initiateSign(signId)
-  }, [initiateSign])
+
+    setSignLoading(true)
+    updateParam('signId', signId, setSearchParams)
+    signApi.details(signId)
+      .then((data) => {
+        setSign(data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => setSignLoading(false))
+  }, [paramsSignId, setSearchParams])
 
   const simpleSign = useMemo(() => {
     if (!sign) return null
