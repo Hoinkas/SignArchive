@@ -47,7 +47,7 @@ export function allMeaningsDetailsBySignId(signId: string): IMeaningDetails[] {
 }
 
 // CREATE
-export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttached {
+export function createMeaning(data: IMeaningToDB, signId: string): IMeaningDetails | undefined {
   const meaning: IMeaningAttached = {
     id: nanoid(),
     createdAt: Date.now(),
@@ -62,7 +62,7 @@ export function createMeaning(data: IMeaningToDB, signId: string): IMeaningAttac
     )
     .run(fillMissingValues<IMeaningToDB>(meaning, meaningToDbTemplate))
 
-  return meaning
+  return buildMeaningDetails(meaning)
 }
 
 // UPDATE
