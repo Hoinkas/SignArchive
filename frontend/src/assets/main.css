@@ -14,14 +14,14 @@ body {
 }
 
 .pageContainer {
-  height: calc(100vh - var(--navBar-height));
+  height: calc(100vh - var(--navBar-height) - (var(--space-6) * 2) - var(--space-10));
   width: 100vw;
   overflow: auto;
 }
 
 .page {
   width: 80vw;
-  margin: 64px auto;
+  margin: 0 auto 64px auto;
   display: flex;
   flex-direction: column;
 
@@ -127,32 +127,6 @@ button[type="submit"]:hover {
 label {
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-2);
-}
-
-.searchBar {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  backdrop-filter: blur(var(--space-6));
-  border-radius: var(--radius-lg);
-  cursor: text;
-  height: var(--space-10);
-  border: var(--button-border);
-  width: 100%;
-}
-
-.searchBar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text-active);
-  flex: 1;
-  padding-right: 0;
-  height: 100%;
-}
-
-.searchBar input::placeholder {
-  color: var(--grey-500);
 }
 
 .tag {

@@ -6,11 +6,11 @@ import SignForm from '../Forms/SignForm'
 
 function SignListTitle(): React.JSX.Element {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
-  const { signList } = useSignList()
+  const { filteredSigns } = useSignList()
 
   return (
     <div className='defaultInline'>
-      <>{signCountText(signList.length)} znaleziono</>
+      <>{signCountText(filteredSigns.length)} znaleziono</>
       {isFormOpen ?
         <SignForm formType='add' closeAction={() => setIsFormOpen(false)}/>
         : <ActionButton text='Dodaj znak' buttonAction={() => setIsFormOpen(true)}/>

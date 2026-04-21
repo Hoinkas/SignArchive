@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import { SignListContext } from './SignListContext'
 import { signApi } from '@src/services/sign.api'
 import type { ISignSimple } from '@src/models/sign.model'
+import { useSearch } from '../SearchContext/useSearch'
 
 interface Props {
   children?: React.ReactNode
 }
 
 export default function SignListProvider({ children }: Props): React.JSX.Element {
+  const {filteredWords} = useSearch()
   const [signList, setSignList] = useState<ISignSimple[]>([])
   const [signListLoading, setSignListLoading] = useState<boolean>(true)
 
@@ -33,8 +35,12 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
     setSignList((prev) => prev.filter((s) => s.id !== signId))
   }
 
+  const filteredSigns = useMemo((): ISignSimple[] => {
+    return signList.filter((s) => s.words.some((w) => filteredWords.includes(w)))
+  }, [signList, filteredWords])
+
   return (
-    <SignListContext.Provider value={{ signList, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>
+    <SignListContext.Provider value={{ filteredSigns, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>
       {children}
     </SignListContext.Provider>
   )

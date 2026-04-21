@@ -1,46 +1,40 @@
 import { useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import type { DropdownOption } from '@src/components/Form/Components/FormDropdown'
-import { useWord } from '@src/hooks/WordContext/useWord'
 import { SearchContext } from './SearchContext'
-import { tagApi } from '@src/services/tag.api'
-import { sourceApi } from '@src/services/source.api'
-import type { IWordWithRegionsCategories } from '@src/models/word.model'
+import { regionApi } from '@src/services/region.api'
+import { wordApi } from '@src/services/word.api'
+import type { IWordAttached } from '@src/models/word.model'
+
+export type SearchOption = 'region' | 'startYear' | 'endYear'
 
 interface Props {
   children?: React.ReactNode
 }
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
-  const { allWords } = useWord()
   const [searchWord, setSearchWord] = useState('')
-  const [categoriesOptions, setCategoriesOptions] = useState<DropdownOption[]>([])
-  const [categoryOption, setCategoryOption] = useState<DropdownOption | null>(null)
+  const [allWords, setAllWords] = useState<IWordAttached[]>([])
   const [regionsOptions, setRegionsOptions] = useState<DropdownOption[]>([])
   const [regionOption, setRegionOption] = useState<DropdownOption | null>(null)
 
   useEffect(() => {
-    tagApi.list().then((result) =>
-      setCategoriesOptions(result.map((t) => ({ id: t.id, label: t.name })))
+    regionApi.list().then((result) =>
+      setRegionsOptions(result.map((r) => ({ id: r.id, label: r.name })))
     )
-    sourceApi.regions().then((result) =>
-      setRegionsOptions(result.map((r, key) => ({ id: key.toString(), label: r })))
-    )
+    wordApi.list().then(setAllWords)
   }, [])
 
-  const filteredWords = useMemo((): IWordWithRegionsCategories[] => {
+  const filteredWords = useMemo((): string[] => {
     const upper = searchWord.toUpperCase()
 
     return allWords.filter((w) => {
-      if (searchWord && !w.text.toUpperCase().includes(upper)) return false
-      if (categoryOption && !w.categories.some((c) => c.id === categoryOption.id)) return false
-      if (regionOption && !w.regions.includes(regionOption.label)) return false
+      if (searchWord && !w.name.toUpperCase().includes(upper)) return false
       return true
-    })
-  }, [allWords, searchWord, categoryOption, regionOption])
+    }).map((w) => w.name)
+  }, [allWords, searchWord])
 
-  const handleChange = (type: 'category' | 'region', value: DropdownOption | null): void => {
-    if (type === 'category') setCategoryOption(value)
+  const handleChange = (type: SearchOption, value: DropdownOption | null): void => {
     if (type === 'region') setRegionOption(value)
   }
 
@@ -53,8 +47,6 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
       value={{
         searchWord,
         filteredWords,
-        categoriesOptions,
-        categoryOption,
         regionsOptions,
         regionOption,
         handleChange,

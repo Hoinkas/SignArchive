@@ -10,8 +10,6 @@ function SearchBar(): React.JSX.Element {
     handleChange,
     handleNameChange,
     searchWord,
-    categoriesOptions,
-    categoryOption,
     regionsOptions,
     regionOption
   } = useSearch()
@@ -21,7 +19,6 @@ function SearchBar(): React.JSX.Element {
     setIsFilterOpen(!isFilterOpen)
 
     if (!isFilterOpen) return
-    handleChange('category', null)
     handleChange('region', null)
   }
 
@@ -41,14 +38,6 @@ function SearchBar(): React.JSX.Element {
           <SearchIcon />
         </div>
       </div>
-      {isFilterOpen && (
-        <FormDropdown
-          label="Kategorie"
-          options={categoriesOptions}
-          value={categoryOption}
-          setValue={(value: DropdownOption | null) => handleChange('category', value)}
-        />
-      )}
       {isFilterOpen && (
         <FormDropdown
           label="Regiony"

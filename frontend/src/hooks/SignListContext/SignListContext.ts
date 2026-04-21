@@ -2,7 +2,7 @@ import type { ISignSimple } from '@src/models/sign.model'
 import { createContext } from 'react'
 
 export interface SignListContextValue {
-  signList: ISignSimple[]
+  filteredSigns: ISignSimple[]
   signListLoading: boolean
   addSignToSignList: (data: ISignSimple) => void
   editSignInSignList: (data: ISignSimple) => void
@@ -10,7 +10,7 @@ export interface SignListContextValue {
 }
 
 export const SignListContext = createContext<SignListContextValue>({
-  signList: [],
+  filteredSigns: [],
   signListLoading: false,
   addSignToSignList: () => {},
   editSignInSignList: () => {},
