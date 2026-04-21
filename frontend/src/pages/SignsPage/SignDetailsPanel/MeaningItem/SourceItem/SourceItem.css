@@ -1,9 +1,10 @@
 .sourceContainer {
-  display: inline-flex;
+  display: flex;
   justify-content: space-between;
   padding: var(--space-4) var(--space-6);
   border: var(--line-border);
   border-radius: var(--radius-md);
+  width: 100%;
 }
 
 .sourceItem {

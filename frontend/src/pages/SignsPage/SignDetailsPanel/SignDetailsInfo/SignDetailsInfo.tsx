@@ -1,5 +1,5 @@
 import { useSign } from '@src/hooks/SignContext/useSign'
-import MediaPlayer from '../../SingList/SignItem/MediaPlayer/MediaPlayer'
+import MediaPlayer from '../../MediaPlayer/MediaPlayer'
 import { useState } from 'react'
 import SignFormsActions from './SignFormsActions'
 import DetailsSignInfo from '@src/pages/SignsPage/DetailsSignInfo/DetailsSignInfo'

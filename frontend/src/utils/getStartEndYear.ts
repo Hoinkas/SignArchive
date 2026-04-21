@@ -3,6 +3,7 @@ import type { ISourceDetails } from '@src/models/source.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
 export function getYearsFromMeanings(meanings: IMeaningDetails[]): IYearStartEnd {
+  if (meanings.length === 0) return undefined
   const years = meanings
     .flatMap((m) => m.sources)
     .flatMap((s) => [s.yearStart, s.yearEnd])

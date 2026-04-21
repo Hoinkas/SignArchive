@@ -44,7 +44,11 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
         <MeaningDetails meaning={meaning}/>
       </div>
       <div className={`sourcesList ${isSourcesListOpen ? 'open' : ''}`}>
-        {sources.sort(sortByYears).map((source, key)=><SourceItem key={key} meaningId={meaning.id} sourceDetails={source}/>)}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+          {sources.sort(sortByYears).map((source, key) => (
+            <SourceItem key={key} meaningId={meaning.id} sourceDetails={source} />
+          ))}
+        </div>
       </div>
     </div>
   )

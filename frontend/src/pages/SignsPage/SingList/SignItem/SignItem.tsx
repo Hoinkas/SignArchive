@@ -1,6 +1,6 @@
 import './SignItem.css'
 import type { ISignSimple } from '@src/models/sign.model'
-import MediaPlayer from './MediaPlayer/MediaPlayer'
+import MediaPlayer from '../../MediaPlayer/MediaPlayer'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import DetailsSignInfo from '@src/pages/SignsPage/DetailsSignInfo/DetailsSignInfo'
 
