@@ -57,18 +57,18 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
 
   return (
     <FormModalWrapper handleSubmit={handleSubmit} formType={formType} closeForm={closeForm}>
-      <FormMultiLineInput
-        label="Wyjaśnienie znaczenia"
-        value={explanation}
-        setValue={setExplanation}
-        required
-        submitted={submitted}
-      />
       <FormTags
         label="Słowa do znaczenia"
         tagList={words}
         setTagList={setWords}
         dropdownOptions={allWords}
+        required
+        submitted={submitted}
+      />
+      <FormMultiLineInput
+        label="Wyjaśnienie znaczenia"
+        value={explanation}
+        setValue={setExplanation}
         required
         submitted={submitted}
       />

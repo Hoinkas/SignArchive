@@ -12,7 +12,7 @@ function SignListTitle(): React.JSX.Element {
     <div className='defaultInline'>
       <>{signCountText(signList.length)} znaleziono</>
       {isFormOpen ?
-        <SignForm formType='add' closeForm={() => setIsFormOpen(false)}/>
+        <SignForm formType='add' closeAction={() => setIsFormOpen(false)}/>
         : <ActionButton text='Dodaj znak' buttonAction={() => setIsFormOpen(true)}/>
       }
     </div>

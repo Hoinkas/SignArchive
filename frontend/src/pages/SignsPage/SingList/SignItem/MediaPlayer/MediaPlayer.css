@@ -8,6 +8,16 @@
   max-width: 200px;
 }
 
+.mediaWrapper.isDetails {
+  max-width: none;
+
+  & .imageBox,
+  & .videoContainer,
+  & .videoBox {
+    max-height: var(--media-details-max-height);
+  }
+}
+
 .imageBox {
   height: 100%;
   max-height: var(--media-max-height);
@@ -26,6 +36,7 @@
   max-height: var(--media-max-height);
   display: block;
 }
+
 
 .thumbnailOverlay {
   position: absolute;

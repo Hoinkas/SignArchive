@@ -6,9 +6,10 @@ import { BASE_URL } from '@src/utils/urlHelper'
 
 interface MediaPlayerProps {
   media: IMedia
+  isDetails?: boolean
 }
 
-function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
+function MediaPlayer({ media, isDetails = false }: MediaPlayerProps): React.JSX.Element {
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const [prevMedia, setPrevMedia] = useState(media)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -28,16 +29,16 @@ function MediaPlayer({ media }: MediaPlayerProps): React.JSX.Element {
   const fullUrl = media.videoUrl.startsWith('http') ? media.videoUrl : `${BASE_URL}${media.videoUrl}`
 
   return (
-    <div className="mediaWrapper">
+    <div className={`mediaWrapper ${isDetails && 'isDetails'}`}>
       {isImage ? (
-        <img src={fullUrl} className="imageBox" alt={media.description} />
+        <img src={fullUrl} className={`imageBox ${isDetails && 'isDetails'}`} alt={media.description} />
       ) : (
-        <div className="videoContainer">
-          <video key={fullUrl} ref={videoRef} className="videoBox" controls muted controlsList="novolume">
+        <div className={`videoContainer ${isDetails && 'isDetails'}`}>
+          <video key={fullUrl} ref={videoRef} className="videoBox" controls muted controlsList=''>
             <source src={fullUrl} type={media.mediaType} />
           </video>
-          {!isClicked && (
-            <div className="thumbnailOverlay">
+          {isDetails || !isClicked && (
+            <div className='thumbnailOverlay'>
               <Thumbnail setIsClicked={setIsClicked} media={{ ...media, videoUrl: fullUrl }} />
             </div>
           )}

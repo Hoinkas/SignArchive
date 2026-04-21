@@ -34,7 +34,7 @@ function SignForm({ formType, closeAction }: SignFormProps): React.JSX.Element {
     closeAction()
   }
 
-  const isValid = file || sign.media
+  const isValid = file || sign?.media
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()

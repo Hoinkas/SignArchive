@@ -1,8 +1,8 @@
 import { useSign } from '@src/hooks/SignContext/useSign'
 import MediaPlayer from '../../SingList/SignItem/MediaPlayer/MediaPlayer'
-import SignInfo from '../../SignInfo/SignInfo'
 import { useState } from 'react'
 import SignFormsActions from './SignFormsActions'
+import DetailsSignInfo from '@src/pages/SignsPage/DetailsSignInfo/DetailsSignInfo'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, simpleSign } = useSign()
@@ -10,15 +10,15 @@ function SignDetailsInfo(): React.JSX.Element {
 
   return (
     <div
-      style={{display: 'inline-flex', justifyContent: 'space-between'}}
+      style={{display: 'flex', flexDirection: 'column', gap: 'var(--space-6)'}}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
+      <MediaPlayer media={sign.media} isDetails/>
       <div style={{display: 'inline-flex', gap: 'var(--space-6)'}}>
-        <MediaPlayer media={sign.media}/>
-        <SignInfo signSimple={simpleSign}/>
+        <DetailsSignInfo simpleSign={simpleSign} showRegions showYears showNotes/>
+        <SignFormsActions sign={sign} isHovering={isHovering}/>
       </div>
-      <SignFormsActions sign={sign} isHovering={isHovering}/>
     </div>
   )
 }

@@ -1,8 +1,8 @@
 import './SignItem.css'
 import type { ISignSimple } from '@src/models/sign.model'
 import MediaPlayer from './MediaPlayer/MediaPlayer'
-import SignInfo from '../../SignInfo/SignInfo'
 import { useSign } from '@src/hooks/SignContext/useSign'
+import DetailsSignInfo from '@src/pages/SignsPage/DetailsSignInfo/DetailsSignInfo'
 
 interface SignItemProps {
   signSimple: ISignSimple
@@ -15,7 +15,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
     <div className="signContainer">
       <MediaPlayer media={signSimple.media} />
       <div className='signContent' onClick={() => openCloseSidePanel(signSimple.id)}>
-        <SignInfo signSimple={signSimple}/>
+        <DetailsSignInfo simpleSign={signSimple} showMeaningCount showRegions showYears showWords/>
         <div className='additionalInfo flexEnd timelineInfo'>Zobacz oś czasu {'>'}</div>
       </div>
     </div>
