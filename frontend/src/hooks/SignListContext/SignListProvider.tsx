@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function SignListProvider({ children }: Props): React.JSX.Element {
-  const {filteredWords} = useSearch()
+  const {filteredWords, regionOption} = useSearch()
   const [signList, setSignList] = useState<ISignSimple[]>([])
   const [signListLoading, setSignListLoading] = useState<boolean>(true)
 
@@ -36,8 +36,12 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
   }
 
   const filteredSigns = useMemo((): ISignSimple[] => {
-    return signList.filter((s) => s.words.some((w) => filteredWords.includes(w)))
-  }, [signList, filteredWords])
+    return signList.filter((s) => {
+      const hasWord = filteredWords.length === 0 || s.words.some((w) => filteredWords.includes(w))
+      const hasRegion = !regionOption || s.regions.includes(regionOption.label)
+      return hasWord && hasRegion
+    })
+  }, [signList, regionOption, filteredWords])
 
   return (
     <SignListContext.Provider value={{ filteredSigns, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>

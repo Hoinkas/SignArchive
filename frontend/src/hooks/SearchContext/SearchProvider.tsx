@@ -29,7 +29,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     const upper = searchWord.toUpperCase()
 
     return allWords.filter((w) => {
-      if (searchWord && !w.name.toUpperCase().includes(upper)) return false
+      if (searchWord !== '' && !w.name.toUpperCase().includes(upper)) return false
       return true
     }).map((w) => w.name)
   }, [allWords, searchWord])
