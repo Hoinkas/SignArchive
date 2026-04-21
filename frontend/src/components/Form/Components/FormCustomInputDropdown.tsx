@@ -44,11 +44,6 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
     e.preventDefault()
     e.stopPropagation()
 
-    if (filtered.length > 0) {
-      handleSelect(filtered[0])
-      return
-    }
-
     if (query.trim()) {
       const custom: DropdownOption = { id: crypto.randomUUID(), label: query.trim() }
       setValue(custom)
