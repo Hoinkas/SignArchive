@@ -11,7 +11,7 @@ function MeaningDetails({meaning}: MeaningDetailsProps): React.JSX.Element {
 
   return (
     <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center'}}
-    onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+    onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} onClick={(e) => e.stopPropagation()}>
       {meaning.explanation}
       <MeaningFormsActions meaning={meaning} isHovering={isHovering}/>
     </div>

@@ -31,8 +31,6 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
     setIsSourcesListOpen((prevState) => !prevState)
   }
 
-  console.log(sources)
-
   return (
     <div className="meaningContainer">
       <div className="meaningItem" onClick={() => handleClick()}>
