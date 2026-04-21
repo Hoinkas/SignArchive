@@ -15,7 +15,7 @@ function SignDetailsPanel(): React.JSX.Element {
     <div className="signDetailsContainer">
       <div className='stickyBar'>
         <p className='signTitle'>Znak #001</p>
-         <div className="clickableSymbolCircle" onClick={() => openCloseSidePanel(sign.id)}>×</div>
+         <div className="clickableSymbolX clickableCircle" onClick={() => openCloseSidePanel(sign.id)}>×</div>
       </div>
       <div className="signDetails">
         <SignDetailsInfo/>

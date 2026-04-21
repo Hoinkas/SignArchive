@@ -2,6 +2,7 @@ import { type SubmitEvent, useRef } from 'react'
 import './Form.css'
 import { createPortal } from 'react-dom'
 import type { FormType } from '@src/models/yearStartEnd.model'
+import { hasValue } from '@src/utils/hasValue'
 
 interface FormWrapperProps {
   children: React.JSX.Element[] | React.JSX.Element
@@ -24,12 +25,76 @@ export function FormModalWrapper(props: FormWrapperProps): React.JSX.Element {
   )
 }
 
+interface FormButtonsProps {
+  formType: FormType
+  closeForm: () => void
+}
+
+export function FormButtons(props: FormButtonsProps): React.JSX.Element {
+  const { formType, closeForm } = props
+
+  return (
+    <div className="buttonGroup">
+      <button type="submit">{formType === 'edit' ? 'Zapisz' : 'Dodaj'}</button>
+      <button type="button" onClick={() => closeForm()}>
+        Anuluj
+      </button>
+    </div>
+  )
+}
+
 interface FormTwoInLineWrapperProps {
   children: React.JSX.Element[]
 }
 
 export function FormTwoInLineWrapper({ children }: FormTwoInLineWrapperProps): React.JSX.Element {
   return <div className="twoInLine">{children}</div>
+}
+
+interface FormInputsWrapperProps {
+  children: React.JSX.Element | React.JSX.Element[]
+  isValue: boolean
+  cleanValue: () => void
+  label: string
+  required: boolean
+  showError: boolean
+  errorLabel: string
+}
+
+function FormInputsWrapper(props: FormInputsWrapperProps): React.JSX.Element {
+  const { children, isValue, cleanValue, label, required, showError, errorLabel } = props
+  return <div className="formGroup">
+      <label>
+        {label}
+        {required && <span> *</span>}
+      </label>
+        <ClearButtonWrapper isValue={isValue} cleanValue={cleanValue}>
+          {children}
+        </ClearButtonWrapper>
+      {showError && <span className="inputErrorText">{errorLabel}</span>}
+    </div>
+}
+
+interface ClearButtonWrapperProps {
+  children: React.JSX.Element | React.JSX.Element[]
+  isValue: boolean
+  cleanValue: () => void
+}
+
+function ClearButtonWrapper({ children, isValue, cleanValue }: ClearButtonWrapperProps): React.JSX.Element {
+  return (
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
+      {children}
+      {isValue && (
+        <span
+          onClick={() => cleanValue()}
+          style={{ position: 'absolute', right: '8px', cursor: 'pointer', color: 'var(--color-text-info)', fontSize: '16px', lineHeight: 1 }}
+        >
+          ×
+        </span>
+      )}
+    </div>
+  )
 }
 
 interface FormSingleLineInputProps {
@@ -47,11 +112,14 @@ export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.
   const showError = submitted && required && value === ''
 
   return (
-    <div className="formGroup">
-      <label>
-        {label}
-        {required && <span> *</span>}
-      </label>
+    <FormInputsWrapper
+      isValue={hasValue(value)}
+      cleanValue={() => setValue('')}
+      label={label}
+      required={required}
+      showError={showError}
+      errorLabel='Tekst wymagany'
+    >
       <input
         className={`formInput${showError ? ' inputError' : ''}`}
         type={type}
@@ -59,9 +127,9 @@ export function FormSingleLineInput(props: FormSingleLineInputProps): React.JSX.
         max={new Date().getFullYear()}
         value={value}
         onChange={(event) => setValue(event.target.value)}
+        style={{ paddingRight: value ? '28px' : undefined }}
       />
-      {showError && <span className="inputErrorText">Tekst wymagany</span>}
-    </div>
+    </FormInputsWrapper>
   )
 }
 
@@ -79,36 +147,20 @@ export function FormMultiLineInput(props: FormMultiLineInputProps): React.JSX.El
   const showError = submitted && required && value === ''
 
   return (
-    <div className="formGroup">
-      <label>
-        {label}
-        {required && <span> *</span>}
-      </label>
+    <FormInputsWrapper
+      isValue={hasValue(value)}
+      cleanValue={() => setValue('')}
+      label={label}
+      required={required}
+      showError={showError}
+      errorLabel='Tekst wymagany'
+    >
       <textarea
         className={`formInput${showError ? ' inputError' : ''}`}
         onChange={(event) => setValue(event.target.value)}
         value={value}
       />
-      {showError && <span className="inputErrorText">Tekst wymagany</span>}
-    </div>
-  )
-}
-
-interface FormButtonsProps {
-  formType: FormType
-  closeForm: () => void
-}
-
-export function FormButtons(props: FormButtonsProps): React.JSX.Element {
-  const { formType, closeForm } = props
-
-  return (
-    <div className="buttonGroup">
-      <button type="submit">{formType === 'edit' ? 'Zapisz' : 'Dodaj'}</button>
-      <button type="button" onClick={() => closeForm()}>
-        Anuluj
-      </button>
-    </div>
+    </FormInputsWrapper>
   )
 }
 
@@ -136,11 +188,14 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
   }
 
   return (
-    <div className="formGroup">
-      <label>
-        {label}
-        {required && <span> *</span>}
-      </label>
+    <FormInputsWrapper
+      isValue={hasFile}
+      cleanValue={() => setNewFile(null)}
+      label={label}
+      required={required}
+      showError={showError}
+      errorLabel='Plik wymagany'
+    >
       <button
         type="button"
         className={`fileInput${showError ? ' inputError' : ''}`}
@@ -158,7 +213,6 @@ export function FormMedia(props: FormMediaProps): React.JSX.Element {
         style={{ display: 'none' }}
         onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
       />
-      {showError && <span className="inputErrorText">Plik wymagany</span>}
-    </div>
+    </FormInputsWrapper>
   )
 }

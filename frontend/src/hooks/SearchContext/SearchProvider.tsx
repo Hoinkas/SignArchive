@@ -15,8 +15,12 @@ interface Props {
 export default function SearchProvider({ children }: Props): React.JSX.Element {
   const [searchWord, setSearchWord] = useState('')
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
+
   const [regionsOptions, setRegionsOptions] = useState<DropdownOption[]>([])
   const [regionOption, setRegionOption] = useState<DropdownOption | null>(null)
+
+  const [yearStart, setYearStart] = useState('')
+  const [yearEnd, setYearEnd] = useState('')
 
   useEffect(() => {
     regionApi.list().then((result) =>
@@ -26,16 +30,21 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
   }, [])
 
   const filteredWords = useMemo((): string[] => {
-    const upper = searchWord.toUpperCase()
+    if (searchWord === '') return []
 
-    return allWords.filter((w) => {
-      if (searchWord !== '' && !w.name.toUpperCase().includes(upper)) return false
-      return true
-    }).map((w) => w.name)
+    const upper = searchWord.toUpperCase()
+    return allWords
+      .filter((w) => w.name.toUpperCase().includes(upper))
+      .map((w) => w.name)
   }, [allWords, searchWord])
 
-  const handleChange = (type: SearchOption, value: DropdownOption | null): void => {
+  const handleOptionChange = (type: SearchOption, value: DropdownOption | null): void => {
     if (type === 'region') setRegionOption(value)
+  }
+
+  const handleYearChange = (yearType: 'yearStart' | 'yearEnd', year: string): void => {
+    if(yearType === 'yearStart') setYearStart(year)
+    if(yearType === 'yearEnd') setYearEnd(year)
   }
 
   const handleNameChange = (value: string): void => {
@@ -49,8 +58,11 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
         filteredWords,
         regionsOptions,
         regionOption,
-        handleChange,
-        handleNameChange
+        handleOptionChange,
+        handleNameChange,
+        yearStart,
+        yearEnd,
+        handleYearChange
       }}
     >
       {children}

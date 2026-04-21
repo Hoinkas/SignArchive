@@ -76,6 +76,7 @@ textarea {
   max-height: 240px;
   caret-color: var(--color-line-purple-light);
   color: var(--color-text);
+  width: 100%;
 }
 
 button {
@@ -159,12 +160,10 @@ label {
   list-style: var(--line-height-sm);
 }
 
-.clickableSymbolCircle {
+.clickableSymbolX {
   height: fit-content;
   width: fit-content;
 
-  border: var(--symbol-button-border);
-  border-radius: var(--radius-tag);
   padding: var(--space-2);
   line-height: var(--space-4);
   font-size: var(--clickable-symbol-font);
@@ -173,7 +172,12 @@ label {
   cursor: pointer;
 }
 
-.clickableSymbolCircle:hover {
+.clickableCircle {
+  border: var(--symbol-button-border);
+  border-radius: var(--radius-tag);
+}
+
+.clickableCircle:hover {
   background-color: var(--color-bg-active);
   border: var(--symbol-button-border-active);
 }

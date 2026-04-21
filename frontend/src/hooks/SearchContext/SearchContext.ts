@@ -7,8 +7,11 @@ export interface SearchContextValue {
   filteredWords: string[]
   regionsOptions: DropdownOption[]
   regionOption: DropdownOption | null
-  handleChange: (type: SearchOption, value: DropdownOption | null) => void
+  handleOptionChange: (type: SearchOption, value: DropdownOption | null) => void
   handleNameChange: (value: string) => void
+  yearStart: string
+  yearEnd: string
+  handleYearChange: (yearType: 'yearStart' | 'yearEnd', year: string) => void
 }
 
 export const SearchContext = createContext<SearchContextValue>({
@@ -16,6 +19,9 @@ export const SearchContext = createContext<SearchContextValue>({
   filteredWords: [],
   regionsOptions: [],
   regionOption: null,
-  handleChange: () => {},
-  handleNameChange: () => {}
+  handleOptionChange: () => {},
+  handleNameChange: () => {},
+  yearStart: '',
+  yearEnd: '',
+  handleYearChange: () => {}
 })

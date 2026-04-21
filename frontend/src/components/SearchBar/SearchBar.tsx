@@ -4,22 +4,24 @@ import SearchIcon from '@src/assets/icons/SearchIcon'
 import FilterIcon from '@src/assets/icons/FilterIcon'
 import FormDropdown, { type DropdownOption } from '../Form/Components/FormDropdown'
 import { useSearch } from '@src/hooks/SearchContext/useSearch'
+import { FormSingleLineInput, FormTwoInLineWrapper } from '../Form/Form'
 
 function SearchBar(): React.JSX.Element {
   const {
-    handleChange,
+    handleOptionChange,
     handleNameChange,
     searchWord,
     regionsOptions,
-    regionOption
+    regionOption,
+    yearStart,
+    yearEnd,
+    handleYearChange
   } = useSearch()
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
 
   const handleFilterClick = (): void => {
     setIsFilterOpen(!isFilterOpen)
-
     if (!isFilterOpen) return
-    handleChange('region', null)
   }
 
   return ( //TODO Search as form for accesibility
@@ -34,17 +36,24 @@ function SearchBar(): React.JSX.Element {
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
         </div>
+        <div className="clickableSymbolX" onClick={() => handleNameChange('')}>×</div>
         <div className="searchIcon">
           <SearchIcon />
         </div>
       </div>
       {isFilterOpen && (
-        <FormDropdown
-          label="Regiony"
-          options={regionsOptions}
-          value={regionOption}
-          setValue={(value: DropdownOption | null) => handleChange('region', value)}
-        />
+        <>
+          <FormDropdown
+            label="Regiony"
+            options={regionsOptions}
+            value={regionOption}
+            setValue={(value: DropdownOption | null) => handleOptionChange('region', value)}
+          />
+          <FormTwoInLineWrapper>
+            <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />
+            <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={(value: string) => handleYearChange('yearEnd', value)} type='number' />
+          </FormTwoInLineWrapper>
+        </>
       )}
     </div>
   )
