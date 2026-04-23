@@ -9,6 +9,7 @@ import SignsPage from './pages/SignsPage/SignsPage'
 import SignListProvider from './hooks/SignListContext/SignListProvider'
 import SearchBar from './components/SearchBar/SearchBar'
 import SearchProvider from './hooks/SearchContext/SearchProvider'
+import WordsPage from './pages/WordsPage/WordsPage'
 
 function PageLayout() {
   return (
@@ -36,6 +37,7 @@ function App(): React.JSX.Element {
             <Route element={<PageLayout />}>
               <Route path="/" element={<LandingPage />} />
               <Route path="/signs/" element={<SignListProvider><SignsPage /></SignListProvider>} />
+              <Route  path="/words/" element={<WordsPage />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>

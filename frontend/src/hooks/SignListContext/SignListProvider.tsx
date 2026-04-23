@@ -15,10 +15,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
   const [signListLoading, setSignListLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    signApi.list().then((data) => {
-      setSignList(data)
-      setSignListLoading(false)
-    })
+    signApi.list().then((data) => setSignList(data)).finally(() => setSignListLoading(false))
   }, [])
 
   const addSignToSignList = (data: ISignSimple): void => {

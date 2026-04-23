@@ -22,8 +22,9 @@ export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
 }
 
 export function listAllWords(): IWordAttached[] {
-  const row = getDb().prepare('SELECT * FROM word').all()
-  return row as IWordAttached[]
+  const row = getDb().prepare('SELECT * FROM word').all() as IWordAttached[]
+  const sorted = row.sort((a, b) => (a.name > b.name ? 1 : -1))
+  return sorted
 }
 
 // RETURN NAMES

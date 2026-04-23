@@ -4,8 +4,7 @@ import { SearchContext } from './SearchContext'
 import { regionApi } from '@src/services/region.api'
 import { wordApi } from '@src/services/word.api'
 import type { IWordAttached } from '@src/models/word.model'
-import { useSearchParams } from 'react-router-dom'
-import updateParam from '@src/utils/updateParam'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 export type SearchOption = 'region' | 'startYear' | 'endYear'
 
@@ -17,6 +16,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams()
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
   const [regionList, setRegionList] = useState<string[]>([])
+  const navigate = useNavigate()
 
   const searchWord = searchParams.get('word') ?? ''
   const yearStart = searchParams.get('yearStart') ?? ''
@@ -38,16 +38,27 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
       .map((w) => w.name)
   }, [allWords, searchWord])
 
+  const navigateWithParams = (updates: Record<string, string | null>): void => {
+    const newParams = new URLSearchParams(searchParams)
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) newParams.set(key, value)
+      else newParams.delete(key)
+    })
+
+    navigate({ pathname: '/signs/', search: newParams.toString() })
+  }
+
   const handleOptionChange = (type: SearchOption, value: string): void => {
-    if (type === 'region') updateParam('region', value ?? null, setSearchParams)
+    if (type === 'region') navigateWithParams({ region: value ?? null })
   }
 
   const handleYearChange = (yearType: 'yearStart' | 'yearEnd', year: string): void => {
-    updateParam(yearType, year, setSearchParams)
+    navigateWithParams({ [yearType]: year })
   }
 
   const handleNameChange = (value: string): void => {
-    updateParam('word', value.replaceAll('\u00A0', '').trimEnd(), setSearchParams)
+    navigateWithParams({ word: value.replaceAll('\u00A0', '').trimEnd() || null })
   }
 
   const handleClear = (): void => {

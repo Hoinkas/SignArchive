@@ -99,6 +99,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   }
 
   const deleteSignAndMedia = (): void => {
+    if (!sign) return
     signApi.delete(sign.id)
       .then(() => {
         setSign(null)
@@ -192,9 +193,10 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
     closeForm: () => void
   ): void => {
     const { toAdd, toDelete } = getRegionChanges(oldRegions, newRegions)
-    const { reference: _, regions: __, ...source } = sourceChanges
+    const { reference, regions: _, ...source } = sourceChanges
 
-    const referenceId = sourceChanges.reference.id
+    if (!reference) return
+    const referenceId = reference.id
 
     Promise.all([
       Object.keys(sourceChanges).length > 0 ? sourceApi.update(sourceId, {...source, referenceId }) : Promise.resolve(),

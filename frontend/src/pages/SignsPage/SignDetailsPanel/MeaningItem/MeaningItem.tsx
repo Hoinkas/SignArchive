@@ -8,6 +8,8 @@ import MeaningDetails from './MeaningDetails/MeaningDetails'
 import ArrowUpIcon from '@src/assets/icons/ArrowUpIcon'
 import ArrowDownIcon from '@src/assets/icons/ArrowDownIcon'
 import { useState } from 'react'
+import { mergeYearText } from '@src/utils/namesHelpers'
+import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
 function sortByYears(a: ISourceDetails, b: ISourceDetails): number {
   const newerYearA =  a.yearEnd ?? a.yearStart
@@ -31,6 +33,13 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
     setIsSourcesListOpen((prevState) => !prevState)
   }
 
+  const mappedRegionYearsFromSources = (): string[] => {
+    return sources.map((s) => {
+      const year: IYearStartEnd = {yearStart: s.yearStart, yearEnd: s.yearEnd ?? null}
+      return `${s.regions.flatMap((r) => r.name).join(', ')} ${mergeYearText(year)}`
+    })
+  }
+
   return (
     <div className="meaningContainer">
       <div className="meaningItem" onClick={() => handleClick()}>
@@ -42,6 +51,7 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
           </div>
         </div>
         <MeaningDetails meaning={meaning}/>
+        <PillList textArray={mappedRegionYearsFromSources()}/>
       </div>
       <div className={`sourcesList ${isSourcesListOpen ? 'open' : ''}`}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>

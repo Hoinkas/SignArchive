@@ -6,11 +6,13 @@ import LogoDark from '@src/assets/icons/LogoDark.svg'
 import { useState } from 'react'
 import ActionButton from '../ActionButton/ActionButton'
 import LoginForm from '@src/pages/SignsPage/Forms/LoginForm'
+import { useNavigate } from 'react-router-dom'
 
 function NavBar(): React.JSX.Element {
   const {isAdmin, logout} = usePermissions()
   const [isDark, setIsDark] = useState<boolean>(document.documentElement.getAttribute('data-theme') === 'dark')
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   function handleSwitch() {
     const next = !isDark
@@ -29,6 +31,7 @@ function NavBar(): React.JSX.Element {
         </div>
       </a>
       <div className='buttonsBox'>
+        <button onClick={() => navigate('/words/')}>Wszystkie słowa</button>
         <ThemeSwitch isDark={isDark} handleSwitch={handleSwitch}/>
         {isAdmin ? <ActionButton text="Wyloguj" buttonAction={() => logout()} /> : <ActionButton text="Zaloguj" buttonAction={() => setIsFormOpen(true)} /> }
         {isFormOpen && <LoginForm setIsFormOpen={setIsFormOpen} />}
