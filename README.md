@@ -29,16 +29,14 @@ pnpm dev
 For more info look into wiki.
 
 ###  Version 2.0
-- [ ] Add numeral tab in sign view
-- [ ] Add custom names tab in sign view (street, districts, buildings)
-- [ ] Improved screen responsiveness
+- [x] Improved screen responsiveness
+- [ ] Add categories to signs
 - [ ] Font size adjustment
 - [ ] Keyboard support
 - [ ] Feedback from backend for user's actions (error, success, failure)
 - [ ] Screen reader compatibility (HTML classes, Arial labels, and focus)
 - [ ] Downloading json of a word or/and signs
 - [ ] Signs frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
-- [ ] Reusing sign in new words
 
 ### Future
 - [ ] Generating video thumbnails with ghost movements from videos

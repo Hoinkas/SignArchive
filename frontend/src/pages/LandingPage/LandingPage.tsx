@@ -1,11 +1,7 @@
-import { signCountText } from '@src/utils/namesHelpers'
-
 function LandingPage(): React.JSX.Element {
   return (
     <div className='page'>
       <p>
-        <br/>Obecnie w bazie mamy: {signCountText(15)}
-        <br/>
         <br/>Na razie strona internetowa nie umożliwia samodzielnego dodawania słów, znaków, źródeł czy definicji. Będzie to możliwe w przyszłości.
         <br/>
         <br/>O postępie projektu i planach informujemy na bieżąco na naszym <a href='https://mastodon.com.pl/@archiwumig' target="_blank">Mastodonie</a>, <a href='https://www.instagram.com/archiwumig/' target="_blank">Instagramie</a>.
@@ -45,16 +41,13 @@ function LandingPage(): React.JSX.Element {
 
       <h3>Wersja 2.0</h3>
       <p>
-        [ ] Zakładka liczebników dla danego słowa (godziny, przystanki, dokładki itp.)
-        <br/>[ ] Zakładka nazw własnych do słów (ulic, dzielnic, budynków itp.)
-        <br/>[ ] Widok na telefony oraz usprawniony widok na wszystkie szerokości ekranu
+        [x] Widok na telefony oraz usprawniony widok na wszystkie szerokości ekranu
         <br/>[ ] Możliwość zwiększania i zmniejszania rozmiaru tekstu na stronie
         <br/>[ ] Wsparcie dla osób które korzystają tylko z klawiatury bez myszki
         <br/>[ ] Wyświetlanie informacji zwrotnej przy dodawaniu, modyfikacji i usuwaniu obiektów (niepowodzenia, powodzenia, błędy itp.)
         <br/>[ ] Dostosowanie strony pod czytniki ekranu dla osób niewidomych i niedowidzących. Dodanie tekstów alternatywnych
         <br/>[ ] Pobieranie surowych danych (plik .json) z zawartością słowa, jego znaków, definicji i źródeł
         <br/>[ ] Ocena częstotliwości użycia znaku oraz jego poprawności (czy g/Głusi faktycznie używali tego znaku, czy tylko słyszący go wymyślili i nagrali?)
-        <br/>[ ] Możliwość dodania starego znaku do nowego słowa
         <br/>
       </p>
       <hr/>
