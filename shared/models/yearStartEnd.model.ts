@@ -1,6 +1,6 @@
 export interface IYearStartEnd {
-  yearStart: number | null
-  yearEnd: number | null
+  yearStart: number | null | undefined
+  yearEnd: number | null | undefined
 }
 
 export interface IYearsRegions extends IYearStartEnd {

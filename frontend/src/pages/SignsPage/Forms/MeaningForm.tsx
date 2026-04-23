@@ -44,7 +44,7 @@ function MeaningForm(props: MeaningFormProps): React.JSX.Element {
     if (!isValid) return
 
     const meaningToCreate: IMeaningToDB = {
-      explanation: explanation !== '' ? explanation : undefined
+      explanation: explanation
     }
 
     if (formType === 'add') {

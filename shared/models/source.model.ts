@@ -4,8 +4,8 @@ import type { IRegion, IRegionAttached } from './region.model'
 
 export interface ISource {
   referenceId: string
-  context: string
-  yearStart: number
+  context?: string
+  yearStart?: number
   yearEnd?: number
 }
 
