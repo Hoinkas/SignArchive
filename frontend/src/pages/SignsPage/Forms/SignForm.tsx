@@ -20,10 +20,10 @@ function SignForm({ formType, closeAction }: SignFormProps): React.JSX.Element {
 
   const [submitted, setSubmitted] = useState<boolean>(false)
 
-  const [notes, setNotes] = useState<string>(sign ? sign.notes : '')
+  const [notes, setNotes] = useState<string>(sign?.notes ?? '')
   const [file, setFile] = useState<File | null>(null)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [description, setDescription] = useState<string>(sign ? sign.media.description : '')
+  const [description, setDescription] = useState<string>(sign?.media.description ?? '')
 
   const handleFormClose = (): void => {
     setNotes('')
@@ -40,19 +40,16 @@ function SignForm({ formType, closeAction }: SignFormProps): React.JSX.Element {
     event.preventDefault()
     setSubmitted(true)
     if (!isValid) return
+    if (!file && !sign?.media) return
 
     const data: ISignDetailsToDB = {
       notes: notes !== '' ? notes : undefined
     }
 
-    const media: IMediaToDB = {
-      videoFile: file,
-      thumbnailFile: thumbnail ?? undefined,
-      description: description !== '' ? description : undefined
-    }
-
     try {
       if (formType === 'add') {
+        if (!file) return
+        const media: IMediaToDB = { videoFile: file, thumbnailFile: thumbnail ?? undefined, description: description || undefined }
         addSignAndMedia(data, media, closeAction)
       } else if (formType === 'edit' && sign) {
         const signChanges = getChanges(sign, data)

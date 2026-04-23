@@ -8,8 +8,8 @@ export function getChanges<T>(
 ): Partial<WithoutBase<T>> {
   const changes: Partial<WithoutBase<T>> = {}
 
-  for (const key in updated) {
-    if (updated[key] !== (original as Partial<WithoutBase<T>>)[key]) {
+  for (const key of Object.keys(updated) as Array<keyof WithoutBase<T>>) {
+    if (updated[key] !== original[key]) {
       changes[key] = updated[key]
     }
   }
