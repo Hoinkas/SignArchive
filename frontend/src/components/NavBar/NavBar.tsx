@@ -21,6 +21,8 @@ function NavBar(): React.JSX.Element {
     localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+
   return (
     <div className="navBar">
       <a className="logoTitle" href='/'>
@@ -30,12 +32,34 @@ function NavBar(): React.JSX.Element {
           <p className='title purple'>Mig</p>
         </div>
       </a>
-      <div className='buttonsBox'>
+
+      {/* Desktop */}
+      <div className='buttonsBox desktopNav'>
         <button onClick={() => navigate('/words/')}>Wszystkie słowa</button>
         <ThemeSwitch isDark={isDark} handleSwitch={handleSwitch}/>
-        {isAdmin ? <ActionButton text="Wyloguj" buttonAction={() => logout()} /> : <ActionButton text="Zaloguj" buttonAction={() => setIsFormOpen(true)} /> }
-        {isFormOpen && <LoginForm setIsFormOpen={setIsFormOpen} />}
+        {isAdmin
+          ? <ActionButton text="Wyloguj" buttonAction={logout} />
+          : <ActionButton text="Zaloguj" buttonAction={() => setIsFormOpen(true)} />
+        }
       </div>
+
+      {/* Mobile */}
+      <div className='mobileNav'>
+        <ThemeSwitch isDark={isDark} handleSwitch={handleSwitch}/>
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>☰</button>
+      </div>
+
+      {isMenuOpen && (
+        <div className='mobileMenu'>
+          <button onClick={() => { navigate('/words/'); setIsMenuOpen(false) }}>Wszystkie słowa</button>
+          {isAdmin
+            ? <ActionButton text="Wyloguj" buttonAction={logout} />
+            : <ActionButton text="Zaloguj" buttonAction={() => { setIsFormOpen(true); setIsMenuOpen(false) }} />
+          }
+        </div>
+      )}
+
+      {isFormOpen && <LoginForm setIsFormOpen={setIsFormOpen} />}
     </div>
   )
 }
