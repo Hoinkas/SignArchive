@@ -5,7 +5,7 @@
   width: 50%;
   min-width: 640px;
   background-color: var(--color-bg);
-  height: calc(100vh - var(--navBar-height));
+  height: calc(100dvh - var(--navBar-height));
   border-left: var(--line-border);
   z-index: 100;
 
@@ -21,9 +21,12 @@
   }
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 100vw;
+    min-width: unset;
     position: fixed;
     border: none;
+    padding: 24px 16px;
+    padding-top: 0;
   }
 }
 
