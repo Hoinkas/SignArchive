@@ -1,7 +1,7 @@
 .wordsPage {
-  display: flex;
   flex-direction: row;
   gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .wordItem {
