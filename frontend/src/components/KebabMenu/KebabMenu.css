@@ -35,13 +35,9 @@
 }
 
 .navDropdown {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
   background: var(--color-bg);
   border-radius: var(--radius-md);
   overflow: hidden;
-  min-width: 80px;
   z-index: 999;
 
   transform-origin: top right;
@@ -62,11 +58,12 @@
   display: block;
   padding: var(--space-2) var(--space-4);
   font-size: var(--font-size-sm);
-  color: var(--color-text-white);
+  color: var(--color-text);
   text-decoration: none;
   border: var(--symbol-button-border);
   border-bottom: none;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
 }
 
 .navDropdown a:first-child {

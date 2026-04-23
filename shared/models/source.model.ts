@@ -1,40 +1,35 @@
-import type { IAuthor, IAuthorAttached } from './author.model'
 import type { IBaseModelAttached } from './base.interface'
-import type { IEvidence, IEvidenceAttached } from './evidence.model'
+import type { IReference, IReferenceAttached } from './reference.model'
+import type { IRegion, IRegionAttached } from './region.model'
 
 export interface ISource {
-  authorId: string
-  evidenceId: string
-  region?: string
-  yearStart?: number
+  referenceId: string
+  context: string
+  yearStart: number
   yearEnd?: number
-  notes?: string
-  translations?: string
-}
-
-export type ISourceToCreate = Omit<ISource, 'authorId' | 'evidenceId'>
-
-export interface ISourceWithDetailsToDB {
-  source: ISourceToCreate
-  evidence: IEvidence
-  author: IAuthor
-}
-
-export interface ISourceWithDetailsToCreate extends ISourceWithDetailsToDB {
-  signId: string
-  wordId: string
-}
-
-export interface ISourceDetails
-  extends Omit<ISource, 'authorId' | 'evidenceId'>, IBaseModelAttached {
-  author: IAuthorAttached
-  evidence: IEvidenceAttached
 }
 
 export type ISourceAttached = ISource & IBaseModelAttached
 
-export interface ISourceSignWord {
-  sourceId: string
-  signId: string
-  wordId: string
+// TO BACKEND
+export type ISourceToDB = Omit<ISource, 'referenceId'>
+
+export interface ISourceWithDetailsToDB {
+  source: ISourceToDB
+  reference: IReference
+  regions: IRegion[]
+}
+
+// TO FRONTEND
+export interface ISourceDetails extends Omit<ISource, 'referenceId'>, IBaseModelAttached {
+  reference: IReferenceAttached
+  regions: IRegionAttached[]
+}
+
+// TEMPLATES
+export const sourceTemplate: Record<keyof ISource, null> = {
+  referenceId: null,
+  context: null,
+  yearStart: null,
+  yearEnd: null
 }

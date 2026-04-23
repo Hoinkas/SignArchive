@@ -16,8 +16,8 @@ export const apiGet = <T>(
 export const apiPost = <T, K>(url: string, payload: T): Promise<AxiosResponse<K>> =>
   axios.post<K>(BASE_URL + url, payload)
 
-export const apiPatch = <T, K>(url: string, payload: T): Promise<AxiosResponse<K>> =>
+export const apiPatch = <T, K = void>(url: string, payload: T): Promise<AxiosResponse<K>> =>
   axios.patch<K>(BASE_URL + url, payload)
 
-export const apiDelete = <T>(url: string): Promise<AxiosResponse<T>> =>
+export const apiDelete = <T = void>(url: string): Promise<AxiosResponse<T>> =>
   axios.delete<T>(BASE_URL + url)

@@ -1,34 +1,47 @@
-import { useWord } from '@src/hooks/WordContext/useWord'
 import PermissionsProvider from '@src/hooks/PermissionsContext/PermissionsProvider'
 import LandingPage from './pages/LandingPage/LandingPage'
-import WordPage from './pages/WordsPage/WordPage'
 import NavBar from './components/NavBar/NavBar'
 import { useEffect } from 'react'
 import isDarkTheme from './utils/isDarkTheme'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Loader from './components/Loader/Loader'
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import PageNotFound from './pages/PageNotFound/PageNotFound'
-import SignsProvider from './hooks/SignsContext/SignsProvider'
+import SignsPage from './pages/SignsPage/SignsPage'
+import SignListProvider from './hooks/SignListContext/SignListProvider'
+import SearchBar from './components/SearchBar/SearchBar'
+import SearchProvider from './hooks/SearchContext/SearchProvider'
+import WordsPage from './pages/WordsPage/WordsPage'
+
+function PageLayout() {
+  return (
+    <>
+      <NavBar />
+      <SearchBar/>
+      <div className="pageContainer">
+        <Outlet />
+      </div>
+    </>
+  )
+}
+
 
 function App(): React.JSX.Element {
-  const { wordListLoading } = useWord()
-
   useEffect(() =>{
     document.documentElement.setAttribute('data-theme', isDarkTheme() ? 'dark' : 'light')
   },[])
 
-  if (wordListLoading) return <div style={{width: '100vw', height: '100vh'}}><Loader/></div>
-
   return (
     <BrowserRouter>
       <PermissionsProvider>
-        <NavBar/>
-
-        <Routes>
-          <Route path="/" element={<LandingPage/>} />
-          <Route path={`/word/:word`} element={<SignsProvider><WordPage/></SignsProvider>} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+        <SearchProvider>
+          <Routes>
+            <Route element={<PageLayout />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/signs/" element={<SignListProvider><SignsPage /></SignListProvider>} />
+              <Route  path="/words/" element={<WordsPage />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Route>
+          </Routes>
+        </SearchProvider>
       </PermissionsProvider>
     </BrowserRouter>
   )

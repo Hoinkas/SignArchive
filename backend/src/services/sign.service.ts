@@ -1,200 +1,103 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
+import { deleteMedia, findMediaById } from './media.service'
+import { fillMissingValues } from '../utils/helpers.functions'
 import {
+  ISign,
   ISignAttached,
   ISignDetails,
   ISignDetailsToDB,
-  ISign,
-  ISignDetailsEdit
-} from '../../../shared/models/sign.model'
-import { IYearsRegions, IYearStartEnd } from '../../../shared/models/yearStartEnd.model'
-import { getDefinitions, insertDefinition } from './definition.service'
-import {
-  createMedia,
-  deleteUnusedMedia,
-  findMediaById,
-  findMediaBySignId,
-  updateMedia
-} from './media.service'
+  ISignSimple,
+  signTemplate
+} from '../models/sign.model'
+import { allMeaningsDetailsBySignId, countMeaningsBySingId } from './meaning.service'
+import { listRegionsNamesBySignId } from './region.service'
+import { getStartEndYearBySignId } from './source.service'
+import { listWordsNamesBySignId } from './word.service'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
 
-function getYearsBySignWord(signId: string, wordId: string): IYearStartEnd {
-  const row = getDb()
-    .prepare(
-      `SELECT MIN(source.yearStart) AS a, MAX(source.yearStart) AS b,
-              MIN(source.yearEnd)   AS c, MAX(source.yearEnd)   AS d
-       FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.signId = ? AND sourceSignWord.wordId = ?`
-    )
-    .get(signId, wordId) as Record<string, number | null>
-
-  const all = [row.a, row.b, row.c, row.d].filter((v): v is number => v !== null)
-  if (all.length === 0) return { yearStart: null, yearEnd: null }
-  return { yearStart: Math.min(...all), yearEnd: Math.max(...all) }
-}
-
-function getRegionsBySignWord(signId: string, wordId: string): string[] {
-  const rows = getDb()
-    .prepare(
-      `SELECT DISTINCT source.region FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.signId = ? AND sourceSignWord.wordId = ?
-         AND source.region IS NOT NULL`
-    )
-    .all(signId, wordId) as { region: string }[]
-  return rows.map((r) => r.region)
-}
-
-function getSourcesCount(signId: string): number {
-  const row = getDb()
-    .prepare('SELECT COUNT(*) AS count FROM sourceSignWord WHERE signId = ?')
-    .get(signId) as { count: number }
-  return row.count
-}
-
-export function findSignById(id: string): ISignAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM sign WHERE id = ?').get(id)
-  return row ? (row as ISignAttached) : undefined
-}
-
-function findSignsByWordId(wordId: string): ISignAttached[] {
-  return getDb()
-    .prepare(
-      `SELECT DISTINCT sign.* FROM sign
-       INNER JOIN definitionSignWord ON sign.id = definitionSignWord.signId
-       WHERE definitionSignWord.wordId = ?`
-    )
-    .all(wordId)
-    .map((row) => row as ISignAttached)
-}
-
-function buildSignDetails(sign: ISignAttached, wordId: string): ISignDetails | undefined {
+// MAP SIMPLE
+function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
   const media = findMediaById(sign.mediaId)
   if (!media) return
 
-  const { yearStart, yearEnd } = getYearsBySignWord(sign.id, wordId)
-  return {
-    ...sign,
-    yearStart,
-    yearEnd,
-    sourcesCount: getSourcesCount(sign.id),
-    definitions: getDefinitions(sign.id, wordId),
-    regions: getRegionsBySignWord(sign.id, wordId),
-    media
-  }
+  const meaningsCount = countMeaningsBySingId(sign.id)
+  const regions = listRegionsNamesBySignId(sign.id)
+  const years = getStartEndYearBySignId(sign.id)
+  const words = listWordsNamesBySignId(sign.id)
+
+  return { ...sign, meaningsCount, regions, years, words, media }
 }
 
-export function getYearsRegionsBySignId(signId: string, wordId: string): IYearsRegions {
-  const { yearStart, yearEnd } = getYearsBySignWord(signId, wordId)
+// MAP DETAILS
+function buildSignDetails(sign: ISignAttached): ISignDetails | undefined {
+  const media = findMediaById(sign.mediaId)
+  if (!media) return
 
-  return {
-    yearStart,
-    yearEnd,
-    regions: getRegionsBySignWord(signId, wordId)
-  }
+  const meanings = allMeaningsDetailsBySignId(sign.id)
+
+  return { ...sign, media, meanings }
 }
 
-export function listSignsByWord(wordId: string): ISignDetails[] {
-  const signs = findSignsByWordId(wordId)
-  const signsDetails: ISignDetails[] = []
+// FIND
+function findSignById(signId: string): ISignAttached | undefined {
+  return getDb().prepare('SELECT * FROM sign WHERE id = ?').get(signId) as ISignAttached | undefined
+}
 
-  signs.forEach((sign) => {
-    const details = buildSignDetails(sign, wordId)
-    if (details) signsDetails.push(details)
+function listAllSigns(): ISignAttached[] {
+  return getDb().prepare('SELECT * FROM sign').all() as ISignAttached[]
+}
+
+export function getSignSimple(signId: string): ISignSimple | undefined {
+  const sign = findSignById(signId)
+  if (!sign) return
+  return buildSignSimple(sign)
+}
+
+// LIST MAPPED
+export function getSignDetails(signId: string): ISignDetails | undefined {
+  const sign = findSignById(signId)
+  if (!sign) return
+  return buildSignDetails(sign)
+}
+
+export function listAllSignsSimple(): ISignSimple[] {
+  const transaction = getDb().transaction(() => {
+    return listAllSigns().flatMap((s) => {
+      const simple = buildSignSimple(s)
+      return simple ? [simple] : []
+    })
   })
-  return signsDetails
+  return transaction()
 }
 
-export function insertSign(data: ISignDetailsToDB): ISignAttached {
-  const existing = findMediaById(data.media.id)
-
-  const media = existing ?? createMedia(data.media)
-
+// CREATE
+export function createSign(data: ISignDetailsToDB, mediaId: string): ISignAttached {
   const sign: ISignAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    mediaId: media.id,
-    notes: data.notes
+    ...data,
+    mediaId
   }
 
   getDb()
     .prepare(
       'INSERT INTO sign (id, createdAt, mediaId, notes) VALUES (@id, @createdAt, @mediaId, @notes)'
     )
-    .run(sign)
+    .run(fillMissingValues<ISign>(sign, signTemplate))
 
   return sign
 }
 
-export function createSignWithDefinition(data: ISignDetailsToDB): ISignDetails {
-  const transaction = getDb().transaction(() => {
-    const sign = insertSign(data)
-    const definition = insertDefinition({
-      ...data.definition,
-      signId: sign.id,
-      wordId: data.wordId
-    })
-    const media = findMediaById(data.media.id) ?? createMedia(data.media)
-
-    return {
-      ...sign,
-      yearStart: null,
-      yearEnd: null,
-      sourcesCount: 0,
-      definitions: [definition],
-      regions: [],
-      media
-    } satisfies ISignDetails
-  })
-  return transaction()
+// UPDATE
+export function updateSign(signId: string, data: Partial<ISign>): void {
+  buildUpdateQuery('sign', signId, data as Record<string, unknown>)
 }
 
-export function updateSign(
-  signId: string,
-  data: Partial<ISignDetailsEdit>
-): ISignAttached | undefined {
-  const existing = findSignById(signId)
-  if (!data.media || !existing) return
-
-  const oldMediaId = existing.mediaId
-
-  if (data.media) updateMedia(data.media.id, data.media)
-
-  const updated: ISignAttached = {
-    ...existing,
-    notes: data.notes ?? existing.notes,
-    mediaId: data.media.id
-  }
-
-  getDb()
-    .prepare(
-      `UPDATE sign
-       SET notes = @notes, mediaId = @mediaId
-       WHERE id = @id`
-    )
-    .run({
-      id: updated.id,
-      notes: updated.notes ?? null,
-      mediaId: updated.mediaId
-    })
-
-  if (oldMediaId && oldMediaId !== data.media.id) {
-    deleteUnusedMedia(oldMediaId)
-  }
-
-  return updated
-}
-
+// DELETE
 export function deleteSign(signId: string): void {
-  const db = getDb()
-  const sign = db.prepare('SELECT * FROM sign WHERE id = ?').get(signId) as
-    | ISignAttached
-    | undefined
+  const sign = findSignById(signId)
   if (!sign) return
-
-  db.prepare('DELETE FROM sign WHERE id = ?').run(signId)
-
-  if (sign.mediaId) {
-    deleteUnusedMedia(sign.mediaId)
-  }
+  getDb().prepare('DELETE FROM sign WHERE id = ?').run(signId)
+  deleteMedia(sign.mediaId)
 }

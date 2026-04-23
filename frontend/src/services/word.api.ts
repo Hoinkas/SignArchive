@@ -1,24 +1,10 @@
-import type {
-  IWordCategoriesAttached,
-  IWordToDB,
-  IWordWithRegionsCategories
-} from '@src/models/word.model'
-import { apiGet, apiPost, apiPatch, apiDelete } from './client'
+import { apiGet, apiPost, apiDelete } from './client'
+import type { IWord, IWordAttached } from '@src/models/word.model'
 
 export const wordApi = {
-  list: (): Promise<IWordWithRegionsCategories[]> =>
-    apiGet<IWordWithRegionsCategories[]>('/words').then((r) => r.data),
-
-  details: (wordId: string): Promise<IWordCategoriesAttached> =>
-    apiGet<IWordCategoriesAttached>(`/words/${wordId}`).then((r) => r.data),
-
-  create: (data: IWordToDB): Promise<IWordCategoriesAttached> =>
-    apiPost<IWordToDB, IWordCategoriesAttached>('/words', data).then((r) => r.data),
-
-  update: (wordId: string, data: Partial<IWordToDB>): Promise<IWordCategoriesAttached> =>
-    apiPatch<Partial<IWordToDB>, IWordCategoriesAttached>(`/words/${wordId}`, data).then(
-      (r) => r.data
-    ),
-
-  delete: (wordId: string): Promise<void> => apiDelete(`/words/${wordId}`).then(() => undefined)
+  list: (): Promise<IWordAttached[]> => apiGet<IWordAttached[]>(`/words`).then((r) => r.data),
+  create: (meaningId: string, data: IWord): Promise<IWordAttached> =>
+    apiPost<IWord, IWordAttached>(`/meanings/${meaningId}/words`, data).then((r) => r.data),
+  delete: (meaningId: string, wordId: string): Promise<void> =>
+    apiDelete(`/meanings/${meaningId}/words/${wordId}`).then(() => undefined)
 }

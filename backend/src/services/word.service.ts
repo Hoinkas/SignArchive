@@ -1,125 +1,94 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
-import { ITagAttached } from '../../../shared/models/tag.model'
-import {
-  IWordAttached,
-  IWordCategoriesAttached,
-  IWordToDB,
-  IWordWithCountAttached,
-  IWordWithRegionsCategories
-} from '../../../shared/models/word.model'
-import { addAndRemoveTagsFromWord, addManyTagsToWord, listTagsByWordId } from './tag.service'
-import { IDefinitionSignWord } from '../models/definitionSignWord'
+import { IWordAttached, IWord } from '../../../shared/models/word.model'
+import { fillMissingValues } from '../utils/helpers.functions'
+import { wordTemplate } from '../models/word.model'
+import { createWordMeaningLink } from './wordMeaning.service'
 
-function tagsByWordId(wordId: string): ITagAttached[] {
+// FIND
+function findWordByName(name: string): IWordAttached | undefined {
+  const row = getDb().prepare('SELECT * FROM word WHERE name = ?').get(name)
+  return row ? (row as IWordAttached) : undefined
+}
+
+export function findWordsByMeaningId(meaningId: string): IWordAttached[] {
   return getDb()
     .prepare(
-      `SELECT tag.* FROM tag
-       INNER JOIN tagWord ON tag.id = tagWord.tagId
-       WHERE tagWord.wordId = ? ORDER BY tag.name`
+      `SELECT word.* FROM word
+       INNER JOIN wordMeaning ON wordMeaning.wordId = word.id
+       WHERE wordMeaning.meaningId = ?`
     )
-    .all(wordId) as ITagAttached[]
+    .all(meaningId) as IWordAttached[]
 }
 
-function regionsByWordId(wordId: string): string[] {
+export function listAllWords(): IWordAttached[] {
+  const row = getDb().prepare('SELECT * FROM word').all() as IWordAttached[]
+  const sorted = row.sort((a, b) => (a.name > b.name ? 1 : -1))
+  return sorted
+}
+
+// RETURN NAMES
+export function listWordsNamesBySignId(signId: string): string[] {
   const rows = getDb()
     .prepare(
-      `SELECT DISTINCT source.region FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.wordId = ? AND source.region IS NOT NULL`
+      `SELECT word.name FROM word
+    INNER JOIN wordMeaning ON wordMeaning.wordId = word.id
+    INNER JOIN meaning ON meaning.id = wordMeaning.meaningId
+    WHERE meaning.signId = ?`
     )
-    .all(wordId) as { region: string }[]
-  return rows.map((r) => r.region)
+    .all(signId) as { name: string }[]
+
+  return rows.flatMap((r) => r.name)
 }
 
-export function findWordById(id: string): IWordCategoriesAttached | undefined {
-  const row = getDb().prepare('SELECT * FROM word WHERE id = ?').get(id)
-  return row ? (row as IWordCategoriesAttached) : undefined
-}
+// CREATE
+function createWord(data: IWord): IWordAttached {
+  const existing = findWordByName(data.name)
+  if (existing) return existing
 
-function buildWordsQuery(whereClause?: string): string {
-  return `
-    SELECT word.*, COUNT(DISTINCT dsw.signId) AS signsCount
-    FROM word
-    LEFT JOIN definitionSignWord dsw ON dsw.wordId = word.id
-    ${whereClause ? `WHERE ${whereClause}` : ''}
-    GROUP BY word.id
-    ORDER BY word.text
-  `
-}
-
-function mapWordRow(row: IWordWithCountAttached): IWordWithRegionsCategories {
-  return {
-    ...row,
-    signsCount: row.signsCount,
-    categories: tagsByWordId(row.id as string),
-    regions: regionsByWordId(row.id as string)
-  }
-}
-
-export function findWordByName(name: string): IWordWithRegionsCategories | undefined {
-  const result = getDb().prepare(buildWordsQuery('word.text = ?')).get(name) as
-    | IWordWithCountAttached
-    | undefined
-
-  if (!result) return undefined
-  return mapWordRow(result)
-}
-
-export function listAllWords(): IWordWithRegionsCategories[] {
-  const rows = getDb().prepare(buildWordsQuery()).all() as IWordWithCountAttached[]
-
-  return rows.map(mapWordRow)
-}
-
-export function createWord(data: IWordToDB): IWordCategoriesAttached {
-  const db = getDb()
   const word: IWordAttached = {
     id: nanoid(),
     createdAt: Date.now(),
-    text: data.text
+    ...data
   }
 
-  db.prepare('INSERT INTO word (id, createdAt, text) VALUES (@id, @createdAt, @text)').run(word)
+  getDb()
+    .prepare('INSERT INTO word (id, createdAt, name) VALUES (@id, @createdAt, @name)')
+    .run(fillMissingValues<IWord>(word, wordTemplate))
 
-  const categories = addManyTagsToWord(data.categories, word.id)
-
-  return { ...word, categories }
+  return word
 }
 
-export function updateWord(
-  wordId: string,
-  data: Partial<IWordToDB>
-): IWordCategoriesAttached | undefined {
-  const existing = findWordById(wordId)
-  if (!existing) return undefined
+export function createWordAndLink(meaningId: string, data: IWord): IWordAttached {
+  const transaction = getDb().transaction(() => {
+    const word = createWord(data)
+    createWordMeaningLink({ meaningId, wordId: word.id })
 
-  if (data.text) {
-    getDb()
-      .prepare('UPDATE word SET text = @text WHERE id = @id')
-      .run({ text: data.text, id: wordId })
-  }
-
-  const newWord = findWordById(wordId)
-  if (!newWord) return undefined
-
-  const categories = data.categories
-    ? addAndRemoveTagsFromWord(data.categories, wordId)
-    : listTagsByWordId(wordId)
-
-  return { ...newWord, categories }
+    return word
+  })
+  return transaction()
 }
 
-export function deleteWord(wordId: string): void {
+// DELETE
+function deleteWord(wordId: string): void {
   getDb().prepare('DELETE FROM word WHERE id = ?').run(wordId)
 }
 
-export function removeWordIfEmpty(wordId: string): void {
-  const result = getDb()
-    .prepare('SELECT * FROM definitionSignWord WHERE wordId = ?')
-    .get(wordId) as IDefinitionSignWord | undefined
+export function deleteUnusedWords(): void {
+  const rows = getDb()
+    .prepare(
+      `SELECT word.* FROM word
+       LEFT JOIN wordMeaning ON word.id = wordMeaning.wordId
+       WHERE wordMeaning.wordId IS NULL`
+    )
+    .all() as IWordAttached[]
 
-  console.log(result)
+  rows.forEach((r) => deleteWord(r.id))
+}
 
-  if (!result) deleteWord(wordId)
+export function deleteWordFromMeaning(meaningId: string, wordId: string): void {
+  getDb()
+    .prepare('DELETE FROM wordMeaning WHERE meaningId = ? AND wordId = ?')
+    .run(meaningId, wordId)
+  deleteUnusedWords()
 }

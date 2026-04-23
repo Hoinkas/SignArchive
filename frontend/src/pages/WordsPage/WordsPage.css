@@ -1,0 +1,16 @@
+.wordsPage {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-4);
+}
+
+.wordItem {
+  width: fit-content;
+  padding: var(--space-1) var(--space-3);
+}
+
+.wordItem:hover {
+  cursor: pointer;
+  background: var(--color-bg-active);
+  color: var(--color-text-dark);
+}

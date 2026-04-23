@@ -10,6 +10,7 @@ interface FormDropdownProps {
   placeholder?: string
   required?: boolean
   submitted?: boolean
+  customValidator?: boolean
 }
 
 export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Element {
@@ -20,7 +21,8 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
     setValue,
     placeholder = 'Szukaj lub wpisz...',
     required = false,
-    submitted = false
+    submitted = false,
+    customValidator = false
   } = props
 
   const [query, setQuery] = useState<string>(value?.label || '')
@@ -41,11 +43,6 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
     if (e.key !== 'Enter') return
     e.preventDefault()
     e.stopPropagation()
-
-    if (filtered.length > 0) {
-      handleSelect(filtered[0])
-      return
-    }
 
     if (query.trim()) {
       const custom: DropdownOption = { id: crypto.randomUUID(), label: query.trim() }
@@ -71,7 +68,7 @@ export function FormCustomInputDropdown(props: FormDropdownProps): React.JSX.Ele
   }, [])
 
   const isListVisible = isOpen && (filtered.length > 0 || query.trim().length > 0)
-  const showError = required && submitted && value === null
+  const showError = required && submitted && (customValidator ?? value === null)
 
   return (
     <div className="formGroup" ref={containerRef}>

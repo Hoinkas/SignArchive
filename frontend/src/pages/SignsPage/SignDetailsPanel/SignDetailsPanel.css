@@ -1,0 +1,51 @@
+.signDetailsContainer {
+  position: fixed;
+  top: var(--navBar-height);
+  right: 0;
+  width: 50%;
+  min-width: 640px;
+  background-color: var(--color-bg);
+  height: calc(100vh - var(--navBar-height));
+  border-left: var(--line-border);
+  z-index: 100;
+
+  padding: 48px 36px;
+  padding-top: 0;
+
+  display:flex;
+  flex-direction: column;
+  overflow: auto;
+
+  @media (max-width: 1279px) {
+    width: 75%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    position: fixed;
+    border: none;
+  }
+}
+
+.signDetails {
+  display:flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.stickyBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--color-bg);
+  min-height: 64px;
+  padding: 40px 0;
+}
+
+.signTitle {
+  font-size: var(--font-size-xxl);
+  line-height: var(--font-size-xxl);
+}

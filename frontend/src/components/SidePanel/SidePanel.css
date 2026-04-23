@@ -1,9 +1,0 @@
-.sidepanel {
-  width: 20vw;
-  min-width: 240px;
-  height: calc(100vh - 64px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-right: var(--line-border);
-}

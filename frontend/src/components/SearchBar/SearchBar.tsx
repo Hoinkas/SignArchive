@@ -3,27 +3,29 @@ import './SearchBar.css'
 import SearchIcon from '@src/assets/icons/SearchIcon'
 import FilterIcon from '@src/assets/icons/FilterIcon'
 import FormDropdown, { type DropdownOption } from '../Form/Components/FormDropdown'
-import { useSearch } from '@src/hooks/SearchCotext/useSearch'
+import { useSearch } from '@src/hooks/SearchContext/useSearch'
+import { FormSingleLineInput, FormTwoInLineWrapper } from '../Form/Form'
 
 function SearchBar(): React.JSX.Element {
   const {
-    handleChange,
+    handleOptionChange,
     handleNameChange,
     searchWord,
-    categoriesOptions,
-    categoryOption,
-    regionsOptions,
-    regionOption
+    regionList,
+    yearStart,
+    yearEnd,
+    region,
+    handleYearChange,
+    handleClear
   } = useSearch()
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
 
   const handleFilterClick = (): void => {
     setIsFilterOpen(!isFilterOpen)
-
     if (!isFilterOpen) return
-    handleChange('category', null)
-    handleChange('region', null)
   }
+
+  const regionsOptions = regionList.map((r, key) => {return {id: key.toString(), label: r}}) as DropdownOption[]
 
   return ( //TODO Search as form for accesibility
     <div className="searchContainer">
@@ -37,25 +39,23 @@ function SearchBar(): React.JSX.Element {
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
         </div>
+        <div className="clickableSymbolX" onClick={() => handleClear()}>×</div>
         <div className="searchIcon">
           <SearchIcon />
         </div>
       </div>
       {isFilterOpen && (
-        <FormDropdown
-          label="Kategorie"
-          options={categoriesOptions}
-          value={categoryOption}
-          setValue={(value: DropdownOption | null) => handleChange('category', value)}
-        />
-      )}
-      {isFilterOpen && (
-        <FormDropdown
-          label="Regiony"
-          options={regionsOptions}
-          value={regionOption}
-          setValue={(value: DropdownOption | null) => handleChange('region', value)}
-        />
+        <FormTwoInLineWrapper>
+          <FormDropdown
+            key={region}
+            label="Regiony"
+            options={regionsOptions}
+            value={regionsOptions.find((r) => r.label === region) ?? null}
+            setValue={(value: DropdownOption | null) => handleOptionChange('region', value?.label ?? '')}
+          />
+          <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />
+          <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={(value: string) => handleYearChange('yearEnd', value)} type='number' />
+        </FormTwoInLineWrapper>
       )}
     </div>
   )

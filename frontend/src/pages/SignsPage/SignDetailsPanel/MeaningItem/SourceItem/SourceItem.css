@@ -1,0 +1,32 @@
+.sourceContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border: var(--line-border);
+  border-radius: var(--radius-md);
+  width: 100%;
+}
+
+.sourceItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  width: 100%;
+}
+
+.yearsRegions {
+  display: inline-flex;
+  gap: var(--space-3);
+}
+
+.referencesBox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.referencesBox svg {
+  color: var(--color-text-info) !important;
+  cursor: pointer;
+}

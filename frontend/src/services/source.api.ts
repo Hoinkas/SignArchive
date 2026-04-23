@@ -1,24 +1,12 @@
-import type {
-  ISourceDetails,
-  ISourceWithDetailsToCreate,
-  ISourceWithDetailsToDB
-} from '@src/models/source.model'
-import { apiGet, apiPost, apiPatch, apiDelete } from './client'
+import { apiPost, apiPatch, apiDelete } from './client'
+import type { ISource, ISourceAttached, ISourceDetails } from '@src/models/source.model'
 
 export const sourceApi = {
-  list: (signId: string, wordId: string): Promise<ISourceDetails[]> =>
-    apiGet<ISourceDetails[]>(`/signs/${signId}/words/${wordId}/sources`).then((r) => r.data),
+  create: (meaningId: string, data: ISource): Promise<ISourceDetails> =>
+    apiPost<ISource, ISourceDetails>(`/meanings/${meaningId}/sources`, data).then((r) => r.data),
 
-  details: (sourceId: string): Promise<ISourceDetails> =>
-    apiGet<ISourceDetails>(`/sources/${sourceId}`).then((r) => r.data),
-
-  regions: (): Promise<string[]> => apiGet<string[]>('/sources/regions').then((r) => r.data),
-
-  create: (data: ISourceWithDetailsToCreate): Promise<ISourceDetails> =>
-    apiPost<ISourceWithDetailsToCreate, ISourceDetails>('/sources', data).then((r) => r.data),
-
-  update: (sourceId: string, data: Partial<ISourceWithDetailsToDB>): Promise<ISourceDetails> =>
-    apiPatch<Partial<ISourceWithDetailsToDB>, ISourceDetails>(`/sources/${sourceId}`, data).then(
+  update: (sourceId: string, data: Partial<ISourceAttached>): Promise<ISourceDetails> =>
+    apiPatch<Partial<ISourceAttached>, ISourceDetails>(`/sources/${sourceId}`, data).then(
       (r) => r.data
     ),
 

@@ -13,6 +13,23 @@ body {
 		color var(--trans-dur);
 }
 
+.pageContainer {
+  height: calc(100vh - var(--navBar-height) - (var(--space-6) * 2) - var(--space-10));
+  width: 100vw;
+  overflow: auto;
+}
+
+.page {
+  width: 80vw;
+  margin: 0 auto 64px auto;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+  }
+}
+
 input {
   background-color: transparent;
   font-family: var(--font-family);
@@ -59,6 +76,7 @@ textarea {
   max-height: 240px;
   caret-color: var(--color-line-purple-light);
   color: var(--color-text);
+  width: 100%;
 }
 
 button {
@@ -112,32 +130,6 @@ label {
   margin-bottom: var(--space-2);
 }
 
-.searchBar {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  backdrop-filter: blur(var(--space-6));
-  border-radius: var(--radius-lg);
-  cursor: text;
-  height: var(--space-10);
-  border: var(--button-border);
-  width: 100%;
-}
-
-.searchBar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text-active);
-  flex: 1;
-  padding-right: 0;
-  height: 100%;
-}
-
-.searchBar input::placeholder {
-  color: var(--grey-500);
-}
-
 .tag {
   padding: 0px var(--space-3);
   border: var(--button-border);
@@ -168,12 +160,10 @@ label {
   list-style: var(--line-height-sm);
 }
 
-.clickableSymbolCircle {
+.clickableSymbolX {
   height: fit-content;
   width: fit-content;
 
-  border: var(--symbol-button-border);
-  border-radius: var(--radius-tag);
   padding: var(--space-2);
   line-height: var(--space-4);
   font-size: var(--clickable-symbol-font);
@@ -182,7 +172,12 @@ label {
   cursor: pointer;
 }
 
-.clickableSymbolCircle:hover {
+.clickableCircle {
+  border: var(--symbol-button-border);
+  border-radius: var(--radius-tag);
+}
+
+.clickableCircle:hover {
   background-color: var(--color-bg-active);
   border: var(--symbol-button-border-active);
 }
@@ -210,6 +205,19 @@ ol > li::marker {
 
 .hidden {
   display: none !important;
+}
+
+.defaultInline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.flexEnd {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 /* :focus-visible {

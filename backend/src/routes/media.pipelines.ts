@@ -1,35 +1,23 @@
 import { Router } from 'express'
-import { upload } from '../upload'
-import { asyncHandler, requireAdmin } from '../middlewares/middleware'
-import { createMedia, deleteMedia } from '../services/media.service'
+import { mediaController } from '../controllers/media.controller'
+import { upload } from '../middlewares/upload.middleware'
 
 export const mediaRouter = Router()
+
 mediaRouter.post(
   '/',
-  requireAdmin,
-  upload.single('file'),
-  asyncHandler(async (req, res) => {
-    const file = req.file
-    if (!file) {
-      res.status(400).json({ error: 'Brak pliku' })
-      return
-    }
-
-    const result = createMedia({
-      url: `/uploads/${file.filename}`,
-      mediaType: file.mimetype,
-      name: req.body.name ?? file.originalname
-    })
-
-    res.status(201).json(result)
-  })
+  upload.fields([
+    { name: 'videoFile', maxCount: 1 },
+    { name: 'thumbnailFile', maxCount: 1 }
+  ]),
+  mediaController.create
 )
 
-mediaRouter.delete(
+mediaRouter.patch(
   '/:mediaId',
-  requireAdmin,
-  asyncHandler(async (req, res) => {
-    deleteMedia(req.params.mediaId)
-    res.status(204).send()
-  })
+  upload.fields([
+    { name: 'videoFile', maxCount: 1 },
+    { name: 'thumbnailFile', maxCount: 1 }
+  ]),
+  mediaController.update
 )

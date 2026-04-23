@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
-import type { IDefinition, IDefinitionAttached } from './definition.model'
-import type { IMedia, IMediaAttached } from './media.model'
+import type { IMeaningDetails } from './meaning.model'
+import type { IMediaAttached, IMediaToDB } from './media.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
@@ -10,20 +10,25 @@ export interface ISign {
 
 export type ISignAttached = ISign & IBaseModelAttached
 
-export interface ISignDetailsEdit extends Omit<ISign, 'mediaId'> {
-  media: IMediaAttached
-}
+// TO BACKEND
+export type ISignDetailsToDB = Omit<ISign, 'mediaId'>
 
-export interface ISignDetails extends ISign, IBaseModelAttached, IYearStartEnd {
-  sourcesCount: number
-  definitions: IDefinitionAttached[]
+// TO FRONTEND
+export interface ISignSimple extends Omit<ISign, 'mediaId'>, IBaseModelAttached {
+  meaningsCount: number
   regions: string[]
+  years: IYearStartEnd
+  words: string[]
   media: IMediaAttached
 }
 
-export interface ISignDetailsToDB {
-  wordId: string
-  definition: IDefinition
+export interface ISignDetails extends Omit<ISign, 'mediaId'>, IBaseModelAttached {
+  meanings: IMeaningDetails[]
   media: IMediaAttached
-  notes?: string
+}
+
+// TEMPLATES
+export const signTemplate: Record<keyof ISign, null> = {
+  mediaId: null,
+  notes: null
 }

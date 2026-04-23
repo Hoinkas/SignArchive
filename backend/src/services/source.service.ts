@@ -1,35 +1,58 @@
 import { nanoid } from 'nanoid'
 import { getDb } from '../db/client'
+import { findReferenceById } from './reference.service'
+import { findRegionsBySourceId } from './region.service'
 import {
+  ISource,
   ISourceAttached,
   ISourceDetails,
-  ISourceSignWord,
-  ISourceWithDetailsToCreate,
-  ISourceWithDetailsToDB
-} from '../../../shared/models/source.model'
-import { createAuthor, findAuthorById } from './author.service'
-import { createEvidence, findEvidenceById } from './evidence.service'
+  ISourceToDB,
+  sourceTemplate
+} from '../models/source.model'
+import { fillMissingValues } from '../utils/helpers.functions'
+import { IYearStartEnd } from '../models/yearStartEnd.model'
+import { buildUpdateQuery } from '../utils/buildUpdateQuery'
+import { createMeaningSourceLink } from './meaningSource.service'
 
-function findSourceById(id: string): ISourceAttached | undefined {
-  return getDb().prepare('SELECT * FROM source WHERE id = ?').get(id) as ISourceAttached | undefined
-}
-
+// MAP DETAILS
 function buildSourceDetails(source: ISourceAttached): ISourceDetails | undefined {
-  const author = findAuthorById(source.authorId)
-  const evidence = findEvidenceById(source.evidenceId)
-  if (!author || !evidence) return undefined
-  const { authorId, evidenceId, ...rest } = source
-  return { ...rest, author, evidence }
+  const regions = findRegionsBySourceId(source.id)
+  const reference = findReferenceById(source.referenceId)
+  if (!reference) return undefined
+
+  const { referenceId, ...rest } = source
+  return { ...rest, reference, regions }
 }
 
-export function listSourcesBySignWord(signId: string, wordId: string): ISourceDetails[] {
+// RETURN YEARS
+export function getStartEndYearBySignId(signId: string): IYearStartEnd {
+  const row = getDb()
+    .prepare(
+      `SELECT MIN(source.yearStart) AS a, MAX(source.yearStart) AS b,
+              MIN(source.yearEnd)   AS c, MAX(source.yearEnd)   AS d
+       FROM source
+       INNER JOIN meaningSource ON source.id = meaningSource.sourceId
+       INNER JOIN meaning ON meaning.id = meaningSource.meaningId
+       WHERE meaning.signId = ?
+       `
+    )
+    .get(signId) as Record<string, number | null>
+
+  const all = [row.a, row.b, row.c, row.d].filter((v): v is number => v !== null && v !== undefined)
+
+  if (all.length === 0) return { yearStart: null, yearEnd: null }
+  return { yearStart: Math.min(...all), yearEnd: Math.max(...all) }
+}
+
+// FIND
+export function listSourcesByMeaningId(meaningId: string): ISourceDetails[] {
   const sources = getDb()
     .prepare(
       `SELECT source.* FROM source
-       INNER JOIN sourceSignWord ON source.id = sourceSignWord.sourceId
-       WHERE sourceSignWord.signId = ? AND sourceSignWord.wordId = ?`
+       INNER JOIN meaningSource ON source.id = meaningSource.sourceId
+       WHERE meaningSource.meaningId = ?`
     )
-    .all(signId, wordId) as ISourceAttached[]
+    .all(meaningId) as ISourceAttached[]
 
   return sources.flatMap((s) => {
     const details = buildSourceDetails(s)
@@ -37,85 +60,41 @@ export function listSourcesBySignWord(signId: string, wordId: string): ISourceDe
   })
 }
 
-export function createSourceWithDetails(data: ISourceWithDetailsToCreate): ISourceDetails {
-  const transaction = getDb().transaction(() => {
-    const author = createAuthor(data.author)
-    const evidence = createEvidence(data.evidence)
-
-    const source: ISourceAttached = {
-      id: nanoid(),
-      createdAt: Date.now(),
-      ...data.source,
-      authorId: author.id,
-      evidenceId: evidence.id
-    }
-
-    getDb()
-      .prepare(
-        `INSERT INTO source (id, createdAt, authorId, evidenceId, region, yearStart, yearEnd, notes, translations)
-         VALUES (@id, @createdAt, @authorId, @evidenceId, @region, @yearStart, @yearEnd, @notes, @translations)`
-      )
-      .run({
-        ...source,
-        notes: source.notes || null,
-        region: source.region || null,
-        translations: source.translations || null,
-        yearStart: source.yearStart || null,
-        yearEnd: source.yearEnd || null
-      })
-
-    const link: ISourceSignWord = { sourceId: source.id, signId: data.signId, wordId: data.wordId }
-    getDb()
-      .prepare(
-        'INSERT INTO sourceSignWord (sourceId, signId, wordId) VALUES (@sourceId, @signId, @wordId)'
-      )
-      .run(link)
-
-    const { authorId, evidenceId, ...rest } = source
-    return { ...rest, author, evidence } satisfies ISourceDetails
-  })
-  return transaction()
-}
-
-export function updateSource(
-  sourceId: string,
-  data: ISourceWithDetailsToDB
-): ISourceDetails | undefined {
-  const existing = findSourceById(sourceId)
-  if (!existing) return undefined
-
-  const authorId = data.author ? createAuthor(data.author).id : existing.authorId
-  const evidenceId = data.evidence ? createEvidence(data.evidence).id : existing.evidenceId
-
-  const updated: ISourceAttached = {
-    ...existing,
-    ...data.source,
-    authorId,
-    evidenceId
+// CREATE
+function createSource(data: ISource): ISourceAttached {
+  const source: ISourceAttached = {
+    id: nanoid(),
+    createdAt: Date.now(),
+    ...data
   }
 
   getDb()
     .prepare(
-      `UPDATE source
-       SET authorId = @authorId, evidenceId = @evidenceId,
-           region = @region, yearStart = @yearStart, yearEnd = @yearEnd, notes = @notes, translations = @translations
-       WHERE id = @id`
+      `INSERT INTO source (id, createdAt, referenceId, yearStart, yearEnd, context)
+        VALUES (@id, @createdAt, @referenceId, @yearStart, @yearEnd, @context)`
     )
-    .run(updated)
+    .run(fillMissingValues<ISourceToDB>(source, sourceTemplate))
 
-  return buildSourceDetails(updated)
+  return source
 }
 
+export function createSourceWithMeaningLink(data: ISource, meaningId: string): ISourceDetails {
+  const transaction = getDb().transaction(() => {
+    const source = createSource(data)
+    createMeaningSourceLink({ meaningId, sourceId: source.id })
+    const reference = findReferenceById(source.referenceId)
+    if (!reference) throw new Error('Reference not found')
+    return { ...source, reference, regions: [] } satisfies ISourceDetails
+  })
+  return transaction()
+}
+
+// UPDATE
+export function updateSource(sourceId: string, data: Partial<ISource>): void {
+  buildUpdateQuery('source', sourceId, data as Record<string, unknown>)
+}
+
+// DELETE
 export function deleteSource(sourceId: string): void {
   getDb().prepare('DELETE FROM source WHERE id = ?').run(sourceId)
-}
-
-export function listAllRegions(): string[] {
-  const rows = getDb()
-    .prepare(
-      `SELECT DISTINCT source.region FROM source
-       WHERE source.region IS NOT NULL ORDER BY source.region`
-    )
-    .all() as { region: string }[]
-  return rows.map((r) => r.region)
 }

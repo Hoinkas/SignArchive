@@ -1,13 +1,12 @@
-import { useWord } from '@src/hooks/WordContext/useWord'
 import { useNavigate } from 'react-router-dom'
 import './PageNotFound.css'
 
 function PageNotFound(): React.JSX.Element {
-  const { error } = useWord()
   const navigate = useNavigate()
+  const error = ''
 
   return (
-    <div className="errorPage">
+    <div className="errorPage page">
       <div className="errorCode">
         <span className="errorAccent">4</span>0<span className="errorAccent">4</span>
       </div>
