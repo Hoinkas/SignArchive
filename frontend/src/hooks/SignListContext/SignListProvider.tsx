@@ -38,8 +38,8 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
     return signList.filter((s) => {
       const hasWord = !isWordFilterActive || s.words.some((w) => filteredWords.includes(w))
       const hasRegion = !region || s.regions.includes(region)
-      const isAboveYearStart = yearStart === '' || (s.years.yearStart !== null && s.years.yearStart >= parseInt(yearStart))
-      const isBelowYearEnd = yearEnd === '' || (s.years.yearEnd !== null && s.years.yearEnd <= parseInt(yearEnd))
+      const isAboveYearStart = yearStart === '' || (s.years.yearStart && s.years.yearStart >= parseInt(yearStart))
+      const isBelowYearEnd = yearEnd === '' || (s.years.yearEnd && s.years.yearEnd <= parseInt(yearEnd))
 
       return hasWord && hasRegion && isAboveYearStart && isBelowYearEnd
     })

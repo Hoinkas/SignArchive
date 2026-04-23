@@ -3,10 +3,13 @@ import MediaPlayer from '../../MediaPlayer/MediaPlayer'
 import { useState } from 'react'
 import SignFormsActions from './SignFormsActions'
 import DetailsSignInfo from '@src/pages/SignsPage/DetailsSignInfo/DetailsSignInfo'
+import Loader from '@src/components/Loader/Loader'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, simpleSign } = useSign()
   const [isHovering, setIsHovering] = useState<boolean>(false)
+
+  if (!sign || !simpleSign) return <Loader/>
 
   return (
     <div
