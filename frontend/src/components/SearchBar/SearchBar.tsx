@@ -45,7 +45,7 @@ function SearchBar(): React.JSX.Element {
         </div>
       </div>
       {isFilterOpen && (
-        <>
+        <FormTwoInLineWrapper>
           <FormDropdown
             key={region}
             label="Regiony"
@@ -53,11 +53,9 @@ function SearchBar(): React.JSX.Element {
             value={regionsOptions.find((r) => r.label === region) ?? null}
             setValue={(value: DropdownOption | null) => handleOptionChange('region', value?.label ?? '')}
           />
-          <FormTwoInLineWrapper>
-            <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />
-            <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={(value: string) => handleYearChange('yearEnd', value)} type='number' />
-          </FormTwoInLineWrapper>
-        </>
+          <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />
+          <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={(value: string) => handleYearChange('yearEnd', value)} type='number' />
+        </FormTwoInLineWrapper>
       )}
     </div>
   )

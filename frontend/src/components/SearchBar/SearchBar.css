@@ -4,11 +4,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 40%;
+  min-width: 400px;
+  gap: var(--space-4);
+
+  @media (max-width: 768px) {
+    width: 60%;
+  }
 }
 
 .searchBar {
-  width: 40%;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -17,13 +22,14 @@
   cursor: text;
   height: var(--space-10);
   border: var(--button-border);
+  width: 100%;
 }
 
 .searchBar input {
   border: none;
   outline: none;
   background: transparent;
-  color: var(--color-text-active);
+  color: var(--color-text);
   flex: 1;
   padding-right: 0;
   height: 100%;
