@@ -8,7 +8,10 @@ function getWordsFromMeanings(meanings: IMeaningDetails[]): string[] {
 
 function getRegionsNamesFromMeanings(meanings: IMeaningDetails[]): string[] {
   return meanings.flatMap((m) => {
-    return m.sources ? m.sources.flatMap((s) => s.regions.flatMap((r) => r.name)) : []
+    if (!m.sources || m.sources.length === 0) return []
+    const regions = m.sources.flatMap((s) => s.regions.flatMap((r) => r.name))
+    const removedDuplicates = new Set(regions)
+    return [...removedDuplicates]
   })
 }
 

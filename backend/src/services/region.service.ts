@@ -37,8 +37,8 @@ export function listRegionsNamesBySignId(signId: string): string[] {
        WHERE meaning.signId = ?`
     )
     .all(signId) as { name: string }[]
-
-  return rows.map((r) => r.name)
+  const removedDuplicates = new Set(rows.map((r) => r.name))
+  return [...removedDuplicates]
 }
 
 // CREATE
