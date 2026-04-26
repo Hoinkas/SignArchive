@@ -1,14 +1,14 @@
 import './ThemeSwitch.css'
 
 interface ThemeSwitchProps {
-  isDark: boolean
+  isLight: boolean
   handleSwitch(): void
 }
 
-function ThemeSwitch({isDark, handleSwitch}: ThemeSwitchProps): React.JSX.Element {
+function ThemeSwitch({isLight, handleSwitch}: ThemeSwitchProps): React.JSX.Element {
   return (
     <div className="switch">
-      <input className="switch__input" type="checkbox" checked={!isDark} onChange={handleSwitch} />
+      <input className="switch__input" type="checkbox" checked={isLight} onChange={handleSwitch} />
       <span className="switch__icon">
         <span className="switch__icon-part switch__icon-part--1"></span>
         <span className="switch__icon-part switch__icon-part--2"></span>

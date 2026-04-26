@@ -1,4 +1,4 @@
-function LandingPage(): React.JSX.Element {
+function InfoPage(): React.JSX.Element {
   return (
     <div className='page'>
       <p>
@@ -67,4 +67,4 @@ function LandingPage(): React.JSX.Element {
   )
 }
 
-export default LandingPage
+export default InfoPage
