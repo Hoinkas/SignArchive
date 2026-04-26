@@ -19,7 +19,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
   }, [])
 
   const addSignToSignList = (data: ISignSimple): void => {
-    setSignList((prev) => [...prev, data])
+    setSignList((prev) => [data, ...prev])
   }
 
   const editSignInSignList = (data: ISignSimple): void => {

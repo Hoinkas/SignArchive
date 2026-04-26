@@ -45,7 +45,7 @@ function findSignById(signId: string): ISignAttached | undefined {
 }
 
 function listAllSigns(): ISignAttached[] {
-  return getDb().prepare('SELECT * FROM sign').all() as ISignAttached[]
+  return getDb().prepare('SELECT * FROM sign ORDER BY createdAt DESC').all() as ISignAttached[]
 }
 
 export function getSignSimple(signId: string): ISignSimple | undefined {
