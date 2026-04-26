@@ -29,7 +29,7 @@ function SignFormsActions({sign, isHovering}: SignFormsActionsProps): React.JSX.
   return (
     <>
       {isFormOpen && formType === 'add' && <MeaningForm formType={'add'} closeAction={() => handleClose()}/>}
-      {isFormOpen && formType === 'edit' && <SignForm formType={'edit'} closeAction={() => handleClose()}/>}
+      {isFormOpen && formType === 'edit' && <SignForm sign={sign} formType={'edit'} closeAction={() => handleClose()}/>}
       <KebabMenu
         addLabel='znaczenie'
         editLabel='znak'

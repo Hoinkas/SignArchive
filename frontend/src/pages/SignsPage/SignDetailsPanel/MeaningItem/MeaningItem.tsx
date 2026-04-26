@@ -25,6 +25,10 @@ interface MeaningItemProps {
   meaning: IMeaningDetails
 }
 
+interface IRegionYears {
+  [key: string]: IYearStartEnd
+}
+
 function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
   const {words, sources} = meaning
   const [isSourcesListOpen, setIsSourcesListOpen] = useState<boolean>(false)
@@ -34,10 +38,29 @@ function MeaningItem({meaning}: MeaningItemProps): React.JSX.Element {
   }
 
   const mappedRegionYearsFromSources = (): string[] => {
-    return sources.map((s) => {
-      const year: IYearStartEnd = {yearStart: s.yearStart, yearEnd: s.yearEnd ?? null}
-      return `${s.regions.flatMap((r) => r.name).join(', ')} ${mergeYearText(year)}`
+    const regionsWithYears: IRegionYears = {}
+    const emptyYears: number[] = []
+
+    sources.forEach((s) => {
+      if (s.regions.length === 0) {
+        if (s.yearStart) emptyYears.push(s.yearStart)
+        if (s.yearEnd) emptyYears.push(s.yearEnd)
+        return
+      }
+
+      s.regions.forEach((r) => {
+          const allYears = [s.yearStart, s.yearEnd, regionsWithYears[r.name]?.yearStart, regionsWithYears[r.name]?.yearStart].filter((y) => y !== null && y !== undefined)
+        regionsWithYears[r.name] = {yearStart: Math.min(...allYears), yearEnd: Math.max(...allYears)}
+      })
     })
+
+    const textWithRegions = Object.keys(regionsWithYears).map((o) => {
+      return `${o} ${mergeYearText(regionsWithYears[o])}`
+    })
+
+    if (emptyYears.length > 0) emptyYears.forEach((e) => textWithRegions.push(e.toString()))
+
+    return textWithRegions
   }
 
   return (

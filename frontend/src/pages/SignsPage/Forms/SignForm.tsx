@@ -5,18 +5,19 @@ import {
   FormMedia
 } from '@src/components/Form/Form'
 import type { FormType } from '@src/models/yearStartEnd.model'
-import type { ISignDetailsToDB } from '@src/models/sign.model'
+import type { ISignDetails, ISignDetailsToDB } from '@src/models/sign.model'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import { getChanges } from '@src/utils/getChangesFromForm'
 import type { IMediaToDB } from '@src/models/media.model'
 
 interface SignFormProps {
+  sign?: ISignDetails
   formType: FormType
   closeAction: () => void
 }
 
-function SignForm({ formType, closeAction }: SignFormProps): React.JSX.Element {
-  const { sign, addSignAndMedia, editSignAndMedia } = useSign()
+function SignForm({ sign, formType, closeAction }: SignFormProps): React.JSX.Element {
+  const { addSignAndMedia, editSignAndMedia } = useSign()
 
   const [submitted, setSubmitted] = useState<boolean>(false)
 
