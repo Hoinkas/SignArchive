@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import React from 'react'
 import { SearchContext } from './SearchContext'
 import { regionApi } from '@src/services/region.api'
@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [searchParams, setSearchParams] = useSearchParams()
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
   const [regionList, setRegionList] = useState<string[]>([])
@@ -40,13 +41,18 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
 
   const navigateWithParams = (updates: Record<string, string | null>): void => {
     const newParams = new URLSearchParams(searchParams)
-
     Object.entries(updates).forEach(([key, value]) => {
       if (value) newParams.set(key, value)
       else newParams.delete(key)
     })
-
     navigate({ pathname: '/signs/', search: newParams.toString() })
+  }
+
+  const handleNameChange = (value: string): void => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      navigateWithParams({ word: value.replaceAll('\u00A0', '').trimEnd() || null })
+    }, 300)
   }
 
   const handleOptionChange = (type: SearchOption, value: string): void => {
@@ -55,10 +61,6 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
 
   const handleYearChange = (yearType: 'yearStart' | 'yearEnd', year: string): void => {
     navigateWithParams({ [yearType]: year })
-  }
-
-  const handleNameChange = (value: string): void => {
-    navigateWithParams({ word: value.replaceAll('\u00A0', '').trimEnd() || null })
   }
 
   const handleClear = (): void => {

@@ -19,27 +19,35 @@ function SearchBar(): React.JSX.Element {
     handleClear
   } = useSearch()
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false)
+  const [localWord, setLocalWord] = useState<string>(searchWord)
 
   const handleFilterClick = (): void => {
     setIsFilterOpen(!isFilterOpen)
-    if (!isFilterOpen) return
   }
 
-  const regionsOptions = regionList.map((r, key) => {return {id: key.toString(), label: r}}) as DropdownOption[]
+  const handleClearWithLocal = (): void => {
+    setLocalWord('')
+    handleClear()
+  }
 
-  return ( //TODO Search as form for accesibility
+  const regionsOptions = regionList.map((r, key) => ({ id: key.toString(), label: r })) as DropdownOption[]
+
+  return (
     <div className="searchContainer">
       <div className="searchBar">
         <input
           type="search"
           placeholder="Wyszukaj znaki.."
-          value={searchWord}
-          onChange={(e) => handleNameChange(e.target.value)}
+          value={localWord}
+          onChange={(e) => {
+            setLocalWord(e.target.value)
+            handleNameChange(e.target.value)
+          }}
         />
         <div className="filterIcon" onClick={handleFilterClick}>
           <FilterIcon />
         </div>
-        <div className="clickableSymbolX" onClick={() => handleClear()}>×</div>
+        <div className="clickableSymbolX" onClick={handleClearWithLocal}>×</div>
         <div className="searchIcon">
           <SearchIcon />
         </div>
