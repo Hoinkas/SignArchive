@@ -5,6 +5,7 @@ import { regionApi } from '@src/services/region.api'
 import { wordApi } from '@src/services/word.api'
 import type { IWordAttached } from '@src/models/word.model'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import Fuse from 'fuse.js'
 
 export type SearchOption = 'region' | 'startYear' | 'endYear'
 
@@ -31,13 +32,19 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     wordApi.list().then(setAllWords)
   }, [])
 
+  const fuse = useMemo(() => new Fuse(allWords, {
+    keys: ['name'],
+    threshold: 0.3,
+    distance: 100,
+    minMatchCharLength: 2,
+  }), [allWords])
+
   const filteredWords = useMemo((): string[] => {
     if (searchWord === '') return []
-    const upper = searchWord.toUpperCase()
-    return allWords
-      .filter((w) => w.name.toUpperCase().includes(upper))
-      .map((w) => w.name)
-  }, [allWords, searchWord])
+
+    const results = fuse.search(searchWord)
+    return results.map((r) => r.item.name)
+  }, [fuse, searchWord])
 
   const navigateWithParams = (updates: Record<string, string | null>): void => {
     const newParams = new URLSearchParams(searchParams)
