@@ -3,7 +3,7 @@ Polish Sign Language Dictionary.
 
 Allows user to search, view and manage signs (with media, images or texts), definitions, words ect.
 
-Webpage: https://signarchive.netlify.app/
+Webpage: https://archiwumig.pl/
 
 ## Page
 ### Definitions view
