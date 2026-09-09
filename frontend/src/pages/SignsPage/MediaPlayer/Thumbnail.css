@@ -26,3 +26,8 @@
   position: relative;
   z-index: 1;
 }
+
+.thumbnailOverlay {
+  position: absolute;
+  inset: 0;
+}
