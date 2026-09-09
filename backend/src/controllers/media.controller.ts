@@ -1,13 +1,17 @@
 import type { Request, Response } from 'express'
+import path from 'path'
 import { createMedia, updateMedia } from '../services/media.service'
 import { THUMBNAILS_URL, VIDEOS_URL } from '../config'
+import 'fluent-ffmpeg'
+import { generateThumbnail } from '../utils/helpers.functions'
 
 export const mediaController = {
-  create(req: Request, res: Response): void {
+  async create(req: Request, res: Response): Promise<void> {
     const files = req.files as {
       videoFile?: Express.Multer.File[]
       thumbnailFile?: Express.Multer.File[]
     }
+
     const videoFile = files?.videoFile?.[0]
 
     if (!videoFile) {
@@ -15,11 +19,22 @@ export const mediaController = {
       return
     }
 
-    const thumbnailFile = files?.thumbnailFile?.[0]
+    let thumbnailFilename = files?.thumbnailFile?.[0]?.filename
+
+    if (!thumbnailFilename) {
+      try {
+        await generateThumbnail(videoFile.filename)
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to generate thumbnail' })
+        return
+      }
+
+      thumbnailFilename = `${path.parse(videoFile.filename).name}.jpg`
+    }
 
     const result = createMedia({
       videoUrl: `${VIDEOS_URL}/${videoFile.filename}`,
-      thumbnailUrl: thumbnailFile ? `${THUMBNAILS_URL}/${thumbnailFile.filename}` : undefined,
+      thumbnailUrl: `${THUMBNAILS_URL}/${thumbnailFilename}`,
       mediaType: videoFile.mimetype,
       description: req.body.description ?? undefined
     })

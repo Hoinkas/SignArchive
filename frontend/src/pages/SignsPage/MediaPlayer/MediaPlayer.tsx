@@ -41,10 +41,10 @@ function MediaPlayer({ media, isDetails = false }: MediaPlayerProps): React.JSX.
               <source src={fullUrl} type={media.mediaType} />
             </video>
           }
-          {isDetails || !isClicked && (
+          {isDetails || (!isClicked && (
             <div className='thumbnailOverlay'>
               <Thumbnail setIsClicked={setIsClicked} media={{ ...media, videoUrl: fullUrl }} />
-            </div>
+            </div>)
           )}
         </div>
       )}
