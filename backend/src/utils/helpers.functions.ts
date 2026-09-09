@@ -27,7 +27,8 @@ export function generateThumbnail(videoName: string): Promise<void> {
         count: 1,
         timemarks: ['00:00:01.000'],
         filename: thumbnailFilename,
-        folder: THUMBNAILS_DIR
+        folder: THUMBNAILS_DIR,
+        size: '480x640'
       })
   })
 }
