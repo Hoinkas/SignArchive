@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3'
 import path from 'path'
 import fs from 'fs'
-import { runMigrations } from './migrations'
+import { runCheckup } from './checkup'
 
 const DB_DIR = path.join(process.cwd(), 'data')
 const DB_PATH = path.join(DB_DIR, 'signarchive.db')
@@ -14,7 +14,7 @@ export function getDb(): Database.Database {
   if (!db) {
     db = new Database(DB_PATH)
     initSchema(db)
-    runMigrations(db)
+    runCheckup(db)
   }
   return db
 }
@@ -29,7 +29,7 @@ function initSchema(db: Database.Database): void {
       createdAt     INTEGER NOT NULL,
       videoUrl      TEXT NOT NULL,
       mediaType     TEXT NOT NULL,
-      thumbnailUrl  TEXT,
+      thumbnailUrl  TEXT NOT NULL,
       description   TEXT
     );
 

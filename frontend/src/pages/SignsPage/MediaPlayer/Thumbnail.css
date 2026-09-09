@@ -10,7 +10,7 @@
   cursor: pointer;
   position: relative;
 
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -25,4 +25,9 @@
 .thumbnail svg {
   position: relative;
   z-index: 1;
+}
+
+.thumbnailOverlay {
+  position: absolute;
+  inset: 0;
 }
