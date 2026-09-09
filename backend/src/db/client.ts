@@ -29,7 +29,7 @@ function initSchema(db: Database.Database): void {
       createdAt     INTEGER NOT NULL,
       videoUrl      TEXT NOT NULL,
       mediaType     TEXT NOT NULL,
-      thumbnailUrl  TEXT,
+      thumbnailUrl  TEXT NOT NULL,
       description   TEXT
     );
 
