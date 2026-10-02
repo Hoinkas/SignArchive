@@ -42,6 +42,8 @@ function InfoPage(): React.JSX.Element {
       <h3>Wersja 2.0</h3>
       <p>
         [x] Widok na telefony oraz usprawniony widok na wszystkie szerokości ekranu
+        <br/>[ ] Indywidualne konta, dodawanie, edycja i usuwanie rzeczy w ArchiwuMig
+        <br/>[ ] Mapa pokazująca regionalne znaki dla danego słowa
         <br/>[ ] Możliwość zwiększania i zmniejszania rozmiaru tekstu na stronie
         <br/>[ ] Wsparcie dla osób które korzystają tylko z klawiatury bez myszki
         <br/>[ ] Wyświetlanie informacji zwrotnej przy dodawaniu, modyfikacji i usuwaniu obiektów (niepowodzenia, powodzenia, błędy itp.)

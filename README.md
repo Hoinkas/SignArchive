@@ -30,6 +30,7 @@ For more info look into wiki.
 
 ###  Version 2.0
 - [x] Improved screen responsiveness
+- [ ] Individual accounts, adding, editing and deleting items in SignArchive
 - [ ] Add categories to signs
 - [ ] Font size adjustment
 - [ ] Keyboard support
@@ -39,6 +40,7 @@ For more info look into wiki.
 - [ ] Signs frequency of use and reliability of the source (did deaf people actually use this sign, or did hearing people created and misused it?)
 
 ### Future
+- [ ] Creating map showing trends and regional variations of specific sign
 - [ ] Generating video thumbnails with ghost movements from videos
 - [ ] Generating files with landmarks from videos
 - [ ] Displaying a Three.js motion model moving based on generated landmarks
