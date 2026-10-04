@@ -10,6 +10,7 @@ import SearchProvider from './hooks/SearchContext/SearchProvider'
 import WordsPage from './pages/WordsPage/WordsPage'
 import isLightTheme from './utils/isLightTheme'
 import InfoPage from './pages/InfoPage/LandingPage'
+import ProfilePage from './pages/ProfilePage/ProfilePage'
 
 function PageLayout() {
   return (
@@ -36,6 +37,7 @@ function App(): React.JSX.Element {
           <Routes>
             <Route element={<PageLayout />}>
               <Route path="/" element={<SignListProvider><SignsPage /></SignListProvider>} />
+              <Route path="/profile/" element={<ProfilePage />} />
               <Route path="/signs/" element={<SignListProvider><SignsPage /></SignListProvider>} />
               <Route path="/info/" element={<InfoPage />} />
               <Route  path="/words/" element={<WordsPage />} />
