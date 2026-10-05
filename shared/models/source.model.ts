@@ -4,7 +4,7 @@ import type { IRegion, IRegionAttached } from './region.model'
 
 export interface ISource {
   referenceId: string
-  note?: string
+  notes?: string
   yearStart?: number
   yearEnd?: number
 }
@@ -29,7 +29,7 @@ export interface ISourceDetails extends Omit<ISource, 'referenceId'>, IBaseModel
 // TEMPLATES
 export const sourceTemplate: Record<keyof ISource, null> = {
   referenceId: null,
-  note: null,
+  notes: null,
   yearStart: null,
   yearEnd: null
 }

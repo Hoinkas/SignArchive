@@ -327,7 +327,7 @@ async function updateDatabaseToNewSchema(db: Database): Promise<void> {
       if (s.context) {
         db.prepare(
           `INSERT INTO changelog (id, tableName, fieldName, recordId, oldValue, newValue, addBy, addDate)
-          VALUES (?, 'source', 'note', ?, NULL, ?, ?, ?)`
+          VALUES (?, 'source', 'notes', ?, NULL, ?, ?, ?)`
         ).run(nanoid(), s.id, s.context, userId, s.createdAt)
       }
     }
@@ -338,9 +338,9 @@ async function updateDatabaseToNewSchema(db: Database): Promise<void> {
         referenceId   TEXT NOT NULL REFERENCES reference(id) ON DELETE CASCADE,
         yearStart     INTEGER,
         yearEnd       INTEGER,
-        note          TEXT
+        notes          TEXT
       );
-      INSERT INTO source_temp (id, referenceId, yearStart, yearEnd, note)
+      INSERT INTO source_temp (id, referenceId, yearStart, yearEnd, notes)
         SELECT id, referenceId, yearStart, yearEnd, context FROM source;
       DROP TABLE source;
       ALTER TABLE source_temp RENAME TO source;`)

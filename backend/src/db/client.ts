@@ -90,7 +90,7 @@ function initSchema(db: Database.Database): void {
       referenceId   TEXT NOT NULL REFERENCES reference(id) ON DELETE CASCADE,
       yearStart     INTEGER,
       yearEnd       INTEGER,
-      note          TEXT
+      notes         TEXT
     );
 
     CREATE TABLE IF NOT EXISTS regionSource (
