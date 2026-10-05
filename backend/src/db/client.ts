@@ -29,7 +29,7 @@ function initSchema(db: Database.Database): void {
       email         TEXT NOT NULL UNIQUE,
       login         TEXT NOT NULL UNIQUE,
       password      TEXT NOT NULL,
-      isActivated   INTEGER,
+      isActivated   INTEGER NOT NULL,
       nickname      TEXT,
       contact       TEXT,
       description   TEXT
@@ -42,7 +42,7 @@ function initSchema(db: Database.Database): void {
       recordId      TEXT NOT NULL,
       oldValue      TEXT,
       newValue      TEXT NOT NULL,
-      addBy         TEXT REFERENCES user(id) ON DELETE SET NULL,
+      addBy         TEXT NOT NULL REFERENCES user(id),
       addDate       INTEGER NOT NULL
     );
 

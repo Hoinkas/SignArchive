@@ -4,7 +4,7 @@ import type { IMediaAttached } from './media.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
-  mediaId: string
+  uniqueNumber: string
   notes?: string
 }
 
@@ -29,6 +29,6 @@ export interface ISignDetails extends Omit<ISign, 'mediaId'>, IBaseModelAttached
 
 // TEMPLATES
 export const signTemplate: Record<keyof ISign, null> = {
-  mediaId: null,
+  uniqueNumber: null,
   notes: null
 }

@@ -61,7 +61,7 @@ async function checkMissingThumbnails(db: Database): Promise<void> {
 async function updateDatabaseToNewSchema(db: Database): Promise<void> {
   if ((db.pragma('user_version', { simple: true }) as number) >= 2) return
 
-  await db.backup(`backup-before-v2-${Date.now()}.db`)
+  // await db.backup(`backup-before-v2-${Date.now()}.db`)
   const passwordHash = await hashPassword(process.env.ADMIN_PASSWORD || 'admin')
 
   db.pragma('foreign_keys = OFF')
