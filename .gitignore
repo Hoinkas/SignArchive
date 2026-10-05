@@ -15,3 +15,5 @@ uploads/
 backend/uploads/*
 backend/data/uploads/*
 !backend/data/uploads/.gitkeep
+backend/src/models/
+frontend/src/models/
