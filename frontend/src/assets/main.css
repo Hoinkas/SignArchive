@@ -14,7 +14,7 @@ body {
 }
 
 .pageContainer {
-  height: calc(100dvh - var(--navBar-height) - (var(--space-6) * 2) - var(--space-10));
+  height: calc(100dvh - var(--navBar-height));
   width: 100vw;
   overflow: auto;
 }
@@ -26,7 +26,7 @@ body {
   flex-direction: column;
 
   @media (max-width: 768px) {
-    width: 92vw;
+    width: 90vw;
   }
 }
 

@@ -7,9 +7,10 @@ export const param = (req: Request, key: string): string => req.params[key] as s
 
 export function fillMissingValues<T>(obj: Partial<T>, template: Record<keyof T, null>): T {
   const result = { ...obj } as T
+
   for (const key in template) {
-    if ((result as any)[key] === undefined) {
-      ;(result as any)[key] = null
+    if ((obj as any)[key] === undefined) {
+      ;(obj as any)[key] = null
     }
   }
   return result

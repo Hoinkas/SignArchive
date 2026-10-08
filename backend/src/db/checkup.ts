@@ -4,16 +4,8 @@ import path from 'path'
 import { VIDEOS_DIR, THUMBNAILS_DIR, THUMBNAILS_URL } from '../config'
 import { generateThumbnail } from '../utils/helpers.functions'
 
-export function runCheckup(db: Database): void {
-  // const columns = db.prepare(`PRAGMA table_info(evidence)`).all() as { name: string }[]
-  // const columnNames = columns.map((c) => c.name)
-  // if (!columnNames.includes('type')) {
-  //   db.prepare(`ALTER TABLE evidence ADD COLUMN type TEXT NOT NULL DEFAULT 'unknown'`).run()
-  //   db.prepare(`UPDATE evidence SET type = 'książka' WHERE type = 'unknown'`).run()
-  //   console.log('Migration: added column type to evidence')
-  // }
-
-  void checkMissingThumbnails(db)
+export async function runCheckup(db: Database): Promise<void> {
+  void (await checkMissingThumbnails(db))
 }
 
 async function checkMissingThumbnails(db: Database): Promise<void> {

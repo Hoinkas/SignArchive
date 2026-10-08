@@ -1,8 +1,8 @@
 import type { IMedia } from '@src/models/media.model'
 import './MediaPlayer.css'
 import { useEffect, useRef, useState} from 'react'
-import { BASE_URL } from '@src/utils/urlHelper'
 import Thumbnail from './Thumbnail'
+import { BASE_URL } from '@src/utils/urlHelper'
 
 interface MediaPlayerProps {
   media: IMedia
@@ -32,7 +32,7 @@ function VideoItem({ media, isDetails }: MediaPlayerProps): React.JSX.Element {
     <div className={`videoContainer ${isDetails && 'isDetails'}`}>
       {isClicked ?
         <video key={videoUrl} ref={videoRef} className="videoBox" controls muted>
-          <source src={videoUrl} type={media.mediaType} />
+          <source src={videoUrl} type={'video/mp4'} />
         </video>
         : <Thumbnail setIsClicked={setIsClicked} media={{ ...media, thumbnailUrl: thumbnailUrl }} />
       }

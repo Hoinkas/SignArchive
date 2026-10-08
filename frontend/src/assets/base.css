@@ -126,7 +126,7 @@
   --color-bg-active: var(--color-bg-purple-dark);
 
   --button-border: 3px solid var(--color-border-purple-dark);
-  --line-border: 2px solid var(--color-border);
+  --line-border: 1px solid var(--color-border);
   --text-area-border: 2px solid var(--color-border-text-area);
   --form-border: 1px solid var(--color-border-grey-transparent);
 
@@ -153,7 +153,7 @@
 
   --color-title-purple: var(--color-purple-dark);
 
-  --media-max-height: 240px;
+  --media-max-height: 212px;
   --media-details-max-height: 400px;
   --navBar-height: 64px;
 

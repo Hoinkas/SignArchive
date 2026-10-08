@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import './PageNotFound.css'
 
 function PageNotFound(): React.JSX.Element {

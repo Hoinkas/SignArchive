@@ -7,6 +7,13 @@ import { setupRoutes } from './routing'
 import { errorMiddleware, notFoundMiddleware } from './middlewares/middleware'
 import { UPLOADS_DIR } from './config'
 
+process.on('uncaughtException', (err) => {
+  console.error('UNCAUGHT EXCEPTION:', err)
+})
+process.on('unhandledRejection', (reason) => {
+  console.error('UNHANDLED REJECTION:', reason)
+})
+
 const app = express()
 
 app.set('port', process.env.PORT ?? 3000)
