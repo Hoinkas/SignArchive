@@ -12,13 +12,6 @@ export function mergeYearText(years: IYearStartEnd | null): string {
   return yearStart?.toString() || yearEnd?.toString() || '-'
 }
 
-export function signCountText(count: number): string {
-  if (count === 1) return '1 znak'
-  if ([12, 13, 14].includes(count)) return `${count} znaków`
-  if ([2, 3, 4].includes(count % 10)) return `${count} znaki`
-  return `${count} znaków`
-}
-
 export function titleCase(str: string): string {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }

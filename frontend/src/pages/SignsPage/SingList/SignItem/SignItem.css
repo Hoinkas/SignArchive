@@ -6,7 +6,6 @@
   overflow: hidden;
   background-color: #232327;
   color: #93909E;;
-  border-color: #414047;
 
   & svg {
     color: #93909E;
@@ -40,7 +39,6 @@
   min-width: 0;
   padding: var(--space-2);
   border-bottom: var(--line-border);
-  border-color: #414047;
   overflow: hidden;
 }
 
@@ -53,7 +51,6 @@
   display: flex;
   justify-content: space-between;
   border-top: var(--line-border);
-  border-color: #414047;
 }
 
 .detailsEnd > div {
@@ -62,5 +59,4 @@
 
 .detailsEnd > div:last-child {
   border-left: var(--line-border);
-  border-color: #414047;
 }

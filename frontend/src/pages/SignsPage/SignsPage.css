@@ -1,5 +1,16 @@
 .signPage {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-8);
+}
+
+.mapSearchContener {
+  display: flex;
+  gap: 64px;
+}
+
+.mapContener {
+  display: flex;
+  width: 70%;
+  justify-content: center;
 }
