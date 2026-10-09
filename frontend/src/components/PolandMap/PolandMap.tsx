@@ -7,7 +7,6 @@ import numData from './data.json';
 
 export type MapData = {
   name: string,
-  terc: number | string,
   signsCount: number
 }
 
@@ -49,7 +48,7 @@ const PolandMap = ({ searchData = numData, selected, onSelect }: Props) => {
     const path = d3.geoPath(projection);
 
     return geoData.features.map((f) => ({
-      id: String(f.properties?.terc),
+      id: String(f.properties?.name),
       name: String(f.properties?.nazwa ?? f.properties?.name ?? ""),
       d: path(f) ?? "",
       centroid: path.centroid(f),
@@ -57,7 +56,7 @@ const PolandMap = ({ searchData = numData, selected, onSelect }: Props) => {
   }, []);
 
   const valueById = useMemo(
-    () => new Map(searchData.map((d) => [d.terc, d.signsCount])),
+    () => new Map(searchData.map((d) => [d.name, d.signsCount])),
     [searchData]
   );
 

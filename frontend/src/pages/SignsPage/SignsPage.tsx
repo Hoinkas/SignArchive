@@ -16,7 +16,7 @@ function SignsPage(): React.JSX.Element {
     <div className="signPage page">
       <div className='mapSearchContener'>
         <div className='mapContener'><PolandMap selected={region} onSelect={setRegion}/></div>
-        <div style={{width: '50%', height: '100%', margin: 'auto 0'}}>
+        <div style={{width: '80%', height: '100%', margin: 'auto 0'}}>
           <SearchBar/>
           <Statistics/>
         </div>

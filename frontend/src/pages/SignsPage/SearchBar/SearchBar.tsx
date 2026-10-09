@@ -1,21 +1,19 @@
 import { useState } from 'react'
 import './SearchBar.css'
-import SearchIcon from '@src/assets/icons/SearchIcon'
+import { useSearch } from '@src/hooks/SearchContext/useSearch'
 
 function SearchBar(): React.JSX.Element {
-//   const {
-//     handleOptionChange,
-//     handleNameChange,
-//     searchWord,
-//     regionList,
-//     yearStart,
-//     yearEnd,
-//     region,
-//     handleYearChange,
-//   } = useSearch()
-  const [localWord, setLocalWord] = useState<string>('')
+  const {
+    handleNameChange,
+    searchWord,
+    handleClear
+  } = useSearch()
+  const [localWord, setLocalWord] = useState<string>(searchWord)
 
-//   const regionsOptions = regionList.map((r, key) => ({ id: key.toString(), label: r })) as DropdownOption[]
+  const handleClearWithLocal = (): void => {
+    setLocalWord('')
+    handleClear()
+  }
 
   return (
     <div className="searchContainer">
@@ -26,24 +24,11 @@ function SearchBar(): React.JSX.Element {
           value={localWord}
           onChange={(e) => {
             setLocalWord(e.target.value)
-            // handleNameChange(e.target.value)
+            handleNameChange(e.target.value)
           }}
         />
-        <div className="searchIcon">
-          <SearchIcon />
-        </div>
+        <div className="clickableSymbolX" onClick={handleClearWithLocal}>×</div>
       </div>
-      {/* <FormTwoInLineWrapper>
-        <FormDropdown
-        key={region}
-        label="Regiony"
-        options={regionsOptions}
-        value={regionsOptions.find((r) => r.label === region) ?? null}
-        setValue={(value: DropdownOption | null) => handleOptionChange('region', value?.label ?? '')}
-        />
-        <FormSingleLineInput label="Rok początkowy" value={yearStart} setValue={(value: string) => handleYearChange('yearStart', value)} type='number' />
-        <FormSingleLineInput label="Rok końcowy" value={yearEnd} setValue={(value: string) => handleYearChange('yearEnd', value)} type='number' />
-    </FormTwoInLineWrapper> */}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { getDb } from '../db/client'
+import { IRegionAttached } from '../models/region.model'
 
 // RETURN NAMES
 export function listRegionsNamesBySignId(signId: string): string[] {
@@ -14,4 +15,10 @@ export function listRegionsNamesBySignId(signId: string): string[] {
     .all(signId) as { name: string }[]
   const removedDuplicates = new Set(rows.map((r) => r.name))
   return [...removedDuplicates]
+}
+
+// FIND
+export function listAllRegions(): IRegionAttached[] {
+  const row = getDb().prepare('SELECT * FROM region').all()
+  return row as IRegionAttached[]
 }

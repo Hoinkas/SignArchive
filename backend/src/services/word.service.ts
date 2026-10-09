@@ -1,4 +1,5 @@
 import { getDb } from '../db/client'
+import { IWordAttached } from '../models/word.model'
 
 // RETURN NAMES
 export function listWordsNamesBySignId(signId: string): string[] {
@@ -12,4 +13,11 @@ export function listWordsNamesBySignId(signId: string): string[] {
     .all(signId) as { name: string }[]
 
   return rows.flatMap((r) => r.name)
+}
+
+// FIND
+export function listAllWords(): IWordAttached[] {
+  const row = getDb().prepare('SELECT * FROM word').all() as IWordAttached[]
+  const sorted = row.sort((a, b) => (a.name > b.name ? 1 : -1))
+  return sorted
 }

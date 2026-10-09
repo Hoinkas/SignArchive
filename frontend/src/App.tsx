@@ -3,6 +3,7 @@ import PageNotFound from './pages/PageNotFound/PageNotFound'
 import NavBar from './components/NavBar/NavBar'
 import SignListProvider from './hooks/SignListContext/SignListProvider'
 import SignsPage from './pages/SignsPage/SignsPage'
+import SearchProvider from './hooks/SearchContext/SearchProvider'
 
 function PageLayout() {
   return (
@@ -18,12 +19,15 @@ function PageLayout() {
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<PageLayout />}>
-          <Route path="/" element={<SignListProvider><SignsPage/></SignListProvider>}/>
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
+      <SearchProvider>
+        <Routes>
+          <Route element={<PageLayout />}>
+            <Route path="/" element={<SignListProvider><SignsPage/></SignListProvider>}/>
+            <Route path="/signs" element={<SignListProvider><SignsPage/></SignListProvider>}/>
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </SearchProvider>
     </BrowserRouter>
   )
 }
