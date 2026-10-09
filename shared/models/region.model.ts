@@ -7,6 +7,12 @@ export interface IRegion {
 
 export type IRegionAttached = IRegion & IBaseModelAttached
 
+// TO FRONTEND
+export interface IRegionToFE extends Omit<IRegion, 'regionParentId'>, IBaseModelAttached {
+  parentName: string
+}
+
+
 // TEMPLATES
 export const regionTemplate: Record<keyof IRegion, null> = {
   name: null,

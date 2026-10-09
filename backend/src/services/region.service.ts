@@ -1,20 +1,27 @@
+import { IRegionToFE } from '@signarchive/shared/models/region.model';
 import { getDb } from '../db/client'
 import { IRegionAttached } from '../models/region.model'
 
 // RETURN NAMES
-export function listRegionsNamesBySignId(signId: string): string[] {
+export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
   const rows = getDb()
     .prepare(
-      `SELECT region.name FROM region
-       INNER JOIN regionSource ON regionSource.regionId = region.id
-       INNER JOIN source ON source.id = regionSource.sourceId
-       INNER JOIN meaningSource ON meaningSource.sourceId = source.id
-       INNER JOIN meaning ON meaning.id = meaningSource.meaningId
-       WHERE meaning.signId = ?`
+      `SELECT DISTINCT
+        pr.id   AS id,
+        r.name  AS name,
+        pr.name AS parentName
+      FROM region r
+      LEFT JOIN region pr ON pr.id = r.parentRegionId
+      INNER JOIN regionSource rs ON rs.regionId = r.id
+      INNER JOIN source s ON s.id = rs.sourceId
+      INNER JOIN meaningSource ms ON ms.sourceId = s.id
+      INNER JOIN meaning m ON m.id = ms.meaningId
+      WHERE m.signId = ?`
     )
-    .all(signId) as { name: string }[]
-  const removedDuplicates = new Set(rows.map((r) => r.name))
-  return [...removedDuplicates]
+    .all(signId) as IRegionToFE[];
+
+  console.log(rows)
+  return rows
 }
 
 // FIND

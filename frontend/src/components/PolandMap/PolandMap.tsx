@@ -3,18 +3,9 @@ import { FeatureCollection, Geometry } from "geojson";
 import polandVoivodeshipsGeoData from './poland.voivodeships.json';
 import { memo, useMemo, useState } from "react";
 import "./PolandMap.css";
-import numData from './data.json';
-
-export type MapData = {
-  name: string,
-  signsCount: number
-}
-
-type Props = {
-  searchData?: MapData[];
-  selected: string | null;
-  onSelect: (id: string | null) => void;
-};
+import { useSearch } from "@src/hooks/SearchContext/useSearch";
+import { useSignList } from "@src/hooks/SignListContext/useSignList";
+import { calculateMapStatistics } from "@src/utils/calculateMapStatistics";
 
 const WIDTH = 600;
 const HEIGHT = 560;
@@ -37,8 +28,12 @@ const geoData: FeatureCollection = (() => {
   return { ...raw, features: raw.features.map((f) => ({ ...f, geometry: rewindGeometry(f.geometry) })) };
 })();
 
-const PolandMap = ({ searchData = numData, selected, onSelect }: Props) => {
+const PolandMap = () => {
+  const {region, handleOptionChange} = useSearch()
+  const { filteredSigns } = useSignList()
   const [hovered, setHovered] = useState<string | null>(null);
+
+  const mapStats = calculateMapStatistics(filteredSigns);
 
   const regions = useMemo(() => {
     const projection = d3
@@ -48,20 +43,19 @@ const PolandMap = ({ searchData = numData, selected, onSelect }: Props) => {
     const path = d3.geoPath(projection);
 
     return geoData.features.map((f) => ({
-      id: String(f.properties?.name),
-      name: String(f.properties?.nazwa ?? f.properties?.name ?? ""),
+      name: String(f.properties?.name ?? ""),
       d: path(f) ?? "",
       centroid: path.centroid(f),
     }));
   }, []);
 
   const valueById = useMemo(
-    () => new Map(searchData.map((d) => [d.name, d.signsCount])),
-    [searchData]
+    () => new Map(mapStats.map((d) => [d.name, d.signsCount])),
+    [mapStats]
   );
 
-  const focusId = selected ?? hovered;
-  const toggle = (id: string) => onSelect(selected === id ? null : id);
+  const focusId = region ?? hovered;
+  const toggle = (name: string) => handleOptionChange('region', region === name ? '' : name);
 
   return (
     <svg
@@ -71,34 +65,34 @@ const PolandMap = ({ searchData = numData, selected, onSelect }: Props) => {
       aria-label="Map of Poland by voivodeship"
     >
       {regions.map((r) => {
-        const value = valueById.get(r.id);
+        const value = valueById.get(r.name);
         const fill = "#232327";
         const cls = [
           "region",
-          selected === r.id && "active",
-          focusId && focusId !== r.id && "dimmed",
+          region === r.name && "active",
+          focusId && focusId !== r.name && "dimmed",
         ]
           .filter(Boolean)
           .join(" ");
 
         return (
           <g
-            key={r.id}
+            key={r.name}
             className={cls}
             role="button"
             tabIndex={0}
-            aria-pressed={selected === r.id}
+            aria-pressed={region === r.name}
             aria-label={`${r.name}${value !== undefined ? `, ${value}` : ""}`}
-            onClick={() => toggle(r.id)}
+            onClick={() => toggle(r.name)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                toggle(r.id);
+                toggle(r.name);
               }
             }}
-            onMouseEnter={() => setHovered(r.id)}
+            onMouseEnter={() => setHovered(r.name)}
             onMouseLeave={() => setHovered(null)}
-            onFocus={() => setHovered(r.id)}
+            onFocus={() => setHovered(r.name)}
             onBlur={() => setHovered(null)}
           >
             <path d={r.d} fill={fill} />

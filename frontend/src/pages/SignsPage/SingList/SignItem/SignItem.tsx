@@ -18,7 +18,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
       <div className='signContent'>
         <div className='details'>
           <div>SŁOWA: {words.length > 0 ? words.join(', ') : '-'}</div>
-          <div>REGIONY: {regions.length > 0 ?  regions.join(', ') : '-'}</div>
+          <div>REGIONY: {regions.length > 0 ?  regions.map((r) => r.name).join(', ') : '-'}</div>
         </div>
         <div className='yearDetails'>
           <div>LATA: {mergeYearText(years)}</div>
