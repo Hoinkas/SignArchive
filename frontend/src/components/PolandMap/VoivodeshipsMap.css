@@ -1,0 +1,13 @@
+.poland-map {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+.region { cursor: pointer; outline: none; transition: opacity 0.2s; }
+.region path { stroke: #414047; stroke-width: 1; transition: stroke 0.2s; }
+.region text { font-size: 14px; pointer-events: none; user-select: none; }
+
+.region.dimmed { opacity: 0.3; }
+.region:hover path,
+.region:focus-visible path { stroke: #331D8E; stroke-width: 2; }
+.region.active path { stroke: #331D8E; stroke-width: 2; }
