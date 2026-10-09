@@ -24,6 +24,7 @@
   "packageManager": "pnpm@12.10.1",
   "type": "module",
   "dependencies": {
+    "argon2": "^0.45.1",
     "better-sqlite3": "^12.11.1",
     "cors": "^2.8.6",
     "dotenv": "^18.0.6",

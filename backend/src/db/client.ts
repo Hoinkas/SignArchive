@@ -78,6 +78,7 @@ function initSchema(db: Database.Database): void {
 
     CREATE TABLE IF NOT EXISTS region (
       id        TEXT PRIMARY KEY NOT NULL,
+      parentRegionId TEXT REFERENCES region(id) ON DELETE SET NULL,
       name      TEXT NOT NULL
     );
 
@@ -115,15 +116,16 @@ function initSchema(db: Database.Database): void {
       wordId        TEXT NOT NULL REFERENCES word(id) ON DELETE CASCADE,
       PRIMARY KEY (meaningId, wordId)
     );
-
-    CREATE INDEX IF NOT EXISTS idx_media_signId              ON media(signId);
-    CREATE INDEX IF NOT EXISTS idx_meaning_signId            ON meaning(signId);
-    CREATE INDEX IF NOT EXISTS idx_source_referenceId        ON source(referenceId);
-    CREATE INDEX IF NOT EXISTS idx_regionSource_sourceId     ON regionSource(sourceId);
-    CREATE INDEX IF NOT EXISTS idx_regionSource_regionId     ON regionSource(regionId);
-    CREATE INDEX IF NOT EXISTS idx_meaningSource_meaningId   ON meaningSource(meaningId);
-    CREATE INDEX IF NOT EXISTS idx_meaningSource_sourceId    ON meaningSource(sourceId);
-    CREATE INDEX IF NOT EXISTS idx_wordMeaning_meaningId     ON wordMeaning(meaningId);
-    CREATE INDEX IF NOT EXISTS idx_wordMeaning_wordId        ON wordMeaning(wordId);
   `)
+
+  // CREATE INDEX IF NOT EXISTS idx_media_signId              ON media(signId);
+  // CREATE INDEX IF NOT EXISTS idx_meaning_signId            ON meaning(signId);
+  // CREATE INDEX IF NOT EXISTS idx_source_referenceId        ON source(referenceId);
+  // CREATE INDEX IF NOT EXISTS idx_regionId_regionId         ON region(parentRegionId);
+  // CREATE INDEX IF NOT EXISTS idx_regionSource_sourceId     ON regionSource(sourceId);
+  // CREATE INDEX IF NOT EXISTS idx_regionSource_regionId     ON regionSource(regionId);
+  // CREATE INDEX IF NOT EXISTS idx_meaningSource_meaningId   ON meaningSource(meaningId);
+  // CREATE INDEX IF NOT EXISTS idx_meaningSource_sourceId    ON meaningSource(sourceId);
+  // CREATE INDEX IF NOT EXISTS idx_wordMeaning_meaningId     ON wordMeaning(meaningId);
+  // CREATE INDEX IF NOT EXISTS idx_wordMeaning_wordId        ON wordMeaning(wordId);
 }

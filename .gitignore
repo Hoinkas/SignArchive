@@ -25,6 +25,7 @@ dist-ssr
 
 # Backend files (movies/thumbnails)
 *.sql*
+*.db*
 uploads/
 backend/uploads
 backend/data/uploads
@@ -37,3 +38,4 @@ frontend/src/models
 # Personal files
 TODO.md
 *.env
+*.drawio*
