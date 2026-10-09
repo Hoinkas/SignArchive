@@ -1,6 +1,6 @@
 import './SignItem.css'
 import type { ISignSimple } from '@src/models/sign.model'
-import MediaPlayer from '../../MediaPlayer/MediaPlayer'
+import MediaPlayer from '../../../../components/MediaPlayer/MediaPlayer'
 import { mergeYearText } from '@src/utils/namesHelpers'
 
 interface SignItemProps {
@@ -17,8 +17,8 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
       <MediaPlayer media={media} />
       <div className='signContent'>
         <div className='details'>
-          <div>SŁOWA: {words.join(', ')}</div>
-          <div>REGIONY: {regions.join(', ')}</div>
+          <div>SŁOWA: {words.length > 0 ? words.join(', ') : '-'}</div>
+          <div>REGIONY: {regions.length > 0 ?  regions.join(', ') : '-'}</div>
         </div>
         <div className='yearDetails'>
           <div>LATA: {mergeYearText(years)}</div>

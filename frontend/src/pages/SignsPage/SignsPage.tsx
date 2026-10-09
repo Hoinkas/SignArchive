@@ -1,7 +1,7 @@
 import './SignsPage.css'
 import Loader from '@src/components/Loader/Loader'
 import { useSignList } from '@src/hooks/SignListContext/useSignList'
-import SignListTitle from './SignListTitle/SignListTitle'
+import SignListTitle from './SingList/SignListTitle/SignListTitle'
 import SignList from './SingList/SignList'
 
 function SignsPage(): React.JSX.Element {

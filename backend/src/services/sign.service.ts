@@ -20,7 +20,7 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
 
 // FIND
 function listAllSigns(): ISignAttached[] {
-  return getDb().prepare('SELECT * FROM sign').all() as ISignAttached[]
+  return getDb().prepare('SELECT * FROM sign ORDER BY uniqueNumber DESC').all() as ISignAttached[]
 }
 
 // LIST MAPPED

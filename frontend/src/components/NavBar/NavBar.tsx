@@ -10,6 +10,12 @@ function NavBar(): React.JSX.Element {
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(isThemeDark())
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
+  const pages = [
+    ['signs', 'Znaki'],
+    ['words', 'Słowa'],
+    ['info', 'Informacje']
+  ]
+
   return (
     <div className="navBar">
       <a className="logoTitle" href='/'>
@@ -22,8 +28,7 @@ function NavBar(): React.JSX.Element {
 
       {/* Desktop */}
       <div className='buttonsBox desktopNav'>
-        <button onClick={() => navigate('/words/')}>Wszystkie słowa</button>
-        <button onClick={() => navigate('/info/')}>Informacje</button>
+        {pages.map((p) => <button onClick={() => navigate('/' + p[0] + '/')}>{p[1]}</button>)}
       </div>
 
       {/* Mobile */}
@@ -33,8 +38,7 @@ function NavBar(): React.JSX.Element {
 
       {isMenuOpen && (
         <div className='mobileMenu'>
-          <button onClick={() => { navigate('/words/'); setIsMenuOpen(false) }}>Wszystkie słowa</button>
-          <button onClick={() => { navigate('/info/'); setIsMenuOpen(false) }}>Informacje</button>
+          {pages.map((p) => <button onClick={() => { navigate('/' + p[0] + '/'); setIsMenuOpen(false) }}>{p[1]}</button>)}
         </div>
       )}
     </div>
