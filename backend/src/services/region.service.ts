@@ -20,8 +20,7 @@ export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
     )
     .all(signId) as IRegionToFE[];
 
-  console.log(rows)
-  return rows
+    return rows;
 }
 
 // FIND

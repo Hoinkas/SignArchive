@@ -12,7 +12,7 @@ export interface IStatistics {
 export function calculateStatistics(signList: ISignSimple[]) {
     const statistics: IStatistics = {
         signsCount: signList.length,
-        regionsCount: [...new Set(signList.flatMap((s) => s.regions))].length,
+        regionsCount: [...new Set(signList.flatMap((s) => s.regions.flatMap((r) => r.name)))].length,
         moviesCount: [...new Set(signList.flatMap((s) => s.media))].length,
         wordsCount: [...new Set(signList.flatMap((s) => s.words))].length,
         categoriesCount: 0,
