@@ -1,4 +1,4 @@
 export interface IYearStartEnd {
-  yearStart: number | null | undefined
-  yearEnd: number | null | undefined
+  yearStart: number | null
+  yearEnd: number | null
 }

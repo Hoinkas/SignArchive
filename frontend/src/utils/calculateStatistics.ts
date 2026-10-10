@@ -1,4 +1,5 @@
 import type { ISignSimple } from "@src/models/sign.model"
+import type { IYearStartEnd } from "@src/models/yearStartEnd.model"
 
 export interface IStatistics {
     signsCount: number,
@@ -7,6 +8,17 @@ export interface IStatistics {
     wordsCount: number,
     categoriesCount: number,
     sourcesCount: number
+    yearStartEnd: IYearStartEnd
+}
+
+function returnMarginalYears(years: IYearStartEnd[]): IYearStartEnd {
+    const allYears: number[] = [...years.flatMap((y) => [y.yearStart, y.yearEnd])].filter((y) => y && isFinite(y))
+
+    const yearsMarginal: IYearStartEnd = {
+        yearStart: allYears.length > 0 ? Math.min(...allYears) : null,
+        yearEnd: allYears.length > 0 ? Math.max(...allYears) : null
+    }
+    return yearsMarginal
 }
 
 export function calculateStatistics(signList: ISignSimple[]) {
@@ -16,7 +28,8 @@ export function calculateStatistics(signList: ISignSimple[]) {
         moviesCount: [...new Set(signList.flatMap((s) => s.media))].length,
         wordsCount: [...new Set(signList.flatMap((s) => s.words))].length,
         categoriesCount: 0,
-        sourcesCount: 0
+        sourcesCount: 0,
+        yearStartEnd: returnMarginalYears(signList.flatMap((s) => s.years))
     }
  
     return statistics
