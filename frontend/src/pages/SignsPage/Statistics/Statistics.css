@@ -10,8 +10,8 @@
 .statisticsList {
     display: grid;
     gap: 1px;
-    padding-top: 1px;
     background: #414047;
+    padding-bottom: 1px;
 }
 
 .statisticsList.three {

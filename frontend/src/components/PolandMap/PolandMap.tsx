@@ -1,6 +1,5 @@
 import * as d3 from "d3";
-import { FeatureCollection, Geometry } from "geojson";
-import polandVoivodeshipsGeoData from './poland.voivodeships.json';
+import geoData from './poland.voivodeships.json';
 import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
@@ -10,29 +9,9 @@ import { calculateMapStatistics } from "@src/utils/calculateMapStatistics";
 const WIDTH = 600;
 const HEIGHT = 560;
 
-const rewindGeometry = (g: Geometry): Geometry => {
-  if (g.type === "Polygon") {
-    return { ...g, coordinates: g.coordinates.map((ring) => [...ring].reverse()) };
-  }
-  if (g.type === "MultiPolygon") {
-    return {
-      ...g,
-      coordinates: g.coordinates.map((poly) => poly.map((ring) => [...ring].reverse())),
-    };
-  }
-  return g;
-};
-
-const geoData: FeatureCollection = (() => {
-  const raw = polandVoivodeshipsGeoData as FeatureCollection;
-  return { ...raw, features: raw.features.map((f) => ({ ...f, geometry: rewindGeometry(f.geometry) })) };
-})();
-
 const PolandMap = () => {
   const {region, handleOptionChange} = useSearch()
   const { filteredSigns } = useSignList()
-
-  const mapStats = calculateMapStatistics(filteredSigns);
 
   const regions = useMemo(() => {
     const projection = d3
@@ -48,10 +27,10 @@ const PolandMap = () => {
     }));
   }, []);
 
-  const valueById = useMemo(
-    () => new Map(mapStats.map((d) => [d.name, d.signsCount])),
-    [mapStats]
-  );
+  const valueById = useMemo(() => {
+    const mapStats = calculateMapStatistics(filteredSigns);
+    return new Map(mapStats.map((d) => [d.name, d.signsCount]))
+  }, [filteredSigns]);
 
   const toggle = (name: string) => handleOptionChange('region', region === name ? '' : name);
 
