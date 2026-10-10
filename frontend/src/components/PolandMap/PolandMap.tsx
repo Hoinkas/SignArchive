@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { FeatureCollection, Geometry } from "geojson";
 import polandVoivodeshipsGeoData from './poland.voivodeships.json';
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
 import { useSignList } from "@src/hooks/SignListContext/useSignList";
@@ -31,7 +31,6 @@ const geoData: FeatureCollection = (() => {
 const PolandMap = () => {
   const {region, handleOptionChange} = useSearch()
   const { filteredSigns } = useSignList()
-  const [hovered, setHovered] = useState<string | null>(null);
 
   const mapStats = calculateMapStatistics(filteredSigns);
 
@@ -54,7 +53,6 @@ const PolandMap = () => {
     [mapStats]
   );
 
-  const focusId = region ?? hovered;
   const toggle = (name: string) => handleOptionChange('region', region === name ? '' : name);
 
   return (
@@ -62,27 +60,21 @@ const PolandMap = () => {
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       className="polandMap"
       role="group"
-      aria-label="Map of Poland by voivodeship"
     >
       {regions.map((r) => {
         const value = valueById.get(r.name);
-        const fill = "#232327";
-        const cls = [
+        const className = [
           "region",
-          region === r.name && "active",
-          focusId && focusId !== r.name && "dimmed",
-        ]
-          .filter(Boolean)
-          .join(" ");
+          region === r.name ? " active" : "",
+          value === undefined ? " dimmed" : ""
+        ].join("")
 
         return (
           <g
             key={r.name}
-            className={cls}
+            className={className}
             role="button"
             tabIndex={0}
-            aria-pressed={region === r.name}
-            aria-label={`${r.name}${value !== undefined ? `, ${value}` : ""}`}
             onClick={() => toggle(r.name)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
@@ -90,12 +82,8 @@ const PolandMap = () => {
                 toggle(r.name);
               }
             }}
-            onMouseEnter={() => setHovered(r.name)}
-            onMouseLeave={() => setHovered(null)}
-            onFocus={() => setHovered(r.name)}
-            onBlur={() => setHovered(null)}
           >
-            <path d={r.d} fill={fill} />
+            <path d={r.d} fill={"#232327"} />
             {value !== undefined && (
               <text
                 x={r.centroid[0]}
