@@ -82,12 +82,12 @@ textarea {
 button {
   color: var(--color-text);
   border: var(--button-border);
-  border-radius: var(--radius-md);
   background: var(--color-bg);
 
   cursor: pointer;
   padding: var(--space-2) var(--space-4);
-  height: fit-content;
+  /* height: fit-content; */
+  height: var(--space-10);
 }
 
 button.isAtEnd {
@@ -102,7 +102,7 @@ button:hover {
 }
 
 button:active {
-  transform: scale(0.97);
+  /* transform: scale(0.97); */
   color: var(--color-text-active);
   background: var(--color-bg-active);
 }
