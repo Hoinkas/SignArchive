@@ -3,15 +3,20 @@ import geoData from './poland.voivodeships.json';
 import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
-import { useSignList } from "@src/hooks/SignListContext/useSignList";
 import { calculateMapStatistics } from "@src/utils/calculateMapStatistics";
+import type { ISignSimple } from "@src/models/sign.model";
 
 const WIDTH = 600;
 const HEIGHT = 560;
 
-const PolandMap = () => {
+interface PolandMapProps {
+  signs: ISignSimple[]
+  interactive?: boolean
+  small?: boolean
+}
+
+const PolandMap = ({signs, interactive = false, small = false}: PolandMapProps) => {
   const {region, handleOptionChange} = useSearch()
-  const { filteredSigns } = useSignList()
 
   const regions = useMemo(() => {
     const projection = d3
@@ -28,34 +33,43 @@ const PolandMap = () => {
   }, []);
 
   const valueById = useMemo(() => {
-    const mapStats = calculateMapStatistics(filteredSigns);
+    const mapStats = calculateMapStatistics(signs);
     return new Map(mapStats.map((d) => [d.name, d.signsCount]))
-  }, [filteredSigns]);
+  }, [signs]);
 
-  const toggle = (name: string) => handleOptionChange('region', region === name ? '' : name);
+  const toggle = (name: string) => {
+    if (interactive) handleOptionChange('region', region === name ? '' : name);
+  }
+    
+  const className = [
+    "polandMap",
+    small ? " small" : ""
+  ].join("")
 
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      className="polandMap"
+      className={className}
       role="group"
     >
       {regions.map((r) => {
         const value = valueById.get(r.name);
-        const className = [
+        const regionClassName = [
           "region",
           region === r.name ? " active" : "",
-          value === undefined ? " dimmed" : ""
+          value === undefined ? " dimmed" : "",
+          interactive ? " interactive" : ""
         ].join("")
 
         return (
           <g
             key={r.name}
-            className={className}
+            className={regionClassName}
             role="button"
             tabIndex={0}
             onClick={() => toggle(r.name)}
             onKeyDown={(e) => {
+              if (interactive) return
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 toggle(r.name);

@@ -14,8 +14,9 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
   const regions = listRegionsNamesBySignId(sign.id)
   const years = getStartEndYearBySignId(sign.id)
   const words = listWordsNamesBySignId(sign.id)
+  const uniqueNumber = String(sign.uniqueNumber)
 
-  return { ...sign, regions, years, words, media }
+  return { ...sign, regions, years, words, media, uniqueNumber }
 }
 
 // FIND

@@ -1,0 +1,54 @@
+.signDetailsContainer {
+  position: fixed;
+  top: var(--navBar-height);
+  right: 0;
+  z-index: 100;
+  /*To delete above and make it 50% of page when on bigger screens*/
+  width: 50%;
+  min-width: 640px;
+  background-color: var(--color-bg);
+  height: calc(100dvh - var(--navBar-height));
+  border-left: var(--line-border);
+
+  display:flex;
+  flex-direction: column;
+  overflow: auto;
+
+  @media (max-width: 1279px) {
+    width: 75%;
+    position: fixed;
+    top: var(--navBar-height);
+    right: 0;
+    z-index: 100;
+  }
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    min-width: unset;
+    position: fixed;
+    border: none;
+    position: fixed;
+    top: var(--navBar-height);
+    right: 0;
+    z-index: 100;
+  }
+}
+
+.signDetails {
+  border-top: var(--line-border);
+  border-right: var(--line-border);
+  display:flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.stickyBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--color-bg);
+  min-height: 64px;
+}

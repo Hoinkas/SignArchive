@@ -18,20 +18,6 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
     signApi.list().then((data) => setAllSigns(data)).finally(() => setSignListLoading(false))
   }, [])
 
-  const addSignToSignList = (data: ISignSimple): void => {
-    setAllSigns((prev) => [data, ...prev])
-  }
-
-  const editSignInSignList = (data: ISignSimple): void => {
-    setAllSigns((prev) => prev.map((s) => (
-      s.id === data.id ? { ...s, ...data } : s
-    )))
-  }
-
-  const deleteSignFromSignList = (signId: string): void => {
-    setAllSigns((prev) => prev.filter((s) => s.id !== signId))
-  }
-
   const filteredSigns = useMemo((): ISignSimple[] => {
     const isWordFilterActive = searchWord !== ''
 
@@ -46,7 +32,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
   }, [allSigns, region, filteredWords, yearStart, yearEnd, searchWord])
 
   return (
-    <SignListContext.Provider value={{ allSigns, filteredSigns, signListLoading, addSignToSignList, editSignInSignList, deleteSignFromSignList }}>
+    <SignListContext.Provider value={{ allSigns, filteredSigns, signListLoading }}>
       {children}
     </SignListContext.Provider>
   )

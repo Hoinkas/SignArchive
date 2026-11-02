@@ -2,12 +2,14 @@ import './SignItem.css'
 import type { ISignSimple } from '@src/models/sign.model'
 import MediaPlayer from '../../../../components/MediaPlayer/MediaPlayer'
 import { mergeYearText } from '@src/utils/namesHelpers'
+import { useSign } from '@src/hooks/SignContext/useSign'
 
 interface SignItemProps {
   signSimple: ISignSimple
 }
 
 function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
+  const {openCloseSidePanel} = useSign();
   const {media, words, regions, years, uniqueNumber} = signSimple
 
   const paddedNumber = (uniqueNumber + "").padStart(4, "0");
@@ -15,7 +17,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
   return (
     <div className="signContainer additionalInfo">
       <MediaPlayer media={media} />
-      <div className='signContent'>
+      <div className='signContent' onClick={() => openCloseSidePanel(signSimple)}>
         <div className='details'>
           <div>SŁOWA: {words.length > 0 ? words.join(', ') : '-'}</div>
           <div>REGIONY: {regions.length > 0 ?  regions.map((r) => r.name).join(', ') : '-'}</div>

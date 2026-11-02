@@ -5,16 +5,16 @@ export interface SignListContextValue {
   allSigns: ISignSimple[]
   filteredSigns: ISignSimple[]
   signListLoading: boolean
-  addSignToSignList: (data: ISignSimple) => void
-  editSignInSignList: (data: ISignSimple) => void
-  deleteSignFromSignList: (signId: string) => void
+  // addSignToSignList: (data: ISignSimple) => void
+  // editSignInSignList: (data: ISignSimple) => void
+  // deleteSignFromSignList: (signId: string) => void
 }
 
 export const SignListContext = createContext<SignListContextValue>({
   allSigns: [],
   filteredSigns: [],
   signListLoading: false,
-  addSignToSignList: () => {},
-  editSignInSignList: () => {},
-  deleteSignFromSignList: () => {}
+  // addSignToSignList: () => {},
+  // editSignInSignList: () => {},
+  // deleteSignFromSignList: () => {}
 })

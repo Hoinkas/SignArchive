@@ -3,10 +3,15 @@
   max-width: 480px;
   height: auto;
 }
+.polandMap.small {
+  max-width: 280px;
+}
 .region { 
-  cursor: pointer;
   outline: none;
   transition: opacity 0.2s;
+}
+.region.interactive {
+  cursor: pointer;
 }
 .region path { 
   stroke: #414047;
@@ -23,12 +28,12 @@
   opacity: 0.4;
 }
 
-.region:hover path,
-.region:focus-visible path {
+.region:hover.interactive path,
+.region:focus-visible.interactive path {
   stroke: #331D8E;
   stroke-width: 2;
 }
 
-.region.active path {
+.region.active.interactive path {
   fill: #331D8E
 }

@@ -153,9 +153,9 @@
 
   --color-title-purple: var(--color-purple-dark);
 
-  --media-max-height: 212px;
-  --media-details-max-height: 400px;
-  --navBar-height: 64px;
+  --media-max-height: 200px;
+  --media-details-max-height: 440px;
+  --navBar-height: 52px;
 
   --color-line-purple: var(--color-bg-active);
 

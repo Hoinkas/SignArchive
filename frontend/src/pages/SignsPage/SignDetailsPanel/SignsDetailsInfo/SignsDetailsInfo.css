@@ -1,0 +1,6 @@
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-left: var(--line-border);
+}

@@ -28,7 +28,7 @@ function SearchBar(): React.JSX.Element {
             setLocalWord(e.target.value)
           }}
         />
-        <div className="clickableSymbolX" onClick={handleClearWithLocal}>×</div>
+        {localWord !== '' && <div className="clickableSymbolX" onClick={handleClearWithLocal}>×</div>}
       </div>
       <button className='primary' onClick={() => handleNameChange(localWord)}>
         Szukaj
