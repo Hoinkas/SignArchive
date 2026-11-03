@@ -13,26 +13,31 @@ function SignDetailsInfo(): React.JSX.Element {
   const {words, notes, regions, years, media, uniqueNumber} = simpleSign
 
   return (
-    <div style={{display: 'flex'}}>
-      <div> 
-        <div style={{borderBottom: 'var(--line-border)'}}>
-          <MediaPlayer media={media} isDetails/>
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      <div style={{display: 'flex'}}>
+        <div> 
+          <div style={{borderBottom: 'var(--line-border)'}}>
+            <MediaPlayer media={media} isDetails/>
+          </div>
+          <div className="details additionalInfo">
+            <div>OSOBA MIGAJĄCA:</div>
+            <div>ŹRÓDŁO FILMU: </div>
+          </div>
         </div>
-        <div className="details additionalInfo">
-          <div>OSOBA MIGAJĄCA:</div>
-          <div>ŹRÓDŁO FILMU: </div>
+        <div className='rightSide'>
+          <div style={{display: 'flex', justifyContent: "center", borderBottom: 'var(--line-border)', padding: 'var(--space-4)'}}>
+            <PolandMap signs={[simpleSign]} small/>
+          </div>
+          <div className="details additionalInfo">
+            <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
+            <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
+            <div>LATA: {mergeYearText(years)}</div>
+          </div>
         </div>
       </div>
-      <div className='rightSide'>
-        <div style={{display: 'flex', justifyContent: "center", borderBottom: 'var(--line-border)'}}>
-          <PolandMap signs={[simpleSign]} small/>
-        </div>
-        <div className="details additionalInfo">
-          <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
-          <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
-          <div>LATA: {mergeYearText(years)}</div>
-        </div>
-      </div>      
+      <div>
+        {simpleSign.words}
+      </div>
     </div>
   )
 }

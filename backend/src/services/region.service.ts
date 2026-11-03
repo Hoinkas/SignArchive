@@ -2,7 +2,7 @@ import { IRegionToFE } from '@signarchive/shared/models/region.model';
 import { getDb } from '../db/client'
 import { IRegionAttached } from '../models/region.model'
 
-// RETURN NAMES
+// RETURN REGIONS' NAMES BY SIGN ID
 export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
   const rows = getDb()
     .prepare(
@@ -19,6 +19,24 @@ export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
       WHERE m.signId = ?`
     )
     .all(signId) as IRegionToFE[];
+
+    return rows;
+}
+
+// RETURN REGIONS' NAMES BY SOURCE ID
+export function listRegionsNamesBySourceId(sourceId: string): IRegionToFE[] {
+  const rows = getDb()
+    .prepare(
+      `SELECT DISTINCT
+        pr.id   AS id,
+        r.name  AS name,
+        pr.name AS parentName
+      FROM region r
+      LEFT JOIN region pr ON pr.id = r.parentRegionId
+      INNER JOIN regionSource rs ON rs.regionId = r.id
+      rs.sourceId = ?`
+    )
+    .all(sourceId) as IRegionToFE[];
 
     return rows;
 }

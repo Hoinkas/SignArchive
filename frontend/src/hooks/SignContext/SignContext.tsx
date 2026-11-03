@@ -1,11 +1,10 @@
-import type { ISignSimple } from '@src/models/sign.model'
+import type { ISignDetailed } from '@src/models/sign.model'
 import { createContext } from 'react'
 
 export interface SignContextValue {
-//   sign: ISignDetails | null
-  simpleSign: ISignSimple | null
+  sign: ISignDetailed | null
   signLoading: boolean
-  openCloseSidePanel: (sign: ISignSimple) => void
+  openCloseSidePanel: (signId: string) => void
 //   addSignAndMedia: (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void) => void
 //   editSignAndMedia: (signId: string, signChanges: Partial<ISignDetailsToDB>, mediaChanges: Partial<IMediaToDB>, closeForm: () => void) => void
 //   deleteSignAndMedia: (deleteId: string) => void
@@ -18,8 +17,7 @@ export interface SignContextValue {
 }
 
 export const SignContext = createContext<SignContextValue>({
-//   sign: null,
-  simpleSign: null,
+  sign: null,
   signLoading: false,
   openCloseSidePanel: () => {},
 //   addSignAndMedia: () => {},

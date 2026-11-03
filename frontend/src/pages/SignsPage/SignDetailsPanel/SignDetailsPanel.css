@@ -44,11 +44,17 @@
 
 .stickyBar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 999;
   background-color: var(--color-bg);
-  min-height: 64px;
+}
+
+.stickyBar > div {
+  padding: var(--space-2);
+  border-right: var(--line-border);
+  height: 100%;
+  display: flex;
+  align-items: center;
 }

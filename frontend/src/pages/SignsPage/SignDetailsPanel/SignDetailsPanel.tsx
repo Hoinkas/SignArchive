@@ -12,10 +12,10 @@ function SignDetailsPanel(): React.JSX.Element {
   const paddedNumber = (simpleSign.uniqueNumber + "").padStart(4, "0");
 
   return (
-    <div className="signDetailsContainer">
+    <div className="signDetailsContainer additionalInfo">
       <div className='stickyBar'>
+        <div className="clickable" onClick={() => openCloseSidePanel(simpleSign)}> &lt; ZAMKNIJ</div>
         <div>NUMER: #{paddedNumber}</div>
-        <div className="clickableSymbolX clickableCircle" onClick={() => openCloseSidePanel(simpleSign)}>×</div>
       </div>
       <div className="signDetails">
         <SignDetailsInfo/>

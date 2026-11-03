@@ -27,7 +27,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
         </div>
         <div className='detailsEnd'>
           <div>#{paddedNumber}</div>
-          <div>Szczegóły {'>'}</div>
+          <div className='clickable'>SZCZEGÓŁY &gt;</div>
         </div>
       </div>
     </div>

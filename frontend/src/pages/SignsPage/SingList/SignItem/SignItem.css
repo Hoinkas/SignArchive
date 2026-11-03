@@ -60,3 +60,8 @@
 .detailsEnd > div:last-child {
   border-left: var(--line-border);
 }
+
+.clickable:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

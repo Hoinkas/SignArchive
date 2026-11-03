@@ -12,7 +12,6 @@ export interface IRegionToFE extends Omit<IRegion, 'regionParentId'>, IBaseModel
   parentName: string
 }
 
-
 // TEMPLATES
 export const regionTemplate: Record<keyof IRegion, null> = {
   name: null,
