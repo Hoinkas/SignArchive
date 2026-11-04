@@ -28,7 +28,7 @@ dist-ssr
 *.db*
 uploads/
 backend/uploads
-backend/data/uploads
+backend/data/uploads/*
 !backend/data/uploads/.gitkeep
 
 # Shared models
