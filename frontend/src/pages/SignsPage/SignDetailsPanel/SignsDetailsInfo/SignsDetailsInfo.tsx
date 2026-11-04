@@ -7,16 +7,18 @@ import './SignsDetailsInfo.css'
 import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
+import { removeDuplicates } from '@src/utils/removeDuplicates'
+import MeaningsContainer from './MeaningsContainer/MeaningsContainer'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
 
   if (signLoading) return <Loader/>
-  const {meanings, media} = sign
+  const {media, meanings} = sign
 
-  const words: string[] = sign.meanings.flatMap((m) => m.words.flatMap((w) => w.name))
-  const regions: IRegionToFE[] = sign.meanings.flatMap((m) => m.sources.flatMap((s) => s.regions))
-  const years: IYearStartEnd[] = sign.meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}}))
+  const words: string[] = meanings.flatMap((m) => m.words.flatMap((w) => w.name))
+  const regions: IRegionToFE[] = removeDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => s.regions)))
+  const years: IYearStartEnd[] = removeDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}})))
 
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -37,13 +39,11 @@ function SignDetailsInfo(): React.JSX.Element {
           <div className="details additionalInfo">
             <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
             <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
-            <div>LATA: {years.map((y) => mergeYearText(y))}</div>
+            <div>LATA: {years.map((y) => mergeYearText(y)).join(', ')}</div>
           </div>
         </div>
       </div>
-      <div>
-        {sign.meanings.flatMap((m) => m.id)}
-      </div>
+      <MeaningsContainer/>
     </div>
   )
 }

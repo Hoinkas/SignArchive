@@ -22,7 +22,7 @@ function SearchBar(): React.JSX.Element {
         <div className='searchIcon'><SearchIcon/></div>
         <input
           type="search"
-          placeholder="Wyszukaj znaki.."
+          placeholder="Wyszukaj znaki..."
           value={localWord}
           onChange={(e) => {
             setLocalWord(e.target.value)

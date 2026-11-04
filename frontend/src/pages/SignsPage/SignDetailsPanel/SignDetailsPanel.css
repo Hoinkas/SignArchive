@@ -49,6 +49,7 @@
   top: 0;
   z-index: 999;
   background-color: var(--color-bg);
+  border-top: var(--line-border);
 }
 
 .stickyBar > div {
