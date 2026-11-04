@@ -2,19 +2,20 @@ import Loader from '@src/components/Loader/Loader'
 import './SignDetailsPanel.css'
 import SignDetailsInfo from './SignsDetailsInfo/SignsDetailsInfo'
 import { useSign } from '@src/hooks/SignContext/useSign'
+import { memo } from 'react'
 
 function SignDetailsPanel(): React.JSX.Element {
-  const { simpleSign, signLoading, openCloseSidePanel } = useSign()
+  const { sign, signLoading, openCloseSidePanel } = useSign()
 
-  if (!simpleSign) return <></>
+  if (!sign) return <></>
   if (signLoading) return <Loader/>
 
-  const paddedNumber = (simpleSign.uniqueNumber + "").padStart(4, "0");
+  const paddedNumber = (sign.uniqueNumber + "").padStart(4, "0");
 
   return (
     <div className="signDetailsContainer additionalInfo">
       <div className='stickyBar'>
-        <div className="clickable" onClick={() => openCloseSidePanel(simpleSign)}> &lt; ZAMKNIJ</div>
+        <div className="clickable" onClick={() => openCloseSidePanel(sign.uniqueNumber)}> &lt; ZAMKNIJ</div>
         <div>NUMER: #{paddedNumber}</div>
       </div>
       <div className="signDetails">
@@ -29,4 +30,4 @@ function SignDetailsPanel(): React.JSX.Element {
   )
 }
 
-export default SignDetailsPanel
+export default memo(SignDetailsPanel)

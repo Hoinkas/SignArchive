@@ -1,10 +1,7 @@
 import type { IBaseModelAttached } from './base.interface'
-import type { IMeaningAttached } from './meaning.model'
+import type { IMeaningDetailed } from './meaning.model'
 import type { IMediaAttached } from './media.model'
-import type { IReferenceAttached } from './reference.model'
 import type { IRegionToFE } from './region.model'
-import type { ISourceAttached } from './source.model'
-import type { IWordAttached } from './word.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
@@ -23,11 +20,7 @@ export interface ISignSimple extends ISignAttached {
 }
 
 export interface ISignDetailed extends ISignAttached {
-  regions: IRegionToFE[]
-  words: IWordAttached[]
-  meanings: IMeaningAttached[]
-  sources: ISourceAttached[]
-  references: IReferenceAttached[]
+  meanings: IMeaningDetailed[]
   media: IMediaAttached[]
 }
 

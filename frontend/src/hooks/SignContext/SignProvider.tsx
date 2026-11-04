@@ -15,27 +15,27 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   const [signLoading, setSignLoading] = useState<boolean>(false)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const paramsSignId = searchParams.get('signId') ?? ''
+  const signNumber = searchParams.get('signNumber') ?? ''
 
   useEffect(() => {
-    if (!paramsSignId) return
+    if (!signNumber) return
 
-    signApi.details(paramsSignId)
+    signApi.details(signNumber)
       .then((data) => setSign(data))
       .catch(console.error)
       .finally(() => setSignLoading(false))
-  }, [paramsSignId])
+  }, [signNumber])
 
-  const openCloseSidePanel = useCallback((signId: string): void => {
-    if (paramsSignId === signId) {
+  const openCloseSidePanel = useCallback((uniqueNumber: string): void => {
+    if (signNumber == uniqueNumber) {
       setSign(null)
-      updateParam('signId', null, setSearchParams)
+      updateParam('signNumber', null, setSearchParams)
       return
     }
 
     setSignLoading(true)
-    updateParam('signId', signId, setSearchParams)
-    signApi.details(paramsSignId)
+    updateParam('signNumber', uniqueNumber, setSearchParams)
+    signApi.details(uniqueNumber)
       .then((data) => {
         setSign(data)
       })
@@ -43,7 +43,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
         console.error(err)
       })
       .finally(() => setSignLoading(false))
-  }, [paramsSignId, setSearchParams])
+  }, [signNumber, setSearchParams])
 
   return (
     <SignContext.Provider value={{

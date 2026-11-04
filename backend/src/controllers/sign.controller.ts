@@ -7,7 +7,7 @@ export const signController = {
     res.json(signService.listAllSignsSimple())
   },
   details: async (req: Request, res: Response): Promise<void> => {
-    const result = signService.getSignDetails(param(req, 'signId'))
+    const result = signService.getSignDetails(param(req, 'signNumber'))
     if (!result) {
       res.status(404).json({ error: 'Sign not found' })
       return

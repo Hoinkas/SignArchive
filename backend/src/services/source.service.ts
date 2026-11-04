@@ -32,7 +32,7 @@ export function getSimpleSourcesByMeaningId(meaningId: string): ISourceAttached[
        INNER JOIN meaningSource ON source.id = meaningSource.sourceId
        WHERE meaningSource.meaningId = ?
        `
-    ).get(meaningId) as ISourceAttached[]
+    ).all(meaningId) as ISourceAttached[]
 }
 
 // FIND DETAILED

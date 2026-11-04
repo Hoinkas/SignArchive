@@ -17,7 +17,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
   return (
     <div className="signContainer additionalInfo">
       <MediaPlayer media={media} />
-      <div className='signContent' onClick={() => openCloseSidePanel(signSimple)}>
+      <div className='signContent' onClick={() => openCloseSidePanel(signSimple.uniqueNumber)}>
         <div className='details'>
           <div>SŁOWA: {words.length > 0 ? words.join(', ') : '-'}</div>
           <div>REGIONY: {regions.length > 0 ?  regions.map((r) => r.name).join(', ') : '-'}</div>

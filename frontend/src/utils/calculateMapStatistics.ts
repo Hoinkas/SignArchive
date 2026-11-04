@@ -1,4 +1,4 @@
-import type { ISignSimple } from "@src/models/sign.model";
+import type { IRegionToFE } from "@src/models/region.model";
 
 export interface IMapStats {
     name: string,
@@ -9,14 +9,12 @@ interface IMapStatsTemp {
     [name: string]: number
 }
 
-export function calculateMapStatistics(signs: ISignSimple[]) {
+export function calculateMapStatistics(regions: IRegionToFE[]) {
     const mapStatsTemp: IMapStatsTemp = {}
-
-    signs.forEach((s) => {
-        s.regions.forEach((r) => {
-            const name = r.parentName || r.name
-            mapStatsTemp[name] = (mapStatsTemp[name] || 0) + 1
-        })
+    
+    regions.forEach((r) => {
+        const name = r.parentName || r.name
+        mapStatsTemp[name] = (mapStatsTemp[name] || 0) + 1
     })
 
     const mapStatistics: IMapStats[] = Object.keys(mapStatsTemp).map((s) => {

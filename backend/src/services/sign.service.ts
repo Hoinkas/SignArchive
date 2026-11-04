@@ -4,15 +4,15 @@ import {
   ISignDetailed,
   ISignSimple,
 } from '../models/sign.model'
-import { findMeaningsBySignId } from './meaning.service'
+import { findMeaningsDetailedBySignId } from './meaning.service'
 import { findMediaBySignId } from './media.service'
 import { listRegionsNamesBySignId } from './region.service'
 import { getStartEndYearBySignId } from './source.service'
 import { listWordsNamesBySignId } from './word.service'
 
 // FIND
-function findSignById(signId: string): ISignAttached {
-  return getDb().prepare('SELECT * FROM sign WHERE id = ?').get(signId) as ISignAttached
+function findSignByNumber(signNumber: string): ISignAttached {
+  return getDb().prepare('SELECT * FROM sign WHERE uniqueNumber = ?').get(signNumber) as ISignAttached
 }
 
 function listAllSigns(): ISignAttached[] {
@@ -31,10 +31,10 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
 }
 
 // MAP DETAILED
-export function getSignDetails(signId: string): ISignDetailed {
-  const sign = findSignById(signId)
-  const meanings = findMeaningsBySignId(signId)
-  const media = findMediaBySignId(signId)
+export function getSignDetails(signNumber: string): ISignDetailed {
+  const sign = findSignByNumber(signNumber)
+  const meanings = findMeaningsDetailedBySignId(sign.id)
+  const media = findMediaBySignId(sign.id)
 
   return {...sign, meanings, media}
 }

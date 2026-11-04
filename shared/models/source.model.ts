@@ -12,7 +12,7 @@ export interface ISource {
 export type ISourceAttached = ISource & IBaseModelAttached
 
 // TO FRONTEND
-export interface ISourceToFE extends Omit<ISourceAttached, 'referenceId' | 'yearStart' | 'yearEnd'> {
+export interface ISourceToFE extends Omit<ISourceAttached, 'referenceId'> {
   regions: IRegionToFE[]
   reference: IReferenceAttached
 }

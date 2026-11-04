@@ -11,11 +11,13 @@ function SignsPage(): React.JSX.Element {
   const { signListLoading, filteredSigns } = useSignList()
 
   if (signListLoading) return <Loader/>
+  const regions = filteredSigns.flatMap((s) => s.regions)
+
   return (
     <div className="signPage page">
       <div className='signsList'>
         <div className='mapSearchContener'>
-          <div className='mapContener'><PolandMap signs={filteredSigns} interactive/></div>
+          <div className='mapContener'><PolandMap regions={regions} interactive/></div>
           <div style={{width: '80%', height: '100%', margin: 'auto 0'}}>
             <SearchBar/>
             <Statistics/>

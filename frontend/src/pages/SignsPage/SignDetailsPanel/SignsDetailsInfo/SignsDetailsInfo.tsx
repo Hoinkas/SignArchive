@@ -5,12 +5,18 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYearText } from '@src/utils/namesHelpers'
 import './SignsDetailsInfo.css'
 import PolandMap from '@src/components/PolandMap/PolandMap'
+import type { IRegionToFE } from '@src/models/region.model'
+import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 
 function SignDetailsInfo(): React.JSX.Element {
-  const { simpleSign } = useSign()
+  const { sign, signLoading } = useSign()
 
-  if (!simpleSign) return <Loader/>
-  const {words, notes, regions, years, media, uniqueNumber} = simpleSign
+  if (signLoading) return <Loader/>
+  const {meanings, media} = sign
+
+  const words: string[] = sign.meanings.flatMap((m) => m.words.flatMap((w) => w.name))
+  const regions: IRegionToFE[] = sign.meanings.flatMap((m) => m.sources.flatMap((s) => s.regions))
+  const years: IYearStartEnd[] = sign.meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}}))
 
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -26,17 +32,17 @@ function SignDetailsInfo(): React.JSX.Element {
         </div>
         <div className='rightSide'>
           <div style={{display: 'flex', justifyContent: "center", borderBottom: 'var(--line-border)', padding: 'var(--space-4)'}}>
-            <PolandMap signs={[simpleSign]} small/>
+            <PolandMap regions={regions} small/>
           </div>
           <div className="details additionalInfo">
             <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
             <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
-            <div>LATA: {mergeYearText(years)}</div>
+            <div>LATA: {years.map((y) => mergeYearText(y))}</div>
           </div>
         </div>
       </div>
       <div>
-        {simpleSign.words}
+        {sign.meanings.flatMap((m) => m.id)}
       </div>
     </div>
   )

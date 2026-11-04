@@ -4,5 +4,6 @@ import { signController } from '../controllers/sign.controller'
 
 export const signRouter = Router()
 signRouter.route('/').get(asyncHandler(signController.list))
-signRouter.route('/:signId')
+signRouter
+  .route('/:signNumber')
   .get(asyncHandler(signController.details))

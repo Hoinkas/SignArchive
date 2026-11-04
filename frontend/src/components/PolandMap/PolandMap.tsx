@@ -4,21 +4,21 @@ import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
 import { calculateMapStatistics } from "@src/utils/calculateMapStatistics";
-import type { ISignSimple } from "@src/models/sign.model";
+import type { IRegionToFE } from "@src/models/region.model";
 
 const WIDTH = 600;
 const HEIGHT = 560;
 
 interface PolandMapProps {
-  signs: ISignSimple[]
+  regions: IRegionToFE[]
   interactive?: boolean
   small?: boolean
 }
 
-const PolandMap = ({signs, interactive = false, small = false}: PolandMapProps) => {
+const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps) => {
   const {region, handleOptionChange} = useSearch()
 
-  const regions = useMemo(() => {
+  const mapRegions = useMemo(() => {
     const projection = d3
       .geoTransverseMercator()
       .rotate([-19, -52])
@@ -33,9 +33,9 @@ const PolandMap = ({signs, interactive = false, small = false}: PolandMapProps) 
   }, []);
 
   const valueById = useMemo(() => {
-    const mapStats = calculateMapStatistics(signs);
+    const mapStats = calculateMapStatistics(regions);
     return new Map(mapStats.map((d) => [d.name, d.signsCount]))
-  }, [signs]);
+  }, [regions]);
 
   const toggle = (name: string) => {
     if (interactive) handleOptionChange('region', region === name ? '' : name);
@@ -52,7 +52,7 @@ const PolandMap = ({signs, interactive = false, small = false}: PolandMapProps) 
       className={className}
       role="group"
     >
-      {regions.map((r) => {
+      {mapRegions.map((r) => {
         const value = valueById.get(r.name);
         const regionClassName = [
           "region",

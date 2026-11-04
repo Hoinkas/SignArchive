@@ -4,7 +4,7 @@ import { createContext } from 'react'
 export interface SignContextValue {
   sign: ISignDetailed | null
   signLoading: boolean
-  openCloseSidePanel: (signId: string) => void
+  openCloseSidePanel: (uniqueNumber: string) => void
 //   addSignAndMedia: (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void) => void
 //   editSignAndMedia: (signId: string, signChanges: Partial<ISignDetailsToDB>, mediaChanges: Partial<IMediaToDB>, closeForm: () => void) => void
 //   deleteSignAndMedia: (deleteId: string) => void

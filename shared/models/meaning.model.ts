@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
+import { ISourceToFE } from './source.model'
 import { IWordAttached } from './word.model'
-import { ISourceToFE } from '@signarchive/shared/models/source.model'
 
 export interface IMeaning {
   explanation: string
