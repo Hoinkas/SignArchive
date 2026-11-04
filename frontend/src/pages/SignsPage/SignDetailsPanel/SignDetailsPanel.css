@@ -3,7 +3,7 @@
   top: var(--navBar-height);
   right: 0;
   z-index: 100;
-  /*To delete above and make it 50% of page when on bigger screens*/
+  /*TODO delete above and make it 50% of page when on bigger screens*/
   width: 50%;
   min-width: 640px;
   background-color: var(--color-bg);

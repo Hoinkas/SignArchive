@@ -1,8 +1,8 @@
 
 import { useSign } from '@src/hooks/SignContext/useSign'
-import type { IYearStartEnd } from '@src/models/yearStartEnd.model';
-import { getMinMaxYearFromNumber, mergeYears, mergeYearToText } from '@src/utils/namesHelpers';
+import { mergeYears } from '@src/utils/namesHelpers';
 import './YearsDiagram.css'
+import WordTimeline from './WordTimeline';
 
 function YearsDiagram(): React.JSX.Element {
     const { sign } = useSign()
@@ -10,44 +10,21 @@ function YearsDiagram(): React.JSX.Element {
     const yearsByWord = new Object();
 
     sign.meanings.forEach((m) => {
-        const years = m.sources.map((s) => mergeYears(s.yearStart, s.yearEnd))
+        const years = m.sources.flatMap((s) => mergeYears(s.yearStart, s.yearEnd))
 
         m.words.forEach((w) => {
-            if (w.name in Object.keys(yearsByWord)) yearsByWord[w.name] = [...yearsByWord[w.name], years]
-            yearsByWord[w.name] = [years]
+            if (w.name in Object.keys(yearsByWord)) yearsByWord[w.name] = [...yearsByWord[w.name], ...years]
+            else yearsByWord[w.name] = years
         })
     })
 
     const words = Object.keys(yearsByWord)
-    const minMaxYear = getMinMaxYearFromNumber(sign.meanings.flatMap((m) => m.sources.flatMap((s) => [s.yearStart, s.yearEnd])))
 
     return (
         <div style={{ margin: '8px' }}>
             DIAGRAM CZASOWY:
             <div style={{ margin: '8px 0' }}>
-                {words.map((w) => (
-                    <div key={w} className='wordTimeContainer'>
-                        <div>[{w}]</div>
-                        <div className='linesContainer'>
-                            <div className='line'/>
-
-                            {yearsByWord[w].flatMap((y: IYearStartEnd[]) => y.map((item, i) => {
-                                const yearDifference = item.yearEnd ? item.yearEnd - item.yearStart : 0
-                                const widthPct = (yearDifference / minMaxYear.yearEnd) * 100
-                                const leftPct = ((item.yearStart - minMaxYear.yearStart) / (minMaxYear.yearEnd - minMaxYear.yearStart)) * 100
-
-                                return (
-                                    <div key={i} className='yearLine' style={{ left: `calc(${leftPct}% - 12px)`, width: `calc(${widthPct}% + 12px)` }}>
-                                        <div className='yearText'>
-                                            {mergeYearToText(item)}
-                                        </div>
-                                    </div>
-                                )
-                                })
-                            )}
-                        </div>
-                    </div>
-                ))}
+                {words.map((w, i) => <WordTimeline key={i} word={w} years={yearsByWord[w]}/>)}
             </div>
         </div>
     )

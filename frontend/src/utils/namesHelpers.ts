@@ -20,11 +20,6 @@ export function mergeYearToText(years: IYearStartEnd | null): string {
   return yearStart?.toString() || yearEnd?.toString() || '-'
 }
 
-export function getMinMaxYearFromNumber(years: number[]): IYearStartEnd {
-  years = years.filter((y) => y)
-  return {yearStart: Math.min(...years), yearEnd: Math.max(...years)}
-}
-
 export function titleCase(str: string): string {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }

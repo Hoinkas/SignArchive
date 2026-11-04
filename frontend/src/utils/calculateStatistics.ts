@@ -11,16 +11,6 @@ export interface IStatistics {
     yearStartEnd: IYearStartEnd
 }
 
-function returnMarginalYears(years: IYearStartEnd[]): IYearStartEnd {
-    const allYears: number[] = [...years.flatMap((y) => [y.yearStart, y.yearEnd])].filter((y) => y && isFinite(y))
-
-    const yearsMarginal: IYearStartEnd = {
-        yearStart: allYears.length > 0 ? Math.min(...allYears) : null,
-        yearEnd: allYears.length > 0 ? Math.max(...allYears) : null
-    }
-    return yearsMarginal
-}
-
 export function calculateStatistics(signList: ISignSimple[]) {
     const statistics: IStatistics = {
         signsCount: signList.length,
@@ -34,3 +24,13 @@ export function calculateStatistics(signList: ISignSimple[]) {
  
     return statistics
 };
+
+export function returnMarginalYears(years: IYearStartEnd[]): IYearStartEnd {
+    const allYears: number[] = [...years.flatMap((y) => [y.yearStart, y.yearEnd])].filter((y) => y && isFinite(y))
+
+    const yearsMarginal: IYearStartEnd = {
+        yearStart: allYears.length > 0 ? Math.min(...allYears) : null,
+        yearEnd: allYears.length > 0 ? Math.max(...allYears) : null
+    }
+    return yearsMarginal
+}

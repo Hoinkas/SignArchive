@@ -1,6 +1,18 @@
+.signsDetailsContainer {
+  display: flex;
+  border-bottom: var(--line-border);
+}
+
 .rightSide {
   display: flex;
   flex-direction: column;
   width: 100%;
   border-left: var(--line-border);
+}
+
+.mapContainer {
+  display: flex;
+  justify-content: center;
+  border-bottom: var(--line-border);
+  padding: var(--space-4);
 }
