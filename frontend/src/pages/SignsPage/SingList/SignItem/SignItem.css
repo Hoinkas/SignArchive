@@ -42,9 +42,8 @@
   overflow: hidden;
 }
 
-.yearDetails {
-  display: flex;
-  padding: var(--space-2);
+.details > div:last-child {
+  border-bottom: none;
 }
 
 .detailsEnd {

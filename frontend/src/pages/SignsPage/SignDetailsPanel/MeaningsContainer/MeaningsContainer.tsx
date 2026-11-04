@@ -22,7 +22,7 @@ function MeaningsContainer(): React.JSX.Element {
     const [activeWord, setActiveWord] = useState<string>(words[0])
 
     return (
-        <div style={{margin: '20px 0 40px 0'}}>
+        <div style={{marginBottom: '20px'}}>
             <div style={{display: 'flex'}}>
                 {words.map((w) => {
                     const className = [
@@ -35,16 +35,20 @@ function MeaningsContainer(): React.JSX.Element {
             </div>
             <div className='wordDetails'>
                 {meaningByWord[activeWord].map((m: IMeaningDetailed) => 
-                    <div>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                         <div>WYJAŚNIENIE: {m.explanation}</div>
-                        <div>
+                        ŹRÓDŁA: 
+                        <div style={{display: 'flex', gap: '8px'}}>
                             {m.sources.map((s) => 
-                                <div>
+                                <div className='details'>
                                     <div>NOTATKI: {s.notes}</div>
                                     <div>ŹRÓDŁO: {s.reference.name}</div>
-                                    <div>ŹRÓDŁO: {s.reference.fullName}</div>
-                                    <div>REGIONY: {s.regions.map((r) => r.name).join(', ')}</div>
-                                    <div>LATA: {mergeYearsToText(s.yearStart, s.yearEnd)}</div>
+                                    <div className='detailsManyInRow'>
+                                        
+                                        <div>LATA: {mergeYearsToText(s.yearStart, s.yearEnd)}</div>
+                                        <div>REGIONY: {s.regions.map((r) => r.name).join(', ')}</div>
+                                    </div>
+                                    <div>PEŁNE ŹRÓDŁO: {s.reference.fullName}</div>
                                 </div>
                             )}
                         </div>

@@ -2,14 +2,12 @@
 import Loader from '@src/components/Loader/Loader'
 import MediaPlayer from '@src/components/MediaPlayer/MediaPlayer'
 import { useSign } from '@src/hooks/SignContext/useSign'
-import { mergeYearText } from '@src/utils/namesHelpers'
+import { mergeYearToText } from '@src/utils/namesHelpers'
 import './SignsDetailsInfo.css'
 import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeDuplicates } from '@src/utils/removeDuplicates'
-import MeaningsContainer from './MeaningsContainer/MeaningsContainer'
-import YearsDiagram from './YearsDiagram/YearsDiagram'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -22,7 +20,7 @@ function SignDetailsInfo(): React.JSX.Element {
   const years: IYearStartEnd[] = removeDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}})))
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
       <div style={{display: 'flex'}}>
         <div> 
           <div style={{borderBottom: 'var(--line-border)'}}>
@@ -40,12 +38,10 @@ function SignDetailsInfo(): React.JSX.Element {
           <div className="details additionalInfo">
             <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
             <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
-            <div>LATA: {years.map((y) => mergeYearText(y)).join(', ')}</div>
+            <div>LATA: {years.map((y) => mergeYearToText(y)).join(', ')}</div>
           </div>
         </div>
       </div>
-      <YearsDiagram/>
-      <MeaningsContainer/>
     </div>
   )
 }

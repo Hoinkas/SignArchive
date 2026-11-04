@@ -2,7 +2,7 @@ import { useSignList } from "@src/hooks/SignListContext/useSignList"
 import './Statistics.css'
 import { calculateStatistics } from "@src/utils/calculateStatistics"
 import { useSearch } from "@src/hooks/SearchContext/useSearch"
-import { mergeYearText } from "@src/utils/namesHelpers"
+import { mergeYearToText } from "@src/utils/namesHelpers"
 
 function Statistics(): React.JSX.Element {
     const { allSigns, filteredSigns } = useSignList()
@@ -15,7 +15,7 @@ function Statistics(): React.JSX.Element {
         <div className="statisticsContainer">
             <div className="statisticsList two">
                 <div>MIEJSCE { region ? '[' + region + ']' : "[Polska i reszta]"}</div>
-                <div>LATA [{mergeYearText(filteredStats.yearStartEnd)}]/[{mergeYearText(totalStats.yearStartEnd)}]</div>
+                <div>LATA [{mergeYearToText(filteredStats.yearStartEnd)}]/[{mergeYearToText(totalStats.yearStartEnd)}]</div>
             </div>
             <div className="statisticsList three">
                 <div>ZNAKI [{filteredStats.signsCount}]/[{totalStats.signsCount}]</div>

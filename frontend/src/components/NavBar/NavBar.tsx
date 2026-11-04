@@ -12,7 +12,6 @@ function NavBar(): React.JSX.Element {
 
   const pages = [
     ['signs', 'Znaki'],
-    ['words', 'Słowa'],
     ['info', 'Informacje']
   ]
 

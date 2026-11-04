@@ -9,6 +9,7 @@
     position: relative;
     flex: 1;
     height: 100%;
+    margin: 0 24px;
 }
 
 .line {

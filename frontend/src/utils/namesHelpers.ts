@@ -5,10 +5,10 @@ export function mergeYears(yearStart: number, yearEnd: number): IYearStartEnd {
   return years
 }
 export function mergeYearsToText(yearStart: number, yearEnd: number): string {
-  return mergeYearText(mergeYears(yearStart, yearEnd))
+  return mergeYearToText(mergeYears(yearStart, yearEnd))
 }
 
-export function mergeYearText(years: IYearStartEnd | null): string {
+export function mergeYearToText(years: IYearStartEnd | null): string {
   if (!years) return '-'
   const { yearStart, yearEnd } = years
 
@@ -18,6 +18,11 @@ export function mergeYearText(years: IYearStartEnd | null): string {
   if (yearStart && yearStart === yearEnd) return yearStart.toString()
   if (yearStart && yearEnd) return yearStart + '-' + yearEnd
   return yearStart?.toString() || yearEnd?.toString() || '-'
+}
+
+export function getMinMaxYearFromNumber(years: number[]): IYearStartEnd {
+  years = years.filter((y) => y)
+  return {yearStart: Math.min(...years), yearEnd: Math.max(...years)}
 }
 
 export function titleCase(str: string): string {

@@ -3,6 +3,8 @@ import './SignDetailsPanel.css'
 import SignDetailsInfo from './SignsDetailsInfo/SignsDetailsInfo'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import { memo } from 'react'
+import YearsDiagram from './YearsDiagram/YearsDiagram'
+import MeaningsContainer from './MeaningsContainer/MeaningsContainer'
 
 function SignDetailsPanel(): React.JSX.Element {
   const { sign, signLoading, openCloseSidePanel } = useSign()
@@ -20,11 +22,8 @@ function SignDetailsPanel(): React.JSX.Element {
       </div>
       <div className="signDetails">
         <SignDetailsInfo/>
-        {/* <>
-          {sign.meanings.map((meaning, key) =>
-            <MeaningItem key={key} meaning={meaning}/>
-          )}
-        </> */}
+        <YearsDiagram/>
+        <MeaningsContainer/>
       </div>
     </div>
   )
