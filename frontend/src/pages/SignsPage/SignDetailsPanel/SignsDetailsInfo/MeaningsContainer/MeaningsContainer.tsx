@@ -3,6 +3,7 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 import './MeaningsContainer.css'
 import { useState } from 'react';
 import type { IMeaningDetailed } from '@src/models/meaning.model';
+import { mergeYearsToText } from '@src/utils/namesHelpers';
 
 function MeaningsContainer(): React.JSX.Element {
     const { sign } = useSign()
@@ -35,17 +36,18 @@ function MeaningsContainer(): React.JSX.Element {
             <div className='wordDetails'>
                 {meaningByWord[activeWord].map((m: IMeaningDetailed) => 
                     <div>
-                        {m.explanation}
-                        {m.sources.map((s) => 
-                            <div>
-                                {s.id}
-                                {s.notes}
-                                {s.reference.fullName}
-                                {s.regions.map((r) => r.name).join(', ')}
-                                {s.yearStart}
-                                {s.yearEnd}
-                            </div>
-                        )}
+                        <div>WYJAŚNIENIE: {m.explanation}</div>
+                        <div>
+                            {m.sources.map((s) => 
+                                <div>
+                                    <div>NOTATKI: {s.notes}</div>
+                                    <div>ŹRÓDŁO: {s.reference.name}</div>
+                                    <div>ŹRÓDŁO: {s.reference.fullName}</div>
+                                    <div>REGIONY: {s.regions.map((r) => r.name).join(', ')}</div>
+                                    <div>LATA: {mergeYearsToText(s.yearStart, s.yearEnd)}</div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

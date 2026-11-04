@@ -1,5 +1,13 @@
 import type { IYearStartEnd } from "@src/models/yearStartEnd.model"
 
+export function mergeYears(yearStart: number, yearEnd: number): IYearStartEnd {
+  const years: IYearStartEnd = {yearStart, yearEnd}
+  return years
+}
+export function mergeYearsToText(yearStart: number, yearEnd: number): string {
+  return mergeYearText(mergeYears(yearStart, yearEnd))
+}
+
 export function mergeYearText(years: IYearStartEnd | null): string {
   if (!years) return '-'
   const { yearStart, yearEnd } = years

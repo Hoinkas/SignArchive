@@ -9,6 +9,7 @@ import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeDuplicates } from '@src/utils/removeDuplicates'
 import MeaningsContainer from './MeaningsContainer/MeaningsContainer'
+import YearsDiagram from './YearsDiagram/YearsDiagram'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -43,6 +44,7 @@ function SignDetailsInfo(): React.JSX.Element {
           </div>
         </div>
       </div>
+      <YearsDiagram/>
       <MeaningsContainer/>
     </div>
   )
