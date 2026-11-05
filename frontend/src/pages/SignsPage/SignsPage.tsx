@@ -17,8 +17,10 @@ function SignsPage(): React.JSX.Element {
     <div className="signPage page">
       <div className='signsList'>
         <div className='mapSearchContener'>
-          <div className='mapContener'><PolandMap regions={regions} interactive/></div>
-          <div style={{width: '80%', height: '100%', margin: 'auto 0'}}>
+          <div className='mapContener'>
+            <PolandMap regions={regions} interactive/>
+          </div>
+          <div className='searchAndStatisticsContainer'>
             <SearchBar/>
             <Statistics/>
           </div>
