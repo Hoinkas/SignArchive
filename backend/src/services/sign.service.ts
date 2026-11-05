@@ -32,11 +32,15 @@ function buildSignSimple(sign: ISignAttached): ISignSimple | undefined {
 
 // MAP DETAILED
 export function getSignDetails(signNumber: string): ISignDetailed {
-  const sign = findSignByNumber(signNumber)
-  const meanings = findMeaningsDetailedBySignId(sign.id)
-  const media = findMediaBySignId(sign.id)
+  const result = getDb().transaction(() => {
+    const sign = findSignByNumber(signNumber)
+    const meanings = findMeaningsDetailedBySignId(sign.id)
+    const media = findMediaBySignId(sign.id)
+    
+    return {...sign, meanings, media}
+  })
 
-  return {...sign, meanings, media}
+  return result()
 }
 
 // LIST MAPPED SIMPLE

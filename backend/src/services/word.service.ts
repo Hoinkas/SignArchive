@@ -1,7 +1,7 @@
 import { getDb } from '../db/client'
 import { IWordAttached } from '../models/word.model'
 
-// RETURN NAMES
+// RETURN WORDS - BY SIGN ID
 export function listWordsNamesBySignId(signId: string): string[] {
   const rows = getDb()
     .prepare(
@@ -15,6 +15,7 @@ export function listWordsNamesBySignId(signId: string): string[] {
   return rows.flatMap((r) => r.name)
 }
 
+// RETURN WORDS - BY MEANING ID
 export function listWordsNamesByMeaningId(meaningId: string): IWordAttached[] {
   const rows = getDb()
     .prepare(
@@ -28,7 +29,7 @@ export function listWordsNamesByMeaningId(meaningId: string): IWordAttached[] {
   return rows || []
 }
 
-// FIND
+// FIND ALL WORDS
 export function listAllWords(): IWordAttached[] {
   const row = getDb().prepare('SELECT * FROM word').all() as IWordAttached[]
   const sorted = row.sort((a, b) => (a.name > b.name ? 1 : -1))

@@ -20,7 +20,7 @@
   fill: var(--color-purple-dark);
 }
 .region text {
-  font-size: 14px;
+  font-weight: bold;
   pointer-events: none;
   user-select: none;
   fill: #331D8E;
