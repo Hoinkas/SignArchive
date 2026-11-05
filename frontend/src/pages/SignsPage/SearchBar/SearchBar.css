@@ -16,20 +16,6 @@
   width: 100%;
 }
 
-.searchBar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text);
-  flex: 1;
-  padding-right: 0;
-  height: 100%;
-}
-
-.searchBar input::placeholder {
-  color: var(--grey-500);
-}
-
 .searchIcon {
   display: flex;
   justify-content: center;

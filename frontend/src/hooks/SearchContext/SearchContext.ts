@@ -11,7 +11,6 @@ export interface SearchContextValue {
   yearStart: string
   yearEnd: string
   handleYearChange: (yearType: 'yearStart' | 'yearEnd', year: string) => void
-  handleClear: () => void
 }
 
 export const SearchContext = createContext<SearchContextValue>({
@@ -23,6 +22,5 @@ export const SearchContext = createContext<SearchContextValue>({
   handleNameChange: () => {},
   yearStart: '',
   yearEnd: '',
-  handleYearChange: () => {},
-  handleClear: () => {}
+  handleYearChange: () => {}
 })

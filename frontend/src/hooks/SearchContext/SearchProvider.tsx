@@ -74,14 +74,6 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     navigateWithParams({ [yearType]: year })
   }
 
-  const handleClear = (): void => {
-    handleNameChange('')
-    handleOptionChange('region', '')
-    handleYearChange('yearStart', '')
-    handleYearChange('yearEnd', '')
-    setSearchParams(new URLSearchParams())
-  }
-
   return (
     <SearchContext.Provider value={{
       searchWord,
@@ -92,8 +84,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
       handleNameChange,
       yearStart,
       yearEnd,
-      handleYearChange,
-      handleClear
+      handleYearChange
     }}>
       {children}
     </SearchContext.Provider>

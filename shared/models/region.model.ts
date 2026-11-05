@@ -8,7 +8,7 @@ export interface IRegion {
 export type IRegionAttached = IRegion & IBaseModelAttached
 
 // TO FRONTEND
-export interface IRegionToFE extends Omit<IRegion, 'regionParentId'>, IBaseModelAttached {
+export interface IRegionToFE extends Omit<IRegionAttached, 'regionParentId'> {
   parentName: string
 }
 

@@ -7,7 +7,7 @@ import './SignsDetailsInfo.css'
 import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
-import { removeDuplicates } from '@src/utils/removeDuplicates'
+import { removeRegionDuplicates } from '@src/utils/removeDuplicates'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -15,8 +15,8 @@ function SignDetailsInfo(): React.JSX.Element {
 
   const {media, meanings} = sign
   const words: string[] = meanings.flatMap((m) => m.words.flatMap((w) => w.name))
-  const regions: IRegionToFE[] = removeDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => s.regions)))
-  const years: IYearStartEnd[] = removeDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}})))
+  const regions: IRegionToFE[] = removeRegionDuplicates(meanings.flatMap((m) => m.sources.flatMap((s) => s.regions)))
+  const years: IYearStartEnd[] = meanings.flatMap((m) => m.sources.flatMap((s) => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}}))
 
   return (
     <div className='signsDetailsContainer'>

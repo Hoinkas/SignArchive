@@ -12,7 +12,7 @@ function NavBar(): React.JSX.Element {
 
   const pages = [
     ['signs', 'Znaki'],
-    ['info', 'Informacje']
+    // ['info', 'Informacje']
   ]
 
   return (
