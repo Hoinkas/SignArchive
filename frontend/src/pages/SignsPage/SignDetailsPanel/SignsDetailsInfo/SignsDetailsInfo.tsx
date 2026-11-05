@@ -21,7 +21,7 @@ function SignDetailsInfo(): React.JSX.Element {
   return (
     <div className='signsDetailsContainer'>
       <div>
-        <div style={{borderBottom: 'var(--line-border)'}}>
+        <div style={{borderBottom: 'var(--line-border)', display: 'flex', justifyContent: 'center'}}>
           <MediaPlayer media={media} isDetails/>
         </div>
         <div className="details additionalInfo">

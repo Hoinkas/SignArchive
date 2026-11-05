@@ -23,7 +23,7 @@ function MeaningsContainer(): React.JSX.Element {
 	const [activeWord, setActiveWord] = useState<string>(words[0])
 
 	return (
-		<div style={{marginBottom: '20px'}}>
+		<div>
 			<WordsTabs words={words} activeWord={activeWord} setActiveWord={setActiveWord}/>
 			<div className='wordDetails'>
 				{meaningByWord[activeWord].map((m: IMeaningDetailed, i: Key) => <MeaningItem key={i} meaning={m}/>)}

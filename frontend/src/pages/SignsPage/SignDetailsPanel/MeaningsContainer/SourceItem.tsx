@@ -13,7 +13,7 @@ function SourceItem({index, source}: IProps): React.JSX.Element {
   const paddedNumber = (index + 1 + "").padStart(3, "0");
 
   return (
-    <div className='meaningDetails'>
+    <div className='sourceItem'>
       <div className='detailsManyInRow'>
         <div>NUMER: #{paddedNumber}</div>
         <div>LATA: {mergeYearsToText(yearStart, yearEnd)}</div>
