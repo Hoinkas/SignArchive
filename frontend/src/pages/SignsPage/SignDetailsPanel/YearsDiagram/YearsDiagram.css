@@ -36,7 +36,9 @@
 
 .yearText {
     position: absolute;
-    top: 100%;
-    left: -12px;
+    top: calc(100% + 4px);
+    display: flex;
+    width: 100%;
+    justify-content: center;
     white-space: nowrap;
 }

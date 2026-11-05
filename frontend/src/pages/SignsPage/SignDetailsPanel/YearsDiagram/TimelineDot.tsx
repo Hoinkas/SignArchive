@@ -10,8 +10,9 @@ interface IProps {
 
 function TimelineDot({ dotYears, minMaxYear }: IProps): React.JSX.Element {
     const yearDifference = dotYears.yearEnd ? dotYears.yearEnd - dotYears.yearStart : 0
-    const widthPct = (yearDifference / minMaxYear.yearEnd) * 100
-    const leftPct = ((dotYears.yearStart - minMaxYear.yearStart) / (minMaxYear.yearEnd - minMaxYear.yearStart)) * 100
+    const totalYearsPassed = minMaxYear.yearEnd - minMaxYear.yearStart;
+    const widthPct = (yearDifference / totalYearsPassed) * 100
+    const leftPct = ((dotYears.yearStart - minMaxYear.yearStart) / totalYearsPassed) * 100
 
     return (
         <div className='yearLine' style={{ left: `calc(${leftPct}% - 12px)`, width: `calc(${widthPct}% + 12px)` }}>
