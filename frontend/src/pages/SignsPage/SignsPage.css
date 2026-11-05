@@ -23,7 +23,7 @@
   justify-content: center;
 
   @media (max-width: 768px) {
-    margin: 0 20%;
+    margin: 0 5%;
   }
 }
 
@@ -33,4 +33,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    margin: 0;
+  }
 }

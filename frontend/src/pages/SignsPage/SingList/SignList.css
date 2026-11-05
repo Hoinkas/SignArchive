@@ -11,3 +11,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+.loadMoreButton {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
