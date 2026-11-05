@@ -15,6 +15,12 @@
   border-left: var(--line-border);
 }
 
+.mediaContainer {
+  border-bottom: var(--line-border);
+  display: flex;
+  justify-content: center;
+}
+
 .mapContainer {
   display: flex;
   justify-content: center;

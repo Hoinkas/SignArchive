@@ -46,6 +46,30 @@ const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps
     small ? " small" : ""
   ].join("")
 
+  // const shortenedVoivodeshipNames = [
+  //   ['Dolnośląskie', 'Dolnośl.'],
+  //   ['Kujawsko-Pomorskie', 'Kuj.-Pom.'],
+  //   ['Lubelskie', 'Lubel.'],
+  //   ['Lubuskie', 'Lubus.'],
+  //   ['Łódzkie', 'Łódz.'],
+  //   ['Małopolskie', 'Małopol.'],
+  //   ['Mazowieckie', 'Mazow.'],
+  //   ['Opolskie', 'Opol.'],
+  //   ['Podkarpackie', 'Podkarp.'],
+  //   ['Podlaskie', 'Podlas.'],
+  //   ['Pomorskie', 'Pom.'],
+  //   ['Śląsk', 'Śl.'],
+  //   ['Świętokrzyskie', 'Świętokrz.'],
+  //   ['Warmińsko-Mazurskie', 'War.-Maz.'],
+  //   ['Wielkopolskie', 'Wlkp.'],
+  //   ['Zachodniopomorskie', 'Zach.Pom.'],    
+  // ]
+
+  // function returnShortenedName(name: string) {
+  //   const nameIndex = shortenedVoivodeshipNames.findIndex((n) => n[0] === name)
+  //   return shortenedVoivodeshipNames[nameIndex][1]
+  // }
+
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
@@ -57,7 +81,7 @@ const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps
         const regionClassName = [
           "region",
           region === r.name ? " active" : "",
-          value === undefined ? " dimmed" : "",
+          value ? "" : " dimmed",
           interactive ? " interactive" : ""
         ].join("")
 
@@ -76,15 +100,14 @@ const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps
               }
             }}
           >
-            <path d={r.d} fill={"#232327"} />
+            <path d={r.d}/>
             {value !== undefined && (
               <text
                 x={r.centroid[0]}
                 y={r.centroid[1]}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={'#93909E'}
-              >
+              > 
                 {value}
               </text>
             )}

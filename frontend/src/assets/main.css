@@ -30,7 +30,7 @@ body {
   }
 }
 
-input {
+/* input {
   background-color: transparent;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
@@ -59,25 +59,7 @@ input[type=search]::-webkit-search-cancel-button {
   mask-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgd2lkdGg9IjEyMy4wNXB4IiBoZWlnaHQ9IjEyMy4wNXB4IiB2aWV3Qm94PSIwIDAgMTIzLjA1IDEyMy4wNSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTIzLjA1IDEyMy4wNTsiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPHBhdGggZD0iTTEyMS4zMjUsMTAuOTI1bC04LjUtOC4zOTljLTIuMy0yLjMtNi4xLTIuMy04LjUsMGwtNDIuNCw0Mi4zOTlMMTguNzI2LDEuNzI2Yy0yLjMwMS0yLjMwMS02LjEwMS0yLjMwMS04LjUsMGwtOC41LDguNQ0KCQljLTIuMzAxLDIuMy0yLjMwMSw2LjEsMCw4LjVsNDMuMSw0My4xbC00Mi4zLDQyLjVjLTIuMywyLjMtMi4zLDYuMSwwLDguNWw4LjUsOC41YzIuMywyLjMsNi4xLDIuMyw4LjUsMGw0Mi4zOTktNDIuNGw0Mi40LDQyLjQNCgkJYzIuMywyLjMsNi4xLDIuMyw4LjUsMGw4LjUtOC41YzIuMy0yLjMsMi4zLTYuMSwwLTguNWwtNDIuNS00Mi40bDQyLjQtNDIuMzk5QzEyMy42MjUsMTcuMTI1LDEyMy42MjUsMTMuMzI1LDEyMS4zMjUsMTAuOTI1eiIvPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=);
   mask-size: 10px 10px;
   cursor: pointer;
-}
-
-.formInput {
-  border: var(--text-area-border) !important;
-  border-radius: var(--radius-sm);
-}
-
-textarea {
-  all: unset;
-  padding: var(--space-2) var(--space-4);
-  background: transparent;
-  border: var(--text-area-border);
-  border-radius: var(--radius-sm);
-  overflow: auto;
-  max-height: 240px;
-  caret-color: var(--color-line-purple-light);
-  color: var(--color-text);
-  width: 100%;
-}
+} */
 
 button {
   color: var(--color-text);
@@ -88,12 +70,6 @@ button {
   padding: var(--space-2) var(--space-4);
   /* height: fit-content; */
   height: var(--space-10);
-}
-
-button.isAtEnd {
-  margin: auto;
-  margin-bottom: var(--space-6);
-  background-color: transparent;
 }
 
 button:hover {
@@ -125,40 +101,18 @@ button[type="submit"]:hover {
   opacity: 0.85;
 }
 
-label {
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-2);
-}
-
-.tag {
-  padding: 0px var(--space-3);
-  border: var(--button-border);
-  border-radius: var(--radius-tag);
-  height: fit-content;
-  font-size: var(--font-size-sm);
-  background: var(--color-bg);
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.tag button {
-  border: none !important;
-  padding: 0px !important;
-}
-
 .additionalInfo {
   color: var(--color-text-info);
-  font-size: var(--font-size-sm);
+  /* font-size: var(--font-size-sm); */
+  font-size: var(--font-size-base);
   line-height: var(--line-height-sm);
 }
 
-.additionalInfoItalic {
+/* .additionalInfoItalic {
   font-style: italic;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   list-style: var(--line-height-sm);
-}
+} */
 
 .clickableSymbolX {
   height: fit-content;
@@ -172,16 +126,6 @@ label {
   cursor: pointer;
 }
 
-.clickableCircle {
-  border: var(--symbol-button-border);
-  border-radius: var(--radius-tag);
-}
-
-.clickableCircle:hover {
-  background-color: var(--color-bg-active);
-  border: var(--symbol-button-border-active);
-}
-
 a {
   text-decoration: underline;
   cursor: pointer;
@@ -192,22 +136,11 @@ ol > li::marker {
   color: var(--color-text-info);
 }
 
-.inputError {
-  border-color: red !important;
-}
-
-.inputErrorText {
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
-  display: block;
-}
-
 .hidden {
   display: none !important;
 }
 
-.defaultInline {
+/* .defaultInline {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
@@ -218,7 +151,7 @@ ol > li::marker {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-}
+} */
 
 /* :focus-visible {
   outline: 2px solid var(--color-line-purple);

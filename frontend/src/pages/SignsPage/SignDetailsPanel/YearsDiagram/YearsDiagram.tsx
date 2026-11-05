@@ -21,7 +21,7 @@ function YearsDiagram(): React.JSX.Element {
     const words = Object.keys(yearsByWord)
 
     return (
-        <div style={{ margin: '8px' }}>
+        <div style={{ margin: 'var(--space-4)' }}>
             DIAGRAM CZASOWY:
             <div style={{ margin: '8px 0' }}>
                 {words.map((w, i) => <WordTimeline key={i} word={w} years={yearsByWord[w]}/>)}

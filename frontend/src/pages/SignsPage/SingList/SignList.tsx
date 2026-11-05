@@ -20,13 +20,13 @@ function SignList(): React.JSX.Element {
   return (
     <div>
       <div className="signList">
-        {signsToDisplay.map((sign, key) => (
-          <SignItem key={key} signSimple={sign} />
-        ))}
+        {signsToDisplay.map((sign, key) => <SignItem key={key} signSimple={sign} />)}
       </div>
+
+      {/* SHOW "LOAD MORE" BUTTON ONLY IF THERE ARE SIGNS LEFT TO BE SHOWN */}
       {filteredSigns.length > signsToDisplay.length + signToDisplayPerLoad &&
         <div className='loadMoreButton'>
-          <button onClick={() => setLoadIteration(loadIteration + 1)}>Załaduj więcej</button>
+          <button className='primary' onClick={() => setLoadIteration(loadIteration + 1)}>Załaduj więcej</button>
         </div>}
     </div>
   )

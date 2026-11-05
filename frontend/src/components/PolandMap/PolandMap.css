@@ -3,29 +3,48 @@
   max-width: 480px;
   height: auto;
 }
+
 .polandMap.small {
-  max-width: 280px;
+  max-width: 400px;
 }
+
+/* VOIVODESHIPS */
 .region { 
   outline: none;
   transition: opacity 0.2s;
 }
-.region.interactive {
-  cursor: pointer;
-}
+
 .region path { 
-  stroke: #414047;
   stroke-width: 1;
   transition: stroke 0.2s;
+  fill: var(--color-purple-dark);
 }
 .region text {
   font-size: 14px;
   pointer-events: none;
   user-select: none;
+  fill: #331D8E;
 }
 
-.region.dimmed { 
+.region.dimmed path { 
+  stroke: var(--color-purple-dark);
+  fill: #331D8E;
   opacity: 0.4;
+}
+
+/* INTERACTIVE MAP */
+.region.interactive {
+  cursor: pointer;
+}
+
+.region.interactive text {
+  fill: #93909E;
+}
+
+.region.interactive path {
+  cursor: pointer;
+  stroke: #414047;
+  fill: #232327;
 }
 
 .region:hover.interactive path,

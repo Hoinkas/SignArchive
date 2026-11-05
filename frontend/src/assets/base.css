@@ -108,7 +108,7 @@
   --color-text-light: var(--grey-500);
   --color-text-dark: var(--grey-100);
 
-  --color-text-info: var(--grey-300);
+  --color-text-info: var(--grey-200);
 
   --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
   --color-scroll-light: color-mix(in srgb, var(--grey-400) 60%, transparent);
