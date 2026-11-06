@@ -1,5 +1,5 @@
+import { IMeaningAttached, IMeaningDetailed } from "@signarchive/shared/models/meaning.model";
 import { getDb } from "../db/client";
-import { IMeaningAttached, IMeaningDetailed } from "../models/meaning.model";
 import { getDetailedSourceByMeaningId } from "./source.service";
 import { listWordsNamesByMeaningId } from "./word.service";
 

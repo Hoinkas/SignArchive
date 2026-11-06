@@ -1,6 +1,5 @@
-import { ISourceToFE } from '@signarchive/shared/models/source.model'
+import { ISourceAttached, ISourceToFE } from '@signarchive/shared/models/source.model'
 import { getDb } from '../db/client'
-import { ISourceAttached } from '../models/source.model'
 import { IYearStartEnd } from '../models/yearStartEnd.model'
 import { findReferenceById } from './reference.service'
 import { listRegionsNamesBySourceId } from './region.service'

@@ -1,6 +1,5 @@
-import { IRegionToFE } from '@signarchive/shared/models/region.model';
+import { IRegionAttached, IRegionToFE } from '@signarchive/shared/models/region.model';
 import { getDb } from '../db/client'
-import { IRegionAttached } from '../models/region.model'
 
 // RETURN REGIONS' NAMES BY SIGN ID
 export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {

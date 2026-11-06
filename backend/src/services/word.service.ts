@@ -1,5 +1,5 @@
+import { IWordAttached } from '@signarchive/shared/models/word.model'
 import { getDb } from '../db/client'
-import { IWordAttached } from '../models/word.model'
 
 // RETURN WORDS - BY SIGN ID
 export function listWordsNamesBySignId(signId: string): IWordAttached[] {

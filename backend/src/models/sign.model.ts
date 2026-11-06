@@ -1,9 +1,9 @@
+import { IRegionToFE } from '@signarchive/shared/models/region.model'
 import type { IBaseModelAttached } from './base.interface'
-import type { IMeaningDetailed } from './meaning.model'
 import type { IMediaAttached } from './media.model'
-import type { IRegionToFE } from './region.model'
-import { IWordAttached } from './word.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
+import { IWordAttached } from '@signarchive/shared/models/word.model'
+import { IMeaningDetailed } from '@signarchive/shared/models/meaning.model'
 
 export interface ISign {
   uniqueNumber: string
