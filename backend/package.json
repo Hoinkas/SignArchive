@@ -8,6 +8,7 @@
     "test:watch": "vitest",
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --noEmit",
+    "prebuild": "node ../scripts/sync-models.js",
     "build": "pnpm test && tsc",
     "start": "node dist/backend/src/index.js"
   },
