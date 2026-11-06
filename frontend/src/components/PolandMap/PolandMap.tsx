@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import geoData from './poland.voivodeships.json';
+import type { FeatureCollection, Geometry } from "geojson";
+import rawGeoData from './poland.voivodeships.json';
 import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
@@ -17,6 +18,7 @@ interface PolandMapProps {
 
 const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps) => {
   const {region, handleOptionChange} = useSearch()
+  const geoData = rawGeoData as FeatureCollection<Geometry, { terc: string; name: string }>;
 
   const mapRegions = useMemo(() => {
     const projection = d3
@@ -89,11 +91,11 @@ const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps
           <g
             key={r.name}
             className={regionClassName}
-            role="button"
-            tabIndex={0}
+            role={interactive ? "button" : undefined}
+            tabIndex={interactive ? 0 : undefined}
             onClick={() => toggle(r.name)}
             onKeyDown={(e) => {
-              if (interactive) return
+              if (!interactive) return;
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 toggle(r.name);

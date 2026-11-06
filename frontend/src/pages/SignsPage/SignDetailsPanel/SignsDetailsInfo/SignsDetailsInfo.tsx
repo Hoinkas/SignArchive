@@ -12,6 +12,7 @@ import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
   if (signLoading) return <Loader/>
+  if (!sign) return <></>
 
   const {media, meanings} = sign
   const words: string[] = renameWordsDuplicates(meanings.flatMap(m => m.words)).map(w => w.name)

@@ -4,7 +4,7 @@ export function mergeYears(yearStart: number | undefined, yearEnd: number | unde
   const years: IYearStartEnd = {yearStart, yearEnd}
   return years
 }
-export function mergeYearsToText(yearStart: number, yearEnd: number): string {
+export function mergeYearsToText(yearStart: number | undefined, yearEnd: number | undefined): string {
   return mergeYearToText(mergeYears(yearStart, yearEnd))
 }
 

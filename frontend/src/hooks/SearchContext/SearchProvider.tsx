@@ -15,7 +15,7 @@ interface Props {
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
   const [regionList, setRegionList] = useState<string[]>([])
   const navigate = useNavigate()

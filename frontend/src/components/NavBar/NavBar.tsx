@@ -7,7 +7,7 @@ import { isThemeDark } from '@src/utils/isThemeDark'
 
 function NavBar(): React.JSX.Element {
   const navigate = useNavigate()
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(isThemeDark())
+  const [isDarkTheme] = useState<boolean>(isThemeDark())
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const pages = [
