@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import React from 'react'
 import { SignContext } from './SignContext'
 import type { ISignDetailed } from '@src/models/sign.model'
 import { useSearchParams } from 'react-router'
 import updateParam from '@src/utils/updateParam'
 import { signApi } from '@src/services/sign.api'
+import { renameWordsDuplicates } from '@src/utils/removeDuplicates'
 
 interface Props {
   children?: React.ReactNode
@@ -25,6 +26,11 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       .catch(console.error)
       .finally(() => setSignLoading(false))
   }, [signNumber])
+
+  const words = useMemo(() => {
+    if (!sign || !sign.meanings) return []
+    return renameWordsDuplicates(sign.meanings.flatMap(m => m.words))
+  }, [sign])
 
   const openCloseSidePanel = useCallback((uniqueNumber: string): void => {
     if (signNumber == uniqueNumber) {
@@ -50,6 +56,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
       sign,
       signLoading,
       openCloseSidePanel,
+      words,
     //   addSignAndMedia,
     //   editSignAndMedia,
     //   deleteSignAndMedia,

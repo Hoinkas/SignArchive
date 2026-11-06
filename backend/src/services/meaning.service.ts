@@ -12,7 +12,7 @@ export function findMeaningsBySignId(signId: string): IMeaningAttached[] {
 export function findMeaningsDetailedBySignId(signId: string): IMeaningDetailed[] {
   const meanings = findMeaningsBySignId(signId)
   const detailedMeanings = meanings.map((m) => mapSimpleMeaningToDetailed(m))
-  return detailedMeanings || []
+  return detailedMeanings
 }
 
 //MAP SIMPLE TO DETAILED

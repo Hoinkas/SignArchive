@@ -1,10 +1,12 @@
 import type { ISignDetailed } from '@src/models/sign.model'
+import type { IWordAttached } from '@src/models/word.model'
 import { createContext } from 'react'
 
 export interface SignContextValue {
   sign: ISignDetailed | null
   signLoading: boolean
   openCloseSidePanel: (uniqueNumber: string) => void
+  words: IWordAttached[]
 //   addSignAndMedia: (data: ISignDetailsToDB, media: IMediaToDB, closeForm: () => void) => void
 //   editSignAndMedia: (signId: string, signChanges: Partial<ISignDetailsToDB>, mediaChanges: Partial<IMediaToDB>, closeForm: () => void) => void
 //   deleteSignAndMedia: (deleteId: string) => void
@@ -20,6 +22,7 @@ export const SignContext = createContext<SignContextValue>({
   sign: null,
   signLoading: false,
   openCloseSidePanel: () => {},
+  words: [],
 //   addSignAndMedia: () => {},
 //   editSignAndMedia: () => {},
 //   deleteSignAndMedia: () => {},

@@ -3,6 +3,7 @@ import type { ISignSimple } from '@src/models/sign.model'
 import MediaPlayer from '../../../../components/MediaPlayer/MediaPlayer'
 import { mergeYearToText } from '@src/utils/namesHelpers'
 import { useSign } from '@src/hooks/SignContext/useSign'
+import { renameWordsDuplicates } from '@src/utils/removeDuplicates'
 
 interface SignItemProps {
   signSimple: ISignSimple
@@ -13,13 +14,14 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
   const {media, words, regions, years, uniqueNumber} = signSimple
 
   const paddedNumber = (uniqueNumber + "").padStart(4, "0");
+  const uniqueWords = renameWordsDuplicates(words).map(w => w.name)
 
   return (
     <div className="signContainer additionalInfo">
       <MediaPlayer media={media} />
       <div className='signContent' onClick={() => openCloseSidePanel(signSimple.uniqueNumber)}>
         <div className='details'>
-          <div>SŁOWA: {words.length > 0 ? words.join(', ') : '-'}</div>
+          <div>SŁOWA: {uniqueWords.length > 0 ? uniqueWords.join(', ') : '-'}</div>
           <div>REGIONY: {regions.length > 0 ?  regions.map((r) => r.name).join(', ') : '-'}</div>
           <div>LATA: {mergeYearToText(years)}</div>
         </div>

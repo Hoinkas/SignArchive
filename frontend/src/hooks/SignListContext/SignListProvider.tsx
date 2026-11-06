@@ -22,7 +22,7 @@ export default function SignListProvider({ children }: Props): React.JSX.Element
     const isWordFilterActive = searchWord !== ''
 
     return allSigns.filter((s) => {
-      const hasWord = !isWordFilterActive || s.words.some((w) => filteredWords.includes(w))
+      const hasWord = !isWordFilterActive || s.words.some((w) => filteredWords.includes(w.name))
       const hasRegion = !region || s.regions.some((r) => [r.name, r.parentName].includes(region))
       const isAboveYearStart = yearStart === '' || (s.years.yearStart && s.years.yearStart >= parseInt(yearStart))
       const isBelowYearEnd = yearEnd === '' || (s.years.yearEnd && s.years.yearEnd <= parseInt(yearEnd))

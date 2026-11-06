@@ -36,7 +36,7 @@ export function getSignDetails(signNumber: string): ISignDetailed {
     const sign = findSignByNumber(signNumber)
     const meanings = findMeaningsDetailedBySignId(sign.id)
     const media = findMediaBySignId(sign.id)
-    
+        
     return {...sign, meanings, media}
   })
 

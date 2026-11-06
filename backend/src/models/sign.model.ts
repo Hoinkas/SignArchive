@@ -2,6 +2,7 @@ import type { IBaseModelAttached } from './base.interface'
 import type { IMeaningDetailed } from './meaning.model'
 import type { IMediaAttached } from './media.model'
 import type { IRegionToFE } from './region.model'
+import { IWordAttached } from './word.model'
 import type { IYearStartEnd } from './yearStartEnd.model'
 
 export interface ISign {
@@ -15,7 +16,7 @@ export type ISignAttached = ISign & IBaseModelAttached
 export interface ISignSimple extends ISignAttached {
   regions: IRegionToFE[]
   years: IYearStartEnd
-  words: string[]
+  words: IWordAttached[]
   media: IMediaAttached[]
 }
 

@@ -18,7 +18,7 @@ export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
       INNER JOIN meaning m ON m.id = ms.meaningId
       WHERE m.signId = ?`
     )
-    .all(signId) as IRegionToFE[] || [];
+    .all(signId) as IRegionToFE[];
 
     return rows;
 }
@@ -36,7 +36,7 @@ export function listRegionsNamesBySourceId(sourceId: string): IRegionToFE[] {
       INNER JOIN regionSource rs ON rs.regionId = r.id
       WHERE rs.sourceId = ?`
     )
-    .all(sourceId) as IRegionToFE[] || [];
+    .all(sourceId) as IRegionToFE[];
 
     return rows;
 }
@@ -44,5 +44,5 @@ export function listRegionsNamesBySourceId(sourceId: string): IRegionToFE[] {
 // FIND
 export function listAllRegions(): IRegionAttached[] {
   const row = getDb().prepare('SELECT * FROM region').all()
-  return row as IRegionAttached[] || []
+  return row as IRegionAttached[]
 }

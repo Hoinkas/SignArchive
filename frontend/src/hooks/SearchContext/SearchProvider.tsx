@@ -44,7 +44,6 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     if (searchWord === '') return []
 
     const results = fuse.search(searchWord)
-
     return results.map((r) => r.item.name)
   }, [fuse, searchWord])
 

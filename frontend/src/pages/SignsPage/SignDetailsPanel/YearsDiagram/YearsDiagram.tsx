@@ -3,28 +3,46 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYears } from '@src/utils/namesHelpers';
 import './YearsDiagram.css'
 import WordTimeline from './WordTimeline';
+import type { IYearStartEnd } from '@src/models/yearStartEnd.model';
+import { useMemo } from 'react';
+
+interface TimelineRow {
+    word: string
+    years: IYearStartEnd[]
+}
 
 function YearsDiagram(): React.JSX.Element {
     const { sign } = useSign()
 
-    const yearsByWord = new Object();
+    const rows = useMemo(() => {
+        if (!sign) return []
 
-    sign.meanings.forEach((m) => {
-        const years = m.sources.flatMap((s) => mergeYears(s.yearStart, s.yearEnd))
+        const yearsByWord = new Map<string, TimelineRow[]>();
 
-        m.words.forEach((w) => {
-            if (w.name in Object.keys(yearsByWord)) yearsByWord[w.name] = [...yearsByWord[w.name], ...years]
-            else yearsByWord[w.name] = years
+        sign.meanings.forEach((m) => {
+            const years = m.sources.flatMap((s) => mergeYears(s.yearStart, s.yearEnd))
+
+            m.words.forEach(w => {
+                const entries = yearsByWord.get(w.name) ?? []
+                entries.push({word: w.name, years })
+                yearsByWord.set(w.name, entries)
+            })
         })
-    })
 
-    const words = Object.keys(yearsByWord)
+        return [...yearsByWord.values()].flatMap((entries) => 
+            entries.length === 1 ?
+            entries :
+            entries.map((e, i) => ({ ...e, word: `${e.word}_${i + 1}` }))
+        )
+    }, [sign])
+
+    if (!sign) return <></>
 
     return (
         <div style={{ margin: 'var(--space-4)' }}>
             DIAGRAM CZASOWY:
-            <div style={{ margin: '8px 0' }}>
-                {words.map((w, i) => <WordTimeline key={i} word={w} years={yearsByWord[w]}/>)}
+            <div style={{ margin: 'var(--space-2) 0' }}>
+                {rows.map((w, i) => <WordTimeline key={i} word={w.word} years={w.years}/>)}
             </div>
         </div>
     )
