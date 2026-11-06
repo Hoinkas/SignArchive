@@ -14,19 +14,19 @@ body {
 }
 
 .pageContainer {
-  height: calc(100dvh - var(--navBar-height) - (var(--space-6) * 2) - var(--space-10));
+  height: calc(100dvh - var(--navBar-height));
   width: 100vw;
   overflow: auto;
 }
 
 .page {
   width: 80vw;
-  margin: 0 auto 64px auto;
+  margin: 32px auto 64px auto;
   display: flex;
   flex-direction: column;
 
   @media (max-width: 768px) {
-    width: 92vw;
+    width: 90vw;
   }
 }
 
@@ -61,39 +61,16 @@ input[type=search]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
-.formInput {
-  border: var(--text-area-border) !important;
-  border-radius: var(--radius-sm);
-}
-
-textarea {
-  all: unset;
-  padding: var(--space-2) var(--space-4);
-  background: transparent;
-  border: var(--text-area-border);
-  border-radius: var(--radius-sm);
-  overflow: auto;
-  max-height: 240px;
-  caret-color: var(--color-line-purple-light);
-  color: var(--color-text);
-  width: 100%;
-}
-
 button {
+  font-size: var(--font-size-sm);
   color: var(--color-text);
   border: var(--button-border);
-  border-radius: var(--radius-md);
   background: var(--color-bg);
 
   cursor: pointer;
   padding: var(--space-2) var(--space-4);
   height: fit-content;
-}
-
-button.isAtEnd {
-  margin: auto;
-  margin-bottom: var(--space-6);
-  background-color: transparent;
+  height: var(--space-10);
 }
 
 button:hover {
@@ -102,7 +79,7 @@ button:hover {
 }
 
 button:active {
-  transform: scale(0.97);
+  /* transform: scale(0.97); */
   color: var(--color-text-active);
   background: var(--color-bg-active);
 }
@@ -125,40 +102,18 @@ button[type="submit"]:hover {
   opacity: 0.85;
 }
 
-label {
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-2);
-}
-
-.tag {
-  padding: 0px var(--space-3);
-  border: var(--button-border);
-  border-radius: var(--radius-tag);
-  height: fit-content;
-  font-size: var(--font-size-sm);
-  background: var(--color-bg);
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.tag button {
-  border: none !important;
-  padding: 0px !important;
-}
-
 .additionalInfo {
   color: var(--color-text-info);
-  font-size: var(--font-size-sm);
+  /* font-size: var(--font-size-sm); */
+  font-size: var(--font-size-base);
   line-height: var(--line-height-sm);
 }
 
-.additionalInfoItalic {
+/* .additionalInfoItalic {
   font-style: italic;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   list-style: var(--line-height-sm);
-}
+} */
 
 .clickableSymbolX {
   height: fit-content;
@@ -172,16 +127,6 @@ label {
   cursor: pointer;
 }
 
-.clickableCircle {
-  border: var(--symbol-button-border);
-  border-radius: var(--radius-tag);
-}
-
-.clickableCircle:hover {
-  background-color: var(--color-bg-active);
-  border: var(--symbol-button-border-active);
-}
-
 a {
   text-decoration: underline;
   cursor: pointer;
@@ -192,22 +137,11 @@ ol > li::marker {
   color: var(--color-text-info);
 }
 
-.inputError {
-  border-color: red !important;
-}
-
-.inputErrorText {
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
-  display: block;
-}
-
 .hidden {
   display: none !important;
 }
 
-.defaultInline {
+/* .defaultInline {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
@@ -218,7 +152,7 @@ ol > li::marker {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-}
+} */
 
 /* :focus-visible {
   outline: 2px solid var(--color-line-purple);

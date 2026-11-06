@@ -11,12 +11,17 @@ fs.mkdirSync(DB_DIR, { recursive: true })
 let db: Database.Database | null = null
 
 export function getDb(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH)
-    initSchema(db)
-    runCheckup(db)
+  try {
+    if (!db) {
+      db = new Database(DB_PATH)
+      initSchema(db)
+      runCheckup(db)
+    }
+    return db
+  } catch (e) {
+    console.error('DB OPEN FAILED:', e)
+    throw e
   }
-  return db
 }
 
 function initSchema(db: Database.Database): void {
@@ -24,44 +29,61 @@ function initSchema(db: Database.Database): void {
     PRAGMA journal_mode=WAL;
     PRAGMA foreign_keys = ON;
 
+    CREATE TABLE IF NOT EXISTS user (
+      id            TEXT PRIMARY KEY NOT NULL,
+      email         TEXT NOT NULL UNIQUE,
+      login         TEXT NOT NULL UNIQUE,
+      password      TEXT NOT NULL,
+      isActivated   INTEGER NOT NULL,
+      nickname      TEXT,
+      contact       TEXT,
+      description   TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS changelog (
+      id            TEXT PRIMARY KEY NOT NULL,
+      tableName     TEXT NOT NULL,
+      fieldName     TEXT NOT NULL,
+      recordId      TEXT NOT NULL,
+      oldValue      TEXT,
+      newValue      TEXT NOT NULL,
+      addBy         TEXT NOT NULL REFERENCES user(id),
+      addDate       INTEGER NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS media (
-      id            TEXT PRIMARY KEY,
-      createdAt     INTEGER NOT NULL,
+      id            TEXT PRIMARY KEY NOT NULL,
       videoUrl      TEXT NOT NULL,
-      mediaType     TEXT NOT NULL,
+      signId        TEXT NOT NULL REFERENCES sign(id) ON DELETE CASCADE,
       thumbnailUrl  TEXT NOT NULL,
       description   TEXT
     );
 
     CREATE TABLE IF NOT EXISTS sign (
-      id            TEXT PRIMARY KEY,
-      createdAt     INTEGER NOT NULL,
-      mediaId       TEXT REFERENCES media(id) ON DELETE CASCADE,
+      id            TEXT PRIMARY KEY NOT NULL,
+      uniqueNumber  INTEGER NOT NULL UNIQUE,
       notes         TEXT
     );
 
     CREATE TABLE IF NOT EXISTS word (
-      id        TEXT PRIMARY KEY,
-      createdAt INTEGER NOT NULL,
+      id        TEXT PRIMARY KEY NOT NULL,
       name      TEXT NOT NULL UNIQUE
     );
 
     CREATE TABLE IF NOT EXISTS meaning (
-      id            TEXT PRIMARY KEY,
-      createdAt     INTEGER NOT NULL,
+      id            TEXT PRIMARY KEY NOT NULL,
       explanation   TEXT NOT NULL,
-      signId        TEXT REFERENCES sign(id) ON DELETE CASCADE
+      signId        TEXT NOT NULL REFERENCES sign(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS region (
-      id        TEXT PRIMARY KEY,
-      createdAt INTEGER NOT NULL,
+      id        TEXT PRIMARY KEY NOT NULL,
+      parentRegionId TEXT REFERENCES region(id) ON DELETE SET NULL,
       name      TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS reference (
-      id            TEXT PRIMARY KEY,
-      createdAt     INTEGER NOT NULL,
+      id            TEXT PRIMARY KEY NOT NULL,
       name          TEXT NOT NULL,
       fullName      TEXT NOT NULL,
       type          TEXT NOT NULL,
@@ -70,12 +92,11 @@ function initSchema(db: Database.Database): void {
     );
 
     CREATE TABLE IF NOT EXISTS source (
-      id            TEXT PRIMARY KEY,
-      createdAt     INTEGER NOT NULL,
-      referenceId   TEXT REFERENCES reference(id) ON DELETE CASCADE,
+      id            TEXT PRIMARY KEY NOT NULL,
+      referenceId   TEXT NOT NULL REFERENCES reference(id) ON DELETE CASCADE,
       yearStart     INTEGER,
       yearEnd       INTEGER,
-      context       TEXT
+      notes         TEXT
     );
 
     CREATE TABLE IF NOT EXISTS regionSource (
@@ -96,9 +117,10 @@ function initSchema(db: Database.Database): void {
       PRIMARY KEY (meaningId, wordId)
     );
 
-    CREATE INDEX IF NOT EXISTS idx_sign_mediaId              ON sign(mediaId);
+    CREATE INDEX IF NOT EXISTS idx_media_signId              ON media(signId);
     CREATE INDEX IF NOT EXISTS idx_meaning_signId            ON meaning(signId);
     CREATE INDEX IF NOT EXISTS idx_source_referenceId        ON source(referenceId);
+    CREATE INDEX IF NOT EXISTS idx_regionId_regionId         ON region(parentRegionId);
     CREATE INDEX IF NOT EXISTS idx_regionSource_sourceId     ON regionSource(sourceId);
     CREATE INDEX IF NOT EXISTS idx_regionSource_regionId     ON regionSource(regionId);
     CREATE INDEX IF NOT EXISTS idx_meaningSource_meaningId   ON meaningSource(meaningId);

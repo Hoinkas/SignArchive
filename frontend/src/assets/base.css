@@ -11,7 +11,7 @@
   --grey-700: #323236;
   --grey-800: #272729;
   --grey-850: #212123;
-  --grey-900: #1b1b1f;
+  --grey-900: #1B1B1F;
 
   /* --purple-h: 245;
   --purple-s: 80%; */
@@ -95,7 +95,7 @@
   --color-line-purple-light: var(--purple-400);
   --color-line-light: var(--grey-200);
 
-  --color-border-dark: var(--grey-600);
+  --color-border-dark: #414047;
   --color-border-light: var(--grey-200);
 
   --color-border-text-area-dark: var(--grey-400);
@@ -108,7 +108,7 @@
   --color-text-light: var(--grey-500);
   --color-text-dark: var(--grey-100);
 
-  --color-text-info: var(--grey-300);
+  --color-text-info: var(--grey-200);
 
   --color-scroll-dark: color-mix(in srgb, var(--grey-700) 60%, transparent);
   --color-scroll-light: color-mix(in srgb, var(--grey-400) 60%, transparent);
@@ -126,7 +126,7 @@
   --color-bg-active: var(--color-bg-purple-dark);
 
   --button-border: 3px solid var(--color-border-purple-dark);
-  --line-border: 2px solid var(--color-border);
+  --line-border: 1px solid var(--color-border);
   --text-area-border: 2px solid var(--color-border-text-area);
   --form-border: 1px solid var(--color-border-grey-transparent);
 
@@ -153,15 +153,15 @@
 
   --color-title-purple: var(--color-purple-dark);
 
-  --media-max-height: 240px;
-  --media-details-max-height: 400px;
-  --navBar-height: 64px;
+  --media-max-height: 200px;
+  --media-details-max-height: 440px;
+  --navBar-height: 52px;
 
   --color-line-purple: var(--color-bg-active);
 
   --color-kebab-menu-icon: var(--color-text);
 
-  --color-bg-player: color-mix(in srgb, var(--grey-900) 85%, transparent);
+  --color-bg-player: color-mix(in srgb, var(--grey-900) 70%, transparent);
 }
 
 *,
@@ -247,5 +247,5 @@ h5 {
 
   --color-kebab-menu-icon: var(--color-bg-active);
 
-  --color-bg-player: color-mix(in srgb, var(--grey-300) 85%, transparent);
+  --color-bg-player: color-mix(in srgb, #af9e80 40%, transparent);
 }

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import React from 'react'
 import { SearchContext } from './SearchContext'
+import type { IWordAttached } from '@src/models/word.model'
+import { useNavigate, useSearchParams } from 'react-router'
+import Fuse from 'fuse.js'
 import { regionApi } from '@src/services/region.api'
 import { wordApi } from '@src/services/word.api'
-import type { IWordAttached } from '@src/models/word.model'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import Fuse from 'fuse.js'
 
 export type SearchOption = 'region' | 'startYear' | 'endYear'
 
@@ -15,7 +15,7 @@ interface Props {
 
 export default function SearchProvider({ children }: Props): React.JSX.Element {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [allWords, setAllWords] = useState<IWordAttached[]>([])
   const [regionList, setRegionList] = useState<string[]>([])
   const navigate = useNavigate()
@@ -31,6 +31,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     )
     wordApi.list().then(setAllWords)
   }, [])
+
 
   const fuse = useMemo(() => new Fuse(allWords, {
     keys: ['name'],
@@ -48,10 +49,12 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
 
   const navigateWithParams = (updates: Record<string, string | null>): void => {
     const newParams = new URLSearchParams(searchParams)
+
     Object.entries(updates).forEach(([key, value]) => {
       if (value) newParams.set(key, value)
       else newParams.delete(key)
     })
+
     navigate({ pathname: '/signs/', search: newParams.toString() })
   }
 
@@ -70,14 +73,6 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
     navigateWithParams({ [yearType]: year })
   }
 
-  const handleClear = (): void => {
-    handleNameChange('')
-    handleOptionChange('region', '')
-    handleYearChange('yearStart', '')
-    handleYearChange('yearEnd', '')
-    setSearchParams(new URLSearchParams())
-  }
-
   return (
     <SearchContext.Provider value={{
       searchWord,
@@ -88,8 +83,7 @@ export default function SearchProvider({ children }: Props): React.JSX.Element {
       handleNameChange,
       yearStart,
       yearEnd,
-      handleYearChange,
-      handleClear
+      handleYearChange
     }}>
       {children}
     </SearchContext.Provider>

@@ -1,0 +1,40 @@
+.thumbnail {
+  height: 100%;
+  width: 100%;
+  max-height: var(--media-max-height);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  position: relative;
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Sepia */
+  -webkit-filter: sepia(100%);
+    -moz-filter: sepia(100%);
+      -o-filter: sepia(100%);
+    -ms-filter: sepia(100%);
+        filter: sepia(100%); 
+}
+
+.thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-bg-player);
+}
+
+.thumbnail svg {
+  position: relative;
+  z-index: 1;
+}
+
+.thumbnailOverlay {
+  position: absolute;
+  inset: 0;
+}

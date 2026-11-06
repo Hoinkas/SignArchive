@@ -1,0 +1,29 @@
+.signsDetailsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: var(--line-border);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-left: var(--line-border);
+}
+
+.mediaContainer {
+  border-bottom: var(--line-border);
+  display: flex;
+  justify-content: center;
+}
+
+.mapContainer {
+  display: flex;
+  justify-content: center;
+  border-bottom: var(--line-border);
+  padding: var(--space-4);
+}

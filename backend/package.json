@@ -1,32 +1,46 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc",
-    "start": "node dist/backend/src/index.js",
-    "postinstall": "node -e \"const p = require('path'); const dir = p.join(__dirname, 'node_modules/better-sqlite3'); if(require('fs').existsSync(dir)) require('child_process').execSync('npm run build-release', {cwd: dir, stdio: 'inherit'});\""
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "pnpm test && tsc",
+    "start": "node dist/backend/src/index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.10.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.10.1",
+  "type": "module",
   "dependencies": {
-    "better-sqlite3": "^9.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^17.4.2",
-    "express": "^4.18.2",
+    "argon2": "^0.45.1",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
     "fluent-ffmpeg": "^2.1.3",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^2.1.1",
-    "nanoid": "^3.3.7"
+    "nanoid": "^6.0.2"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/fluent-ffmpeg": "^2.1.28",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/multer": "^2.1.0",
-    "@types/node": "^20.11.0",
-    "nodemon": "^3.0.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

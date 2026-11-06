@@ -1,9 +1,10 @@
 import Loader from '@src/components/Loader/Loader'
 import './SignDetailsPanel.css'
+import SignDetailsInfo from './SignsDetailsInfo/SignsDetailsInfo'
 import { useSign } from '@src/hooks/SignContext/useSign'
-import MeaningItem from './MeaningItem/MeaningItem'
-import { createPortal } from 'react-dom'
-import SignDetailsInfo from './SignDetailsInfo/SignDetailsInfo'
+import { memo } from 'react'
+import YearsDiagram from './YearsDiagram/YearsDiagram'
+import MeaningsContainer from './MeaningsContainer/MeaningsContainer'
 
 function SignDetailsPanel(): React.JSX.Element {
   const { sign, signLoading, openCloseSidePanel } = useSign()
@@ -11,23 +12,21 @@ function SignDetailsPanel(): React.JSX.Element {
   if (!sign) return <></>
   if (signLoading) return <Loader/>
 
-  return createPortal(
-    <div className="signDetailsContainer">
+  const paddedNumber = (sign.uniqueNumber + "").padStart(4, "0");
+
+  return (
+    <div className="signDetailsContainer additionalInfo">
       <div className='stickyBar'>
-        <p className='signTitle'>Znak #001</p>
-         <div className="clickableSymbolX clickableCircle" onClick={() => openCloseSidePanel(sign.id)}>×</div>
+        <div className="clickable" onClick={() => openCloseSidePanel(sign.uniqueNumber)}> &lt; ZAMKNIJ</div>
+        <div>NUMER: #{paddedNumber}</div>
       </div>
       <div className="signDetails">
         <SignDetailsInfo/>
-        <>
-          {sign.meanings.map((meaning, key) =>
-            <MeaningItem key={key} meaning={meaning}/>
-          )}
-        </>
+        <YearsDiagram/>
+        <MeaningsContainer/>
       </div>
-    </div>,
-    document.body
+    </div>
   )
 }
 
-export default SignDetailsPanel
+export default memo(SignDetailsPanel)

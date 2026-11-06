@@ -1,23 +1,33 @@
 import './SignsPage.css'
 import Loader from '@src/components/Loader/Loader'
 import { useSignList } from '@src/hooks/SignListContext/useSignList'
-import SignListTitle from './SignListTitle/SignListTitle'
-import SignProvider from '@src/hooks/SignContext/SignProvider'
 import SignList from './SingList/SignList'
+import PolandMap from '@src/components/PolandMap/PolandMap'
+import Statistics from './Statistics/Statistics'
+import SearchBar from './SearchBar/SearchBar'
 import SignDetailsPanel from './SignDetailsPanel/SignDetailsPanel'
 
 function SignsPage(): React.JSX.Element {
-  const { signListLoading } = useSignList()
+  const { signListLoading, filteredSigns } = useSignList()
 
   if (signListLoading) return <Loader/>
+  const regions = filteredSigns.flatMap((s) => s.regions)
 
   return (
     <div className="signPage page">
-      <SignProvider>
-        <SignListTitle/>
+      <div className='signsList'>
+        <div className='mapSearchContener'>
+          <div className='mapContener'>
+            <PolandMap regions={regions} interactive/>
+          </div>
+          <div className='searchAndStatisticsContainer'>
+            <SearchBar/>
+            <Statistics/>
+          </div>
+        </div>
         <SignList/>
-        <SignDetailsPanel/>
-      </SignProvider>
+      </div>
+      <SignDetailsPanel/>
     </div>
   )
 }

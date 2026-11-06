@@ -1,4 +1,4 @@
-import type { SetURLSearchParams } from 'react-router-dom'
+import type { SetURLSearchParams } from 'react-router'
 
 export default function updateParam(
   key: string,
