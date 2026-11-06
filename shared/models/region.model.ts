@@ -1,4 +1,5 @@
 import type { IBaseModelAttached } from './base.interface'
+import { IWordAttached } from './word.model'
 
 export interface IRegion {
   name: string
@@ -9,7 +10,13 @@ export type IRegionAttached = IRegion & IBaseModelAttached
 
 // TO FRONTEND
 export interface IRegionToFE extends Omit<IRegionAttached, 'regionParentId'> {
-  parentName: string
+  parentName?: string
+}
+
+// REGION-WORDS
+export interface IRegionWords {
+  region: IRegionToFE,
+  words: IWordAttached[]
 }
 
 // TEMPLATES

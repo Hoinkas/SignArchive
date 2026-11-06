@@ -5,7 +5,7 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYearToText } from '@src/utils/namesHelpers'
 import './SignsDetailsInfo.css'
 import PolandMap from '@src/components/PolandMap/PolandMap'
-import type { IRegionToFE } from '@src/models/region.model'
+import type { IRegionToFE, IRegionWords } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
 
@@ -32,7 +32,7 @@ function SignDetailsInfo(): React.JSX.Element {
       </div>
       <div className='rightSide'>
         <div className='mapContainer'>
-          <PolandMap regions={regions} small/>
+          {/* <PolandMap regions={} small/> */}
         </div>
         <div className="details additionalInfo">
           <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>

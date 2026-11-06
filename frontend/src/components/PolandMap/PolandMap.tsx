@@ -5,18 +5,18 @@ import { memo, useMemo } from "react";
 import "./PolandMap.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
 import { calculateMapStatistics } from "@src/utils/calculateMapStatistics";
-import type { IRegionToFE } from "@src/models/region.model";
+import type { IRegionWords } from "@src/models/region.model";
 
 const WIDTH = 600;
 const HEIGHT = 560;
 
 interface PolandMapProps {
-  regions: IRegionToFE[]
+  regionsWords: IRegionWords[]
   interactive?: boolean
   small?: boolean
 }
 
-const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps) => {
+const PolandMap = ({regionsWords, interactive = false, small = false}: PolandMapProps) => {
   const {region, handleOptionChange} = useSearch()
   const geoData = rawGeoData as FeatureCollection<Geometry, { terc: string; name: string }>;
 
@@ -35,9 +35,9 @@ const PolandMap = ({regions, interactive = false, small = false}: PolandMapProps
   }, []);
 
   const valueById = useMemo(() => {
-    const mapStats = calculateMapStatistics(regions);
+    const mapStats = calculateMapStatistics(regionsWords);
     return new Map(mapStats.map((d) => [d.name, d.signsCount]))
-  }, [regions]);
+  }, [regionsWords]);
 
   const toggle = (name: string) => {
     if (interactive) handleOptionChange('region', region === name ? '' : name);

@@ -25,8 +25,9 @@ export function renameWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
 
     const renamedWordsList: IWordAttached[] = []
     Object.keys(renamedWords).forEach(rw => {
-        if (renamedWords[rw].length === 1) renamedWordsList.push(renamedWords[rw][0])
-        else renamedWords[rw].forEach((w,i) => renamedWordsList.push({...w, name: w.name + "_" + (i + 1)}))
+        return renamedWords[rw].length === 1
+        ? renamedWordsList.push(renamedWords[rw][0])
+        : renamedWords[rw].forEach((w,i) => renamedWordsList.push({...w, name: w.name + "_" + (i + 1)}))
     })
 
     return renamedWordsList

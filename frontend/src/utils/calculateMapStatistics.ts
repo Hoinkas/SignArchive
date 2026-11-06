@@ -1,4 +1,4 @@
-import type { IRegionToFE } from "@src/models/region.model";
+import type { IRegionWords } from "@src/models/region.model";
 
 export interface IMapStats {
     name: string,
@@ -9,12 +9,12 @@ interface IMapStatsTemp {
     [name: string]: number
 }
 
-export function calculateMapStatistics(regions: IRegionToFE[]) {
+export function calculateMapStatistics(regionWords: IRegionWords[]) {
     const mapStatsTemp: IMapStatsTemp = {}
     
-    regions.forEach((r) => {
-        const name = r.parentName || r.name
-        mapStatsTemp[name] = (mapStatsTemp[name] || 0) + 1
+    regionWords.forEach((rw) => {
+        const name = rw.region.parentName || rw.region.name
+        mapStatsTemp[name] = (mapStatsTemp[name] || 0) + rw.words.length
     })
 
     const mapStatistics: IMapStats[] = Object.keys(mapStatsTemp).map((s) => {
