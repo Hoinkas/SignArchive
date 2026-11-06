@@ -1,6 +1,6 @@
 import type { IBaseModelAttached } from './base.interface'
-import { IReferenceAttached } from './reference.model'
-import { IRegionToFE } from './region.model'
+import type { IReferenceAttached } from './reference.model'
+import type { IRegionToFE } from './region.model'
 
 export interface ISource {
   referenceId: string
