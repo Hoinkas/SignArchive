@@ -1,11 +1,16 @@
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IWordAttached } from '@src/models/word.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
-import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
+import { removeRegionDuplicates, removeWordsDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
 import { describe, expect, test } from 'vitest'
 
 describe('Remove regions duplicates', () => {
     test.for<{name: string; data: IRegionToFE[]; expected: IRegionToFE[]}>([
+        {
+            name: 'Return empty array for empty array',
+            data: [],
+            expected: []
+        },
         {
             name: 'Dont remove any of two different regions',
             data: [{id: 'aaa', name: 'Katowice', parentName: 'Śląsk'}, {id: 'bbb', name: 'Małopolskie'}],
@@ -32,6 +37,11 @@ describe('Remove regions duplicates', () => {
 
 describe('Remove years duplicates', () => {
     test.for<{name: string; data: IYearStartEnd[]; expected: IYearStartEnd[]}>([
+        {
+            name: 'Return empty array for empty array',
+            data: [],
+            expected: []
+        },
         {
             name: 'Dont remove any of two different years',
             data: [{yearStart: 1900, yearEnd: 1910}, {yearStart: 1210, yearEnd: 1215}],
@@ -82,11 +92,46 @@ describe('Remove years duplicates', () => {
             data: [{yearStart: 1900, yearEnd: 1910}, {yearStart: 1901, yearEnd: 1909}],
             expected: [{yearStart: 1900, yearEnd: 1910}, {yearStart: 1901, yearEnd: 1909}]
         },
+        {
+            name: 'Dont remove any of two different years - the same yearStart but one without yearEnd',
+            data: [{yearStart: 1900}, {yearStart: 1900, yearEnd: 1910}],
+            expected: [{yearStart: 1900}, {yearStart: 1900, yearEnd: 1910}],
+        }
     ])('$name', ({data, expected}) => expect(removeYearsDuplicates(data)).toStrictEqual(expected))
+})
+
+describe('Remove words duplicates', () => {
+    test.for<{name: string; data: IWordAttached[]; expected: IWordAttached[]}>([
+        {
+            name: 'Return empty array for empty array',
+            data: [],
+            expected: []
+        },
+        {
+            name: 'Dont remove any of different words',
+            data: [{id: 'a', name: 'Pan'}, {id: 'b', name: 'Pani'}],
+            expected: [{id: 'a', name: 'Pan'}, {id: 'b', name: 'Pani'}]
+        },
+        {
+            name: 'Remove duplicated words',
+            data: [{id: 'a', name: 'Pan'}, {id: 'a', name: 'Pan'}],
+            expected: [{id: 'a', name: 'Pan'}]
+        },
+        {
+            name: 'Remove different words with the same name',
+            data: [{id: 'a', name: 'Pan'}, {id: 'b', name: 'Pan'}],
+            expected: [{id: 'a', name: 'Pan'}, {id: 'b', name: 'Pan'}]
+        },
+    ])('$name', ({data, expected}) => expect(removeWordsDuplicates(data)).toStrictEqual(expected))
 })
 
 describe('Rename words duplicates', () => {
     test.for<{name: string; data: IWordAttached[]; expected: IWordAttached[]}>([
+        {
+            name: 'Return empty array for empty array',
+            data: [],
+            expected: []
+        },
         {
             name: 'Dont rename two different words',
             data: [{id: 'aaa', name: 'Katar'}, {id: 'bbb', name: 'Malezja'}],

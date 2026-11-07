@@ -15,12 +15,16 @@ export function removeYearsDuplicates(years: IYearStartEnd[]): IYearStartEnd[]{
     return [...new Map(years.map(y => [`${y.yearStart}|${y.yearEnd}`, y])).values()];
 }
 
-interface RenamedWordsI {
+export function removeWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
+    return [...new Map(words.map(w => [`${w.id}|${w.name}`, w])).values()]
+}
+
+interface IRenamedWords {
     [key: string]: IWordAttached[]
 }
 
 export function renameWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
-    const renamedWords: RenamedWordsI = {}
+    const renamedWords: IRenamedWords = {}
     words.forEach(w => (renamedWords[w.name] ??= []).push(w))
 
     const renamedWordsList: IWordAttached[] = []
