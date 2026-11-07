@@ -13,12 +13,6 @@ export interface IRegionToFE extends Omit<IRegionAttached, 'regionParentId'> {
   parentName?: string
 }
 
-// REGION-WORDS
-export interface IRegionWords {
-  region: IRegionToFE,
-  words: IWordAttached[]
-}
-
 // TEMPLATES
 export const regionTemplate: Record<keyof IRegion, null> = {
   name: null,

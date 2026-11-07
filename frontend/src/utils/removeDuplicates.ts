@@ -1,4 +1,5 @@
 import type { IRegionToFE } from "@src/models/region.model"
+import type { ISignSimple } from "@src/models/sign.model";
 import type { IWordAttached } from "@src/models/word.model";
 import type { IYearStartEnd } from "@src/models/yearStartEnd.model";
 
@@ -17,6 +18,10 @@ export function removeYearsDuplicates(years: IYearStartEnd[]): IYearStartEnd[]{
 
 export function removeWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
     return [...new Map(words.map(w => [`${w.id}|${w.name}`, w])).values()]
+}
+
+export function removeSignsDuplicates(signs: ISignSimple[]): ISignSimple[]{
+    return [...new Map(signs.map(s => [`${s.id}||${s.uniqueNumber}|${s.media}|${s.notes}|${s.regions}${s.words}|${s.years}`, s])).values()]
 }
 
 interface IRenamedWords {

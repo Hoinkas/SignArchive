@@ -7,20 +7,21 @@ import Statistics from './Statistics/Statistics'
 import SearchBar from './SearchBar/SearchBar'
 import SignDetailsPanel from './SignDetailsPanel/SignDetailsPanel'
 import { useSearchParams } from 'react-router'
+import { calculateSignsMapStatistics } from '@src/utils/calculateMapStatistics'
 
 function SignsPage(): React.JSX.Element {
   const { signListLoading, filteredSigns } = useSignList()
   const [searchParams] = useSearchParams()
 
   if (signListLoading) return <Loader/>
-  const regions = filteredSigns.flatMap((s) => s.regions)
+  const mapStats = calculateSignsMapStatistics(filteredSigns)
 
   return (
     <div className="signPage page">
       <div className='signsList'>
         <div className='mapSearchContener'>
           <div className='mapContener'>
-            {/* <PolandMap regions={regions} interactive/> */}
+            <PolandMap mapStats={mapStats} interactive/>
           </div>
           <div className='searchAndStatisticsContainer'>
             <SearchBar/>
