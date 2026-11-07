@@ -6,9 +6,11 @@ import PolandMap from '@src/components/PolandMap/PolandMap'
 import Statistics from './Statistics/Statistics'
 import SearchBar from './SearchBar/SearchBar'
 import SignDetailsPanel from './SignDetailsPanel/SignDetailsPanel'
+import { useSearchParams } from 'react-router'
 
 function SignsPage(): React.JSX.Element {
   const { signListLoading, filteredSigns } = useSignList()
+  const [searchParams] = useSearchParams()
 
   if (signListLoading) return <Loader/>
   const regions = filteredSigns.flatMap((s) => s.regions)
@@ -18,7 +20,7 @@ function SignsPage(): React.JSX.Element {
       <div className='signsList'>
         <div className='mapSearchContener'>
           <div className='mapContener'>
-            <PolandMap regions={regions} interactive/>
+            {/* <PolandMap regions={regions} interactive/> */}
           </div>
           <div className='searchAndStatisticsContainer'>
             <SearchBar/>
@@ -27,7 +29,7 @@ function SignsPage(): React.JSX.Element {
         </div>
         <SignList/>
       </div>
-      <SignDetailsPanel/>
+      {searchParams.has('signNumber') && <SignDetailsPanel/>}
     </div>
   )
 }

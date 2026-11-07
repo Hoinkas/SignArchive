@@ -3,9 +3,9 @@ import React from 'react'
 import { SignContext } from './SignContext'
 import type { ISignDetailed } from '@src/models/sign.model'
 import { useSearchParams } from 'react-router'
-import updateParam from '@src/utils/updateParam'
 import { signApi } from '@src/services/sign.api'
 import { renameWordsDuplicates } from '@src/utils/removeDuplicates'
+import { updateParam } from '@src/utils/paramActions'
 
 interface Props {
   children?: React.ReactNode
@@ -16,7 +16,7 @@ export default function SignProvider({ children }: Props): React.JSX.Element {
   const [signLoading, setSignLoading] = useState<boolean>(false)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const signNumber = searchParams.get('signNumber') ?? ''
+  const signNumber = searchParams.get('signNumber')
 
   useEffect(() => {
     if (!signNumber) return
