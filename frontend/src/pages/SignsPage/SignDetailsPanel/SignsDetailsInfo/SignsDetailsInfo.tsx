@@ -34,6 +34,7 @@ function SignDetailsInfo(): React.JSX.Element {
       </div>
       <div className='rightSide'>
         <div className='mapContainer'>
+          LICZBA ZNACZEŃ WEDŁUG WOJEWÓDZTW:
           <PolandMap mapStats={mapStats} small/>
         </div>
         <div className="details additionalInfo">
