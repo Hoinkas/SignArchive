@@ -37,7 +37,7 @@ function NavBar(): React.JSX.Element {
 
       {isMenuOpen && (
         <div className='mobileMenu'>
-          {pages.map((p) => <button onClick={() => { navigate('/' + p[0] + '/'); setIsMenuOpen(false) }}>{p[1]}</button>)}
+          {pages.map((p, i) => <button key={i} onClick={() => { navigate('/' + p[0] + '/'); setIsMenuOpen(false) }}>{p[1]}</button>)}
         </div>
       )}
     </div>

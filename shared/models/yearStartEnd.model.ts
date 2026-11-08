@@ -1,4 +1,4 @@
 export interface IYearStartEnd {
-  yearStart: number
+  yearStart?: number
   yearEnd?: number
 }

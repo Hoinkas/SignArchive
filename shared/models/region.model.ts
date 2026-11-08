@@ -1,5 +1,4 @@
 import type { IBaseModelAttached } from './base.interface'
-import type { IWordAttached } from './word.model'
 
 export interface IRegion {
   name: string

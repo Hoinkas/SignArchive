@@ -8,7 +8,8 @@
     "test": "npm run sync && cd frontend && vitest",
     "dev:frontend": "npm run sync && cd frontend && pnpm dev",
     "dev:backend": "npm run sync && cd backend && pnpm dev",
-    "dev": "npm run sync && concurrently --kill-others \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\""
+    "dev": "npm run sync && concurrently --kill-others \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "build": "concurrently \"cd frontend && pnpm build\" \"cd backend && pnpm build\""
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
