@@ -160,6 +160,10 @@
   --color-kebab-menu-icon: var(--color-text);
 
   --color-bg-player: color-mix(in srgb, var(--grey-900) 70%, transparent);
+
+  --color-map-bg: var(--purple-grey-4);
+  --color-map-stroke: var(--purple-400);
+  --color-map-active: var(--purple-400);
 }
 
 *,
