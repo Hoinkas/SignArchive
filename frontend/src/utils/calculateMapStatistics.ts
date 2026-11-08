@@ -1,7 +1,7 @@
-import type { IWordAttached } from "@src/models/word.model";
-import { removeSignsDuplicates, removeWordsDuplicates } from "./removeDuplicates";
+import { removeMeaningsDuplicates, removeSignsDuplicates } from "./removeDuplicates";
 import type { ISignDetailed, ISignSimple } from "@src/models/sign.model";
 import type { IRegionToFE } from "@src/models/region.model";
+import type { IMeaningDetailed } from "@src/models/meaning.model";
 
 export interface IRegionItems<T> {
   region: IRegionToFE,
@@ -47,16 +47,16 @@ export function calculateMapStatistics<TSource, TItem>(
 }
 
 //DETAILED SIGN STATISTICS - WORD MAP
-export function mapDetailedSignsToWordsAndRegions(signs: ISignDetailed[]): IRegionItems<IWordAttached>[] {    
+export function mapDetailedSignsToWordsAndRegions(signs: ISignDetailed[]): IRegionItems<IMeaningDetailed>[] {    
     return signs.flatMap(sign => 
         sign.meanings.flatMap(meaning => 
             meaning.sources.flatMap(source => 
-                source.regions.map(region => ({region, items: meaning.words})
+                source.regions.map(region => ({region, items: sign.meanings})
             ))))
 }
 
 export function calculateWordsMapStatistics(signs: ISignDetailed[]): IMapStats[] {
-    return calculateMapStatistics(signs, mapDetailedSignsToWordsAndRegions, removeWordsDuplicates)
+    return calculateMapStatistics(signs, mapDetailedSignsToWordsAndRegions, removeMeaningsDuplicates)
 }
 
 //SIMPLE SIGN STATISTICS - SIGN MAP

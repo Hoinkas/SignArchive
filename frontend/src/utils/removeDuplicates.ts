@@ -1,3 +1,4 @@
+import type { IMeaningDetailed } from "@src/models/meaning.model";
 import type { IRegionToFE } from "@src/models/region.model"
 import type { ISignSimple } from "@src/models/sign.model";
 import type { IWordAttached } from "@src/models/word.model";
@@ -18,6 +19,10 @@ export function removeYearsDuplicates(years: IYearStartEnd[]): IYearStartEnd[]{
 
 export function removeWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
     return [...new Map(words.map(w => [`${w.id}|${w.name}`, w])).values()]
+}
+
+export function removeMeaningsDuplicates(meanings: IMeaningDetailed[]): IMeaningDetailed[]{
+    return [...new Map(meanings.map(m => [`${m.id}|${m.explanation}|${m.sources}|${m.words}`, m])).values()]
 }
 
 export function removeSignsDuplicates(signs: ISignSimple[]): ISignSimple[]{
