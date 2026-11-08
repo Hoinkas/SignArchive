@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
   --grey-50:  #F8F8F9;
   --grey-100: #EDEDEF;
@@ -162,6 +160,10 @@
   --color-kebab-menu-icon: var(--color-text);
 
   --color-bg-player: color-mix(in srgb, var(--grey-900) 70%, transparent);
+
+  --color-map-bg: var(--purple-grey-4);
+  --color-map-stroke: var(--purple-400);
+  --color-map-active: var(--purple-400);
 }
 
 *,

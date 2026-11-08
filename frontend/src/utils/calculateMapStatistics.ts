@@ -1,26 +1,70 @@
+import { removeMeaningsDuplicates, removeSignsDuplicates } from "./removeDuplicates";
+import type { ISignDetailed, ISignSimple } from "@src/models/sign.model";
 import type { IRegionToFE } from "@src/models/region.model";
+import type { IMeaningDetailed } from "@src/models/meaning.model";
+
+export interface IRegionItems<T> {
+  region: IRegionToFE,
+  items: T[]
+}
+
+export interface IMapStatsTemp<T> {
+    [regionName: string]: T[]
+}
+
+export function groupItemsByRegion<T>(
+    regionItems: IRegionItems<T>[],
+    removeDuplicates: (items: T[]) => T[]
+): IMapStatsTemp<T> {
+    const result: IMapStatsTemp<T> = {}
+    
+    for (const { region, items } of regionItems) {
+        const name = region.parentName || region.name
+        result[name] = removeDuplicates([...(result[name] ?? []), ...items])
+    }
+
+    return result
+} 
 
 export interface IMapStats {
-    name: string,
-    signsCount: number
+    regionName: string,
+    count: number
 }
 
-interface IMapStatsTemp {
-    [name: string]: number
+export function calculateCountForEachRegion(mapStatsTemp: IMapStatsTemp<unknown>): IMapStats[]{
+    return Object.entries(mapStatsTemp).map(([regionName, items]) => ({regionName, count: items.length}))
 }
 
-export function calculateMapStatistics(regions: IRegionToFE[]) {
-    const mapStatsTemp: IMapStatsTemp = {}
-    
-    regions.forEach((r) => {
-        const name = r.parentName || r.name
-        mapStatsTemp[name] = (mapStatsTemp[name] || 0) + 1
-    })
+export function calculateMapStatistics<TSource, TItem>(
+    source: TSource,
+    mapToRegionItems: (source: TSource) => IRegionItems<TItem>[],
+    removeDuplicates: (items: TItem[]) => TItem[]
+): IMapStats[] {
+    const regionItems = mapToRegionItems(source)
+    const mapStatsTemp = groupItemsByRegion(regionItems, removeDuplicates)
 
-    const mapStatistics: IMapStats[] = Object.keys(mapStatsTemp).map((s) => {
-        const mapStats: IMapStats = {name: s, signsCount: mapStatsTemp[s]}
-        return mapStats
-    })
+    return calculateCountForEachRegion(mapStatsTemp)
+}
 
-    return mapStatistics
+//DETAILED SIGN STATISTICS - WORD MAP
+export function mapDetailedSignsToWordsAndRegions(signs: ISignDetailed[]): IRegionItems<IMeaningDetailed>[] {    
+    return signs.flatMap(sign => 
+        sign.meanings.flatMap(meaning => 
+            meaning.sources.flatMap(source => 
+                source.regions.map(region => ({region, items: sign.meanings})
+            ))))
+}
+
+export function calculateWordsMapStatistics(signs: ISignDetailed[]): IMapStats[] {
+    return calculateMapStatistics(signs, mapDetailedSignsToWordsAndRegions, removeMeaningsDuplicates)
+}
+
+//SIMPLE SIGN STATISTICS - SIGN MAP
+
+export function mapSimpleSignToSignsAndRegions(signs: ISignSimple[]): IRegionItems<ISignSimple>[] {
+    return signs.flatMap(sign => sign.regions.map(region => ({ region, items: [sign] })))
+}
+
+export function calculateSignsMapStatistics(signs: ISignSimple[]): IMapStats[] {
+    return calculateMapStatistics(signs, mapSimpleSignToSignsAndRegions, removeSignsDuplicates)
 }

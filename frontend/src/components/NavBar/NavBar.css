@@ -8,6 +8,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
+  top: 0;
 }
 
 .logoTitle {

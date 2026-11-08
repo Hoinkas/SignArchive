@@ -8,6 +8,7 @@ import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
+import { calculateWordsMapStatistics } from '@src/utils/calculateMapStatistics'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -18,6 +19,7 @@ function SignDetailsInfo(): React.JSX.Element {
   const words: string[] = renameWordsDuplicates(meanings.flatMap(m => m.words)).map(w => w.name)
   const regions: IRegionToFE[] = removeRegionDuplicates(meanings.flatMap(m => m.sources.flatMap(s => s.regions)))
   const years: IYearStartEnd[] = removeYearsDuplicates(meanings.flatMap(m => m.sources.flatMap(s => {return {yearStart: s.yearStart, yearEnd: s.yearEnd}})))
+  const mapStats = calculateWordsMapStatistics([sign])
 
   return (
     <div className='signsDetailsContainer'>
@@ -32,7 +34,8 @@ function SignDetailsInfo(): React.JSX.Element {
       </div>
       <div className='rightSide'>
         <div className='mapContainer'>
-          <PolandMap regions={regions} small/>
+          LICZBA ZNACZEŃ WEDŁUG WOJEWÓDZTW:
+          <PolandMap mapStats={mapStats} small/>
         </div>
         <div className="details additionalInfo">
           <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>

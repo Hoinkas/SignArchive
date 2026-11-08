@@ -35,7 +35,6 @@
 }
 
 .signDetails {
-  border-top: var(--line-border);
   border-right: var(--line-border);
   display:flex;
   flex-direction: column;
@@ -50,6 +49,7 @@
   z-index: 999;
   background-color: var(--color-bg);
   border-top: var(--line-border);
+  border-bottom: var(--line-border);
 }
 
 .stickyBar > div {

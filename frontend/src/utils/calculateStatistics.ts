@@ -31,8 +31,8 @@ export function returnMarginalYears(years: IYearStartEnd[]): IYearStartEnd {
         .filter((y): y is number => y != null && isFinite(y));
 
     const yearsMarginal: IYearStartEnd = {
-        yearStart: allYears.length > 0 ? Math.min(...allYears) : null,
-        yearEnd: allYears.length > 0 ? Math.max(...allYears) : null
+        yearStart: allYears.length > 0 ? Math.min(...allYears) : undefined,
+        yearEnd: allYears.length > 0 ? Math.max(...allYears) : undefined
     }
     return yearsMarginal
 }

@@ -9,7 +9,7 @@ export type IRegionAttached = IRegion & IBaseModelAttached
 
 // TO FRONTEND
 export interface IRegionToFE extends Omit<IRegionAttached, 'regionParentId'> {
-  parentName: string
+  parentName?: string
 }
 
 // TEMPLATES

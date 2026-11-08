@@ -1,4 +1,6 @@
+import type { IMeaningDetailed } from "@src/models/meaning.model";
 import type { IRegionToFE } from "@src/models/region.model"
+import type { ISignSimple } from "@src/models/sign.model";
 import type { IWordAttached } from "@src/models/word.model";
 import type { IYearStartEnd } from "@src/models/yearStartEnd.model";
 
@@ -15,18 +17,31 @@ export function removeYearsDuplicates(years: IYearStartEnd[]): IYearStartEnd[]{
     return [...new Map(years.map(y => [`${y.yearStart}|${y.yearEnd}`, y])).values()];
 }
 
-interface RenamedWordsI {
+export function removeWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
+    return [...new Map(words.map(w => [`${w.id}|${w.name}`, w])).values()]
+}
+
+export function removeMeaningsDuplicates(meanings: IMeaningDetailed[]): IMeaningDetailed[]{
+    return [...new Map(meanings.map(m => [`${m.id}|${m.explanation}|${m.sources}|${m.words}`, m])).values()]
+}
+
+export function removeSignsDuplicates(signs: ISignSimple[]): ISignSimple[]{
+    return [...new Map(signs.map(s => [`${s.id}||${s.uniqueNumber}|${s.media}|${s.notes}|${s.regions}${s.words}|${s.years}`, s])).values()]
+}
+
+interface IRenamedWords {
     [key: string]: IWordAttached[]
 }
 
 export function renameWordsDuplicates(words: IWordAttached[]): IWordAttached[]{
-    const renamedWords: RenamedWordsI = {}
+    const renamedWords: IRenamedWords = {}
     words.forEach(w => (renamedWords[w.name] ??= []).push(w))
 
     const renamedWordsList: IWordAttached[] = []
     Object.keys(renamedWords).forEach(rw => {
-        if (renamedWords[rw].length === 1) renamedWordsList.push(renamedWords[rw][0])
-        else renamedWords[rw].forEach((w,i) => renamedWordsList.push({...w, name: w.name + "_" + (i + 1)}))
+        return renamedWords[rw].length === 1
+        ? renamedWordsList.push(renamedWords[rw][0])
+        : renamedWords[rw].forEach((w,i) => renamedWordsList.push({...w, name: w.name + "_" + (i + 1)}))
     })
 
     return renamedWordsList

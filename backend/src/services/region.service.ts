@@ -1,12 +1,20 @@
 import { IRegionAttached, IRegionToFE } from '@signarchive/shared/models/region.model';
 import { getDb } from '../db/client'
 
+function removeNullParentName(regions: IRegionToFE[]): IRegionToFE[] {
+  return regions.map(r => {
+      return r.parentName
+      ? {id: r.id, name: r.name, parentName: r.parentName}
+      : {id: r.id, name: r.name}
+    })
+}
+
 // RETURN REGIONS' NAMES BY SIGN ID
 export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
   const rows = getDb()
     .prepare(
       `SELECT DISTINCT
-        pr.id   AS id,
+        r.id   AS id,
         r.name  AS name,
         pr.name AS parentName
       FROM region r
@@ -19,7 +27,7 @@ export function listRegionsNamesBySignId(signId: string): IRegionToFE[] {
     )
     .all(signId) as IRegionToFE[];
 
-    return rows;
+    return removeNullParentName(rows);
 }
 
 // RETURN REGIONS' NAMES BY SOURCE ID
@@ -27,7 +35,7 @@ export function listRegionsNamesBySourceId(sourceId: string): IRegionToFE[] {
   const rows = getDb()
     .prepare(
       `SELECT DISTINCT
-        pr.id   AS id,
+        r.id   AS id,
         r.name  AS name,
         pr.name AS parentName
       FROM region r
@@ -37,11 +45,11 @@ export function listRegionsNamesBySourceId(sourceId: string): IRegionToFE[] {
     )
     .all(sourceId) as IRegionToFE[];
 
-    return rows;
+    return removeNullParentName(rows);
 }
 
 // FIND
 export function listAllRegions(): IRegionAttached[] {
-  const row = getDb().prepare('SELECT * FROM region').all()
-  return row as IRegionAttached[]
+  const rows = getDb().prepare('SELECT * FROM region').all() as IRegionAttached[]
+  return rows
 }

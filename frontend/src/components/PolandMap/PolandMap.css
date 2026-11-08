@@ -14,45 +14,55 @@
   transition: opacity 0.2s;
 }
 
-.region path { 
-  stroke-width: 1;
-  transition: stroke 0.2s;
-  fill: var(--color-purple-dark);
-}
-.region text {
-  font-weight: bold;
-  pointer-events: none;
-  user-select: none;
-  fill: #331D8E;
-}
-
-.region.dimmed path { 
-  stroke: var(--color-purple-dark);
-  fill: #331D8E;
-  opacity: 0.4;
-}
-
-/* INTERACTIVE MAP */
 .region.interactive {
   cursor: pointer;
 }
 
-.region.interactive text {
-  fill: #93909E;
+/* AREA */
+.region path { 
+  stroke-width: 1;
+  transition: stroke 0.2s;
+  fill: var(--color-map-stroke);
 }
 
 .region.interactive path {
   cursor: pointer;
-  stroke: #414047;
-  fill: #232327;
-}
-
-.region:hover.interactive path,
-.region:focus-visible.interactive path {
-  stroke: #331D8E;
-  stroke-width: 2;
+  stroke: var(--color-map-stroke);
+  fill: var(--color-map-bg);
 }
 
 .region.active.interactive path {
-  fill: #331D8E
+  fill: var(--color-map-active);
+}
+
+/* DIMMED */
+.region.dimmed path { 
+  stroke: var(--color-map-stroke);
+  fill: var(--color-map-bg);
+  opacity: 0.3;
+}
+
+/* FONT */
+.region text {
+  font-weight: bold;
+  pointer-events: none;
+  user-select: none;
+}
+
+.region.interactive text {
+  fill: var(--color-map-active);
+}
+
+/* INTERACTIVE MAP */
+.region:hover.interactive path,
+.region:focus-visible.interactive path {
+  stroke: var(--color-map-stroke);
+  fill: var(--color-map-active);
+  stroke-width: 2;
+}
+
+.region:hover.interactive text,
+.region:focus-visible.interactive text,
+.region.active.interactive text {
+  fill: var(--color-map-bg);
 }
