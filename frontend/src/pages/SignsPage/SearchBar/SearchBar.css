@@ -11,8 +11,7 @@
   backdrop-filter: blur(var(--space-6));
   cursor: text;
   height: var(--space-10);
-  border: var(--line-border);
-  border-color: var(--color-bg-active);
+  border: var(--border-search);
   width: 100%;
 }
 

@@ -1,22 +1,14 @@
 @import './base.css';
 
 #root {
-  height: 100vh;
+  height: 100dvh;
+  max-width: 100dvw;
   overflow: hidden;
-}
-
-body {
-  display: flex;
-
-  transition:
-		background-color var(--trans-dur),
-		color var(--trans-dur);
 }
 
 .pageContainer {
   height: calc(100dvh - var(--navBar-height));
-  width: 100vw;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .page {
@@ -41,15 +33,32 @@ input {
   border: none;
   outline: none;
   caret-color: var(--color-line-purple-light);
-  color: var(--color-text);
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+button {
+  cursor: pointer;
+
+  padding: var(--space-2) var(--space-4);
+  height: var(--space-10);
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-button);
+
+  background: var(--bg-button-primary);
+  border: var(--border-button);
 }
 
-input[type=search]::-webkit-search-cancel-button {
+button.secondary {
+  background: var(--bg-button-secondary);
+}
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--color-text-link);
+}
+
+/* input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
   height: 10px;
@@ -60,38 +69,11 @@ input[type=search]::-webkit-search-cancel-button {
   mask-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgd2lkdGg9IjEyMy4wNXB4IiBoZWlnaHQ9IjEyMy4wNXB4IiB2aWV3Qm94PSIwIDAgMTIzLjA1IDEyMy4wNSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTIzLjA1IDEyMy4wNTsiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPHBhdGggZD0iTTEyMS4zMjUsMTAuOTI1bC04LjUtOC4zOTljLTIuMy0yLjMtNi4xLTIuMy04LjUsMGwtNDIuNCw0Mi4zOTlMMTguNzI2LDEuNzI2Yy0yLjMwMS0yLjMwMS02LjEwMS0yLjMwMS04LjUsMGwtOC41LDguNQ0KCQljLTIuMzAxLDIuMy0yLjMwMSw2LjEsMCw4LjVsNDMuMSw0My4xbC00Mi4zLDQyLjVjLTIuMywyLjMtMi4zLDYuMSwwLDguNWw4LjUsOC41YzIuMywyLjMsNi4xLDIuMyw4LjUsMGw0Mi4zOTktNDIuNGw0Mi40LDQyLjQNCgkJYzIuMywyLjMsNi4xLDIuMyw4LjUsMGw4LjUtOC41YzIuMy0yLjMsMi4zLTYuMSwwLTguNWwtNDIuNS00Mi40bDQyLjQtNDIuMzk5QzEyMy42MjUsMTcuMTI1LDEyMy42MjUsMTMuMzI1LDEyMS4zMjUsMTAuOTI1eiIvPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=);
   mask-size: 10px 10px;
   cursor: pointer;
-}
+} */
 
-button {
-  font-size: var(--font-size-sm);
-  color: var(--color-text);
-  border: var(--button-border);
-  background: var(--color-bg);
-
-  cursor: pointer;
-  padding: var(--space-2) var(--space-4);
-  height: fit-content;
-  height: var(--space-10);
-}
-
-button:hover {
-  color: var(--color-text-active);
-  background: var(--color-button-hover);
-}
-
-button:active {
-  /* transform: scale(0.97); */
-  color: var(--color-text-active);
-  background: var(--color-bg-active);
-}
-
-button.primary {
-  background: var(--color-bg-active);
-  color: var(--color-text-dark);
-}
-
-button.primary:hover {
-  opacity: 0.85;
+/* input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
 button[type="submit"] {
@@ -103,34 +85,10 @@ button[type="submit"]:hover {
   opacity: 0.85;
 }
 
-.additionalInfo {
-  color: var(--color-text-info);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-sm);
-}
-
-.clickableSymbolX {
-  height: fit-content;
-  width: fit-content;
-
-  padding: var(--space-2);
-  line-height: var(--space-4);
-  font-size: var(--clickable-symbol-font);
-  display: inline-flex;
-  justify-content: center;
-  cursor: pointer;
-}
-
-a {
-  text-decoration: underline;
-  cursor: pointer;
-  color: var(--color-text-link);
-}
-
 ol > li::marker {
   color: var(--color-text-info);
 }
 
 .hidden {
   display: none !important;
-}
+} */

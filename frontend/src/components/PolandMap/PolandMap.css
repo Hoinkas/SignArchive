@@ -32,7 +32,7 @@
 }
 
 .region.active.interactive path {
-  fill: var(--color-map-active);
+  fill: var(--color-map-bg-active);
 }
 
 /* DIMMED */
@@ -50,19 +50,19 @@
 }
 
 .region.interactive text {
-  fill: var(--color-map-active);
+  fill: var(--color-map-text);
 }
 
 /* INTERACTIVE MAP */
 .region:hover.interactive path,
 .region:focus-visible.interactive path {
-  stroke: var(--color-map-stroke);
-  fill: var(--color-map-active);
+  stroke: var(--color-map-stroke-active);
+  fill: var(--color-map-bg-active);
   stroke-width: 2;
 }
 
 .region:hover.interactive text,
 .region:focus-visible.interactive text,
 .region.active.interactive text {
-  fill: var(--color-map-bg);
+  fill: var(--color-map-text-active);
 }

@@ -24,8 +24,8 @@
   & .videoBox,
   & .thumbnail {
     width: 100%;
-    height: var(--media-details-max-height);
-    max-height: var(--media-details-max-height);
+    height: var(--media-max-height-min);
+    max-height: var(--media-max-height-min);
   }
 
   & .imageBox {
