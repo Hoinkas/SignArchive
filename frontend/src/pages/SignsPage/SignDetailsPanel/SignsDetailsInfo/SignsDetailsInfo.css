@@ -21,12 +21,9 @@
   justify-content: center;
 }
 
-.mapContainer {
+.smallMapContainer {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  justify-content: center;
-  border-top: var(--line-border);
-  border-bottom: var(--line-border);
   padding: var(--space-4);
 }

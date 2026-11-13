@@ -19,11 +19,11 @@ function SignsPage(): React.JSX.Element {
   return (
     <div className="signPage page">
       <div className='signsList'>
-        <div className='mapSearchContener'>
-          <div className='mapContener'>
+        <div className='mapSearchContainer'>
+          <div className='bigMapContainer'>
             <PolandMap mapStats={mapStats} interactive/>
           </div>
-          <div className='searchAndStatisticsContainer'>
+          <div className='searchStatisticsContainer'>
             <SearchBar/>
             <Statistics/>
           </div>

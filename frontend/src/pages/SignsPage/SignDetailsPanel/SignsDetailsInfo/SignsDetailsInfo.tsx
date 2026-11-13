@@ -4,11 +4,11 @@ import MediaPlayer from '@src/components/MediaPlayer/MediaPlayer'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYearToText } from '@src/utils/namesHelpers'
 import './SignsDetailsInfo.css'
-import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
 import { calculateWordsMapStatistics } from '@src/utils/calculateMapStatistics'
+import PolandMap from '@src/components/PolandMap/PolandMap'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -33,7 +33,7 @@ function SignDetailsInfo(): React.JSX.Element {
         </div>
       </div>
       <div className='rightSide'>
-        <div className='mapContainer'>
+        <div className='smallMapContainer'>
           LICZBA ZNACZEŃ WEDŁUG WOJEWÓDZTW:
           <PolandMap mapStats={mapStats} small/>
         </div>
