@@ -1,55 +1,36 @@
 .mediaWrapper {
-  background-color: black;
+  --height: var(--media-height);
+
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex: 0 0 40%;
-  max-width: 200px;
+  max-width: var(--media-max-width);
 
   @media (max-width: 768px) {
-    max-width: 40vw;
+    max-width: var(--media-max-width-mobile);
   }
 }
 
 .mediaWrapper.isDetails {
-  max-width: none;
+  --height: var(--media-height-details);
+
   flex: 0 0 auto;
-  width: 50%;
-  min-width: 320px;
-  height: auto;
-
-  & .imageBox,
-  & .videoContainer,
-  & .videoBox,
-  & .thumbnail {
-    width: 100%;
-    height: var(--media-max-height-min);
-    max-height: var(--media-max-height-min);
-  }
-
-  & .imageBox {
-    object-fit: contain;
-  }
-}
-
-.imageBox {
   width: 100%;
-  height: 100%;
-  max-height: var(--media-max-height);
-  object-fit: contain;
+  min-width: var(--media-min-width-details);
+  max-width: none;
 }
 
-.videoContainer {
-  position: relative;
+.imageBox,
+.videoContainer,
+.videoBox,
+.thumbnail {
   width: 100%;
-  height: 100%;
-  max-height: var(--media-max-height);
+  height: var(--height);
+  max-height: var(--height);
 }
 
-.videoBox {
-  width: 100%;
-  height: 100%;
-  max-height: var(--media-max-height);
-  display: block;
-}
+.imageBox { object-fit: contain; }
+.videoContainer { position: relative; }
+.videoBox { display: block; }

@@ -1,19 +1,21 @@
 import PlayIcon from '@src/assets/icons/PlayIcon'
 import './Thumbnail.css'
-import type { IMedia } from '@src/models/media.model'
 
 interface ThumbnailProps {
-  setIsClicked: React.Dispatch<React.SetStateAction<boolean>>
-  media: IMedia
+  thumbnailUrl: string
+  onPlay: () => void
 }
 
-function Thumbnail({setIsClicked, media}: ThumbnailProps): React.JSX.Element {
+function Thumbnail({ thumbnailUrl, onPlay }: ThumbnailProps): React.JSX.Element {
   return (
-    <div className='thumbnailOverlay'>
-      <div className="thumbnail" onClick={() => setIsClicked(true)} style={{backgroundImage: `url("${media.thumbnailUrl}")`}}>
-        <PlayIcon/>
-      </div>
-    </div>
+    <button
+      type="button"
+      className="thumbnail"
+      onClick={onPlay}
+      style={{ '--thumbnailImg': `url("${thumbnailUrl}")` } as React.CSSProperties}
+    >
+      <PlayIcon />
+    </button>
   )
 }
 

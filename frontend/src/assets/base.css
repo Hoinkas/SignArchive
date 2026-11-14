@@ -101,9 +101,13 @@
   --color-scroll: var(--color-scroll-DT);
 
   /* media */
-  --media-max-height: 200px;
-  --media-max-height-min: 440px;
+  --media-height: 200px;
+  --media-height-details: 440px;
 
+  --media-max-width: 200px;
+  --media-max-width-mobile: 40vw;
+  --media-min-wdith-details: 320px;
+  
   /* navbar */
   --navBar-height: 56px;
 
