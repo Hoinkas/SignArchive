@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import type { FeatureCollection, Geometry } from "geojson";
 import rawGeoData from './poland.voivodeships.json';
 import { memo, useMemo } from "react";
-import "./PolandMap.css";
+import "./MapItem.css";
 import { useSearch } from "@src/hooks/SearchContext/useSearch";
 import type { IMapStats } from "@src/utils/calculateMapStatistics";
 

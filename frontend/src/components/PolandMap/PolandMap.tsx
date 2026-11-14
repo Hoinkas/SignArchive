@@ -1,5 +1,5 @@
 import type { IMapStats } from '@src/utils/calculateMapStatistics'
-import MapItem from './MapItem'
+import MapItem from './MapItem/MapItem'
 import "./PolandMap.css";
 
 interface PolandMapProps {
