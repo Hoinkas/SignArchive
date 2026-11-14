@@ -27,7 +27,7 @@ function NavBar(): React.JSX.Element {
 
       {/* Desktop */}
       <div className='buttonsBox desktopNav'>
-        {pages.map((p) => <button onClick={() => navigate('/' + p[0] + '/')}>{p[1]}</button>)}
+        {pages.map((p) => <button  className="secondary" onClick={() => navigate('/' + p[0] + '/')}>{p[1]}</button>)}
       </div>
 
       {/* Mobile */}

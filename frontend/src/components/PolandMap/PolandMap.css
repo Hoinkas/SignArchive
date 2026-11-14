@@ -1,68 +1,12 @@
-.polandMap {
+.mapWrapper {
   width: 100%;
   max-width: 480px;
   height: auto;
+
+  display: flex;
+  justify-content: center;
 }
 
-.polandMap.small {
+.mapWrapper.small {
   max-width: 400px;
-}
-
-/* VOIVODESHIPS */
-.region { 
-  outline: none;
-  transition: opacity 0.2s;
-}
-
-.region.interactive {
-  cursor: pointer;
-}
-
-/* AREA */
-.region path { 
-  stroke-width: 1;
-  transition: stroke 0.2s;
-  fill: var(--color-map-stroke);
-}
-
-.region.interactive path {
-  cursor: pointer;
-  stroke: var(--color-map-stroke);
-  fill: var(--color-map-bg);
-}
-
-.region.active.interactive path {
-  fill: var(--color-map-active);
-}
-
-/* DIMMED */
-.region.dimmed path { 
-  stroke: var(--color-map-stroke);
-  fill: var(--color-map-bg);
-  opacity: 0.3;
-}
-
-/* FONT */
-.region text {
-  font-weight: bold;
-  pointer-events: none;
-  user-select: none;
-}
-
-.region.interactive text {
-  fill: var(--color-map-active);
-}
-
-/* INTERACTIVE MAP */
-.region:hover.interactive path,
-.region:focus-visible.interactive path {
-  stroke: var(--color-map-stroke);
-  fill: var(--color-map-active);
-  stroke-width: 2;
-}
-
-.region:hover.interactive text,
-.region:focus-visible.interactive text,
-.region.active.interactive text {
-  fill: var(--color-map-bg);
 }

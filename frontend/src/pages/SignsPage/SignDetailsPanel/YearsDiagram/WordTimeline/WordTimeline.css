@@ -1,0 +1,34 @@
+.wordTimeContainer {
+    display: flex;
+    align-items: center;
+    height: var(--space-10);
+}
+
+.wordText {
+    width: 120px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-align: center;
+    hyphens: auto;
+    overflow-wrap: anywhere;
+}
+
+.linesContainer {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    margin: 0 var(--space-6);
+}
+
+.line {
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 0;
+    right: 0;
+    border-radius: var(--radius-md);
+    height: var(--space-1);
+    background-color: var(--purple);
+}

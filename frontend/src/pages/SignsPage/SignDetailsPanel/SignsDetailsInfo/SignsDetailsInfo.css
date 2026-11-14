@@ -13,20 +13,24 @@
   flex-direction: column;
   width: 100%;
   border-left: var(--line-border);
+
+  @media (max-width: 768px) {
+    border-left: none;
+  }
 }
 
 .mediaContainer {
-  border-bottom: var(--line-border);
   display: flex;
   justify-content: center;
 }
 
-.mapContainer {
+.detailsInfo {
+  border-top: var(--line-border);
+}
+
+.smallMapContainer {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  justify-content: center;
-  border-top: var(--line-border);
-  border-bottom: var(--line-border);
   padding: var(--space-4);
 }

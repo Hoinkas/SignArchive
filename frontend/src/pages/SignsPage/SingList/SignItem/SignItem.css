@@ -4,16 +4,11 @@
   height: var(--media-max-height);
   flex-shrink: 0;
   overflow: hidden;
-  background-color: #232327;
-  color: #93909E;;
-
-  & svg {
-    color: #93909E;
-  }
+  background-color: var(--color-bg-secondary);
 }
 
 .signContainer:hover {
-  border-color: var(--color-border-pruple);
+  border: var(--line-border-active);
   cursor: pointer;
 }
 

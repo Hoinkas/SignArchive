@@ -1,5 +1,5 @@
 
-import './MeaningsContainer.css'
+import './WordsTabs.css'
 
 interface IProps {
     words: string[]

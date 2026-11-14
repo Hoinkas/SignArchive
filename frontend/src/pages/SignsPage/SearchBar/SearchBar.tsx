@@ -23,7 +23,7 @@ function SearchBar(): React.JSX.Element {
           }}
         />
       </div>
-      <button className='primary' onClick={() => handleNameChange(localWord)}>
+      <button onClick={() => handleNameChange(localWord)}>
         Szukaj
       </button>
     </div>

@@ -9,8 +9,9 @@ interface MediaPlayerProps {
 
 function MediaPlayer({ media, isDetails = false }: MediaPlayerProps): React.JSX.Element {
   return (
-    <div className={`mediaWrapper ${isDetails && 'isDetails'}`}>
-      <VideoItem media={media[0]} isDetails={isDetails}/>
+    <div className={`mediaWrapper${isDetails ? ' isDetails' : ''}`}>
+      {/* TODO Handle more videos for one sign */}
+      <VideoItem media={media[0]}/>
     </div>
   )
 }

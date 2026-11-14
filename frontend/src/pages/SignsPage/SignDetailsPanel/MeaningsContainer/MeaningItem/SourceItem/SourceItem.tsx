@@ -1,6 +1,6 @@
 
 import type { ISourceToFE } from '@src/models/source.model';
-import './MeaningsContainer.css'
+import './SourceItem.css'
 import { mergeYearsToText } from '@src/utils/namesHelpers';
 
 interface IProps {

@@ -4,11 +4,11 @@ import MediaPlayer from '@src/components/MediaPlayer/MediaPlayer'
 import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYearToText } from '@src/utils/namesHelpers'
 import './SignsDetailsInfo.css'
-import PolandMap from '@src/components/PolandMap/PolandMap'
 import type { IRegionToFE } from '@src/models/region.model'
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model'
 import { removeRegionDuplicates, removeYearsDuplicates, renameWordsDuplicates } from '@src/utils/removeDuplicates'
 import { calculateWordsMapStatistics } from '@src/utils/calculateMapStatistics'
+import PolandMap from '@src/components/PolandMap/PolandMap'
 
 function SignDetailsInfo(): React.JSX.Element {
   const { sign, signLoading } = useSign()
@@ -27,17 +27,17 @@ function SignDetailsInfo(): React.JSX.Element {
         <div className='mediaContainer'>
           <MediaPlayer media={media} isDetails/>
         </div>
-        <div className="details additionalInfo">
+        <div className="details detailsInfo">
           <div>OSOBA MIGAJĄCA:</div>
           <div>ŹRÓDŁO FILMU: </div>
         </div>
       </div>
       <div className='rightSide'>
-        <div className='mapContainer'>
+        <div className='smallMapContainer'>
           LICZBA ZNACZEŃ WEDŁUG WOJEWÓDZTW:
           <PolandMap mapStats={mapStats} small/>
         </div>
-        <div className="details additionalInfo">
+        <div className="details detailsInfo">
           <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
           <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
           <div>LATA: {years.map((y) => mergeYearToText(y)).join(', ')}</div>

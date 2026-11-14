@@ -11,8 +11,7 @@
   backdrop-filter: blur(var(--space-6));
   cursor: text;
   height: var(--space-10);
-  border: var(--line-border);
-  border-color: var(--color-bg-active);
+  border: var(--border-search);
   width: 100%;
 }
 
@@ -20,8 +19,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 38px;
+  width: var(--space-9);
   height: 100%;
   flex-shrink: 0;
-  color: var(--color-text-dark);
+  color: var(--color-text);
 }

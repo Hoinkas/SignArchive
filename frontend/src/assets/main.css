@@ -1,22 +1,14 @@
 @import './base.css';
 
 #root {
-  height: 100vh;
+  height: 100dvh;
+  max-width: 100dvw;
   overflow: hidden;
-}
-
-body {
-  display: flex;
-
-  transition:
-		background-color var(--trans-dur),
-		color var(--trans-dur);
 }
 
 .pageContainer {
   height: calc(100dvh - var(--navBar-height));
-  width: 100vw;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .page {
@@ -35,18 +27,13 @@ input {
   background-color: transparent;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
+  color: var(--color-text);
 
   width: 100%;
   padding: var(--space-2) var(--space-3);
   border: none;
   outline: none;
   caret-color: var(--color-line-purple-light);
-  color: var(--color-text);
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
 }
 
 input[type=search]::-webkit-search-cancel-button {
@@ -63,62 +50,20 @@ input[type=search]::-webkit-search-cancel-button {
 }
 
 button {
-  font-size: var(--font-size-sm);
-  color: var(--color-text);
-  border: var(--button-border);
-  background: var(--color-bg);
-
   cursor: pointer;
+
   padding: var(--space-2) var(--space-4);
-  height: fit-content;
   height: var(--space-10);
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-button);
+
+  background: var(--bg-button-primary);
+  border: var(--border-button);
 }
 
-button:hover {
-  color: var(--color-text-active);
-  background: var(--color-button-hover);
-}
-
-button:active {
-  /* transform: scale(0.97); */
-  color: var(--color-text-active);
-  background: var(--color-bg-active);
-}
-
-button.primary {
-  background: var(--color-bg-active);
-  color: var(--color-text-dark);
-}
-
-button.primary:hover {
-  opacity: 0.85;
-}
-
-button[type="submit"] {
-  background: var(--color-bg-active);
-  color: var(--color-text-dark);
-}
-
-button[type="submit"]:hover {
-  opacity: 0.85;
-}
-
-.additionalInfo {
-  color: var(--color-text-info);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-sm);
-}
-
-.clickableSymbolX {
-  height: fit-content;
-  width: fit-content;
-
-  padding: var(--space-2);
-  line-height: var(--space-4);
-  font-size: var(--clickable-symbol-font);
-  display: inline-flex;
-  justify-content: center;
-  cursor: pointer;
+button.secondary {
+  background: var(--bg-button-secondary);
 }
 
 a {
@@ -127,10 +72,24 @@ a {
   color: var(--color-text-link);
 }
 
+/* input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+button[type="submit"] {
+  background: var(--color-bg-active);
+  color: var(--color-text);
+}
+
+button[type="submit"]:hover {
+  opacity: 0.85;
+}
+
 ol > li::marker {
   color: var(--color-text-info);
 }
 
 .hidden {
   display: none !important;
-}
+} */
