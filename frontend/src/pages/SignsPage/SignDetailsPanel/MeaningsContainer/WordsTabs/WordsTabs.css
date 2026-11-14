@@ -7,6 +7,7 @@
     height: var(--space-7);
     border-radius: var(--radius-md) var(--radius-md) 0 0;
     border: var(--line-border);
+    border-bottom: none;
     cursor: pointer;
 }
 
