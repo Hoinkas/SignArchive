@@ -1,8 +1,19 @@
 .wordTimeContainer {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
     height: var(--space-10);
+}
+
+.wordText {
+    width: 120px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-align: center;
+    hyphens: auto;
+    overflow-wrap: anywhere;
 }
 
 .linesContainer {

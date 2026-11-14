@@ -16,7 +16,7 @@ function WordTimeline({ word, years }: IProps): React.JSX.Element {
 
     return (
         <div className='wordTimeContainer'>
-            <div>[{word}]</div>
+            <span className='wordText'>[{word}]</span>
             <div className='linesContainer'>
                 <div className='line'/>
                 {years.map((item, i) => <TimelineDot key={i} dotYears={item} minMaxYear={minMaxYear}/>)}
