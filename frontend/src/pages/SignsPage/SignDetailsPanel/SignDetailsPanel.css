@@ -6,6 +6,7 @@
   min-width: min(640px, 100%);
   height: calc(100dvh - var(--navBar-height));
   background-color: var(--color-bg);
+  border-top: var(--line-border);
   border-left: var(--line-border);
 
   display:flex;
@@ -29,16 +30,25 @@
   flex-direction: column;
   gap: var(--space-2);
   border-right: var(--line-border);
+
+  @media (max-width: 768px) {
+    border: none;
+  }
 }
 
 .stickyBar {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 100;
   display: flex;
   align-items: center;
   background-color: var(--color-bg);
-  border-block: var(--line-border);
+  border-bottom: var(--line-border);
+  border-right: var(--line-border);
+
+  @media (max-width: 768px) {
+    border-right: none;
+  }
 }
 
 .stickyBar > div {

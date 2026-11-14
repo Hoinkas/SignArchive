@@ -17,7 +17,7 @@ function SignItem({ signSimple }: SignItemProps): React.JSX.Element {
   const uniqueWords = renameWordsDuplicates(words).map(w => w.name)
 
   return (
-    <div className="signContainer additionalInfo">
+    <div className="signContainer">
       <MediaPlayer media={media} />
       <div className='signContent' onClick={() => openCloseSidePanel(signSimple.uniqueNumber)}>
         <div className='details'>

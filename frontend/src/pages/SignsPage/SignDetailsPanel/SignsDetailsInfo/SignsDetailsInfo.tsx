@@ -27,7 +27,7 @@ function SignDetailsInfo(): React.JSX.Element {
         <div className='mediaContainer'>
           <MediaPlayer media={media} isDetails/>
         </div>
-        <div className="details additionalInfo">
+        <div className="details detailsInfo">
           <div>OSOBA MIGAJĄCA:</div>
           <div>ŹRÓDŁO FILMU: </div>
         </div>
@@ -37,7 +37,7 @@ function SignDetailsInfo(): React.JSX.Element {
           LICZBA ZNACZEŃ WEDŁUG WOJEWÓDZTW:
           <PolandMap mapStats={mapStats} small/>
         </div>
-        <div className="details additionalInfo">
+        <div className="details detailsInfo">
           <div>SŁOWA: {words.length > 0 ? words.join(', ') :'-'}</div>
           <div>REGIONY: {regions.length > 0 ? regions.flatMap((r) => r.name).join(', ') : '-'}</div>
           <div>LATA: {years.map((y) => mergeYearToText(y)).join(', ')}</div>

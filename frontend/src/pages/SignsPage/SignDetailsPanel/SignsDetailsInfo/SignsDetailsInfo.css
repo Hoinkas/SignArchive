@@ -13,12 +13,19 @@
   flex-direction: column;
   width: 100%;
   border-left: var(--line-border);
+
+  @media (max-width: 768px) {
+    border-left: none;
+  }
 }
 
 .mediaContainer {
-  border-bottom: var(--line-border);
   display: flex;
   justify-content: center;
+}
+
+.detailsInfo {
+  border-top: var(--line-border);
 }
 
 .smallMapContainer {

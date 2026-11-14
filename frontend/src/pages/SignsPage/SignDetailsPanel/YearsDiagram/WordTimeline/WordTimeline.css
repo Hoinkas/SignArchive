@@ -19,5 +19,5 @@
     right: 0;
     border-radius: var(--radius-md);
     height: var(--space-1);
-    background-color: var(--color-bg-active);
+    background-color: var(--purple);
 }
