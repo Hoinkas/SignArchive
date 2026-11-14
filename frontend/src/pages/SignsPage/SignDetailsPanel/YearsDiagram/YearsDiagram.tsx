@@ -2,7 +2,7 @@
 import { useSign } from '@src/hooks/SignContext/useSign'
 import { mergeYears } from '@src/utils/namesHelpers';
 import './YearsDiagram.css'
-import WordTimeline from './WordTimeline';
+import WordTimeline from './WordTimeline/WordTimeline';
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model';
 import { useMemo } from 'react';
 
@@ -39,9 +39,9 @@ function YearsDiagram(): React.JSX.Element {
     if (!sign) return <></>
 
     return (
-        <div style={{ margin: 'var(--space-4)' }}>
+        <div className='yearsDiagramContainer'>
             DIAGRAM CZASOWY:
-            <div style={{ margin: 'var(--space-2) 0' }}>
+            <div className='wordTimeLineList'>
                 {rows.map((w, i) => <WordTimeline key={i} word={w.word} years={w.years}/>)}
             </div>
         </div>

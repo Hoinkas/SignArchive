@@ -1,7 +1,7 @@
 
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model';
 import { mergeYearToText } from '@src/utils/namesHelpers';
-import './YearsDiagram.css'
+import './TimeLineDot.css'
 
 interface IProps {
     dotYears: IYearStartEnd

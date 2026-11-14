@@ -1,9 +1,9 @@
 
 import type { IYearStartEnd } from '@src/models/yearStartEnd.model';
-import './YearsDiagram.css'
+import './WordTimeline.css'
 import { useSignList } from '@src/hooks/SignListContext/useSignList';
 import { returnMarginalYears } from '@src/utils/calculateStatistics';
-import TimelineDot from './TimelineDot';
+import TimelineDot from '../TimeLineDot/TimelineDot';
 
 interface IProps {
     word: string

@@ -3,8 +3,8 @@ import { useSign } from '@src/hooks/SignContext/useSign'
 import './MeaningsContainer.css'
 import { useMemo, useState } from 'react';
 import type { IMeaningDetailed } from '@src/models/meaning.model';
-import WordsTabs from './WordsTabs';
-import MeaningItem from './MeaningItem';
+import WordsTabs from './WordsTabs/WordsTabs';
+import MeaningItem from './MeaningItem/MeaningItem';
 
 interface MeaningItemI {
 	word: string

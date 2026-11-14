@@ -1,0 +1,18 @@
+.wordTab {
+    margin-left: var(--space-4);
+    margin-bottom: -1px;
+    display: flex;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    height: var(--space-7);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    border: var(--line-border);
+    cursor: pointer;
+}
+
+.wordTab.active {
+    border-bottom-color: var(--color-bg-dark);
+    background-color: var(--color-bg-purple);
+    border: var(--line-border-active);
+    color: var(--color-text-light);
+}

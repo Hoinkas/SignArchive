@@ -1,0 +1,20 @@
+.yearLine {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: var(--space-3);
+    border-radius: var(--radius-lg);
+    border: var(--line-border);
+    border-color: var(--purple-light);
+    background-color: var(--purple-light);
+    box-sizing: border-box;
+}
+
+.yearText {
+    position: absolute;
+    top: calc(100% + 4px);
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    white-space: nowrap;
+}
