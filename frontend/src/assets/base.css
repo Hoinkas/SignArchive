@@ -194,7 +194,7 @@ h4 {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sm);
 
-  color: var(--color-text-dark);
+  color: var(--color-text);
 }
 
 h5 {
